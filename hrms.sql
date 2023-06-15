@@ -9,6 +9,14 @@ CREATE TABLE Department (
   department_name NVARCHAR(200),
   description NVARCHAR(500)
 );
+--Create DepartmentMemberList table
+Create table DepartmentMemberList(
+	department_id INT,
+	 employee_id INT,
+	 emp_role NVARCHAR(20),
+	 FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
+	 FOREIGN KEY (department_id) REFERENCES Department ( department_id)
+)
 -- Create Roles table
 CREATE TABLE Roles (
   role_id INT PRIMARY KEY,
@@ -73,15 +81,7 @@ CREATE TABLE Allowances (
   allowance_type NVARCHAR(200),
   amount DECIMAL(18, 2)
 );
--- Create Skill_employee table
-CREATE TABLE Skill_employee (
-  unique_id INT PRIMARY KEY,
-  employee_id INT,
-  level NVARCHAR(50),
-  skill_id INT,
-  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
-  FOREIGN KEY (skill_id) REFERENCES Skill(skill_id)
-);
+
 
 -- Create Job table
 CREATE TABLE Job (
@@ -118,7 +118,15 @@ CREATE TABLE Employee (
   FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
-
+-- Create Skill_employee table
+CREATE TABLE Skill_employee (
+  unique_id INT PRIMARY KEY,
+  employee_id INT,
+  level NVARCHAR(50),
+  skill_id INT,
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
+  FOREIGN KEY (skill_id) REFERENCES Skill(skill_id)
+);
 -- Create EmployeeContract table
 CREATE TABLE EmployeeContract (
   contract_id INT PRIMARY KEY,
