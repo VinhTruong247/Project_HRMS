@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XieBMNUEr/EmuvEeca7RIaqf9lZaP2YCmVbOgp7umwsKteVup+bWHmZ/6ptBb/uvgy0VsmHzk+aVeLwhBt/ICA==",
+  "dgSpecHash": "SgpC18bfIWsWdajQqaDGJulbDd/RxTxp7/FaQ4isnJDG+cOERP8k5qjzFFWEoH56rC1IwcBN67yGjEUaaas59Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\HumanResourceApi\\HumanResourceApi\\HumanResourceApi.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

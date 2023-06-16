@@ -2286,11 +2286,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\HumanResourceApi\\HumanResourceApi\\HumanResourceApi.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj",
       "projectName": "HumanResourceApi",
-      "projectPath": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\HumanResourceApi\\HumanResourceApi\\HumanResourceApi.csproj",
+      "projectPath": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\HumanResourceApi\\HumanResourceApi\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
