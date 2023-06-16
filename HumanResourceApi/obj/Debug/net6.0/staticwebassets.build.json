@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "SwT75JNYH9B8Z39qSogIknX7UWkRDlaYHBZONBsPYMk=",
+  "Source": "HumanResourceApi",
+  "BasePath": "_content/HumanResourceApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
