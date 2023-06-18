@@ -1,5 +1,6 @@
 ﻿using HumanResourceApi.Interfaces;
 using HumanResourceApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HumanResourceApi.Repositories
 {
@@ -31,14 +32,31 @@ namespace HumanResourceApi.Repositories
             throw new NotImplementedException();
         }
         
-        public bool CheckLogin(string username, string password)
+        public User CheckLogin(string username, string password)
         {
-            return _context.Users.Any(u => u.Username.ToUpper().Equals(username.ToUpper()) && u.Password.Equals(password));
+            return _context.Users.Where(u => u.Username.ToUpper().Equals(username.ToUpper()) && u.Password.Equals(password)).FirstOrDefault();
         }
 
         public bool UserExists(int id)
         {
             return _context.Users.Any(u => u.UserId == id);
         }
+
+        public bool DeleteUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsActive(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
+
 }

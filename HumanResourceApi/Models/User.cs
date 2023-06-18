@@ -8,6 +8,7 @@ namespace HumanResourceApi.Models
         public User()
         {
             Employees = new HashSet<Employee>();
+            Status = "active";
         }
 
         public int UserId { get; set; }
@@ -15,6 +16,7 @@ namespace HumanResourceApi.Models
         public string Password { get; set; }
         public string Email { get; set; }
         public int? RoleId { get; set; }
+        public string Status { get; set; }
 
         public virtual Role Role { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace HumanResourceApi.DTO
+﻿namespace HumanResourceApi.DTO.Users
 {
     public class LoginDto
     {
