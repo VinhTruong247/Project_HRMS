@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
-using HumanResourceApi.DTO;
 using HumanResourceApi.Interfaces;
 using HumanResourceApi.Models;
+using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using HumanResourceApi.DTO.Users;
 
 namespace HumanResourceApi.Controllers
 {
@@ -10,63 +13,178 @@ namespace HumanResourceApi.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private readonly IUser _userRepository;
+        
         private readonly IMapper _mapper;
+        private readonly UserRepo _userRepo;
 
-        public UserController(IUser userRepository, IMapper mapper)
+        public UserController(IMapper mapper, UserRepo userRepo)
         {
-            _userRepository = userRepository;
             _mapper = mapper;
+            _userRepo = userRepo;
         }
 
-        [HttpGet("Get-all")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
-        public IActionResult GetUsers()
+        
+        [HttpGet("get/users")]
+        public IActionResult GetAll()
         {
-            var categories = _mapper.Map<List<UserDto>>(_userRepository.GetUsers());
-
-            if (!ModelState.IsValid)
+            try
             {
-                // Handle invalid model state if needed
-                return BadRequest(ModelState);
+                var userList = _mapper.Map<List<UserDto>>(_userRepo.GetAll().Where(u => u.Status == "active"));
+
+                if (!ModelState.IsValid)
+                {
+                    // Handle invalid model state if needed
+                    return BadRequest(ModelState);
+                }
+
+                // Return the list of users
+                return Ok(userList);
+
             }
-
-            // Return the list of users
-            return Ok(categories);
-        }
-        [HttpPost("GetUser")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        public IActionResult CheckLogin([FromQuery] int userId)
-        {
-            if (userId == null)
-                return BadRequest(ModelState);
-
-            var userMap = _mapper.Map<UserDto>(_userRepository.GetUserById(userId));
-            
-            if(userMap == null)
+            catch (Exception e)
             {
-                return NotFound();
+                return BadRequest(e.Message);
             }
-
-            return Ok(userMap);
         }
 
-        [HttpPost("Login")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
+        [HttpPost("login")]
         public IActionResult CheckLogin([FromBody] LoginDto loginInfo)
         {
-            if (loginInfo == null)
-                return BadRequest(ModelState);
-
-            bool exist = _userRepository.CheckLogin(loginInfo.Username, loginInfo.Password);
-            if(!exist)
+            try
             {
-                return Ok("Wrong username or Password");
+                if (loginInfo == null)
+                    return BadRequest(ModelState);
+
+                var account = _userRepo.CheckLogin(loginInfo.Username, loginInfo.Password);
+
+                if (account == null)
+                {
+                    return BadRequest("Wrong username or password");
+                }
+
+                var accountDto = _mapper.Map<UserDto>(account);
+                return Ok(accountDto);
             }
-            
-            return Ok("Valid");
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("get/user")]
+        public IActionResult getUserById([FromQuery] int userId)
+        {
+            try
+            {
+                if (userId == null)
+                    return BadRequest(ModelState);
+                var tmpUser = _userRepo.GetById(userId);
+                if (tmpUser.Status != "active")
+                {
+                    return NotFound();
+                }
+                var userMap = _mapper.Map<UserDto>(tmpUser);
+
+                if (userMap == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(userMap);
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
+        [HttpPost("add")]
+
+        public IActionResult addUser([FromBody] UserDto user)
+        {
+            try
+            {
+                if (user == null)
+                {
+                    return BadRequest("User is null");
+                }
+                var tmpUser = _userRepo.GetAll()
+                    .Where(u => u.Username.Trim().ToUpper() == user.Username.Trim().ToUpper())
+                    .FirstOrDefault();
+                if (tmpUser != null)
+                {
+                    return BadRequest("Username already exists");
+                }
+
+                var newUser = _mapper.Map<User>(user);
+                newUser.Role = _userRepo.GetRole(user.RoleId);
+
+                //check userId duplicate or unavailable roleId
+                if (_userRepo.GetAll().Any(u => u.UserId == newUser.UserId))
+                    return BadRequest("Duplicated Id");
+                if (!_userRepo.GetAll().Any(u => u.RoleId == newUser.RoleId))
+                    return BadRequest("Unavailable RoleId");
+
+
+                _userRepo.Add(newUser);
+
+                // Configure JSON serializer options
+                var serializerOptions = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve
+                };
+
+                // Serialize the newUser object to JSON with the configured options
+                var newUserJson = JsonSerializer.Serialize(newUser, serializerOptions);
+
+                return Ok(newUserJson);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPut("{id}/update")]
+        public IActionResult updateUser(int  id, [FromBody] UpdateUserDto updateUser)
+        {
+            try
+            {
+                if(updateUser == null)
+                {
+                    return BadRequest();
+                }
+                var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "active").FirstOrDefault();
+                if(user == null) 
+                {
+                    return NotFound();
+                }
+                _mapper.Map(updateUser, user);
+                user.UserId = id;
+                _userRepo.Update(user);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("remove")]
+        public IActionResult deleteUser(int id)
+        {
+            var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "active").FirstOrDefault();
+            if(user == null )
+            {
+                return NotFound(id);
+            }
+            user.Status = "disable";
+            _userRepo.Update(user);
+            return Ok(user);
         }
     }
 }
