@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HumanResourceApi.DTO;
+using HumanResourceApi.DTO.Users;
 using HumanResourceApi.Models;
 
 namespace HumanResourceApi.Helper
@@ -8,7 +8,10 @@ namespace HumanResourceApi.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<User, UserDto>()
+                .ReverseMap();
+            CreateMap<User, UpdateUserDto>()
+                .ReverseMap();
         }
     }
 }
