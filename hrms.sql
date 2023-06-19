@@ -37,8 +37,12 @@ CREATE TABLE Users (
   password NVARCHAR(50),
   Email NVARCHAR(100),
   role_id INT,
+  status NVARCHAR,
   FOREIGN KEY (role_id) REFERENCES Roles(role_id)
 );
+ALTER TABLE Users
+ADD status NVARCHAR(10);
+
 
 -- Create GrantedPermission table
 CREATE TABLE GrantedPermission (
@@ -113,10 +117,12 @@ CREATE TABLE Employee (
   user_id INT,
   job_id INT,
   department_id INT,
+  status NVARCHAR,
   FOREIGN KEY (user_id) REFERENCES Users(user_id),
   FOREIGN KEY (experience_id) REFERENCES Experience(experience_id),
   FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
+
 );
 -- Create Skill_employee table
 CREATE TABLE Skill_employee (
@@ -245,6 +251,8 @@ CREATE TABLE EmployeeBenefit (
   employee_id INT,
   allowance_id INT,
   allowances_id INT PRIMARY KEY,
+  status NVARCHAR,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
 );
+

@@ -1,44 +1,36 @@
 ﻿use HRMS
-INSERT INTO  (role_id, role_name)
+INSERT INTO Roles(role_id, role_name)
 VALUES 
 (1, 'ADMIN'),
 (2, 'HR_Manager'),
 (3, 'HR_Staff'),
 (4, 'Employee'); 
 
-INSERT INTO Users (user_id, username, password, Email, role_id)
+INSERT INTO Users (user_id, username, password, Email, role_id,status)
 VALUES
-  (1, N'Hồ', N'P@ssw0rd123!', 'ho.nguyen@example.com', 4),
-  (2, N'Mai', N'abc123', 'mai.tran@example.com', 4),
-  (3, N'Thắm', N'Str0ngP@ssw0rd', 'tham.le@example.com', 4),
-  (4, N'Nam', N'password123', 'nam.tran@example.com', 4),
-  (5, N'Bình', N'123456789', 'binh.le@example.com', 4),
-  (6, N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 2),
-  (7, N'Minh', N'abc123', 'minh.tran@example.com', 3),
-  (8, N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 1);
+  (1, N'Hồ', N'P@ssw0rd123!', 'ho.nguyen@example.com', 4, 'active'),
+  (2, N'Mai', N'abc123', 'mai.tran@example.com', 4,'active'),
+  (3, N'Thắm', N'Str0ngP@ssw0rd', 'tham.le@example.com', 4,'active'),
+  (4, N'Nam', N'password123', 'nam.tran@example.com', 4,'active'),
+  (5, N'Bình', N'123456789', 'binh.le@example.com', 4,'active'),
+  (6, N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 2,'active'),
+  (7, N'Minh', N'abc123', 'minh.tran@example.com', 3,'active'),
+  (8, N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 1,'active');
 
   delete from Employee
   delete from users
 -- Insert 13 employees
 
-INSERT INTO Employee (employee_id, first_name, last_name, employee_image, date_of_birth, employee_address, email, phone_number, BankAccountNumber, BankAccountName, BankName, experience_id, user_id, job_id, department_id)
+INSERT INTO Employee (employee_id, first_name, last_name, employee_image, date_of_birth, employee_address, email, phone_number, BankAccountNumber, BankAccountName, BankName, experience_id, user_id, job_id, department_id,status)
 VALUES
-  -- Software Development Department Employees
-  (1, N'Hồ', N'Nguyễn', 'ho_nguyen.jpg', '1990-05-15', '123 Main St, City, Country', 'ho.nguyen@example.com', '+1234567890', '123456789', N'Hồ Nguyễn', 'Bank XYZ', 1, 1, 1, 1),
-  (2, N'Mai', N'Trần', 'mai_tran.jpg', '1992-09-20', '456 Elm St, City, Country', 'mai.tran@example.com', '+0987654321', '987654321', N'Mai Trần', 'Bank ABC', 2, 2, 1, 1),
-  (3, N'Thắm', N'Lê', 'tham_le.jpg', '1988-07-10', '789 Oak St, City, Country', 'tham.le@example.com', '+1357924680', '246813579', N'Thắm Lê', 'Bank DEF', 3, 3, 1, 1),
-  (4, N'Bình', N'Lê', 'binh_le.jpg', '1991-11-05', '654 Cedar St, City, Country', 'binh.le@example.com', '+0123456789', '123456789', N'Bình Lê', 'Bank ABC', 4, 5, 4, 1),
-  
-  -- Database Administration Department Employee
-  (5, N'Nam', N'Trần', 'nam_tran.jpg', '1995-03-25', '321 Pine St, City, Country', 'nam.tran@example.com', '+5678901234', '987654321', N'Nam Trần', 'Bank XYZ', 3, 4, 2, 2),
-  
-  -- HR Manager and HR Staff Employees
-  (6, N'Lan', N'Vũ', 'lan_vu.jpg', '1993-12-30', '987 Maple St, City, Country', 'lan.vu@example.com', '+9876543210', '246813579', 'Lan Vũ', N'Bank DEF', 5, 6, 5, 6),
-  (7, N'Minh', N'Trần', 'minh_tran.jpg', '1989-08-17', '147 Birch St, City, Country', 'minh.tran@example.com', '+5432109876', '987654321', N'Minh Trần', 'Bank XYZ', 5, 7, 5, 6),
-  
-  -- Admin Employee
-  (8, N'An', N'Lê', 'an_le.jpg', '1994-06-12', '258 Walnut St, City, Country', 'an.le@example.com', '+7654321098', '123456789', N'An Lê', 'Bank ABC',12, 8, 12, 4);
-  delete from Employee
+  (1, N'Hồ', N'Nguyễn', 'ho_nguyen.jpg', '1990-05-15', '123 Main St, City, Country', 'ho.nguyen@example.com', '+1234567890', '123456789', N'Hồ Nguyễn', 'Bank XYZ', 1, 1, 1, 1,'active'),
+  (2, N'Mai', N'Trần', 'mai_tran.jpg', '1992-09-20', '456 Elm St, City, Country', 'mai.tran@example.com', '+0987654321', '987654321', N'Mai Trần', 'Bank ABC', 2, 2, 1, 1,'active'),
+  (3, N'Thắm', N'Lê', 'tham_le.jpg', '1988-07-10', '789 Oak St, City, Country', 'tham.le@example.com', '+1357924680', '246813579', N'Thắm Lê', 'Bank DEF', 3, 3, 1, 1,'active'),
+  (4, N'Bình', N'Lê', 'binh_le.jpg', '1991-11-05', '654 Cedar St, City, Country', 'binh.le@example.com', '+0123456789', '123456789', N'Bình Lê', 'Bank ABC', 4, 5, 4, 1,'active'),
+  (5, N'Nam', N'Trần', 'nam_tran.jpg', '1995-03-25', '321 Pine St, City, Country', 'nam.tran@example.com', '+5678901234', '987654321', N'Nam Trần', 'Bank XYZ', 3, 4, 2, 2,'active'),
+  (6, N'Lan', N'Vũ', 'lan_vu.jpg', '1993-12-30', '987 Maple St, City, Country', 'lan.vu@example.com', '+9876543210', '246813579', 'Lan Vũ', N'Bank DEF', 5, 6, 5, 6,'active'),
+  (7, N'Minh', N'Trần', 'minh_tran.jpg', '1989-08-17', '147 Birch St, City, Country', 'minh.tran@example.com', '+5432109876', '987654321', N'Minh Trần', 'Bank XYZ', 5, 7, 5, 6,'active'),
+  (8, N'An', N'Lê', 'an_le.jpg', '1994-06-12', '258 Walnut St, City, Country', 'an.le@example.com', '+7654321098', '123456789', N'An Lê', 'Bank ABC',12, 8, 12, 4,'active');
 
 -- Insert 13 jobs
 INSERT INTO Job (job_id, job_title, job_description, start_date, status, base_salary_per_hour, allowance_id, bonus)
@@ -97,3 +89,24 @@ VALUES
   (8, 'Travel', 3000000.00),
   (9, 'Fitness', 2000000.00),
   (10, 'Parking', 1000000.00);
+
+INSERT INTO EmployeeBenefit (allowances_id, employee_id, allowance_id)
+VALUES
+  (1, 1, 1),   -- Employee 1 has Transportation allowance
+  (2, 1, 2),   -- Employee 1 has Housing allowance
+  (3, 1, 3),   -- Employee 1 has Meal allowance
+  (4, 2, 4),   -- Employee 2 has Medical allowance
+  (5, 2, 5),   -- Employee 2 has Phone allowance
+  (6, 3, 6),   -- Employee 3 has Internet allowance
+  (7, 4, 7),   -- Employee 4 has Education allowance
+  (8, 5, 8),   -- Employee 5 has Travel allowance
+  (9, 5, 9),   -- Employee 5 has Fitness allowance
+  (10, 5, 10), -- Employee 5 has Parking allowance
+  (11, 6, 1),  -- Employee 6 has Transportation allowance
+  (12, 6, 4),  -- Employee 6 has Medical allowance
+  (13, 7, 6),  -- Employee 7 has Internet allowance
+  (14, 7, 7),  -- Employee 7 has Education allowance
+  (15, 7, 9),  -- Employee 7 has Fitness allowance
+  (16, 7, 10), -- Employee 7 has Parking allowance
+  (17, 8, NULL); -- Employee 8 has no allowance
+  select * from EmployeeBenefit
