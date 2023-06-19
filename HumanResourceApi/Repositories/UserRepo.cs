@@ -8,7 +8,7 @@ namespace HumanResourceApi.Repositories
     {
         public User CheckLogin(string username, string password)
         {
-            return _context.Users.Where(u => u.Username.ToUpper().Equals(username.ToUpper()) && u.Password.Equals(password)).FirstOrDefault();
+            return _context.Users.Where(u => u.Username.ToUpper().Equals(username.ToUpper()) && u.Password.Equals(password) && u.Status == "active").FirstOrDefault();
         }
 
         public Employee getEmployee(int id)
@@ -20,6 +20,6 @@ namespace HumanResourceApi.Repositories
         {
             return _context.Roles.Where(r => r.RoleId == roleId).FirstOrDefault();
         }
-        
+
     }
 }

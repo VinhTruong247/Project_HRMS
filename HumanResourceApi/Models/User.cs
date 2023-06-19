@@ -17,6 +17,7 @@ namespace HumanResourceApi.Models
         public string Email { get; set; }
         public int? RoleId { get; set; }
         public string Status { get; set; }
+        
 
         public virtual Role Role { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }

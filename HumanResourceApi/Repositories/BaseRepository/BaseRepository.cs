@@ -18,7 +18,8 @@ namespace HumanResourceApi.Repositories.BaseRepository
         {
             try
             {
-                return _dbSet.ToList();
+                var list = _dbSet.ToList();
+                return list;
             }
             catch (Exception ex)
             {
@@ -78,5 +79,6 @@ namespace HumanResourceApi.Repositories.BaseRepository
             _dbSet.Update(entity);
             _context.SaveChanges();
         }
+
     }
 }

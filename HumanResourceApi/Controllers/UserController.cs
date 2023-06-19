@@ -24,12 +24,12 @@ namespace HumanResourceApi.Controllers
         }
 
         
-        [HttpGet("Get-all")]
+        [HttpGet("get/users")]
         public IActionResult GetAll()
         {
             try
             {
-                var userList = _mapper.Map<List<UserDto>>(_userRepo.GetAll());
+                var userList = _mapper.Map<List<UserDto>>(_userRepo.GetAll().Where(u => u.Status == "active"));
 
                 if (!ModelState.IsValid)
                 {
@@ -47,7 +47,7 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpPost("Check-login")]
+        [HttpPost("login")]
         public IActionResult CheckLogin([FromBody] LoginDto loginInfo)
         {
             try
@@ -72,15 +72,19 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpPost("Get-user")]
+        [HttpPost("get/user")]
         public IActionResult getUserById([FromQuery] int userId)
         {
             try
             {
                 if (userId == null)
                     return BadRequest(ModelState);
-
-                var userMap = _mapper.Map<UserDto>(_userRepo.GetById(userId));
+                var tmpUser = _userRepo.GetById(userId);
+                if (tmpUser.Status != "active")
+                {
+                    return NotFound();
+                }
+                var userMap = _mapper.Map<UserDto>(tmpUser);
 
                 if (userMap == null)
                 {
@@ -97,7 +101,7 @@ namespace HumanResourceApi.Controllers
         }
 
 
-        [HttpPost("Add-user")]
+        [HttpPost("add")]
 
         public IActionResult addUser([FromBody] UserDto user)
         {
@@ -153,7 +157,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest();
                 }
-                var user = _userRepo.GetAll().Where(u => u.UserId == id).FirstOrDefault();
+                var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "active").FirstOrDefault();
                 if(user == null) 
                 {
                     return NotFound();
@@ -168,6 +172,19 @@ namespace HumanResourceApi.Controllers
 
                 return BadRequest(ex);
             }
+        }
+
+        [HttpPost("remove")]
+        public IActionResult deleteUser(int id)
+        {
+            var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "active").FirstOrDefault();
+            if(user == null )
+            {
+                return NotFound(id);
+            }
+            user.Status = "disable";
+            _userRepo.Update(user);
+            return Ok(user);
         }
     }
 }
