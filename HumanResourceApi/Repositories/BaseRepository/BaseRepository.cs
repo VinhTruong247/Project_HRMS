@@ -75,7 +75,7 @@ namespace HumanResourceApi.Repositories.BaseRepository
 
         public void Update(TEntity entity)
         {
-            _context.Update(entity);
+            _dbSet.Update(entity);
             _context.SaveChanges();
         }
     }

@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HumanResourceApi", "HumanRe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonReviewApp", "..\..\..\..\repos\PokemonReviewApp\PokemonReviewApp\PokemonReviewApp.csproj", "{6BB79FA1-3B06-4FC5-B28E-BC95D32A6E24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocnetCorePractice", "..\..\..\docnetcore-practice\src\DocnetCorePractice\DocnetCorePractice.csproj", "{12E4DFA5-D06E-4CEA-AD32-EED2047D5210}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{6BB79FA1-3B06-4FC5-B28E-BC95D32A6E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BB79FA1-3B06-4FC5-B28E-BC95D32A6E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BB79FA1-3B06-4FC5-B28E-BC95D32A6E24}.Release|Any CPU.Build.0 = Release|Any CPU
-		{12E4DFA5-D06E-4CEA-AD32-EED2047D5210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12E4DFA5-D06E-4CEA-AD32-EED2047D5210}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12E4DFA5-D06E-4CEA-AD32-EED2047D5210}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12E4DFA5-D06E-4CEA-AD32-EED2047D5210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

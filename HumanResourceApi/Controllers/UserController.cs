@@ -13,13 +13,12 @@ namespace HumanResourceApi.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private readonly IUser _userRepository;
+        
         private readonly IMapper _mapper;
         private readonly UserRepo _userRepo;
 
-        public UserController(IUser userRepository, IMapper mapper, UserRepo userRepo)
+        public UserController(IMapper mapper, UserRepo userRepo)
         {
-            _userRepository = userRepository;
             _mapper = mapper;
             _userRepo = userRepo;
         }
@@ -141,6 +140,32 @@ namespace HumanResourceApi.Controllers
             }
             catch (Exception ex)
             {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPut("{id}/update")]
+        public IActionResult updateUser(int  id, [FromBody] UpdateUserDto updateUser)
+        {
+            try
+            {
+                if(updateUser == null)
+                {
+                    return BadRequest();
+                }
+                var user = _userRepo.GetAll().Where(u => u.UserId == id).FirstOrDefault();
+                if(user == null) 
+                {
+                    return NotFound();
+                }
+                _mapper.Map(updateUser, user);
+                user.UserId = id;
+                _userRepo.Update(user);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+
                 return BadRequest(ex);
             }
         }

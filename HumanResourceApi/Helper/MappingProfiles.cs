@@ -8,8 +8,10 @@ namespace HumanResourceApi.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<User, UserDto>();
-            CreateMap<UserDto, User>();
+            CreateMap<User, UserDto>()
+                .ReverseMap();
+            CreateMap<User, UpdateUserDto>()
+                .ReverseMap();
         }
     }
 }

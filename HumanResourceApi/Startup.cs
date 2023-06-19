@@ -23,7 +23,6 @@ namespace YourNamespace
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<HRMSContext>();
-            services.AddScoped<IUser, UserRepository>();
             services.AddScoped<UserRepo>();
 
             services.AddEndpointsApiExplorer();
