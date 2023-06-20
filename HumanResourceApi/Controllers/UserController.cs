@@ -13,7 +13,7 @@ namespace HumanResourceApi.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        
+
         private readonly IMapper _mapper;
         private readonly UserRepo _userRepo;
 
@@ -23,7 +23,7 @@ namespace HumanResourceApi.Controllers
             _userRepo = userRepo;
         }
 
-        
+
         [HttpGet("get/users")]
         public IActionResult GetAll()
         {
@@ -149,16 +149,16 @@ namespace HumanResourceApi.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public IActionResult updateUser(int  id, [FromBody] UpdateUserDto updateUser)
+        public IActionResult updateUser(int id, [FromBody] UpdateUserDto updateUser)
         {
             try
             {
-                if(updateUser == null)
+                if (updateUser == null)
                 {
                     return BadRequest();
                 }
                 var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "active").FirstOrDefault();
-                if(user == null) 
+                if (user == null)
                 {
                     return NotFound();
                 }
@@ -178,7 +178,7 @@ namespace HumanResourceApi.Controllers
         public IActionResult deleteUser(int id)
         {
             var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "active").FirstOrDefault();
-            if(user == null )
+            if (user == null)
             {
                 return NotFound(id);
             }
