@@ -10,8 +10,9 @@ namespace HumanResourceApi.Models
             Users = new HashSet<User>();
         }
 
-        public int RoleId { get; set; }
+        public string RoleId { get; set; }
         public string RoleName { get; set; }
+        public string Status { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
     }

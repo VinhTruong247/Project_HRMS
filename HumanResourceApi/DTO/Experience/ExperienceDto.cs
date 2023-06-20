@@ -2,7 +2,7 @@
 {
     public class ExperienceDto
     {
-        public int ExperienceId { get; set; }
+        public string ExperienceId { get; set; }
         public string NameProject { get; set; }
         public int? TeamSize { get; set; }
         public DateTime? StartDate { get; set; }

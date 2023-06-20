@@ -5,14 +5,14 @@ namespace HumanResourceApi.Models
 {
     public partial class PaySlip
     {
-        public int PayslipId { get; set; }
-        public int? EmployeeId { get; set; }
+        public string PayslipId { get; set; }
+        public string EmployeeId { get; set; }
         public string PayPeriod { get; set; }
         public DateTime? PaidDate { get; set; }
         public double? BaseSalary { get; set; }
         public double? OtHours { get; set; }
-        public int? AllowancesId { get; set; }
-        public int? ContractId { get; set; }
+        public string AllowancesId { get; set; }
+        public string ContractId { get; set; }
         public double? StarndardWorkHours { get; set; }
         public double? ActualWorkHours { get; set; }
         public double? TaxIncome { get; set; }

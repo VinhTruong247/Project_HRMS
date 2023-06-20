@@ -13,10 +13,11 @@ namespace HumanResourceApi.Models
             Leaves = new HashSet<Leave>();
             Overtimes = new HashSet<Overtime>();
             PaySlips = new HashSet<PaySlip>();
+            Reports = new HashSet<Report>();
             SkillEmployees = new HashSet<SkillEmployee>();
         }
 
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmployeeImage { get; set; }
@@ -27,10 +28,11 @@ namespace HumanResourceApi.Models
         public int? BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
         public string BankName { get; set; }
-        public int? ExperienceId { get; set; }
-        public int? UserId { get; set; }
-        public int? JobId { get; set; }
-        public int? DepartmentId { get; set; }
+        public string ExperienceId { get; set; }
+        public string UserId { get; set; }
+        public string JobId { get; set; }
+        public string DepartmentId { get; set; }
+        public string Status { get; set; }
 
         public virtual Department Department { get; set; }
         public virtual Experience Experience { get; set; }
@@ -42,6 +44,7 @@ namespace HumanResourceApi.Models
         public virtual ICollection<Leave> Leaves { get; set; }
         public virtual ICollection<Overtime> Overtimes { get; set; }
         public virtual ICollection<PaySlip> PaySlips { get; set; }
+        public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<SkillEmployee> SkillEmployees { get; set; }
     }
 }

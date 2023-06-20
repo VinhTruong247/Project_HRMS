@@ -28,7 +28,7 @@ namespace HumanResourceApi.Repositories.BaseRepository
             }
         }
 
-        public TEntity GetById(int id) 
+        public TEntity GetById(string id) 
         {
             try
             {

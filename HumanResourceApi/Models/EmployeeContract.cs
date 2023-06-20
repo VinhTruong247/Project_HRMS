@@ -10,8 +10,8 @@ namespace HumanResourceApi.Models
             PaySlips = new HashSet<PaySlip>();
         }
 
-        public int ContractId { get; set; }
-        public int? EmployeeId { get; set; }
+        public string ContractId { get; set; }
+        public string EmployeeId { get; set; }
         public string ContractFile { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

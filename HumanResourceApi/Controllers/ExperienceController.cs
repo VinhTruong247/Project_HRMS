@@ -37,7 +37,7 @@ namespace HumanResourceApi.Controllers
         }
 
         [HttpGet("get/experience/{id}")]
-        public IActionResult getExperienceId(int id)
+        public IActionResult getExperienceId(string id)
         {
             var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
 
@@ -62,7 +62,7 @@ namespace HumanResourceApi.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult UpdateExp([FromQuery] int id, [FromBody] UpdateExperienceDto experience)
+        public IActionResult UpdateExp([FromQuery] string id, [FromBody] UpdateExperienceDto experience)
         {
             if (experience == null)
                 return BadRequest();

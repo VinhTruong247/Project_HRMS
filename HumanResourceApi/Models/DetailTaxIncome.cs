@@ -5,8 +5,9 @@ namespace HumanResourceApi.Models
 {
     public partial class DetailTaxIncome
     {
-        public int DetailTaxIncomeId { get; set; }
+        public string DetailTaxIncomeId { get; set; }
         public double? MucChiuThue { get; set; }
         public double? ThueSuat { get; set; }
+        public string Status { get; set; }
     }
 }
