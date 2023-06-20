@@ -256,3 +256,22 @@ CREATE TABLE EmployeeBenefit (
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
 );
 
+CREATE TABLE Report (
+  report_id INT PRIMARY KEY,
+  employee_id INT,
+  reason NVARCHAR(255),
+  content TEXT,
+  issue_date DATE,
+  status VARCHAR(50),
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE Project (
+  project_id INT PRIMARY KEY,
+  project_name VARCHAR(255),
+  department_id INT,
+  start_date DATE,
+  end_date DATE,
+  status VARCHAR(50),
+  FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);

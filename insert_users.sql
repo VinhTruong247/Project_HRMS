@@ -88,7 +88,15 @@ VALUES
   (7, 'Education', 5000000.00),
   (8, 'Travel', 3000000.00),
   (9, 'Fitness', 2000000.00),
-  (10, 'Parking', 1000000.00);
+  (10, 'Parking', 1000000.00),
+  (11, 'Software Development Allowance', 500000.00),
+  (12, 'Database Administration Allowance',  400000.00),
+  (13, 'Network Operations Allowance',  600000.00),
+  (14, 'IT Support Allowance',  300000.00),
+  (15, 'Quality Assurance Allowance', 400000.00),
+  (16, 'Human Resources Allowance',  200000.00),
+  (17, 'Cybersecurity Allowance',  500000.00),
+  (18, 'Business Analysis Allowance',  450000.00);
 
 INSERT INTO EmployeeBenefit (allowances_id, employee_id, allowance_id)
 VALUES
@@ -108,5 +116,12 @@ VALUES
   (14, 7, 7),  -- Employee 7 has Education allowance
   (15, 7, 9),  -- Employee 7 has Fitness allowance
   (16, 7, 10), -- Employee 7 has Parking allowance
-  (17, 8, NULL); -- Employee 8 has no allowance
-  select * from EmployeeBenefit
+  (17, 8, 17), -- Employee 8 has no allowance
+  (18, 1, 11),  -- Employee 1 has Software Development Allowance
+  (19, 2, 14),  -- Employee 2 has IT Support Allowance
+  (20, 3, 13),  -- Employee 3 has Network Operations Allowance
+  (21, 4, 12),  -- Employee 4 has Database Administration Allowance
+  (22, 5, 15),  -- Employee 5 has Quality Assurance Allowance
+  (23, 6, 16),  -- Employee 6 has Human Resources Allowance
+  (24, 7, 17),  -- Employee 7 has Cybersecurity Allowance
+  (25, 8, 8); -- Employee 8 has no allowance
