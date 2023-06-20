@@ -7,9 +7,9 @@ USE HRMS;
 CREATE TABLE Department (
   department_id NVARCHAR(10) PRIMARY KEY,
   department_name NVARCHAR(200),
-  description NVARCHAR(500)
+  description NVARCHAR(500),
+  status NVARCHAR(10)
 );
-
 -- Create Roles table
 CREATE TABLE Roles (
   role_id NVARCHAR(10) PRIMARY KEY,
@@ -51,7 +51,7 @@ CREATE TABLE detail_tax_income (
   detail_tax_income_id NVARCHAR(10) PRIMARY KEY,
   muc_chiu_thue FLOAT,
   thue_suat FLOAT,
-status NVARCHAR(10)
+	status NVARCHAR(10)
 );
 -- Create Experience table
 CREATE TABLE Experience (
@@ -235,7 +235,7 @@ CREATE TABLE EmployeeBenefit (
   employee_id NVARCHAR(10),
   allowance_id NVARCHAR(10),
   allowances_id NVARCHAR(10) PRIMARY KEY,
-  status NVARCHAR,
+  status VARCHAR(10),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
 );
@@ -259,7 +259,7 @@ CREATE TABLE PaySlip (
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
-  approval VARCHAR,
+  approval VARCHAR(10),
   status VARCHAR,
   FOREIGN KEY (contract_id) REFERENCES EmployeeContract(contract_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
