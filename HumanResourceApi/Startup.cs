@@ -24,6 +24,7 @@ namespace YourNamespace
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<HRMSContext>();
             services.AddScoped<UserRepo>();
+            services.AddScoped<ExperienceRepo>();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
