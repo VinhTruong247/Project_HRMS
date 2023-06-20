@@ -5,104 +5,108 @@ USE HRMS;
 
 -- Create Department table
 CREATE TABLE Department (
-  department_id INT PRIMARY KEY,
+  department_id NVARCHAR(10) PRIMARY KEY,
   department_name NVARCHAR(200),
   description NVARCHAR(500)
 );
+
 --Create DepartmentMemberList table
-Create table DepartmentMemberList(
-	department_id INT,
-	 employee_id INT,
-	 emp_role NVARCHAR(20),
-	 FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
-	 FOREIGN KEY (department_id) REFERENCES Department ( department_id)
-)
+CREATE TABLE DepartmentMemberList (
+  department_id NVARCHAR(10),
+  employee_id NVARCHAR(10),
+  emp_role NVARCHAR(20),
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
+  FOREIGN KEY (department_id) REFERENCES Department (department_id)
+);
+
 -- Create Roles table
 CREATE TABLE Roles (
-  role_id INT PRIMARY KEY,
+  role_id NVARCHAR(10) PRIMARY KEY,
   role_name NVARCHAR(50)
 );
 
 -- Create Permission table
 CREATE TABLE Permission (
-  permission_id INT PRIMARY KEY,
+  permission_id NVARCHAR(10) PRIMARY KEY,
   permission_des NVARCHAR(500),
   permission_displayName NVARCHAR(200)
 );
 
 -- Create Users table
 CREATE TABLE Users (
-  user_id INT PRIMARY KEY,
+  user_id NVARCHAR(10) PRIMARY KEY,
   username NVARCHAR(50),
   password NVARCHAR(50),
   Email NVARCHAR(100),
-  role_id INT,
+  role_id NVARCHAR(10),
   status NVARCHAR,
   FOREIGN KEY (role_id) REFERENCES Roles(role_id)
 );
 ALTER TABLE Users
 ADD status NVARCHAR(10);
 
-
 -- Create GrantedPermission table
 CREATE TABLE GrantedPermission (
-  role_id INT,
-  permission_id INT,
+  role_id NVARCHAR(10),
+  permission_id NVARCHAR(10),
   FOREIGN KEY (role_id) REFERENCES Roles(role_id),
   FOREIGN KEY (permission_id) REFERENCES Permission(permission_id)
 );
+
 -- Create detail_tax_income table
 CREATE TABLE detail_tax_income (
-  detail_tax_income_id INT PRIMARY KEY,
+  detail_tax_income_id NVARCHAR(10) PRIMARY KEY,
   muc_chiu_thue FLOAT,
   thue_suat FLOAT
 );
+
 -- Create Experience table
 CREATE TABLE Experience (
-  experience_id INT PRIMARY KEY,
+  experience_id NVARCHAR(10) PRIMARY KEY,
   name_project NVARCHAR(50),
   team_size INT,
   start_date DATE,
   end_date DATE,
   tech_stack NVARCHAR(500)
 );
+
 -- Create Skill table
 CREATE TABLE Skill (
-  skill_id INT PRIMARY KEY,
+  skill_id NVARCHAR(10) PRIMARY KEY,
   skill_name NVARCHAR(100),
   skill_description NVARCHAR(500)
 );
+
 -- Create Deduction table
 CREATE TABLE Deduction (
-  deduction_id INT PRIMARY KEY,
+  deduction_id NVARCHAR(10) PRIMARY KEY,
   deduction_type NVARCHAR,
   amount DECIMAL(18, 2)
 );
 
 -- Create Allowances table
 CREATE TABLE Allowances (
-  allowance_id INT PRIMARY KEY,
+  allowance_id NVARCHAR(10) PRIMARY KEY,
   allowance_type NVARCHAR(200),
   amount DECIMAL(18, 2)
 );
 
-
 -- Create Job table
 CREATE TABLE Job (
-  job_id INT PRIMARY KEY,
+  job_id NVARCHAR(10) PRIMARY KEY,
   job_title NVARCHAR(200),
   job_description NVARCHAR(500),
   start_date DATE,
-  --end_date DATE,
   status NVARCHAR(200),
   base_salary_per_hour DECIMAL(18, 2),
-  allowance_id INT,
+  allowance_id NVARCHAR(10),
   bonus DECIMAL(18, 2),
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
 );
+
 -- Create Employee table
 CREATE TABLE Employee (
-  employee_id INT PRIMARY KEY,
+  employee_id NVARCHAR(10) PRIMARY KEY,
   first_name NVARCHAR(50),
   last_name NVARCHAR(50),
   employee_image NVARCHAR(200),
@@ -113,30 +117,31 @@ CREATE TABLE Employee (
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
-  experience_id INT,
-  user_id INT,
-  job_id INT,
-  department_id INT,
+  experience_id NVARCHAR(10),
+  user_id NVARCHAR(10),
+  job_id NVARCHAR(10),
+  department_id NVARCHAR(10),
   status NVARCHAR,
   FOREIGN KEY (user_id) REFERENCES Users(user_id),
   FOREIGN KEY (experience_id) REFERENCES Experience(experience_id),
   FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
-
 );
+
 -- Create Skill_employee table
 CREATE TABLE Skill_employee (
-  unique_id INT PRIMARY KEY,
-  employee_id INT,
+  unique_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
   level NVARCHAR(50),
-  skill_id INT,
+  skill_id NVARCHAR(10),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (skill_id) REFERENCES Skill(skill_id)
 );
+
 -- Create EmployeeContract table
 CREATE TABLE EmployeeContract (
-  contract_id INT PRIMARY KEY,
-  employee_id INT,
+  contract_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
   contract_file NVARCHAR(200),
   start_date DATE,
   end_date DATE,
@@ -151,8 +156,8 @@ CREATE TABLE EmployeeContract (
 
 -- Create Leave table
 CREATE TABLE Leave (
-  leave_id INT PRIMARY KEY,
-  employee_id INT,
+  leave_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
   leave_type NVARCHAR(50),
   start_date DATE,
   end_date DATE,
@@ -164,8 +169,8 @@ CREATE TABLE Leave (
 
 -- Create Overtime table
 CREATE TABLE Overtime (
-  overtime_id INT PRIMARY KEY,
-  employee_id INT,
+  overtime_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
   Day DATE,
   overtime_hours DECIMAL(5, 2),
   status NVARCHAR(50),
@@ -173,18 +178,16 @@ CREATE TABLE Overtime (
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
-
-
 -- Create PaySlip table
 CREATE TABLE PaySlip (
-  payslip_id INT PRIMARY KEY,
-  employee_id INT,
+  payslip_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
   pay_period NVARCHAR(50),
   paid_date DATE,
   base_salary FLOAT,
   ot_hours FLOAT,
-  allowances_id INT,
-  contract_id INT,
+  allowances_id NVARCHAR(10),
+  contract_id NVARCHAR(10),
   starndard_work_hours FLOAT,
   actual_work_hours FLOAT,
   tax_income FLOAT,
@@ -202,13 +205,10 @@ CREATE TABLE PaySlip (
   FOREIGN KEY (allowances_id) REFERENCES EmployeeBenefit(allowances_id)
 );
 
-
-
-
 -- Create EmployeeLoanLog table
 CREATE TABLE EmployeeLoanLog (
-  loan_id INT PRIMARY KEY,
-  employee_id INT,
+  loan_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
   loan_type NVARCHAR,
   amount DECIMAL(18, 2),
   installment_amount DECIMAL(18, 2),
@@ -220,21 +220,18 @@ CREATE TABLE EmployeeLoanLog (
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
-
 -- Create DeductionSumary table
 CREATE TABLE DeductionSumary (
-  deduction_id INT,
-  payslip_id INT,
+  deduction_id NVARCHAR(10),
+  payslip_id NVARCHAR(10),
   amount DECIMAL(18, 2),
   FOREIGN KEY (deduction_id) REFERENCES Deduction(deduction_id),
   FOREIGN KEY (payslip_id) REFERENCES PaySlip(payslip_id)
 );
 
-
-
 -- Create Attendance table
 CREATE TABLE Attendance (
-  employee_id INT,
+  employee_id NVARCHAR(10),
   day DATE,
   time_in FLOAT,
   time_out FLOAT,
@@ -248,17 +245,17 @@ CREATE TABLE Attendance (
 
 -- Create EmployeeBenefit table
 CREATE TABLE EmployeeBenefit (
-  employee_id INT,
-  allowance_id INT,
-  allowances_id INT PRIMARY KEY,
+  employee_id NVARCHAR(10),
+  allowance_id NVARCHAR(10),
+  allowances_id NVARCHAR(10) PRIMARY KEY,
   status NVARCHAR,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
 );
 
 CREATE TABLE Report (
-  report_id INT PRIMARY KEY,
-  employee_id INT,
+  report_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
   reason NVARCHAR(255),
   content TEXT,
   issue_date DATE,
@@ -267,9 +264,9 @@ CREATE TABLE Report (
 );
 
 CREATE TABLE Project (
-  project_id INT PRIMARY KEY,
+  project_id NVARCHAR(10) PRIMARY KEY,
   project_name VARCHAR(255),
-  department_id INT,
+  department_id NVARCHAR(10),
   start_date DATE,
   end_date DATE,
   status VARCHAR(50),
