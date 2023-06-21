@@ -32,7 +32,7 @@ namespace HumanResourceApi.Repositories.BaseRepository
         {
             try
             {
-                var entity = _dbSet.Find(id);
+                var entity = _dbSet.Find(id) ?? throw new ArgumentNullException("Error getting entity");
                 return entity;
             }
             catch (Exception ex)
