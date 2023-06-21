@@ -202,3 +202,4 @@ C:\Users\VU HONG ANH\Documents\GitHub\Project_HRMS\HumanResourceApi\obj\Debug\ne
 C:\Users\VU HONG ANH\Documents\GitHub\Project_HRMS\HumanResourceApi\obj\Debug\net6.0\HumanResourceApi.pdb
 C:\Users\VU HONG ANH\Documents\GitHub\Project_HRMS\HumanResourceApi\obj\Debug\net6.0\HumanResourceApi.genruntimeconfig.cache
 C:\Users\VU HONG ANH\Documents\GitHub\Project_HRMS\HumanResourceApi\obj\Debug\net6.0\ref\HumanResourceApi.dll
+C:\Users\Admin\source\ASP.NET Core Api\Project_HRMS\Project_HRMS\HumanResourceApi\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

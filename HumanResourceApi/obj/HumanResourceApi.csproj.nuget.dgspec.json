@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\VU HONG ANH\\Documents\\GitHub\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj": {}
+    "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\VU HONG ANH\\Documents\\GitHub\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj": {
+    "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\VU HONG ANH\\Documents\\GitHub\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj",
         "projectName": "HumanResourceApi",
-        "projectPath": "C:\\Users\\VU HONG ANH\\Documents\\GitHub\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj",
-        "packagesPath": "C:\\Users\\VU HONG ANH\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\VU HONG ANH\\Documents\\GitHub\\Project_HRMS\\HumanResourceApi\\obj\\",
+        "projectPath": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\VU HONG ANH\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -53,6 +48,10 @@
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.18, )"
             },
             "Microsoft.AspNetCore.Cors": {
               "target": "Package",
