@@ -40,6 +40,8 @@ namespace YourNamespace
             services.AddScoped<HRMSContext>();
             services.AddScoped<UserRepo>();
             services.AddScoped<ExperienceRepo>();
+            services.AddScoped<LeaveRepo>();
+
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
