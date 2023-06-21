@@ -31,10 +31,16 @@ namespace YourNamespace
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HRMS API", Version = "v1" });
             });
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //insert Http profile: aplicationUrl ex: http://localhost:1690 into WithOrigins("insert here")
+            app.UseCors(options =>
+            {
+                options.WithOrigins("");
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
