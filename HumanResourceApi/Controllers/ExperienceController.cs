@@ -78,18 +78,26 @@ namespace HumanResourceApi.Controllers
             return Ok(validExp);
         }
 
+        [HttpPost("delete/experience/{id}")]
+        public IActionResult DisableExperienceId(string id)
+        {
+            var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
 
-        //                              MUST DO (LATER)
-        //[HttpPost("del/experience")]
-        //public IActionResult DisableExperienceId(int id)
-        //{
-        //    var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
+            if (experience == null)
+            {
+                return BadRequest();
+            }
+            if (experience.Status == "disabled")
+            {
+                return BadRequest("ID = " + id + " is already disabled");
+            }
+            var validExp = _experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault();
+            _mapper.Map(experience, validExp);
+            validExp.ExperienceId = id;
+            validExp.Status = "disabled";
 
-        //    if (experience == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    experience.
-        //}
+            _experienceRepo.Update(validExp);
+            return Ok(validExp);
+        }
     }
 }
