@@ -285,6 +285,18 @@ main .attendance .col-lg-12:hover{
     box-shadow: none;
 }
 
+.attendance a{
+    float: right;
+    font-size: 1.5rem;
+    margin-right: 2rem;
+    margin-top: 0.5rem;
+    color: var(--color-dark);
+}
+
+.attendance a:hover{
+    color: var(--color-info-dark);
+}
+
 
 /*<!-------------------- Container Member -------------------->*/
 
@@ -411,5 +423,5 @@ thead td{
 }
 
 td{
-    padding: 0.5rem 6rem;
+    padding: 0.5rem 5rem;
 }
