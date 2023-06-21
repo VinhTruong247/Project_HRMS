@@ -10,9 +10,10 @@ namespace HumanResourceApi.Models
             PaySlips = new HashSet<PaySlip>();
         }
 
-        public int? EmployeeId { get; set; }
-        public int? AllowanceId { get; set; }
-        public int AllowancesId { get; set; }
+        public string EmployeeId { get; set; }
+        public string AllowanceId { get; set; }
+        public string AllowancesId { get; set; }
+        public string Status { get; set; }
 
         public virtual Allowance Allowance { get; set; }
         public virtual Employee Employee { get; set; }

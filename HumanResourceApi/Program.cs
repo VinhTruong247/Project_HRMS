@@ -30,7 +30,6 @@
 //app.MapControllers();
 
 //app.Run();
-using HumanResourceApi.Interfaces;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Hosting;

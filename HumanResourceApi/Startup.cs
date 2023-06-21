@@ -1,4 +1,4 @@
-﻿using HumanResourceApi.Interfaces;
+﻿
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +24,7 @@ namespace YourNamespace
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<HRMSContext>();
             services.AddScoped<UserRepo>();
+            services.AddScoped<ExperienceRepo>();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>

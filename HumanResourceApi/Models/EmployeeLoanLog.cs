@@ -5,8 +5,8 @@ namespace HumanResourceApi.Models
 {
     public partial class EmployeeLoanLog
     {
-        public int LoanId { get; set; }
-        public int? EmployeeId { get; set; }
+        public string LoanId { get; set; }
+        public string EmployeeId { get; set; }
         public string LoanType { get; set; }
         public decimal? Amount { get; set; }
         public decimal? InstallmentAmount { get; set; }
@@ -15,6 +15,7 @@ namespace HumanResourceApi.Models
         public DateTime? LoanEndDate { get; set; }
         public string LoanProvider { get; set; }
         public string ApprovalStatus { get; set; }
+        public string Status { get; set; }
 
         public virtual Employee Employee { get; set; }
     }

@@ -5,9 +5,10 @@ namespace HumanResourceApi.Models
 {
     public partial class DeductionSumary
     {
-        public int? DeductionId { get; set; }
-        public int? PayslipId { get; set; }
+        public string DeductionId { get; set; }
+        public string PayslipId { get; set; }
         public decimal? Amount { get; set; }
+        public string Status { get; set; }
 
         public virtual Deduction Deduction { get; set; }
         public virtual PaySlip Payslip { get; set; }

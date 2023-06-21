@@ -10,9 +10,10 @@ namespace HumanResourceApi.Models
             SkillEmployees = new HashSet<SkillEmployee>();
         }
 
-        public int SkillId { get; set; }
+        public string SkillId { get; set; }
         public string SkillName { get; set; }
         public string SkillDescription { get; set; }
+        public string Status { get; set; }
 
         public virtual ICollection<SkillEmployee> SkillEmployees { get; set; }
     }

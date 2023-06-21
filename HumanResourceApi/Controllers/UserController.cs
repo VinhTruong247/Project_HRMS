@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HumanResourceApi.Interfaces;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,7 @@ namespace HumanResourceApi.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        
+
         private readonly IMapper _mapper;
         private readonly UserRepo _userRepo;
 
@@ -23,13 +22,13 @@ namespace HumanResourceApi.Controllers
             _userRepo = userRepo;
         }
 
-        
+
         [HttpGet("get/users")]
         public IActionResult GetAll()
         {
             try
             {
-                var userList = _mapper.Map<List<UserDto>>(_userRepo.GetAll().Where(u => u.Status == "active"));
+                var userList = _mapper.Map<List<UserDto>>(_userRepo.GetAll().Where(u => u.Status == "1"));
 
                 if (!ModelState.IsValid)
                 {
@@ -73,14 +72,14 @@ namespace HumanResourceApi.Controllers
         }
 
         [HttpPost("get/user")]
-        public IActionResult getUserById([FromQuery] int userId)
+        public IActionResult getUserById([FromQuery] string userId)
         {
             try
             {
                 if (userId == null)
                     return BadRequest(ModelState);
                 var tmpUser = _userRepo.GetById(userId);
-                if (tmpUser.Status != "active")
+                if (tmpUser.Status != "1")
                 {
                     return NotFound();
                 }
@@ -120,7 +119,6 @@ namespace HumanResourceApi.Controllers
                 }
 
                 var newUser = _mapper.Map<User>(user);
-                newUser.Role = _userRepo.GetRole(user.RoleId);
 
                 //check userId duplicate or unavailable roleId
                 if (_userRepo.GetAll().Any(u => u.UserId == newUser.UserId))
@@ -131,16 +129,9 @@ namespace HumanResourceApi.Controllers
 
                 _userRepo.Add(newUser);
 
-                // Configure JSON serializer options
-                var serializerOptions = new JsonSerializerOptions
-                {
-                    ReferenceHandler = ReferenceHandler.Preserve
-                };
+               
 
-                // Serialize the newUser object to JSON with the configured options
-                var newUserJson = JsonSerializer.Serialize(newUser, serializerOptions);
-
-                return Ok(newUserJson);
+                return Ok(newUser);
             }
             catch (Exception ex)
             {
@@ -149,16 +140,16 @@ namespace HumanResourceApi.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public IActionResult updateUser(int  id, [FromBody] UpdateUserDto updateUser)
+        public IActionResult updateUser(string id, [FromBody] UpdateUserDto updateUser)
         {
             try
             {
-                if(updateUser == null)
+                if (updateUser == null)
                 {
                     return BadRequest();
                 }
-                var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "active").FirstOrDefault();
-                if(user == null) 
+                var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "1").FirstOrDefault();
+                if (user == null)
                 {
                     return NotFound();
                 }
@@ -175,14 +166,14 @@ namespace HumanResourceApi.Controllers
         }
 
         [HttpPost("remove")]
-        public IActionResult deleteUser(int id)
+        public IActionResult deleteUser(string id)
         {
-            var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "active").FirstOrDefault();
-            if(user == null )
+            var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "1").FirstOrDefault();
+            if (user == null)
             {
                 return NotFound(id);
             }
-            user.Status = "disable";
+            user.Status = "0";
             _userRepo.Update(user);
             return Ok(user);
         }
