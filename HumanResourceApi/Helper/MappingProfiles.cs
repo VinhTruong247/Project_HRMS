@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HumanResourceApi.DTO.Allowance;
 using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.DTO.Job;
 using HumanResourceApi.DTO.Leave;
@@ -24,8 +25,12 @@ namespace HumanResourceApi.Helper
             CreateMap<Leave, UpdateLeaveDto>()
                 .ReverseMap();
             CreateMap<Job, JobDto>()
-                .ReverseMap();
+               .ReverseMap();
             CreateMap<Job, UpdateJobDto>()
+               .ReverseMap();
+            CreateMap<Allowance, AllowanceDto>()
+                .ReverseMap();
+            CreateMap<Allowance, UpdateAllowanceDto>()
                 .ReverseMap();
         }
     }

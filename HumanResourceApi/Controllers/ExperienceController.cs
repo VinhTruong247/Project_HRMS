@@ -39,8 +39,8 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("get/experience/{id}")]
-        public IActionResult getExperienceId(string id)
+        [HttpGet("get/experience")]
+        public IActionResult getExperienceId([FromQuery] string id)
         {
             var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
 
@@ -84,8 +84,8 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("delete/experience/{id}")]
-        public IActionResult DisableExperienceId(string id)
+        [HttpPost("delete")]
+        public IActionResult DisableExperienceId([FromQuery] string id)
         {
             var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
 

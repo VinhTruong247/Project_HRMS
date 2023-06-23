@@ -2,9 +2,8 @@
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 using HumanResourceApi.DTO.Users;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HumanResourceApi.Controllers
 {
@@ -46,31 +45,7 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpPost("login")]
-        public IActionResult CheckLogin([FromBody] LoginDto loginInfo)
-        {
-            try
-            {
-                if (loginInfo == null)
-                    return BadRequest(ModelState);
-
-                var account = _userRepo.CheckLogin(loginInfo.Username, loginInfo.Password);
-
-                if (account == null)
-                {
-                    return BadRequest("Wrong username or password");
-                }
-
-                var accountDto = _mapper.Map<UserDto>(account);
-                return Ok(accountDto);
-            }
-            catch (Exception e)
-            {
-
-                return BadRequest(e.Message);
-            }
-        }
-
+        [Authorize]
         [HttpPost("get/user")]
         public IActionResult GetUserById([FromQuery] string userId)
         {

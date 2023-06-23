@@ -33,15 +33,16 @@ namespace HumanResourceApi.Controllers
                 var jobList = _mapper.Map<List<JobDto>>(_job.GetAll());
 
                 return Ok(jobList);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [Authorize]
-        [HttpGet("get/job/{id}")]
-        public IActionResult GetJob(string id)
+        [HttpGet("get/job")]
+        public IActionResult GetJob([FromQuery] string id)
         {
             var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == id).FirstOrDefault());
             if (job == null)
@@ -74,7 +75,7 @@ namespace HumanResourceApi.Controllers
                 return BadRequest();
             }
             var validJob = _job.GetAll().Where(j => j.JobId == id).FirstOrDefault();
-            if(validJob == null)
+            if (validJob == null)
             {
                 return BadRequest();
             }
@@ -86,8 +87,8 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("delete/job/{id}")]
-        public IActionResult DeleteJob(string id)
+        [HttpPost("delete")]
+        public IActionResult DeleteJob([FromQuery] string id)
         {
             var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == id).FirstOrDefault());
             if (job == null)
@@ -104,3 +105,4 @@ namespace HumanResourceApi.Controllers
         }
     }
 }
+

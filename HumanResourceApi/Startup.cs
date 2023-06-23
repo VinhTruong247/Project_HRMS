@@ -1,11 +1,11 @@
 ﻿
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace YourNamespace
 {
@@ -20,6 +20,21 @@ namespace YourNamespace
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+
+                });
+
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<HRMSContext>();
@@ -27,6 +42,7 @@ namespace YourNamespace
             services.AddScoped<ExperienceRepo>();
             services.AddScoped<LeaveRepo>();
             services.AddScoped<JobRepo>();
+            services.AddScoped<AllowanceRepo>();
 
 
             services.AddEndpointsApiExplorer();
@@ -34,16 +50,36 @@ namespace YourNamespace
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HRMS API", Version = "v1" });
             });
-            services.AddCors();
+
+
+            services.AddCors(o =>
+            {
+                o.AddPolicy("AllowAnyOrigin", corsPolicyBuilder =>
+                {
+                    corsPolicyBuilder
+                        .SetIsOriginAllowed(x => _ = true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //insert Http profile: aplicationUrl ex: http://localhost:1690 into WithOrigins("insert here")
-            app.UseCors(options =>
+            // auto migrate database
+            using (var scope = app.ApplicationServices.CreateScope())
             {
-                options.WithOrigins("");
-            });
+                var dbContext = scope.ServiceProvider
+                    .GetRequiredService<HRMSContext>();
+
+                // Here is the migration executed
+                dbContext.Database.Migrate();
+            }
+
+            app.UseCors("AllowAnyOrigin");
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -51,6 +87,7 @@ namespace YourNamespace
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HRMS API v1"));
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
