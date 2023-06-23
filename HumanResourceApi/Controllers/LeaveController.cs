@@ -2,6 +2,7 @@
 using HumanResourceApi.DTO.Leave;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HumanResourceApi.Controllers
@@ -19,6 +20,7 @@ namespace HumanResourceApi.Controllers
             _leaveRepo = leaveRepo;
         }
 
+        [Authorize]
         [HttpGet("leaves")]
         public IActionResult GetLeave()
         {
@@ -32,6 +34,7 @@ namespace HumanResourceApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("get/leave/{id}")]
         public IActionResult GetLeaveId(string id)
         {
@@ -43,6 +46,7 @@ namespace HumanResourceApi.Controllers
             return Ok(leave);
         }
 
+        [Authorize]
         [HttpPost("create")]
         public IActionResult CreateLeave([FromBody] LeaveDto leave)
         {
@@ -56,6 +60,7 @@ namespace HumanResourceApi.Controllers
             return Ok(temp);
         }
 
+        [Authorize]
         [HttpPost("update")]
         public IActionResult UpdateLeave([FromQuery] string id, [FromBody] UpdateLeaveDto leave)
         {
@@ -75,6 +80,7 @@ namespace HumanResourceApi.Controllers
             return Ok(validLeave);
         }
 
+        [Authorize]
         [HttpPost("delete/leave/{id}")]
         public IActionResult DeleteLeave(string id)
         {

@@ -26,6 +26,7 @@ namespace YourNamespace
             services.AddScoped<UserRepo>();
             services.AddScoped<ExperienceRepo>();
             services.AddScoped<LeaveRepo>();
+            services.AddScoped<JobRepo>();
 
 
             services.AddEndpointsApiExplorer();
