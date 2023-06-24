@@ -1,37 +1,62 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/login.css';
+import jwt_decode from 'jwt-decode';
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("Username:", username);
-    console.log("Password:", password);
-    console.log("Remember:", remember);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-    // Here you can make an API call to authenticate the user.
-    // For demonstration purposes, I'm going to assume the user is authenticated.
-    setIsLoggedIn(true);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('https://localhost:7220/api/Login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
+      });
+
+      if (response.ok) {
+
+      const token = await response.text();
+      localStorage.setItem("jwtToken", token);
+      const decodedToken = jwt_decode(token);
+      // Navigate to Profile page and pass the decoded token as a prop
+      navigate("/profile", { state: { decodedToken: decodedToken }});
+
+        setIsLoggedIn(true);
+      } else {
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      setError('Error occurred while logging in');
+    }
   };
-  
+
   if (isLoggedIn) {
     // If the user is authenticated, redirect to the home page.
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   } else {
     return (
       <div className="login">
         <div className="login-container">
           <div className="row">
-            <div className="col-lg-3"></div>
-  
-            <div className="col-lg-6">
+            <div className="col-lg-4"></div>
+
+            <div className="col-lg-4 login_form">
               <h2>Login</h2>
+              {error && <div className="alert alert-danger">{error}</div>}
               <form onSubmit={handleSubmit}>
                 <div className="mb-3 mt-3">
                   <label htmlFor="loginInput">Email or Username:</label>
@@ -70,8 +95,8 @@ function Login() {
                 </div>
               </form>
             </div>
-  
-            <div className="col-lg-3"></div>
+
+            <div className="col-lg-4"></div>
           </div>
         </div>
       </div>

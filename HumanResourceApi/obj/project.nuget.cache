@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Cy6w7k4CH6DMBm5iulc1Y6EzIcIHeRMoRaHkwHSGtOUZef61/SDGjncjxYMZvgTrDNqOdg6cRf+CB3ZBCZcAXQ==",
+  "dgSpecHash": "NnMZR5GTXfNebpRM3s7EYSyDdKFC6tSEN6IPucc9lFctsxX6AKNE2i/Y9sYLy2x1a82yWOX+m/8cX4qMicswVQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj",
+  "projectFilePath": "D:\\FPT\\2023-5-Summer\\SWP391\\Project_FINAL\\Project_HRMS\\HumanResourceApi\\HumanResourceApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -65,12 +65,5 @@
     "C:\\Users\\Admin\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\Admin\\source\\ASP.NET Core Api\\Project_HRMS\\Project_HRMS\\HumanResourceApi\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }
