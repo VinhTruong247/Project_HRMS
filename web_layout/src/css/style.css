@@ -1,0 +1,427 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
+/*-----Root Color-----*/
+:root{
+    --color-primary: #9A3434;
+    --color-dark: #301210;
+    --color-danger: #E20F0F;
+    --color-success: #13c044;
+    --color-warning: #ffbb55;
+    --color-info-dark: #cfb4ab;
+    --color-info-light: #f8eae7;
+    --color-gradient: linear-gradient(135deg, rgba(255,92,51,1) 0%, rgba(179,74,55,1) 33%, rgba(166,36,31,1) 66%, rgba(48,18,16,1) 100%);
+
+    --box-border-radius: 2rem;
+    --box-shadow: 0 2rem 3rem rgba(132, 139, 200, 0.4);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 16px;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    font-family: Montserrat Regular;
+    font-size: 0.88rem;
+    background: #F0F0F0;
+    overflow-x: hidden;
+}
+
+.container{
+    display: grid;
+    max-width: 90vw;
+    height: 100%;
+    margin: 0 5rem 0 0;
+    padding: 0;
+    background: #F0F0F0;
+    gap: 1.8rem;
+    grid-template-columns: 14rem 84vw;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+}
+
+.box {
+    padding: 0 5px 0 5px;
+}
+
+img{
+    display: block;
+    width: 100%;
+}
+
+h1{
+    font-weight: 800;
+    font-size: 2rem;
+}
+
+h2{
+    font-size: 1.8rem;
+}
+
+h3{
+    font-size: 1.3rem;
+}
+
+h4{
+    font-size: 1rem;
+}
+
+h5{
+    font-size: 0.8rem;
+}
+
+.profile-photo {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.text-muted {
+    color: grey;
+}
+
+p{
+    color: black;
+}
+
+.danger{
+    color: var(--color-danger);
+}
+
+.success{
+    color: var(--color-success);
+}
+
+.warning{
+    color: var(--color-warning);
+}
+
+
+/*<!-------------------- Start Side Menu -------------------->*/
+
+
+aside{
+    height: 120%;
+    font-family: Montserrat Medium;
+    background: var(--color-primary);
+}
+
+aside .top{
+    display: flex;
+    align-items: center;
+    margin-top: 2.5rem;
+}
+
+aside .top .close{
+    margin-left: 1.2rem;
+}
+
+aside .logo{
+    display: flex;
+    gap: 0.8rem;
+}
+
+aside .logo img{
+    width: 2rem;
+    height: 2rem;
+}
+
+aside .sidebar{ 
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 3rem;
+}
+
+aside h3{
+    font-weight: 100;
+}
+
+aside .sidebar a{
+    display: flex;
+    color: white;
+    margin-left: 2rem;
+    gap: 1rem;
+    align-items: center;
+    position: relative;
+    height: 3.7rem;
+    transition: all 100ms ease;
+}
+
+aside .sidebar h3{
+    transition: all 100ms ease;
+}
+
+aside .sidebar a span{
+    font-size: 1.8rem;
+    font-weight: 300;
+    transition: all 250ms ease;
+}
+
+aside .sidebar a:last-child{
+    margin-top: 3rem;
+    width: 100%;
+}
+
+aside .sidebar a.active{
+    background: var(--color-info-light);
+    color: var(--color-dark);
+    border: 1px solid var(--color-dark);
+    border-left: none;
+    margin-left: 0.5rem;
+    width: 105%;
+    border-radius: 30px 0px 0px 30px;
+}
+
+aside .sidebar a.active span{
+    margin-left: 1.5rem;
+}
+
+
+aside .sidebar a:hover{
+    color: var(--color-dark);
+}
+
+aside .sidebar a:hover span{
+    margin-left: 1rem;
+}
+
+aside .sidebar a:hover.active{
+    color: var(--color-info-dark);
+}
+
+aside .sidebar a:hover.active span{
+    margin-left: 2rem;
+}
+
+
+/*<!-------------------- Container News -------------------->*/
+
+
+.news{
+    display: grid;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    margin-top: 0.8rem;
+}
+
+main{
+    margin-left: 1rem;
+    margin-top: 2rem;
+}
+
+main .date input{
+    margin-top: 1rem;
+    display: inline-block;
+    background: #D3D3D3;
+    border-radius: 0.8rem;
+    padding: 0.3rem 1.2rem;
+    border: 1px solid var(--color-dark);
+}
+
+main .news .col-lg-12{
+    background: white;
+    border: 1px solid var(--color-dark);
+    height: 214px;
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: all 300ms ease;
+}
+
+main .news .col-lg-12 .leaves{
+    margin-left: 10px;
+}
+
+main .news .col-lg-12 .row{
+    margin-left: 10px;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+main .news .col-lg-12:hover{
+    box-shadow: none;
+}
+
+
+/*<!-------------------- Container Attendance -------------------->*/
+
+
+.attendance{
+    display: grid;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+}
+
+main .attendance .col-lg-12{
+    background: white;
+    border: 1px solid var(--color-dark);
+    height: 546px;
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: all 300ms ease;
+}
+
+main .attendance .col-lg-12:hover{
+    box-shadow: none;
+}
+
+.attendance a{
+    float: right;
+    font-size: 1.5rem;
+    margin-right: 2rem;
+    margin-top: 0.5rem;
+    color: var(--color-dark);
+}
+
+.attendance a:hover{
+    color: var(--color-info-dark);
+}
+
+
+/*<!-------------------- Container Member -------------------->*/
+
+
+.member{
+    display: grid;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+}
+
+main .member .col-lg-12{
+    background: white;
+    border: 1px solid var(--color-dark);
+    height: 546px;
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: all 300ms ease;
+}
+
+main .member .col-lg-12:hover{
+    box-shadow: none;
+}
+
+
+/*<!-------------------- Profile -------------------->*/
+
+
+
+.list-group {
+    --bs-list-group-color: none;
+    --bs-list-group-bg: none;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    margin-bottom: 0;
+    border-radius: var(--bs-list-group-border-radius);
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: var(--box-border-radius)!important;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+}
+
+.card li h6{
+    margin-top: 0.7rem;
+}
+
+.card .btn {
+    display: inline-block;
+    text-align: center;
+    background-color: var(--color-primary);
+    box-shadow: var(--box-shadow);
+    border: 1px solid transparent;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.card .btn:hover {
+    background-color: #fff;
+    border: 1px solid #2a2a2a;
+    color: #2a2a2a;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 2rem;
+}
+
+.gutters-sm {
+    justify-content: center;
+    margin-right: -8px;
+    margin-left: -8px;
+}
+
+.gutters-sm img {
+    max-width: 200px;
+    max-height: 200px;
+    width: 100%;
+    height: 100%;
+}
+
+.gutters-sm>.col, .gutters-sm>[class*=col-] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+.mb-3, .my-3 {
+    margin-bottom: 1rem!important;
+}
+
+.bg-gray-300 {
+    background-color: #e2e8f0;
+}
+.h-100 {
+    height: 100%!important;
+}
+.shadow-none {
+    box-shadow: none!important;
+}
+
+.bg-primary{
+    background-color: var(--color-primary)!important;
+}
+
+/*<!-------------------- Table -------------------->*/
+
+thead tr{
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+thead td{
+    font-weight: 700;
+}
+
+td{
+    padding: 0.5rem 5rem;
+}

@@ -35,8 +35,8 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("get/leave")]
-        public IActionResult GetLeaveId([FromQuery]string id)
+        [HttpPost("get/leave/{id}")]
+        public IActionResult GetLeaveId(string id)
         {
             var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault());
             if (leave == null)
@@ -81,8 +81,8 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("delete")]
-        public IActionResult DeleteLeave([FromQuery]string id)
+        [HttpPost("delete/leave/{id}")]
+        public IActionResult DeleteLeave(string id)
         {
             var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault());
             if (leave == null)

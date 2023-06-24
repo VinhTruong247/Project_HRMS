@@ -25,9 +25,9 @@ namespace HumanResourceApi.Helper
             CreateMap<Leave, UpdateLeaveDto>()
                 .ReverseMap();
             CreateMap<Job, JobDto>()
-               .ReverseMap();
+                .ReverseMap();
             CreateMap<Job, UpdateJobDto>()
-               .ReverseMap();
+                .ReverseMap();
             CreateMap<Allowance, AllowanceDto>()
                 .ReverseMap();
             CreateMap<Allowance, UpdateAllowanceDto>()
