@@ -2,9 +2,8 @@
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 using HumanResourceApi.DTO.Users;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HumanResourceApi.Controllers
 {
@@ -46,33 +45,9 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpPost("login")]
-        public IActionResult CheckLogin([FromBody] LoginDto loginInfo)
-        {
-            try
-            {
-                if (loginInfo == null)
-                    return BadRequest(ModelState);
-
-                var account = _userRepo.CheckLogin(loginInfo.Username, loginInfo.Password);
-
-                if (account == null)
-                {
-                    return BadRequest("Wrong username or password");
-                }
-
-                var accountDto = _mapper.Map<UserDto>(account);
-                return Ok(accountDto);
-            }
-            catch (Exception e)
-            {
-
-                return BadRequest(e.Message);
-            }
-        }
-
+        [Authorize]
         [HttpPost("get/user")]
-        public IActionResult getUserById([FromQuery] string userId)
+        public IActionResult GetUserById([FromQuery] string userId)
         {
             try
             {
@@ -102,7 +77,7 @@ namespace HumanResourceApi.Controllers
 
         [HttpPost("add")]
 
-        public IActionResult addUser([FromBody] UserDto user)
+        public IActionResult AddUser([FromBody] UserDto user)
         {
             try
             {
@@ -140,7 +115,7 @@ namespace HumanResourceApi.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public IActionResult updateUser(string id, [FromBody] UpdateUserDto updateUser)
+        public IActionResult UpdateUser(string id, [FromBody] UpdateUserDto updateUser)
         {
             try
             {
@@ -148,11 +123,21 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest();
                 }
+                var tmpUser = _userRepo.GetAll()
+                    .Where(u => u.Username.Trim().ToUpper() == updateUser.Username.Trim().ToUpper())
+                    .FirstOrDefault();
+                if (tmpUser != null)
+                {
+                    return BadRequest("Username already exists");
+                }
                 var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "1").FirstOrDefault();
                 if (user == null)
                 {
                     return NotFound();
                 }
+                if (!_userRepo.GetAll().Any(u => u.RoleId == updateUser.RoleId))
+                    return BadRequest("Unavailable RoleId");
+
                 _mapper.Map(updateUser, user);
                 user.UserId = id;
                 _userRepo.Update(user);
@@ -161,12 +146,12 @@ namespace HumanResourceApi.Controllers
             catch (Exception ex)
             {
 
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpPost("remove")]
-        public IActionResult deleteUser(string id)
+        public IActionResult DeleteUser(string id)
         {
             var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "1").FirstOrDefault();
             if (user == null)

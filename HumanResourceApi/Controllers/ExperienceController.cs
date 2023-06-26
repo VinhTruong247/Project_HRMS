@@ -3,6 +3,7 @@ using HumanResourceApi.Models;
 using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HumanResourceApi.Controllers
 {
@@ -19,6 +20,7 @@ namespace HumanResourceApi.Controllers
             _experienceRepo = experienceRepo;
         }
 
+        [Authorize]
         [HttpGet("experiences")]
         public IActionResult GetExperiences()
         {
@@ -36,6 +38,7 @@ namespace HumanResourceApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("get/experience/{id}")]
         public IActionResult getExperienceId(string id)
         {
@@ -48,6 +51,7 @@ namespace HumanResourceApi.Controllers
             return Ok(experience);
         }
 
+        [Authorize]
         [HttpPost("create")]
         public IActionResult CreateExp([FromBody] ExperienceDto experience)
         {
@@ -61,6 +65,7 @@ namespace HumanResourceApi.Controllers
             return Ok(temp);
         }
 
+        [Authorize]
         [HttpPost("update")]
         public IActionResult UpdateExp([FromQuery] string id, [FromBody] UpdateExperienceDto experience)
         {
@@ -78,18 +83,27 @@ namespace HumanResourceApi.Controllers
             return Ok(validExp);
         }
 
+        [Authorize]
+        [HttpPost("delete/experience/{id}")]
+        public IActionResult DisableExperienceId(string id)
+        {
+            var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
 
-        //                              MUST DO (LATER)
-        //[HttpPost("del/experience")]
-        //public IActionResult DisableExperienceId(int id)
-        //{
-        //    var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
+            if (experience == null)
+            {
+                return BadRequest();
+            }
+            if (experience.Status == "disabled")
+            {
+                return BadRequest("ID = " + id + " is already disabled");
+            }
+            var validExp = _experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault();
+            _mapper.Map(experience, validExp);
+            validExp.ExperienceId = id;
+            validExp.Status = "disabled";
 
-        //    if (experience == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    experience.
-        //}
+            _experienceRepo.Update(validExp);
+            return Ok(validExp);
+        }
     }
 }

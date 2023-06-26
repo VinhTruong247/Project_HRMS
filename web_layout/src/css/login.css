@@ -30,7 +30,7 @@ html{
     font-size: 16px;
 }
 
-body{
+.login{
     height: 100vh;
     font-family: Montserrat Regular;
     font-size: 0.88rem;
@@ -38,11 +38,9 @@ body{
     overflow-x: hidden;
 }
 
-.container{
+.login-container{
     display: grid;
-    width: 80%;
     padding: 0;
-    gap: 1.8rem;
 }
 
 a{
@@ -60,7 +58,7 @@ form{
 }
 
 .login{
-    margin-top: 10%;
+    padding-top: 15%;
 }
 
 .login form input {
@@ -87,7 +85,7 @@ form{
     height: 1rem;
 }
 
-.login a {
+.login button {
     width: 8rem;
     height: 3.35rem;
     display: inline-block;
@@ -95,12 +93,13 @@ form{
     line-height: 51px;
     background-color: var(--color-primary);
     box-shadow: var(--box-shadow);
+    border-radius: var(--box-border-radius);
     border: 1px solid transparent;
     color: #fff;
     transition: all 0.3s;
 }
 
-.login a:hover {
+.login button:hover {
     background-color: #fff;
     border: 1px solid #2a2a2a;
     color: #2a2a2a;

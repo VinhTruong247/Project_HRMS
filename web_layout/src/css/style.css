@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
 /*-----Root Color-----*/
 :root{
     --color-primary: #9A3434;
@@ -117,15 +117,15 @@ p{
 
 
 aside{
+    height: 120%;
     font-family: Montserrat Medium;
-    height: 100%;
     background: var(--color-primary);
 }
 
 aside .top{
     display: flex;
     align-items: center;
-    margin-top: 4.5rem;
+    margin-top: 2.5rem;
 }
 
 aside .top .close{
@@ -145,13 +145,12 @@ aside .logo img{
 aside .sidebar{ 
     display: flex;
     flex-direction: column;
-    height: 80%;
     position: relative;
     top: 3rem;
 }
 
 aside h3{
-    font-weight: 100;  
+    font-weight: 100;
 }
 
 aside .sidebar a{
@@ -162,20 +161,21 @@ aside .sidebar a{
     align-items: center;
     position: relative;
     height: 3.7rem;
-    transition: all 300ms ease;
+    transition: all 100ms ease;
 }
 
 aside .sidebar h3{
-    margin-top: 0.6rem;
+    transition: all 100ms ease;
 }
 
 aside .sidebar a span{
     font-size: 1.8rem;
     font-weight: 300;
+    transition: all 250ms ease;
 }
 
 aside .sidebar a:last-child{
-    margin-top: 15rem;
+    margin-top: 3rem;
     width: 100%;
 }
 
@@ -283,6 +283,18 @@ main .attendance .col-lg-12{
 
 main .attendance .col-lg-12:hover{
     box-shadow: none;
+}
+
+.attendance a{
+    float: right;
+    font-size: 1.5rem;
+    margin-right: 2rem;
+    margin-top: 0.5rem;
+    color: var(--color-dark);
+}
+
+.attendance a:hover{
+    color: var(--color-info-dark);
 }
 
 
@@ -411,5 +423,5 @@ thead td{
 }
 
 td{
-    padding: 0.5rem 6rem;
+    padding: 0.5rem 5rem;
 }
