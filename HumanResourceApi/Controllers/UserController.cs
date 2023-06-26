@@ -21,7 +21,7 @@ namespace HumanResourceApi.Controllers
             _userRepo = userRepo;
         }
 
-
+        [Authorize]
         [HttpGet("get/users")]
         public IActionResult GetAll()
         {
