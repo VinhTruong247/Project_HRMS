@@ -67,7 +67,7 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("update")]
+        [HttpPut("update")]
         public IActionResult UpdateAllowanceId([FromQuery] string id, [FromBody] UpdateAllowanceDto allowance)
         {
             if (allowance == null)
