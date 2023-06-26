@@ -61,7 +61,7 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("update")]
+        [HttpPut("update")]
         public IActionResult UpdateLeave([FromQuery] string id, [FromBody] UpdateLeaveDto leave)
         {
             if (leave == null)
@@ -81,8 +81,8 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("delete/leave/{id}")]
-        public IActionResult DeleteLeave(string id)
+        [HttpPost("delete")]
+        public IActionResult DeleteLeave([FromQuery] string id)
         {
             var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault());
             if (leave == null)
