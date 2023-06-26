@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css';
 import reportWebVitals from './reportWebVitals';
 import {
@@ -16,7 +17,6 @@ import Project from './pages/Project';
 import Statistics from './pages/Statistics';
 import Login from './pages/Login';
 import Sidebar from './component/Sidebar';
-
 
 const router = createBrowserRouter([
   {
