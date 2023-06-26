@@ -67,7 +67,7 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("update")]
+        [HttpPut("update")]
         public IActionResult UpdateJob([FromQuery] string id, [FromBody] UpdateJobDto job)
         {
             if (job == null)
