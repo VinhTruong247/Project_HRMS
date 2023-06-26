@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace HumanResourceApi.Controllers
@@ -27,10 +28,22 @@ namespace HumanResourceApi.Controllers
 
         private string GenerateToken(User user)
         {
+            var role = _userRepo.GetRole(user.RoleId);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], null,
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Role, role.RoleName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("UserId", user.UserId)
+                // Add more claims as needed
+            };
+
+            var token = new JwtSecurityToken(
+                _config["Jwt:Issuer"],
+                _config["Jwt:Audience"],
+                claims,
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: credentials
                 );
