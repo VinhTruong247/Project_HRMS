@@ -3,6 +3,7 @@ using HumanResourceApi.Models;
 using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HumanResourceApi.Controllers
 {
@@ -19,6 +20,7 @@ namespace HumanResourceApi.Controllers
             _experienceRepo = experienceRepo;
         }
 
+        [Authorize]
         [HttpGet("experiences")]
         public IActionResult GetExperiences()
         {
@@ -36,8 +38,9 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpGet("get/experience/{id}")]
-        public IActionResult getExperienceId(string id)
+        [Authorize]
+        [HttpGet("get/experience")]
+        public IActionResult getExperienceId([FromQuery]string id)
         {
             var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
 
@@ -48,6 +51,7 @@ namespace HumanResourceApi.Controllers
             return Ok(experience);
         }
 
+        [Authorize]
         [HttpPost("create")]
         public IActionResult CreateExp([FromBody] ExperienceDto experience)
         {
@@ -61,7 +65,8 @@ namespace HumanResourceApi.Controllers
             return Ok(temp);
         }
 
-        [HttpPost("update")]
+        [Authorize]
+        [HttpPut("update")]
         public IActionResult UpdateExp([FromQuery] string id, [FromBody] UpdateExperienceDto experience)
         {
             if (experience == null)
@@ -78,8 +83,9 @@ namespace HumanResourceApi.Controllers
             return Ok(validExp);
         }
 
-        [HttpPost("delete/experience/{id}")]
-        public IActionResult DisableExperienceId(string id)
+        [Authorize]
+        [HttpPost("delete")]
+        public IActionResult DisableExperienceId([FromQuery]string id)
         {
             var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
 

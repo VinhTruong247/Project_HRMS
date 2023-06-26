@@ -2,6 +2,7 @@
 using HumanResourceApi.DTO.Leave;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HumanResourceApi.Controllers
@@ -19,6 +20,7 @@ namespace HumanResourceApi.Controllers
             _leaveRepo = leaveRepo;
         }
 
+        [Authorize]
         [HttpGet("leaves")]
         public IActionResult GetLeave()
         {
@@ -32,6 +34,7 @@ namespace HumanResourceApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("get/leave/{id}")]
         public IActionResult GetLeaveId(string id)
         {
@@ -43,6 +46,7 @@ namespace HumanResourceApi.Controllers
             return Ok(leave);
         }
 
+        [Authorize]
         [HttpPost("create")]
         public IActionResult CreateLeave([FromBody] LeaveDto leave)
         {
@@ -56,7 +60,8 @@ namespace HumanResourceApi.Controllers
             return Ok(temp);
         }
 
-        [HttpPost("update")]
+        [Authorize]
+        [HttpPut("update")]
         public IActionResult UpdateLeave([FromQuery] string id, [FromBody] UpdateLeaveDto leave)
         {
             if (leave == null)
@@ -75,8 +80,9 @@ namespace HumanResourceApi.Controllers
             return Ok(validLeave);
         }
 
-        [HttpPost("delete/leave/{id}")]
-        public IActionResult DeleteLeave(string id)
+        [Authorize]
+        [HttpPost("delete")]
+        public IActionResult DeleteLeave([FromQuery] string id)
         {
             var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault());
             if (leave == null)
