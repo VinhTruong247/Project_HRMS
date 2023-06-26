@@ -404,6 +404,12 @@ FodyWeavers.xsd
 ## Visual studio for Mac
 ##
 
+<<<<<<< HEAD
+# End of https://www.toptal.com/developers/gitignore/api/aspnetcore,visualstudio
+*.cache
+*.editorconfig
+*.cache
+=======
 
 # globs
 Makefile.in
@@ -475,3 +481,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+>>>>>>> 3272941e9631afd9c1e54cc2a06f695ccdb05b1a
