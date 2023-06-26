@@ -272,3 +272,9 @@ D:\FPT\2023-5-Summer\SWP391\Project_FINAL\Project_HRMS\HumanResourceApi\obj\Debu
 D:\FPT\2023-5-Summer\SWP391\Project_FINAL\Project_HRMS\HumanResourceApi\obj\Debug\net6.0\HumanResourceApi.pdb
 D:\FPT\2023-5-Summer\SWP391\Project_FINAL\Project_HRMS\HumanResourceApi\obj\Debug\net6.0\HumanResourceApi.genruntimeconfig.cache
 D:\FPT\2023-5-Summer\SWP391\Project_FINAL\Project_HRMS\HumanResourceApi\obj\Debug\net6.0\ref\HumanResourceApi.dll
+C:\Users\Admin\source\ASP.NET Core Api\Project_HRMS\Project_HRMS\HumanResourceApi\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\Admin\source\ASP.NET Core Api\Project_HRMS\Project_HRMS\HumanResourceApi\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\Admin\source\ASP.NET Core Api\Project_HRMS\Project_HRMS\HumanResourceApi\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Admin\source\ASP.NET Core Api\Project_HRMS\Project_HRMS\HumanResourceApi\bin\Debug\net6.0\Scrutor.dll
+C:\Users\Admin\source\ASP.NET Core Api\Project_HRMS\Project_HRMS\HumanResourceApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\Admin\source\ASP.NET Core Api\Project_HRMS\Project_HRMS\HumanResourceApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll

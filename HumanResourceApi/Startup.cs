@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using HumanResourceApi;
 
 namespace YourNamespace
 {
@@ -49,10 +50,12 @@ namespace YourNamespace
 
 
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HRMS API", Version = "v1" });
-            });
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "HRMS API", Version = "v1" });
+            //});
+            services.AddSwaggerGen();
+            services.AddSwaggerService();
 
 
             services.AddCors(o =>
