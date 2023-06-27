@@ -7,9 +7,9 @@ USE HRMS;
 CREATE TABLE Department (
   department_id NVARCHAR(10) PRIMARY KEY,
   department_name NVARCHAR(200),
-  description NVARCHAR(500),
-  status NVARCHAR(10)
+  description NVARCHAR(500)
 );
+
 -- Create Roles table
 CREATE TABLE Roles (
   role_id NVARCHAR(10) PRIMARY KEY,
@@ -51,17 +51,7 @@ CREATE TABLE detail_tax_income (
   detail_tax_income_id NVARCHAR(10) PRIMARY KEY,
   muc_chiu_thue FLOAT,
   thue_suat FLOAT,
-	status NVARCHAR(10)
-);
--- Create Experience table
-CREATE TABLE Experience (
-  experience_id NVARCHAR(10) PRIMARY KEY,
-  name_project NVARCHAR(50),
-  team_size INT,
-  start_date DATE,
-  end_date DATE,
-  tech_stack NVARCHAR(500),
-  status NVARCHAR(10)
+status NVARCHAR(10)
 );
 
 -- Create Skill table
@@ -114,15 +104,25 @@ CREATE TABLE Employee (
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
-  experience_id NVARCHAR(10),
   user_id NVARCHAR(10),
   job_id NVARCHAR(10),
   department_id NVARCHAR(10),
   status NVARCHAR (10),
   FOREIGN KEY (user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (experience_id) REFERENCES Experience(experience_id),
   FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+-- Create Experience table
+CREATE TABLE Experience (
+  experience_id NVARCHAR(10) PRIMARY KEY,
+  name_project NVARCHAR(50),
+  team_size INT,
+  start_date DATE,
+  end_date DATE,
+  tech_stack NVARCHAR(500),
+  status NVARCHAR(10),
+  employee_id NVARCHAR(10),
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 --Create DepartmentMemberList table
 CREATE TABLE DepartmentMemberList (
@@ -235,7 +235,7 @@ CREATE TABLE EmployeeBenefit (
   employee_id NVARCHAR(10),
   allowance_id NVARCHAR(10),
   allowances_id NVARCHAR(10) PRIMARY KEY,
-  status VARCHAR(10),
+  status NVARCHAR,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
 );
@@ -259,7 +259,7 @@ CREATE TABLE PaySlip (
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
-  approval VARCHAR(10),
+  approval VARCHAR,
   status VARCHAR,
   FOREIGN KEY (contract_id) REFERENCES EmployeeContract(contract_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
