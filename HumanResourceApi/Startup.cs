@@ -47,6 +47,7 @@ namespace YourNamespace
             services.AddScoped<AttendanceRepo>();
             services.AddScoped<DepartmentRepo>();
             services.AddScoped<EmployeeContractRepo>();
+            services.AddScoped<EmployeeRepo>();
 
 
             services.AddEndpointsApiExplorer();
