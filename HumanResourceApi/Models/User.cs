@@ -8,6 +8,7 @@ namespace HumanResourceApi.Models
         public User()
         {
             Employees = new HashSet<Employee>();
+            Status = "1";
         }
 
         public string UserId { get; set; }
