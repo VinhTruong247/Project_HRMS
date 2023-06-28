@@ -45,6 +45,49 @@ namespace HumanResourceApi.Controllers
             return Ok(employee);
         }
 
+        [HttpGet("get/user/{userId}/employee")]
+        public IActionResult GetEmployeeByUserId(string userId)
+        {
+            try
+            {
+                var employee = _mapper.Map<EmployeeDto>(_employeeRepo.GetAll().Where(e => e.UserId == userId && e.Status.Equals("active")).FirstOrDefault());
+                if(employee == null)
+                {
+                    return NotFound("Employee seems to be null");
+                }
+                return Ok(employee);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
+
+        [HttpGet("get/user/{userId}/department/employee")]
+        public IActionResult GetEmployeesFromADepartmentByUserId(string userId)
+        {
+            try
+            {
+                var employee = _mapper.Map<EmployeeDto>(_employeeRepo.GetAll().Where(e => e.UserId == userId && e.Status.Equals("active")).FirstOrDefault());
+                if (employee == null)
+                {
+                    return NotFound("Employee seems to be null");
+                }
+                var employeeList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => e.DepartmentId == employee.DepartmentId && e.Status.Equals("active")).ToList());
+                if (employeeList == null)
+                {
+                    return NotFound("Employee in this department seems to be null");
+                }
+                return Ok(employeeList);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Something went wrong: " +  ex.Message);
+            }
+            
+        }
         [HttpPost("create")]
         public IActionResult CreateEmployee([FromBody] EmployeeDto employee)
         {
@@ -68,7 +111,7 @@ namespace HumanResourceApi.Controllers
             {
                 return BadRequest();
             }
-            var validEmployee = _employeeRepo.GetAll().Where(e => e.EmployeeId == id).FirstOrDefault();
+            var validEmployee = _employeeRepo.GetAll().Where(e => e.EmployeeId == id && e.Status.Equals("active")).FirstOrDefault();
             if (validEmployee == null)
             {
                 return BadRequest();
@@ -87,10 +130,6 @@ namespace HumanResourceApi.Controllers
             if (employee == null)
             {
                 return BadRequest();
-            }
-            if (employee.Status == "Disable")
-            {
-                return BadRequest("ID = " + id + " is already disabled");
             }
             var validEmployee = _employeeRepo.GetAll().Where(e => e.EmployeeId == id).FirstOrDefault();
             _mapper.Map(employee, validEmployee);

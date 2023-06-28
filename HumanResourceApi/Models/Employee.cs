@@ -16,6 +16,8 @@ namespace HumanResourceApi.Models
             PaySlips = new HashSet<PaySlip>();
             Reports = new HashSet<Report>();
             SkillEmployees = new HashSet<SkillEmployee>();
+            //set default status
+            Status = "active";
         }
 
         public string EmployeeId { get; set; }
