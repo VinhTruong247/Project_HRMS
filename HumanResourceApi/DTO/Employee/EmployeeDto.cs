@@ -13,10 +13,8 @@
         public int? BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
         public string BankName { get; set; }
-        public string ExperienceId { get; set; }
         public string UserId { get; set; }
         public string JobId { get; set; }
         public string DepartmentId { get; set; }
-        public string Status { get; set; }
     }
 }
