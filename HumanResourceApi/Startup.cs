@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HumanResourceApi;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace YourNamespace
 {
@@ -50,7 +52,8 @@ namespace YourNamespace
             services.AddScoped<EmployeeRepo>();
             services.AddScoped<SkillRepo>();
             services.AddScoped<SkillEmployeeRepo>();
-
+            services.AddScoped<DeductionRepo>();
+            services.AddScoped<DeductionSumaryRepo>();
 
             services.AddEndpointsApiExplorer();
             //services.AddSwaggerGen(c =>
@@ -60,6 +63,10 @@ namespace YourNamespace
             services.AddSwaggerGen();
             services.AddSwaggerService();
 
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new CustomDateTimeConverter());
+            });
 
             services.AddCors(o =>
             {
@@ -105,6 +112,19 @@ namespace YourNamespace
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+
+    public class CustomDateTimeConverter : JsonConverter<DateTime>
+    {
+        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString("dd/MM/yyyy"));
         }
     }
 }
