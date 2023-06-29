@@ -1,4 +1,6 @@
-﻿namespace HumanResourceApi.DTO.Employee
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HumanResourceApi.DTO.Employee
 {
     public class EmployeeDto
     {
