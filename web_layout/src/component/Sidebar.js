@@ -1,6 +1,7 @@
 import '../css/style.css';
 import { NavLink, Outlet } from 'react-router-dom';
 import React from 'react';
+import Protected from './Protected';
 
 function Sidebar() {
   return (
@@ -103,7 +104,8 @@ function Sidebar() {
           </a>
         </div> */}
       </aside>
-      <Outlet />
+      <Protected><Outlet /></Protected>
+
     </div>
   );
 }
