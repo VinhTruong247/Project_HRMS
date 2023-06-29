@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/login.css';
-import jwt_decode from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -28,26 +27,19 @@ function Login() {
       });
 
       if (response.ok) {
-
       const token = await response.text();
+      console.log('ok')
       localStorage.setItem("jwtToken", token);
-      const decodedToken = jwt_decode(token);
-      // Navigate to Profile page and pass the decoded token as a prop
-      navigate("/profile", { state: { decodedToken: decodedToken }});
-
-        setIsLoggedIn(true);
+      navigate ("/");
       } else {
         setError('Invalid username or password');
       }
     } catch (error) {
+      console.log(error);
       setError('Error occurred while logging in');
     }
   };
 
-  if (isLoggedIn) {
-    // If the user is authenticated, redirect to the home page.
-    return <Navigate to="/" />;
-  } else {
     return (
       <div className="login">
         <div className="login-container">
@@ -101,7 +93,6 @@ function Login() {
         </div>
       </div>
     );
-  }
 }
 
 export default Login;
