@@ -18,5 +18,6 @@ namespace HumanResourceApi.DTO.Employee
         public string UserId { get; set; }
         public string JobId { get; set; }
         public string DepartmentId { get; set; }
+        public string Status { get; set; }
     }
 }
