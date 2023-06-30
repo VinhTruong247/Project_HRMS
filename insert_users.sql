@@ -16,16 +16,16 @@ VALUES
 ('RL000004', 'Employee', 'active');
 
 -- Insert 8 Users
-INSERT INTO Users (user_id, username, password, Email, role_id, status)
+INSERT INTO Users (user_id,employee_id username, password, Email, role_id, status)
 VALUES
-  ('US000001', N'Hồ', N'P@ssw0rd123!', 'ho.nguyen@example.com', 'RL000004', 1),
-  ('US000002', N'Mai', N'abc123', 'mai.tran@example.com', 'RL000004', 1),
-  ('US000003', N'Thắm', N'Str0ngP@ssw0rd', 'tham.le@example.com', 'RL000004', 1),
-  ('US000004', N'Nam', N'password123', 'nam.tran@example.com', 'RL000004', 1),
-  ('US000005', N'Bình', N'123456789', 'binh.le@example.com', 'RL000004', 1),
-  ('US000006', N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 'RL000002', 1),
-  ('US000007', N'Minh', N'abc123', 'minh.tran@example.com', 'RL000003', 1),
-  ('US000008', N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 'RL000001', 1);
+  ('US000001','EP000001', N'Hồ', N'P@ssw0rd123!', 'ho.nguyen@example.com', 'RL000004', 1),
+  ('US000002','EP000002', N'Mai', N'abc123', 'mai.tran@example.com', 'RL000004', 1),
+  ('US000003','EP000003', N'Thắm', N'Str0ngP@ssw0rd', 'tham.le@example.com', 'RL000004', 1),
+  ('US000004','EP000004', N'Nam', N'password123', 'nam.tran@example.com', 'RL000004', 1),
+  ('US000005','EP000005', N'Bình', N'123456789', 'binh.le@example.com', 'RL000004', 1),
+  ('US000006','EP000006', N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 'RL000002', 1),
+  ('US000007','EP000007', N'Minh', N'abc123', 'minh.tran@example.com', 'RL000003', 1),
+  ('US000008','EP000008', N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 'RL000001', 1);
 
 -- Insert 10 allowances
 INSERT INTO Allowances (allowance_id, allowance_type, amount)
