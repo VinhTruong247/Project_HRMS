@@ -13,7 +13,27 @@ VALUES
   ('RL000002', 'HR_Manager', 'active'),
   ('RL000003', 'HR_Staff', 'active'),
   ('RL000004', 'Employee', 'active');
-
+-- Insert 10 allowances
+INSERT INTO Allowances (allowance_id, allowance_type, amount,status)
+VALUES
+  ('AL000001', 'Transportation', 2000000.00, 'Active'),
+  ('AL000002', 'Housing', 10000000.00, 'Active'),
+  ('AL000003', 'Meal', 4000000.00, 'Active'),
+  ('AL000004', 'Medical', 6000000.00, 'Active'),
+  ('AL000005', 'Phone', 1000000.00, 'Active'),
+  ('AL000006', 'Internet', 1500000.00, 'Active'),
+  ('AL000007', 'Education', 5000000.00, 'Active'),
+  ('AL000008', 'Travel', 3000000.00, 'Active'),
+  ('AL000009', 'Fitness', 2000000.00, 'Active'),
+  ('AL000010', 'Parking', 1000000.00, 'Active'),
+  ('AL000011', 'Software Development Allowance', 500000.00, 'Active'),
+  ('AL000012', 'Database Administration Allowance',  400000.00, 'Active'),
+  ('AL000013', 'Network Operations Allowance',  600000.00, 'Active'),
+  ('AL000014', 'IT Support Allowance',  300000.00, 'Active'),
+  ('AL000015', 'Quality Assurance Allowance', 400000.00, 'Active'),
+  ('AL000016', 'Human Resources Allowance',  200000.00, 'Active'),
+  ('AL000017', 'Cybersecurity Allowance',  500000.00, 'Active'),
+  ('AL000018', 'Business Analysis Allowance',  450000.00, 'Active');
 -- Insert 13 jobs
 INSERT INTO Job (job_id, job_title, job_description, start_date, status, base_salary_per_hour, allowance_id, bonus)
 VALUES
@@ -57,7 +77,7 @@ VALUES
   ('EP000008', N'An', N'Lê', 'an_le.jpg', '1994-06-12', '258 Walnut St, City, Country', 'an.le@example.com', '+7654321098', '123456789', N'An Lê', 'Bank ABC','JB000012', 'DP000004','Active');
 
 
-INSERT INTO Users (user_id,employee_id username, password, Email, role_id, status)
+INSERT INTO Users (user_id,employee_id , username, password, Email, role_id, status)
 VALUES
   ('US000001','EP000001', N'Ho', N'a123!', 'ho.nguyen@example.com', 'RL000004', 1),
   ('US000002','EP000002', N'Mai', N'abc123', 'mai.tran@example.com', 'RL000004', 1),
@@ -85,27 +105,6 @@ VALUES
   ('EX000012','EP000004', 'Chatbot Development', 3, '2022-03-01', '2022-05-31', 'Python, NLTK, Dialogflow'),
   ('EX000013','EP000005', 'Game Development', 6, '2021-11-01', '2022-07-31', 'Unity, C#, 3D Modeling');
  
--- Insert 10 allowances
-INSERT INTO Allowances (allowance_id, allowance_type, amount,status)
-VALUES
-  ('AL000001', 'Transportation', 2000000.00, 'Active'),
-  ('AL000002', 'Housing', 10000000.00, 'Active'),
-  ('AL000003', 'Meal', 4000000.00, 'Active'),
-  ('AL000004', 'Medical', 6000000.00, 'Active'),
-  ('AL000005', 'Phone', 1000000.00, 'Active'),
-  ('AL000006', 'Internet', 1500000.00, 'Active'),
-  ('AL000007', 'Education', 5000000.00, 'Active'),
-  ('AL000008', 'Travel', 3000000.00, 'Active'),
-  ('AL000009', 'Fitness', 2000000.00, 'Active'),
-  ('AL000010', 'Parking', 1000000.00, 'Active'),
-  ('AL000011', 'Software Development Allowance', 500000.00, 'Active'),
-  ('AL000012', 'Database Administration Allowance',  400000.00, 'Active'),
-  ('AL000013', 'Network Operations Allowance',  600000.00, 'Active'),
-  ('AL000014', 'IT Support Allowance',  300000.00, 'Active'),
-  ('AL000015', 'Quality Assurance Allowance', 400000.00, 'Active'),
-  ('AL000016', 'Human Resources Allowance',  200000.00, 'Active'),
-  ('AL000017', 'Cybersecurity Allowance',  500000.00, 'Active'),
-  ('AL000018', 'Business Analysis Allowance',  450000.00, 'Active');
 
 INSERT INTO EmployeeBenefit (allowances_id, employee_id, allowance_id,status)
 VALUES
