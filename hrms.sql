@@ -26,19 +26,6 @@ CREATE TABLE Permission (
   
 );
 
--- Create Users table
-CREATE TABLE Users (
-  user_id NVARCHAR(10) PRIMARY KEY,
-  employee_id NVARCHAR(10),
-  username NVARCHAR(50),
-  password NVARCHAR(50),
-  Email NVARCHAR(100),
-  role_id NVARCHAR(10),
-  status NVARCHAR,
-  FOREIGN KEY (role_id) REFERENCES Roles(role_id),
-  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
-);
-
 -- Create GrantedPermission table
 CREATE TABLE GrantedPermission (
   role_id NVARCHAR(10),
@@ -123,6 +110,18 @@ CREATE TABLE Employee (
   status NVARCHAR (10),
   FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+-- Create Users table
+CREATE TABLE Users (
+  user_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
+  username NVARCHAR(50),
+  password NVARCHAR(50),
+  Email NVARCHAR(100),
+  role_id NVARCHAR(10),
+  status NVARCHAR,
+  FOREIGN KEY (role_id) REFERENCES Roles(role_id),
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 --Create DepartmentMemberList table
 CREATE TABLE DepartmentMemberList (
