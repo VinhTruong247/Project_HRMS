@@ -29,12 +29,14 @@ CREATE TABLE Permission (
 -- Create Users table
 CREATE TABLE Users (
   user_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
   username NVARCHAR(50),
   password NVARCHAR(50),
   Email NVARCHAR(100),
   role_id NVARCHAR(10),
   status NVARCHAR,
-  FOREIGN KEY (role_id) REFERENCES Roles(role_id)
+  FOREIGN KEY (role_id) REFERENCES Roles(role_id),
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
 -- Create GrantedPermission table
@@ -56,12 +58,14 @@ CREATE TABLE detail_tax_income (
 -- Create Experience table
 CREATE TABLE Experience (
   experience_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
   name_project NVARCHAR(50),
   team_size INT,
   start_date DATE,
   end_date DATE,
   tech_stack NVARCHAR(500),
-  status NVARCHAR(10)
+  status NVARCHAR(10),
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
 );
 
 -- Create Skill table
@@ -114,13 +118,11 @@ CREATE TABLE Employee (
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
-  experience_id NVARCHAR(10),
   user_id NVARCHAR(10),
   job_id NVARCHAR(10),
   department_id NVARCHAR(10),
   status NVARCHAR (10),
   FOREIGN KEY (user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (experience_id) REFERENCES Experience(experience_id),
   FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
