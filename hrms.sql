@@ -118,11 +118,9 @@ CREATE TABLE Employee (
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
-  user_id NVARCHAR(10),
   job_id NVARCHAR(10),
   department_id NVARCHAR(10),
   status NVARCHAR (10),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id),
   FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
