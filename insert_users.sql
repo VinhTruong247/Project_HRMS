@@ -82,21 +82,23 @@ VALUES
   ('US000006','EP000006', N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 'RL000002', 1),
   ('US000007','EP000007', N'Minh', N'abc123', 'minh.tran@example.com', 'RL000003', 1),
   ('US000008','EP000008', N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 'RL000001', 1);
-INSERT INTO Experience (experience_id, employee_id, name_project, team_size, start_date, end_date, tech_stack)
+
+INSERT INTO Experience (experience_id, employee_id, name_project, team_size, start_date, end_date, tech_stack, status)
 VALUES
-  ('EX000001','EP000001', 'Website Redesign', 6, '2021-11-15', '2022-03-31', 'HTML, CSS, JavaScript'),
-  ('EX000002','EP000002', 'Mobile App Development', 8, '2022-03-01', '2022-08-31', 'React Native, Firebase, TypeScript'),
-  ('EX000003','EP000003', 'Data Analytics Platform', 5, '2022-09-01', '2023-02-28', 'Python, SQL, Tableau'),
-  ('EX000004','EP000004', 'E-commerce Website Development', 8, '2022-02-15', '2022-07-31', 'PHP, Laravel, MySQL'),
-  ('EX000005','EP000005', 'Mobile App Development', 6, '2021-10-01', '2022-02-28', 'Swift, iOS, Firebase'),
-  ('EX000006','EP000006', 'Data Analysis and Visualization', 4, '2022-03-15', '2022-06-30', 'Python, Pandas, Matplotlib'),
-  ('EX000007','EP000007', 'UI/UX Design for Web Applications', 3, '2022-06-01', '2022-08-31', 'Sketch, Adobe XD, InVision'),
-  ('EX000008','EP000008', 'Blockchain Implementation', 5, '2021-12-01', '2022-04-30', 'Solidity, Ethereum, Truffle'),
-  ('EX000009','EP000001', 'Cloud Infrastructure Deployment', 10, '2022-01-15', '2022-09-30', 'AWS, Azure, Terraform'),
-  ('EX000010','EP000002', 'Machine Learning Model Development', 7, '2022-05-01', '2022-11-30', 'Python, scikit-learn, TensorFlow'),
-  ('EX000011','EP000003', 'CRM System Integration', 4, '2021-09-01', '2022-01-31', 'Java, Spring Boot, Salesforce'),
-  ('EX000012','EP000004', 'Chatbot Development', 3, '2022-03-01', '2022-05-31', 'Python, NLTK, Dialogflow'),
-  ('EX000013','EP000005', 'Game Development', 6, '2021-11-01', '2022-07-31', 'Unity, C#, 3D Modeling');
+  ('EX000001','EP000001', 'Website Redesign', 6, '2021-11-15', '2022-03-31', 'HTML, CSS, JavaScript', 'Active'),
+  ('EX000002','EP000002', 'Mobile App Development', 8, '2022-03-01', '2022-08-31', 'React Native, Firebase, TypeScript', 'Active'),
+  ('EX000003','EP000003', 'Data Analytics Platform', 5, '2022-09-01', '2023-02-28', 'Python, SQL, Tableau', 'Active'),
+  ('EX000004','EP000004', 'E-commerce Website Development', 8, '2022-02-15', '2022-07-31', 'PHP, Laravel, MySQL', 'Active'),
+  ('EX000005','EP000005', 'Mobile App Development', 6, '2021-10-01', '2022-02-28', 'Swift, iOS, Firebase', 'Active'),
+  ('EX000006','EP000006', 'Data Analysis and Visualization', 4, '2022-03-15', '2022-06-30', 'Python, Pandas, Matplotlib', 'Active'),
+  ('EX000007','EP000007', 'UI/UX Design for Web Applications', 3, '2022-06-01', '2022-08-31', 'Sketch, Adobe XD, InVision', 'Active'),
+  ('EX000008','EP000008', 'Blockchain Implementation', 5, '2021-12-01', '2022-04-30', 'Solidity, Ethereum, Truffle', 'Active'),
+  ('EX000009','EP000001', 'Cloud Infrastructure Deployment', 10, '2022-01-15', '2022-09-30', 'AWS, Azure, Terraform', 'Active'),
+  ('EX000010','EP000002', 'Machine Learning Model Development', 7, '2022-05-01', '2022-11-30', 'Python, scikit-learn, TensorFlow', 'Active'),
+  ('EX000011','EP000003', 'CRM System Integration', 4, '2021-09-01', '2022-01-31', 'Java, Spring Boot, Salesforce', 'Active'),
+  ('EX000012','EP000004', 'Chatbot Development', 3, '2022-03-01', '2022-05-31', 'Python, NLTK, Dialogflow', 'Active'),
+  ('EX000013','EP000005', 'Game Development', 6, '2021-11-01', '2022-07-31', 'Unity, C#, 3D Modeling', 'Active');
+
 INSERT INTO EmployeeBenefit (allowances_id, employee_id, allowance_id,status)
 VALUES
   ('EB000001', 'EP000001', 'AL000001', 1),   -- Employee 1 has Transportation allowance
