@@ -6,12 +6,6 @@ delete from Department
 delete from Experience
 delete from Allowances
 delete from EmployeeBenefit 
-INSERT INTO Roles(role_id, role_name,status)
-VALUES 
-('RL000001', 'ADMIN', 'active'),
-('RL000002', 'HR_Manager', 'active'),
-('RL000003', 'HR_Staff', 'active'),
-('RL000004', 'Employee', 'active');
 
 INSERT INTO Roles (role_id, role_name, status)
 VALUES 
