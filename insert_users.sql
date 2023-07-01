@@ -1,11 +1,12 @@
-﻿use HRMS  
-delete from Employee
-delete from users
-delete from Job
-delete from Department
+
+delete from EmployeeBenefit
 delete from Experience
+delete from Users
+delete from Employee
+delete from Department
+delete from Job
 delete from Allowances
-delete from EmployeeBenefit 
+delete from Roles
 
 INSERT INTO Roles (role_id, role_name, status)
 VALUES 
@@ -50,7 +51,6 @@ VALUES
   ('JB000011', 'Business Analyst', N'Phân tích nhu cầu và xác định yêu cầu kinh doanh', '2023-11-01', 'Active', 950000.00, 'AL000007', 90000000.00),
   ('JB000012', 'IT Consultant', N'Tư vấn và đề xuất giải pháp công nghệ thông tin', '2023-12-01', 'Active', 1050000.00, 'AL000002', 110000000.00),
   ('JB000013', 'Cybersecurity Analyst', N'Phân tích và đảm bảo an ninh thông tin', '2024-01-01', 'Active', 950000.00, 'AL000006', 90000000.00);
-
   INSERT INTO Department (department_id, department_name, description ,status)
 VALUES
   ('DP000001', 'Software Development', 'Responsible for developing software applications and solutions.', 'Active'),
@@ -61,10 +61,7 @@ VALUES
   ('DP000006', 'Human Resources', 'Responsible for managing HR processes and employee-related matters.', 'Active'),
   ('DP000007', 'Cybersecurity', 'Responsible for protecting the company''s IT systems and data from security threats.', 'Active'),
   ('DP000008', 'Business Analysis', 'Responsible for analyzing business requirements and recommending IT solutions.', 'Active');
-
-
 -- Insert 13 employees
-
 INSERT INTO Employee (employee_id, first_name, last_name, employee_image, date_of_birth, employee_address, email, phone_number, BankAccountNumber, BankAccountName, BankName, job_id, department_id,status)
 VALUES
   ('EP000001', N'Hồ', N'Nguyễn', 'ho_nguyen.jpg', '1990-05-15', '123 Main St, City, Country', 'ho.nguyen@example.com', '+1234567890', '123456789', N'Hồ Nguyễn', 'Bank XYZ', 'JB000001', 'DP000001','Active'),
@@ -75,8 +72,6 @@ VALUES
   ('EP000006', N'Lan', N'Vũ', 'lan_vu.jpg', '1993-12-30', '987 Maple St, City, Country', 'lan.vu@example.com', '+9876543210', '246813579', 'Lan Vũ', N'Bank DEF','JB000005', 'DP000006','Active'),
   ('EP000007', N'Minh', N'Trần', 'minh_tran.jpg', '1989-08-17', '147 Birch St, City, Country', 'minh.tran@example.com', '+5432109876', '987654321', N'Minh Trần', 'Bank XYZ','JB000005', 'DP000006','Active'),
   ('EP000008', N'An', N'Lê', 'an_le.jpg', '1994-06-12', '258 Walnut St, City, Country', 'an.le@example.com', '+7654321098', '123456789', N'An Lê', 'Bank ABC','JB000012', 'DP000004','Active');
-
-
 INSERT INTO Users (user_id,employee_id , username, password, Email, role_id, status)
 VALUES
   ('US000001','EP000001', N'Ho', N'a123!', 'ho.nguyen@example.com', 'RL000004', 1),
@@ -87,9 +82,7 @@ VALUES
   ('US000006','EP000006', N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 'RL000002', 1),
   ('US000007','EP000007', N'Minh', N'abc123', 'minh.tran@example.com', 'RL000003', 1),
   ('US000008','EP000008', N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 'RL000001', 1);
-
-
-  INSERT INTO Experience (experience_id, employee_id, name_project, team_size, start_date, end_date, tech_stack)
+INSERT INTO Experience (experience_id, employee_id, name_project, team_size, start_date, end_date, tech_stack)
 VALUES
   ('EX000001','EP000001', 'Website Redesign', 6, '2021-11-15', '2022-03-31', 'HTML, CSS, JavaScript'),
   ('EX000002','EP000002', 'Mobile App Development', 8, '2022-03-01', '2022-08-31', 'React Native, Firebase, TypeScript'),
@@ -104,8 +97,6 @@ VALUES
   ('EX000011','EP000003', 'CRM System Integration', 4, '2021-09-01', '2022-01-31', 'Java, Spring Boot, Salesforce'),
   ('EX000012','EP000004', 'Chatbot Development', 3, '2022-03-01', '2022-05-31', 'Python, NLTK, Dialogflow'),
   ('EX000013','EP000005', 'Game Development', 6, '2021-11-01', '2022-07-31', 'Unity, C#, 3D Modeling');
- 
-
 INSERT INTO EmployeeBenefit (allowances_id, employee_id, allowance_id,status)
 VALUES
   ('EB000001', 'EP000001', 'AL000001', 1),   -- Employee 1 has Transportation allowance
