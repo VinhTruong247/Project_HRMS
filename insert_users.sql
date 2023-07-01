@@ -14,33 +14,6 @@ VALUES
   ('RL000003', 'HR_Staff', 'active'),
   ('RL000004', 'Employee', 'active');
 
--- Insert 13 employees
-
-INSERT INTO Employee (employee_id, first_name, last_name, employee_image, date_of_birth, employee_address, email, phone_number, BankAccountNumber, BankAccountName, BankName, job_id, department_id,status)
-VALUES
-  ('EP000001', N'Hồ', N'Nguyễn', 'ho_nguyen.jpg', '1990-05-15', '123 Main St, City, Country', 'ho.nguyen@example.com', '+1234567890', '123456789', N'Hồ Nguyễn', 'Bank XYZ', 'JB000001', 'DP000001','Active'),
-  ('EP000002', N'Mai', N'Trần', 'mai_tran.jpg', '1992-09-20', '456 Elm St, City, Country', 'mai.tran@example.com', '+0987654321', '987654321', N'Mai Trần', 'Bank ABC','JB000001', 'DP000001','Active'),
-  ('EP000003', N'Thắm', N'Lê', 'tham_le.jpg', '1988-07-10', '789 Oak St, City, Country', 'tham.le@example.com', '+1357924680', '246813579', N'Thắm Lê', 'Bank DEF','JB000001', 'DP000001','Active'),
-  ('EP000005', N'Bình', N'Lê', 'binh_le.jpg', '1991-11-05', '654 Cedar St, City, Country', 'binh.le@example.com', '+0123456789', '123456789', N'Bình Lê', 'Bank ABC','JB000004', 'DP000001','Active'),
-  ('EP000004', N'Nam', N'Trần', 'nam_tran.jpg', '1995-03-25', '321 Pine St, City, Country', 'nam.tran@example.com', '+5678901234', '987654321', N'Nam Trần', 'Bank XYZ','JB000002', 'DP000002','Active'),
-  ('EP000006', N'Lan', N'Vũ', 'lan_vu.jpg', '1993-12-30', '987 Maple St, City, Country', 'lan.vu@example.com', '+9876543210', '246813579', 'Lan Vũ', N'Bank DEF','JB000005', 'DP000006','Active'),
-  ('EP000007', N'Minh', N'Trần', 'minh_tran.jpg', '1989-08-17', '147 Birch St, City, Country', 'minh.tran@example.com', '+5432109876', '987654321', N'Minh Trần', 'Bank XYZ','JB000005', 'DP000006','Active'),
-  ('EP000008', N'An', N'Lê', 'an_le.jpg', '1994-06-12', '258 Walnut St, City, Country', 'an.le@example.com', '+7654321098', '123456789', N'An Lê', 'Bank ABC','JB000012', 'DP000004','Active');
-
-
-INSERT INTO Users (user_id,employee_id username, password, Email, role_id, status)
-VALUES
-  ('US000001','EP000001', N'Ho', N'a123!', 'ho.nguyen@example.com', 'RL000004', 1),
-  ('US000002','EP000002', N'Mai', N'abc123', 'mai.tran@example.com', 'RL000004', 1),
-  ('US000003','EP000003', N'Tham', N'Str0ngP@ssw0rd', 'tham.le@example.com', 'RL000004', 1),
-  ('US000004','EP000004', N'Nam', N'password123', 'nam.tran@example.com', 'RL000004', 1),
-  ('US000005','EP000005', N'Binh', N'123456789', 'binh.le@example.com', 'RL000004', 1),
-  ('US000006','EP000006', N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 'RL000002', 1),
-  ('US000007','EP000007', N'Minh', N'abc123', 'minh.tran@example.com', 'RL000003', 1),
-  ('US000008','EP000008', N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 'RL000001', 1);
-
-
-
 -- Insert 13 jobs
 INSERT INTO Job (job_id, job_title, job_description, start_date, status, base_salary_per_hour, allowance_id, bonus)
 VALUES
@@ -68,6 +41,33 @@ VALUES
   ('DP000006', 'Human Resources', 'Responsible for managing HR processes and employee-related matters.', 'Active'),
   ('DP000007', 'Cybersecurity', 'Responsible for protecting the company''s IT systems and data from security threats.', 'Active'),
   ('DP000008', 'Business Analysis', 'Responsible for analyzing business requirements and recommending IT solutions.', 'Active');
+
+
+-- Insert 13 employees
+
+INSERT INTO Employee (employee_id, first_name, last_name, employee_image, date_of_birth, employee_address, email, phone_number, BankAccountNumber, BankAccountName, BankName, job_id, department_id,status)
+VALUES
+  ('EP000001', N'Hồ', N'Nguyễn', 'ho_nguyen.jpg', '1990-05-15', '123 Main St, City, Country', 'ho.nguyen@example.com', '+1234567890', '123456789', N'Hồ Nguyễn', 'Bank XYZ', 'JB000001', 'DP000001','Active'),
+  ('EP000002', N'Mai', N'Trần', 'mai_tran.jpg', '1992-09-20', '456 Elm St, City, Country', 'mai.tran@example.com', '+0987654321', '987654321', N'Mai Trần', 'Bank ABC','JB000001', 'DP000001','Active'),
+  ('EP000003', N'Thắm', N'Lê', 'tham_le.jpg', '1988-07-10', '789 Oak St, City, Country', 'tham.le@example.com', '+1357924680', '246813579', N'Thắm Lê', 'Bank DEF','JB000001', 'DP000001','Active'),
+  ('EP000005', N'Bình', N'Lê', 'binh_le.jpg', '1991-11-05', '654 Cedar St, City, Country', 'binh.le@example.com', '+0123456789', '123456789', N'Bình Lê', 'Bank ABC','JB000004', 'DP000001','Active'),
+  ('EP000004', N'Nam', N'Trần', 'nam_tran.jpg', '1995-03-25', '321 Pine St, City, Country', 'nam.tran@example.com', '+5678901234', '987654321', N'Nam Trần', 'Bank XYZ','JB000002', 'DP000002','Active'),
+  ('EP000006', N'Lan', N'Vũ', 'lan_vu.jpg', '1993-12-30', '987 Maple St, City, Country', 'lan.vu@example.com', '+9876543210', '246813579', 'Lan Vũ', N'Bank DEF','JB000005', 'DP000006','Active'),
+  ('EP000007', N'Minh', N'Trần', 'minh_tran.jpg', '1989-08-17', '147 Birch St, City, Country', 'minh.tran@example.com', '+5432109876', '987654321', N'Minh Trần', 'Bank XYZ','JB000005', 'DP000006','Active'),
+  ('EP000008', N'An', N'Lê', 'an_le.jpg', '1994-06-12', '258 Walnut St, City, Country', 'an.le@example.com', '+7654321098', '123456789', N'An Lê', 'Bank ABC','JB000012', 'DP000004','Active');
+
+
+INSERT INTO Users (user_id,employee_id username, password, Email, role_id, status)
+VALUES
+  ('US000001','EP000001', N'Ho', N'a123!', 'ho.nguyen@example.com', 'RL000004', 1),
+  ('US000002','EP000002', N'Mai', N'abc123', 'mai.tran@example.com', 'RL000004', 1),
+  ('US000003','EP000003', N'Tham', N'Str0ngP@ssw0rd', 'tham.le@example.com', 'RL000004', 1),
+  ('US000004','EP000004', N'Nam', N'password123', 'nam.tran@example.com', 'RL000004', 1),
+  ('US000005','EP000005', N'Binh', N'123456789', 'binh.le@example.com', 'RL000004', 1),
+  ('US000006','EP000006', N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 'RL000002', 1),
+  ('US000007','EP000007', N'Minh', N'abc123', 'minh.tran@example.com', 'RL000003', 1),
+  ('US000008','EP000008', N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 'RL000001', 1);
+
 
   INSERT INTO Experience (experience_id, employee_id, name_project, team_size, start_date, end_date, tech_stack)
 VALUES
