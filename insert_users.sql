@@ -14,19 +14,6 @@ VALUES
   ('RL000003', 'HR_Staff', 'active'),
   ('RL000004', 'Employee', 'active');
 
-INSERT INTO Users (user_id,employee_id username, password, Email, role_id, status)
-VALUES
-  ('US000001','EP000001', N'Ho', N'a123!', 'ho.nguyen@example.com', 'RL000004', 1),
-  ('US000002','EP000002', N'Mai', N'abc123', 'mai.tran@example.com', 'RL000004', 1),
-  ('US000003','EP000003', N'Tham', N'Str0ngP@ssw0rd', 'tham.le@example.com', 'RL000004', 1),
-  ('US000004','EP000004', N'Nam', N'password123', 'nam.tran@example.com', 'RL000004', 1),
-  ('US000005','EP000005', N'Binh', N'123456789', 'binh.le@example.com', 'RL000004', 1),
-  ('US000006','EP000006', N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 'RL000002', 1),
-  ('US000007','EP000007', N'Minh', N'abc123', 'minh.tran@example.com', 'RL000003', 1),
-  ('US000008','EP000008', N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 'RL000001', 1);
-
-
-
 -- Insert 13 employees
 
 INSERT INTO Employee (employee_id, first_name, last_name, employee_image, date_of_birth, employee_address, email, phone_number, BankAccountNumber, BankAccountName, BankName, job_id, department_id,status)
@@ -39,6 +26,20 @@ VALUES
   ('EP000006', N'Lan', N'Vũ', 'lan_vu.jpg', '1993-12-30', '987 Maple St, City, Country', 'lan.vu@example.com', '+9876543210', '246813579', 'Lan Vũ', N'Bank DEF','JB000005', 'DP000006','Active'),
   ('EP000007', N'Minh', N'Trần', 'minh_tran.jpg', '1989-08-17', '147 Birch St, City, Country', 'minh.tran@example.com', '+5432109876', '987654321', N'Minh Trần', 'Bank XYZ','JB000005', 'DP000006','Active'),
   ('EP000008', N'An', N'Lê', 'an_le.jpg', '1994-06-12', '258 Walnut St, City, Country', 'an.le@example.com', '+7654321098', '123456789', N'An Lê', 'Bank ABC','JB000012', 'DP000004','Active');
+
+
+INSERT INTO Users (user_id,employee_id username, password, Email, role_id, status)
+VALUES
+  ('US000001','EP000001', N'Ho', N'a123!', 'ho.nguyen@example.com', 'RL000004', 1),
+  ('US000002','EP000002', N'Mai', N'abc123', 'mai.tran@example.com', 'RL000004', 1),
+  ('US000003','EP000003', N'Tham', N'Str0ngP@ssw0rd', 'tham.le@example.com', 'RL000004', 1),
+  ('US000004','EP000004', N'Nam', N'password123', 'nam.tran@example.com', 'RL000004', 1),
+  ('US000005','EP000005', N'Binh', N'123456789', 'binh.le@example.com', 'RL000004', 1),
+  ('US000006','EP000006', N'Lan', N'P@ssw0rd789!', 'lan.vu@example.com', 'RL000002', 1),
+  ('US000007','EP000007', N'Minh', N'abc123', 'minh.tran@example.com', 'RL000003', 1),
+  ('US000008','EP000008', N'An', N'Str0ngP@ssw0rd', 'an.le@example.com', 'RL000001', 1);
+
+
 
 -- Insert 13 jobs
 INSERT INTO Job (job_id, job_title, job_description, start_date, status, base_salary_per_hour, allowance_id, bonus)
