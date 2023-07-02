@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Allowance;
 using HumanResourceApi.DTO.Attendance;
+using HumanResourceApi.DTO.Deduction;
+using HumanResourceApi.DTO.DeductionSummary;
 using HumanResourceApi.DTO.Department;
 using HumanResourceApi.DTO.Employee;
 using HumanResourceApi.DTO.EmployeeContract;
@@ -20,6 +22,8 @@ namespace HumanResourceApi.Helper
         {
             CreateMap<User, UserDto>()
                 .ReverseMap();
+            CreateMap<User, ResponseUserDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             CreateMap<User, UpdateUserDto>()
                 .ReverseMap();
             CreateMap<Experience, ExperienceDto>()
@@ -61,6 +65,14 @@ namespace HumanResourceApi.Helper
             CreateMap<SkillEmployee, SkillEmployeeDto>()
                 .ReverseMap();
             CreateMap<SkillEmployee, UpdateSkillEmployeeDto>()
+                .ReverseMap();
+            CreateMap<Deduction, DeductionDto>()
+                .ReverseMap();
+            CreateMap<Deduction, UpdateDeductionDto>()
+                .ReverseMap();
+            CreateMap<DeductionSumary, DeductionSumaryDto>()
+                .ReverseMap();
+            CreateMap<DeductionSumary, UpdateDeductionSumaryDto>()
                 .ReverseMap();
         }
     }
