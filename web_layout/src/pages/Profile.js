@@ -1,21 +1,20 @@
 import React from "react";
-import jwt_decode from 'jwt-decode';
+import useData from "../hooks/useData";
 
 function Profile(props) {
-    const token = localStorage.getItem('jwtToken');
-    let decodedToken
-    if(token){
-        decodedToken = jwt_decode(token);
-    }
-    return decodedToken && (
+
+    const data = useData()
+    console.log(data)
+
+    return data && (
         <div className="main-body">
             <div className="row gutters-sm">
                 <div className="col-md-4 mb-3">
-                    <EmployeeCard decodedToken={decodedToken} />
-                    <EmployeeLinks decodedToken={decodedToken} />
+                    <EmployeeCard lastName={data.lastName} firstName={data.firstName} employeeId={data.id} />
+                    <EmployeeLinks />
                 </div>
                 <div className="col-md-8">
-                    <EmployeeDetails decodedToken={decodedToken} />
+                    <EmployeeDetails lastName={data.lastName} firstName={data.firstName} dateOfBirth={data.dateOfBirth} email={data.email} phoneNumber={data.phoneNumber} employeeAddress={data.employeeAddress}/>
                 </div>
             </div>
         </div>
@@ -29,10 +28,10 @@ function EmployeeCard(props) {
                 <div className="d-flex flex-column align-items-center text-center">
                     <img src="#" alt="employees-img" className="rounded-circle" />
                     <div className="mt-3">
-                        <h4>{props.decodedToken.username}</h4>
+                        <h4>{props.firstName} {props.lastName}</h4>
                         <p className="text-secondary mb-1">Full Stack Developer</p>
                         <p className="text-secondary mb-1">Back-end #1</p>
-                        <p className="text-secondary mb-1">{props.decodedToken.UserId}</p>
+                        <p className="text-secondary mb-1">{props.employeeId}</p>
                     </div>
                 </div>
             </div>
@@ -46,7 +45,7 @@ function EmployeeLinks(props) {
             <ul className="list-group">
                 <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h6>
-                        <i className="fa fa-linkedin"></i> LindIn
+                        <i className="fa fa-linkedin"></i> LinkedIn
                     </h6>
                     <span className="text-secondary">#</span>
                 </li>
@@ -82,60 +81,53 @@ function EmployeeDetails(props) {
                     <div className="col-sm-3">
                         <h6 className="mb-0">Full Name</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">Robert Truong</div>
+                    <div className="col-sm-9 text-secondary">{props.firstName} {props.lastName}</div>
                 </div>
                 <hr />
                 <div className="row">
                     <div className="col-sm-3">
                         <h6 className="mb-0">First Name</h6>
                     </div>
-                    <div className="col-sm-3 text-secondary">Robert</div>
+                    <div className="col-sm-3 text-secondary">{props.firstName}</div>
                     <div className="col-sm-3">
                         <h6 className="mb-0">Last Name</h6>
                     </div>
-                    <div className="col-sm-3 text-secondary">Truong</div>
+                    <div className="col-sm-3 text-secondary">{props.lastName}</div>
                 </div>
                 <hr />
                 <div className="row">
                     <div className="col-sm-3">
                         <h6 className="mb-0">Date of Birth</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">24-7-1999</div>
+                    <div className="col-sm-9 text-secondary">{props.dateOfBirth}</div>
                 </div>
                 <hr />
                 <div className="row">
                     <div className="col-sm-3">
                         <h6 className="mb-0">Email</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">{props.decodedToken.email}</div>
+                    <div className="col-sm-9 text-secondary">{props.email}</div>
                 </div>
                 <hr />
                 <div className="row">
                     <div className="col-sm-3">
                         <h6 className="mb-0">Phone</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">123-247-2001</div>
+                    <div className="col-sm-9 text-secondary">{props.phoneNumber}</div>
                 </div>
                 <hr />
                 <div className="row">
                     <div className="col-sm-3">
                         <h6 className="mb-0">Mobile</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">123-247-2001</div>
+                    <div className="col-sm-9 text-secondary">*empty*</div>
                 </div>
                 <hr />
                 <div className="row">
                     <div className="col-sm-3">
                         <h6 className="mb-0">Address</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">HCM</div>
-                </div>
-                <hr />
-                <div className="row">
-                    <div className="col-sm-3">
-                        <h6 className="mb-0">Address</h6>
-                    </div>
-                    <div className="col-sm-9 text-secondary">HCM</div>
+                    <div className="col-sm-9 text-secondary">{props.employeeAddress}</div>
                 </div>
                 <hr />
                 <div className="row">

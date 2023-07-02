@@ -1,113 +1,12 @@
-import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import jwt_decode from 'jwt-decode';
-
-function EmployeeCard({ decodedToken }) {
-  return (
-    <div className="card">
-      <div className="card-body">
-        <div className="d-flex flex-column align-items-center text-center">
-          <img src="#" alt="employees-img" className="rounded-circle" />
-          <div className="mt-3">
-            <h4>{decodedToken.username}</h4>
-            <p className="text-secondary mb-1">Full Stack Developer</p>
-            <p className="text-secondary mb-1">Back-end #1</p>
-            <p className="text-secondary mb-1">{decodedToken.userId}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function EmployeeDetails({ decodedToken }) {
-  return (
-    <div className="card mb-3">
-      <div className="card-body">
-        <div className="row">
-          <div className="col-sm-3">
-            <h6 className="mb-0">Full Name</h6>
-          </div>
-          <div className="col-sm-9 text-secondary">{decodedToken.username}</div>
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col-sm-3">
-            <h6 className="mb-0">First Name</h6>
-          </div>
-          <div className="col-sm-3 text-secondary">{decodedToken.firstName}</div>
-          <div className="col-sm-3">
-            <h6 className="mb-0">Last Name</h6>
-          </div>
-          <div className="col-sm-3 text-secondary">{decodedToken.lastName}</div>
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col-sm-3">
-            <h6 className="mb-0">Date of Birth</h6>
-          </div>
-          <div className="col-sm-9 text-secondary">{decodedToken.dateOfBirth}</div>
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col-sm-3">
-            <h6 className="mb-0">Email</h6>
-          </div>
-          <div className="col-sm-9 text-secondary">
-            {decodedToken.email}
-          </div>
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col-sm-3">
-            <h6 className="mb-0">Phone</h6>
-          </div>
-          <div className="col-sm-9 text-secondary">{decodedToken.phone}</div>
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col-sm-3">
-            <h6 className="mb-0">Mobile</h6>
-          </div>
-          <div className="col-sm-9 text-secondary">{decodedToken.mobile}</div>
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col-sm-3">
-            <h6 className="mb-0">Address</h6>
-          </div>
-          <div className="col-sm-9 text-secondary">{decodedToken.address}</div>
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col-sm-3">
-            <h6 className="mb-0">Skills</h6>
-          </div>
-          <div className="col-sm-9 text-secondary">
-            React, Node.js, MongoDB, Express.js
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Profile({ token }) {
-  const decodedToken = jwt_decode(token);
-
-  return (
-    <div className="main-body">
-      <div className="row gutters-sm">
-        <div className="col-md-4 mb-3">
-          <EmployeeCard decodedToken={decodedToken} />
-          <EmployeeLinks />
-        </div>
-        <div className="col-md-8">
-          <EmployeeDetails decodedToken={decodedToken} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default Profile;
+const Department = employee.departmentId;
+                const dep_url = 'https://localhost:7220/api/Department/get/department'
+                return fetch(dep_url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(depart => depart)
+            })
