@@ -65,7 +65,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var employee = _mapper.Map<EmployeeDto>(_employeeRepo.GetAll().Where(e => e.UserId == userId).FirstOrDefault());
+                var employee = _mapper.Map<EmployeeDto>(_userRepo.getEmployee(userId));
                 if (employee == null)
                 {
                     return NotFound("Employee seems to be null");
@@ -84,12 +84,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var employee = _mapper.Map<EmployeeDto>(_employeeRepo.GetAll().Where(e => e.UserId == userId && e.Status.Equals("active")).FirstOrDefault());
+                var employee = _mapper.Map<EmployeeDto>(_userRepo.getEmployee(userId));
                 if (employee == null)
                 {
                     return NotFound("Employee seems to be null");
                 }
-                var employeeList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => e.DepartmentId == employee.DepartmentId && e.Status.Equals("active")).ToList());
+                var employeeList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => e.DepartmentId == employee.DepartmentId && e.Status.Equals("Active")).ToList());
                 if (employeeList == null)
                 {
                     return NotFound("Employee in this department seems to be null");
@@ -112,25 +112,18 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (_employeeRepo.GetAll().Any(e => e.EmployeeId == employee.EmployeeId || e.UserId == employee.UserId))
+                if (_employeeRepo.GetAll().Any(e => e.EmployeeId == employee.EmployeeId))
                 {
-                    return BadRequest("EmployeeId or UserId existed");
+                    return BadRequest("EmployeeId existed");
                 }
                 Regex emailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
                 if (!emailRegex.IsMatch(employee.Email))
                 {
                     return BadRequest("Invalid Email Format");
                 }
-                foreach (User user in _userRepo.GetAll())
-                {
-                    if (user.UserId == employee.UserId)
-                    {
-                        var temp = _mapper.Map<Employee>(employee);
-                        _employeeRepo.Add(temp);
-                        return Ok(temp);
-                    }
-                }
-                return BadRequest("UserID = " + employee.UserId + " doesn't exist.");
+                var temp = _mapper.Map<Employee>(employee);
+                _employeeRepo.Add(temp);
+                return Ok(temp);
             }
             catch (Exception ex)
             {

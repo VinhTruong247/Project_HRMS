@@ -15,12 +15,19 @@ namespace HumanResourceApi.Repositories
 
         public Employee getEmployee(string id)
         {
-            return _context.Employees.Where(e => e.UserId ==  id).FirstOrDefault();
+            var user = _context.Users.Where(u => u.UserId == id).FirstOrDefault();
+            var empId = user.EmployeeId;
+            return _context.Employees.Where(e => e.EmployeeId ==  empId).FirstOrDefault();
         }
 
         public Role GetRole(string? roleId)
         {
             return _context.Roles.Where(r => r.RoleId == roleId).FirstOrDefault();
+        }
+
+        public IEnumerable<User> GetAllUsers()
+        {
+            return _dbSet.Include(u => u.Role).ToList();
         }
 
     }

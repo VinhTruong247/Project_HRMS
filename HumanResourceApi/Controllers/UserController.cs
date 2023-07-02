@@ -26,7 +26,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var userList = _mapper.Map<List<UserDto>>(_userRepo.GetAll().Where(u => u.Status == "1"));
+                var userList = _userRepo.GetAllUsers().Where(u => u.Status == "1");
 
                 if (!ModelState.IsValid)
                 {
@@ -34,8 +34,10 @@ namespace HumanResourceApi.Controllers
                     return BadRequest(ModelState);
                 }
 
+                var mappedUserList = userList.Select(l => _mapper.Map<ResponseUserDto>(l));
+
                 // Return the list of users
-                return Ok(userList);
+                return Ok(mappedUserList);
 
             }
             catch (Exception e)
@@ -99,6 +101,8 @@ namespace HumanResourceApi.Controllers
                     return BadRequest("Duplicated Id");
                 if (!_userRepo.GetAll().Any(u => u.RoleId == newUser.RoleId))
                     return BadRequest("Unavailable RoleId");
+                if (_userRepo.GetAll().Any(u => u.EmployeeId == newUser.EmployeeId))
+                    return BadRequest("Duplicated EmployeeId");
 
 
                 _userRepo.Add(newUser);

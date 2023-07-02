@@ -16,11 +16,8 @@ namespace HumanResourceApi.Models
             PaySlips = new HashSet<PaySlip>();
             Reports = new HashSet<Report>();
             SkillEmployees = new HashSet<SkillEmployee>();
-            //set default status
-            Status = "active";
         }
 
-        
         public string EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -32,14 +29,12 @@ namespace HumanResourceApi.Models
         public int? BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
         public string BankName { get; set; }
-        public string UserId { get; set; }
         public string JobId { get; set; }
         public string DepartmentId { get; set; }
         public string Status { get; set; }
 
         public virtual Department Department { get; set; }
         public virtual Job Job { get; set; }
-        public virtual User User { get; set; }
         public virtual ICollection<EmployeeBenefit> EmployeeBenefits { get; set; }
         public virtual ICollection<EmployeeContract> EmployeeContracts { get; set; }
         public virtual ICollection<EmployeeLoanLog> EmployeeLoanLogs { get; set; }
@@ -49,5 +44,6 @@ namespace HumanResourceApi.Models
         public virtual ICollection<PaySlip> PaySlips { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<SkillEmployee> SkillEmployees { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }
