@@ -58,7 +58,6 @@ namespace HumanResourceApi.Models
             return strConn;
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Allowance>(entity =>
@@ -190,8 +189,7 @@ namespace HumanResourceApi.Models
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(10)
-                    .HasColumnName("status")
-                    .HasDefaultValueSql("('Active')");
+                    .HasColumnName("status");
             });
 
             modelBuilder.Entity<DepartmentMemberList>(entity =>
@@ -297,30 +295,21 @@ namespace HumanResourceApi.Models
                     .HasMaxLength(10)
                     .HasColumnName("status");
 
-                entity.Property(e => e.UserId)
-                    .HasMaxLength(10)
-                    .HasColumnName("user_id");
-
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.DepartmentId)
-                    .HasConstraintName("FK__Employee__depart__4E88ABD4");
+                    .HasConstraintName("FK__Employee__depart__4AB81AF0");
 
                 entity.HasOne(d => d.Job)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.JobId)
-                    .HasConstraintName("FK__Employee__job_id__4D94879B");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Employees)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Employee__user_i__4CA06362");
+                    .HasConstraintName("FK__Employee__job_id__49C3F6B7");
             });
 
             modelBuilder.Entity<EmployeeBenefit>(entity =>
             {
                 entity.HasKey(e => e.AllowancesId)
-                    .HasName("PK__Employee__BA57CC1BEA29177B");
+                    .HasName("PK__Employee__BA57CC1B67F6DC4A");
 
                 entity.ToTable("EmployeeBenefit");
 
@@ -337,7 +326,8 @@ namespace HumanResourceApi.Models
                     .HasColumnName("employee_id");
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(1)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
                     .HasColumnName("status");
 
                 entity.HasOne(d => d.Allowance)
@@ -354,7 +344,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<EmployeeContract>(entity =>
             {
                 entity.HasKey(e => e.ContractId)
-                    .HasName("PK__Employee__F8D6642326B85777");
+                    .HasName("PK__Employee__F8D6642356E9E43B");
 
                 entity.ToTable("EmployeeContract");
 
@@ -409,7 +399,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<EmployeeLoanLog>(entity =>
             {
                 entity.HasKey(e => e.LoanId)
-                    .HasName("PK__Employee__A1F79554FDD6FCE4");
+                    .HasName("PK__Employee__A1F79554E6DEF8ED");
 
                 entity.ToTable("EmployeeLoanLog");
 
@@ -500,7 +490,7 @@ namespace HumanResourceApi.Models
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.Experiences)
                     .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK__Experienc__emplo__5165187F");
+                    .HasConstraintName("FK__Experienc__emplo__4D94879B");
             });
 
             modelBuilder.Entity<GrantedPermission>(entity =>
@@ -524,12 +514,12 @@ namespace HumanResourceApi.Models
                 entity.HasOne(d => d.Permission)
                     .WithMany()
                     .HasForeignKey(d => d.PermissionId)
-                    .HasConstraintName("FK__GrantedPe__permi__3F466844");
+                    .HasConstraintName("FK__GrantedPe__permi__3C69FB99");
 
                 entity.HasOne(d => d.Role)
                     .WithMany()
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__GrantedPe__role___3E52440B");
+                    .HasConstraintName("FK__GrantedPe__role___3B75D760");
             });
 
             modelBuilder.Entity<Job>(entity =>
@@ -571,7 +561,7 @@ namespace HumanResourceApi.Models
                 entity.HasOne(d => d.Allowance)
                     .WithMany(p => p.Jobs)
                     .HasForeignKey(d => d.AllowanceId)
-                    .HasConstraintName("FK__Job__allowance_i__49C3F6B7");
+                    .HasConstraintName("FK__Job__allowance_i__46E78A0C");
             });
 
             modelBuilder.Entity<Leave>(entity =>
@@ -659,7 +649,7 @@ namespace HumanResourceApi.Models
                     .HasColumnName("allowances_id");
 
                 entity.Property(e => e.Approval)
-                    .HasMaxLength(1)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("approval");
 
@@ -853,7 +843,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<SkillEmployee>(entity =>
             {
                 entity.HasKey(e => e.UniqueId)
-                    .HasName("PK__Skill_em__A2929130C7CECB84");
+                    .HasName("PK__Skill_em__A29291302FE403C0");
 
                 entity.ToTable("Skill_employee");
 
@@ -896,6 +886,10 @@ namespace HumanResourceApi.Models
 
                 entity.Property(e => e.Email).HasMaxLength(100);
 
+                entity.Property(e => e.EmployeeId)
+                    .HasMaxLength(10)
+                    .HasColumnName("employee_id");
+
                 entity.Property(e => e.Password)
                     .HasMaxLength(50)
                     .HasColumnName("password");
@@ -912,10 +906,15 @@ namespace HumanResourceApi.Models
                     .HasMaxLength(50)
                     .HasColumnName("username");
 
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .HasConstraintName("FK__Users__employee___5165187F");
+
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__Users__role_id__3C69FB99");
+                    .HasConstraintName("FK__Users__role_id__5070F446");
             });
 
             OnModelCreatingPartial(modelBuilder);

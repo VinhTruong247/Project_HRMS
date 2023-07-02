@@ -22,6 +22,8 @@ namespace HumanResourceApi.Helper
         {
             CreateMap<User, UserDto>()
                 .ReverseMap();
+            CreateMap<User, ResponseUserDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             CreateMap<User, UpdateUserDto>()
                 .ReverseMap();
             CreateMap<Experience, ExperienceDto>()
