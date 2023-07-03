@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 function Manage(props) {
     const [data, setData] = useState([]);
@@ -12,6 +12,19 @@ function Manage(props) {
         setUpdateEmployee(employee);
         setShowUpdateForm(true);
     };
+
+    const timeoutRef = useRef(null);
+
+    useEffect(() => {
+        if (validationError) {
+            timeoutRef.current = setTimeout(() => {
+                setValidationError('');
+            }, 3000);
+        }
+        return () => {
+            clearTimeout(timeoutRef.current);
+        };
+    }, [validationError]);
 
     //  Get info of EMPLOYEE
     useEffect(() => {
@@ -59,10 +72,70 @@ function Manage(props) {
             status: event.target.elements.status.value,
         };
 
-        if (!formData.employeeId || !formData.firstName || !formData.lastName) {
-            setValidationError('Please fill out all required fields');
+        if (!formData.employeeId) {
+            setValidationError('Employee ID is required');
             return;
-          }
+        }
+
+        if (!formData.firstName) {
+            setValidationError('First name is required');
+            return;
+        }
+
+        if (!formData.lastName) {
+            setValidationError('Last name is required');
+            return;
+        }
+
+        if (!formData.dateOfBirth) {
+            setValidationError('Date of birth is required');
+            return;
+        }
+
+        if (!formData.employeeAddress) {
+            setValidationError('Employee address is required');
+            return;
+        }
+
+        if (!formData.email) {
+            setValidationError('Email is required');
+            return;
+        }
+
+        if (!formData.phoneNumber) {
+            setValidationError('Phone number is required');
+            return;
+        }
+
+        if (!formData.bankAccountNumber) {
+            setValidationError('Bank account number is required');
+            return;
+        }
+
+        if (!formData.bankAccountName) {
+            setValidationError('Bank account name is required');
+            return;
+        }
+
+        if (!formData.bankName) {
+            setValidationError('Bank name is required');
+            return;
+        }
+
+        if (!formData.jobId) {
+            setValidationError('Job ID is required');
+            return;
+        }
+
+        if (!formData.departmentId) {
+            setValidationError('Department ID is required');
+            return;
+        }
+
+        if (!formData.status) {
+            setValidationError('Status is required');
+            return;
+        }
 
         fetch('https://localhost:7220/api/Employee/create', {
             method: 'POST',
@@ -114,8 +187,68 @@ function Manage(props) {
             status: event.target.elements.status.value,
         };
 
-        if (!formData.employeeId || !formData.firstName || !formData.lastName) {
-            setValidationError('Please fill out all required fields');
+        if (!formData.employeeId) {
+            setValidationError('Employee ID is required');
+            return;
+        }
+
+        if (!formData.firstName) {
+            setValidationError('First name is required');
+            return;
+        }
+
+        if (!formData.lastName) {
+            setValidationError('Last name is required');
+            return;
+        }
+
+        if (!formData.dateOfBirth) {
+            setValidationError('Date of birth is required');
+            return;
+        }
+
+        if (!formData.employeeAddress) {
+            setValidationError('Employee address is required');
+            return;
+        }
+
+        if (!formData.email) {
+            setValidationError('Email is required');
+            return;
+        }
+
+        if (!formData.phoneNumber) {
+            setValidationError('Phone number is required');
+            return;
+        }
+
+        if (!formData.bankAccountNumber) {
+            setValidationError('Bank account number is required');
+            return;
+        }
+
+        if (!formData.bankAccountName) {
+            setValidationError('Bank account name is required');
+            return;
+        }
+
+        if (!formData.bankName) {
+            setValidationError('Bank name is required');
+            return;
+        }
+
+        if (!formData.jobId) {
+            setValidationError('Job ID is required');
+            return;
+        }
+
+        if (!formData.departmentId) {
+            setValidationError('Department ID is required');
+            return;
+        }
+
+        if (!formData.status) {
+            setValidationError('Status is required');
             return;
         }
 
@@ -197,11 +330,10 @@ function Manage(props) {
                         <h3>Create Employee</h3>
 
                         {validationError && (
-                            <div className="error-message">
+                            <div className="error-message-fadeout">
                                 {validationError}
                             </div>
                         )}
-                        {validationError && setTimeout(() => setValidationError(''), 3000)}
 
                         <div className='row name'>
                             <div className="col-6 mt-3">
@@ -298,11 +430,10 @@ function Manage(props) {
                         <h3>Edit Employee (ID: {updateEmployee.employeeId})</h3>
 
                         {validationError && (
-                            <div className="error-message">
+                            <div className="error-message-fadeout">
                                 {validationError}
                             </div>
                         )}
-                        {validationError && setTimeout(() => setValidationError(''), 3000)}
 
                         <div className='row name'>
                             <div className="col-6 mt-3">
