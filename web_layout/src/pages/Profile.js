@@ -10,7 +10,7 @@ function Profile(props) {
         <div className="main-body">
             <div className="row gutters-sm">
                 <div className="col-md-4 mb-3">
-                    <EmployeeCard lastName={data.lastName} firstName={data.firstName} employeeId={data.id} />
+                    <EmployeeCard lastName={data.lastName} firstName={data.firstName} employeeId={data.id} departmentId={data.departmentId} jobId={data.jobId}/>
                     <EmployeeLinks />
                 </div>
                 <div className="col-md-8">
@@ -29,8 +29,8 @@ function EmployeeCard(props) {
                     <img src="#" alt="employees-img" className="rounded-circle" />
                     <div className="mt-3">
                         <h4>{props.firstName} {props.lastName}</h4>
-                        <p className="text-secondary mb-1">Full Stack Developer</p>
-                        <p className="text-secondary mb-1">Back-end #1</p>
+                        <p className="text-secondary mb-1">{props.departmentId}</p>
+                        <p className="text-secondary mb-1">{props.jobId}</p>
                         <p className="text-secondary mb-1">{props.employeeId}</p>
                     </div>
                 </div>
@@ -114,13 +114,6 @@ function EmployeeDetails(props) {
                         <h6 className="mb-0">Phone</h6>
                     </div>
                     <div className="col-sm-9 text-secondary">{props.phoneNumber}</div>
-                </div>
-                <hr />
-                <div className="row">
-                    <div className="col-sm-3">
-                        <h6 className="mb-0">Mobile</h6>
-                    </div>
-                    <div className="col-sm-9 text-secondary">*empty*</div>
                 </div>
                 <hr />
                 <div className="row">

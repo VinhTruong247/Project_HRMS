@@ -35,10 +35,10 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("get/leave/{id}")]
-        public IActionResult GetLeaveId(string id)
+        [HttpPost("get/leave/{leaveId}")]
+        public IActionResult GetLeaveId(string leaveId)
         {
-            var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault());
+            var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == leaveId).FirstOrDefault());
             if (leave == null)
             {
                 return BadRequest();
@@ -61,41 +61,41 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPut("update")]
-        public IActionResult UpdateLeave([FromQuery] string id, [FromBody] UpdateLeaveDto leave)
+        [HttpPut("update/leave/{leaveId}")]
+        public IActionResult UpdateLeave(string leaveId, [FromBody] UpdateLeaveDto leave)
         {
             if (leave == null)
             {
                 return BadRequest();
             }
-            var validLeave = _leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault();
+            var validLeave = _leaveRepo.GetAll().Where(l => l.LeaveId == leaveId).FirstOrDefault();
             if (validLeave == null)
             {
                 return BadRequest();
             }
             _mapper.Map(leave, validLeave);
-            validLeave.LeaveId = id;
+            validLeave.LeaveId = leaveId;
 
             _leaveRepo.Update(validLeave);
             return Ok(validLeave);
         }
 
-        [Authorize]
-        [HttpPost("delete")]
-        public IActionResult DeleteLeave([FromQuery] string id)
-        {
-            var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault());
-            if (leave == null)
-            {
-                return BadRequest();
-            }
-            var validLeave = _leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault();
-            _mapper.Map(leave, validLeave);
-            validLeave.LeaveId = id;
-            validLeave.Status = "disabled";
+        //[Authorize]
+        //[HttpPost("delete")]
+        //public IActionResult DeleteLeave([FromQuery] string id)
+        //{
+        //    var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault());
+        //    if (leave == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    var validLeave = _leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault();
+        //    _mapper.Map(leave, validLeave);
+        //    validLeave.LeaveId = id;
+        //    validLeave.Status = "disabled";
 
-            _leaveRepo.Update(validLeave);
-            return Ok(validLeave);
-        }
+        //    _leaveRepo.Update(validLeave);
+        //    return Ok(validLeave);
+        //}
     }
 }

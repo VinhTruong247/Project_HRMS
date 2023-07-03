@@ -42,15 +42,15 @@ namespace HumanResourceApi.Controllers
 
         }
 
-        [HttpGet("get/employee")]
-        public IActionResult GetEmployeesById([FromQuery] string id)
+        [HttpGet("get/employee/{employeeId}")]
+        public IActionResult GetEmployeesById(string employeeId)
         {
             try
             {
-                var employee = _mapper.Map<EmployeeDto>(_employeeRepo.GetAll().Where(e => e.EmployeeId == id).FirstOrDefault());
+                var employee = _mapper.Map<EmployeeDto>(_employeeRepo.GetAll().Where(e => e.EmployeeId == employeeId).FirstOrDefault());
                 if (employee == null)
                 {
-                    return BadRequest("Employee ID = " + id + " doesn't seem to be found.");
+                    return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");
                 }
                 return Ok(employee);
             }
@@ -132,8 +132,8 @@ namespace HumanResourceApi.Controllers
 
         }
 
-        [HttpPut("update")]
-        public IActionResult UpdateEmployee([FromQuery] string id, [FromBody] UpdateEmployeeDto employee)
+        [HttpPut("update/user/{employeeId}")]
+        public IActionResult UpdateEmployee(string employeeId, [FromBody] UpdateEmployeeDto employee)
         {
             try
             {
@@ -146,36 +146,13 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Invalid Email Format");
                 }
-                var validEmployee = _employeeRepo.GetAll().Where(e => e.EmployeeId == id).FirstOrDefault();
+                var validEmployee = _employeeRepo.GetAll().Where(e => e.EmployeeId == employeeId).FirstOrDefault();
                 if (validEmployee == null)
                 {
                     return BadRequest();
                 }
                 _mapper.Map(employee, validEmployee);
-                validEmployee.EmployeeId = id;
-
-                _employeeRepo.Update(validEmployee);
-                return Ok(validEmployee);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Something went wrong: " + ex.Message);
-            }
-        }
-
-        [HttpPost("delete")]
-        public IActionResult DeleteEmployee([FromQuery] string id)
-        {
-            try
-            {
-                var employee = _mapper.Map<EmployeeDto>(_employeeRepo.GetAll().Where(e => e.EmployeeId == id).FirstOrDefault());
-                if (employee == null)
-                {
-                    return BadRequest("Employee Not Found");
-                }
-                var validEmployee = _employeeRepo.GetAll().Where(e => e.EmployeeId == id).FirstOrDefault();
-                _mapper.Map(employee, validEmployee);
-                validEmployee.Status = "Disable";
+                validEmployee.EmployeeId = employeeId;
 
                 _employeeRepo.Update(validEmployee);
                 return Ok(validEmployee);

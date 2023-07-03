@@ -28,7 +28,9 @@ namespace HumanResourceApi.DTO.Employee
         public string BankName { get; set; }
         [Required]
         public string JobId { get; set; }
+        [Required]
         public string DepartmentId { get; set; }
+        [Required]
         public string Status { get; set; }
     }
 }

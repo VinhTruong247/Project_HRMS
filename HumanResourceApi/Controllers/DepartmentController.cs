@@ -36,10 +36,10 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("get/department")]
-        public IActionResult GetDepartmentId([FromQuery] string id)
+        [HttpGet("get/department/{departmentId}")]
+        public IActionResult GetDepartmentId(string departmentId)
         {
-            var department = _mapper.Map<DepartmentDto>(_repo.GetAll().Where(d => d.DepartmentId == id).FirstOrDefault());
+            var department = _mapper.Map<DepartmentDto>(_repo.GetAll().Where(d => d.DepartmentId == departmentId).FirstOrDefault());
             if (department == null)
             {
                 return BadRequest();
@@ -65,43 +65,43 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPut("update")]
-        public IActionResult UpdateDepartment([FromQuery] string id, [FromBody] UpdateDepartmentDto department)
+        [HttpPut("update/department/{departmentId}")]
+        public IActionResult UpdateDepartment(string departmentId, [FromBody] UpdateDepartmentDto department)
         {
             if (department == null)
             {
                 return BadRequest();
             }
-            var validDepartment = _repo.GetAll().Where(d => d.DepartmentId == id).FirstOrDefault();
+            var validDepartment = _repo.GetAll().Where(d => d.DepartmentId == departmentId).FirstOrDefault();
             if (validDepartment == null)
             {
                 return BadRequest();
             }
             _mapper.Map(department, validDepartment);
-            validDepartment.DepartmentId = id;
+            validDepartment.DepartmentId = departmentId;
 
             _repo.Update(validDepartment);
             return Ok(validDepartment);
         }
 
-        [Authorize]
-        [HttpPost("delete")]
-        public IActionResult DeleteDepartment([FromQuery] string id)
-        {
-            var department = _mapper.Map<DepartmentDto>(_repo.GetAll().Where(d => d.DepartmentId == id).FirstOrDefault());
-            if (department == null)
-            {
-                return BadRequest();
-            }
-            if (department.Status == "Disable")
-            {
-                return BadRequest("ID = " + id + " is already disabled");
-            }
-            var validDepartment = _repo.GetAll().Where(d => d.DepartmentId == id).FirstOrDefault();
-            _mapper.Map(department, validDepartment);
-            validDepartment.Status = "Disable";
-            _repo.Update(validDepartment);
-            return Ok(validDepartment);
-        }
+        //[Authorize]
+        //[HttpPost("delete")]
+        //public IActionResult DeleteDepartment([FromQuery] string id)
+        //{
+        //    var department = _mapper.Map<DepartmentDto>(_repo.GetAll().Where(d => d.DepartmentId == id).FirstOrDefault());
+        //    if (department == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    if (department.Status == "Disable")
+        //    {
+        //        return BadRequest("ID = " + id + " is already disabled");
+        //    }
+        //    var validDepartment = _repo.GetAll().Where(d => d.DepartmentId == id).FirstOrDefault();
+        //    _mapper.Map(department, validDepartment);
+        //    validDepartment.Status = "Disable";
+        //    _repo.Update(validDepartment);
+        //    return Ok(validDepartment);
+        //}
     }
 }
