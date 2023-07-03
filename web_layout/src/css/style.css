@@ -113,6 +113,26 @@ p {
     color: var(--color-warning);
 }
 
+.error-message-fadeout {
+    background-color: #ffe4e4;
+    padding: 10px;
+    margin-top: 10px;
+    animation: fadeout 3s linear forwards;
+  }
+  
+  @keyframes fadeout {
+    0% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      display: none;
+    }
+  }
+
 
 /*<!-------------------- Start Side Menu -------------------->*/
 
@@ -338,6 +358,25 @@ aside .sidebar a:hover.active span {
     border-radius: var(--box-border-radius);
 }
 
+.manager .btn_create{
+    
+    margin: 1rem;
+    width: 8rem;
+    height: 3.4rem;
+    align-items: center;
+    background-color: var(--color-primary);
+    border-radius: var(--box-border-radius);
+    border: 1px solid transparent;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.manager .btn_create:hover {
+    background-color: #fff;
+    border: 1px solid #2a2a2a;
+    color: #2a2a2a;
+}
+
 .form-container {
     position: absolute;
     top: 0;
@@ -350,6 +389,14 @@ aside .sidebar a:hover.active span {
     align-items: center;
 }
 
+.form-container .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+
 .manager .form input, .manager .form select{
     width: 100%;
     height: 2rem;
@@ -357,10 +404,10 @@ aside .sidebar a:hover.active span {
     padding: 1rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    font-size: 14px;
+    font-size: 16px;
     font-style: italic;
-    font-weight: 500;
-    color: #aaa;
+    font-weight: 550;
+    color: black;
     border-radius: 0px;
     border: 1px solid #7a7a7a;
     box-shadow: none;
@@ -396,13 +443,13 @@ aside .sidebar a:hover.active span {
     font-size: 1.1rem;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd)>* {
-    --bs-table-bg-type: rgba(154, 52, 52, 0.85);
+.table>tbody>tr:nth-of-type(odd)>* {
+    --bs-table-bg-type: rgba(154, 52, 52);
     color: white!important;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd)>td>button {
-    --bs-table-bg-type: rgba(154, 52, 52, 0.85);
+.table>tbody>tr:nth-of-type(odd)>td>button {
+    --bs-table-bg-type: rgba(154, 52, 52);
     color: white!important;
 }
 

@@ -1,13 +1,19 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function Manage(props) {
-    const [data, setData] = React.useState([]);
-    const [showForm, setShowForm] = React.useState(false);
+    const [data, setData] = useState([]);
+    const [showCreateForm, setShowForm] = useState(false);
     const token = localStorage.getItem('jwtToken');
-    const [updateEmployee, setUpdateEmployee] = React.useState(null);
-    const [showUpdateForm, setShowUpdateForm] = React.useState(false);
+    const [updateEmployee, setUpdateEmployee] = useState(null);
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [validationError, setValidationError] = useState('');
+    const handleEdit = (employee) => {
+        setUpdateEmployee(employee);
+        setShowUpdateForm(true);
+    };
 
+    //  Get info of EMPLOYEE
     useEffect(() => {
         fetch('https://localhost:7220/api/Employee/employees', {
             method: 'GET',
@@ -31,16 +37,17 @@ function Manage(props) {
             });
     }, [token]);
 
+
+
+    //  CRATE NEW EMPLOYEE    
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        const dob = new Date(event.target.elements.dateOfBirth.value);
-        const formattedDob = dob.toISOString();
         const formData = {
             employeeId: event.target.elements.employeeId.value,
             firstName: event.target.elements.firstName.value,
             lastName: event.target.elements.lastName.value,
             employeeImage: event.target.elements.employeeImage.value,
-            dateOfBirth: formattedDob,
+            dateOfBirth: event.target.elements.dateOfBirth.value,
             employeeAddress: event.target.elements.employeeAddress.value,
             email: event.target.elements.email.value,
             phoneNumber: event.target.elements.phoneNumber.value,
@@ -51,6 +58,11 @@ function Manage(props) {
             departmentId: event.target.elements.departmentId.value,
             status: event.target.elements.status.value,
         };
+
+        if (!formData.employeeId || !formData.firstName || !formData.lastName) {
+            setValidationError('Please fill out all required fields');
+            return;
+          }
 
         fetch('https://localhost:7220/api/Employee/create', {
             method: 'POST',
@@ -70,34 +82,27 @@ function Manage(props) {
             .then(employee => {
                 setData([...data, employee]);
                 setShowForm(false);
+                setValidationError('');
                 console.log('Employee created successfully');
             })
             .catch(error => {
                 console.error('Error submitting form:', error);
+                setValidationError('An error occurred while submitting the form');
             });
         console.log(event.target.elements)
-    }
-
-    const handleEdit = (employee) => {
-        setUpdateEmployee(employee);
-        setShowUpdateForm(true);
     };
 
-    const handleStatusChange = (event) => {
-        const updatedEmployee = { ...updateEmployee, status: event.target.options[event.target.selectedIndex].value };
-        setUpdateEmployee(updatedEmployee);
-      };
 
+
+    //  UPDATE NEW EMPLOYEE        
     const handleUpdate = (event) => {
         event.preventDefault();
-        const dob = new Date(event.target.elements.dateOfBirth.value);
-        const formattedDob = dob.toLocaleDateString();
         const formData = {
             employeeId: updateEmployee.employeeId,
             firstName: event.target.elements.firstName.value,
             lastName: event.target.elements.lastName.value,
             employeeImage: event.target.elements.employeeImage.value,
-            dateOfBirth: formattedDob,
+            dateOfBirth: event.target.elements.dateOfBirth.value,
             employeeAddress: event.target.elements.employeeAddress.value,
             email: event.target.elements.email.value,
             phoneNumber: event.target.elements.phoneNumber.value,
@@ -108,6 +113,11 @@ function Manage(props) {
             departmentId: event.target.elements.departmentId.value,
             status: event.target.elements.status.value,
         };
+
+        if (!formData.employeeId || !formData.firstName || !formData.lastName) {
+            setValidationError('Please fill out all required fields');
+            return;
+        }
 
         fetch(`https://localhost:7220/api/Employee/update/user/${updateEmployee.employeeId}`, {
             method: 'PUT',
@@ -139,16 +149,15 @@ function Manage(props) {
             })
             .catch(error => {
                 console.error('Error submitting form:', error);
+                setValidationError('An error occurred while updating employee information');
             });
     };
 
-
-
     return (
         <div className="manager" style={{ position: "relative" }}>
+            <button className='btn_create' onClick={() => setShowForm(true)}>Add Employee</button>
             <div className='row'>
-                <button onClick={() => setShowForm(true)}>Add employee</button>
-                <table className='table table-striped'>
+                <table className='table'>
                     <thead>
                         <tr>
                             <th>Employee ID</th>
@@ -182,10 +191,17 @@ function Manage(props) {
                 </table>
             </div>
 
-            {showForm && (
+            {showCreateForm && (
                 <div className="form-container">
                     <form className="form" onSubmit={handleFormSubmit}>
                         <h3>Create Employee</h3>
+
+                        {validationError && (
+                            <div className="error-message">
+                                {validationError}
+                            </div>
+                        )}
+                        {validationError && setTimeout(() => setValidationError(''), 3000)}
 
                         <div className='row name'>
                             <div className="col-6 mt-3">
@@ -280,6 +296,14 @@ function Manage(props) {
                 <div className="form-container">
                     <form className="form" onSubmit={handleUpdate}>
                         <h3>Edit Employee (ID: {updateEmployee.employeeId})</h3>
+
+                        {validationError && (
+                            <div className="error-message">
+                                {validationError}
+                            </div>
+                        )}
+                        {validationError && setTimeout(() => setValidationError(''), 3000)}
+
                         <div className='row name'>
                             <div className="col-6 mt-3">
                                 <label>First Name:</label>
