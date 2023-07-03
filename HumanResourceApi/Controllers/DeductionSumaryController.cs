@@ -33,10 +33,10 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpGet("get/deductionSumary")]
-        public IActionResult GetUsingId([FromQuery] string id)
+        [HttpGet("get/deductionSumary/{deductionId}")]
+        public IActionResult GetUsingId(string deductionId)
         {
-            var deductionSumary = _mapper.Map<DeductionSumaryDto>(_deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == id).FirstOrDefault());
+            var deductionSumary = _mapper.Map<DeductionSumaryDto>(_deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == deductionId).FirstOrDefault());
             if (deductionSumary == null)
             {
                 return BadRequest();
@@ -60,43 +60,43 @@ namespace HumanResourceApi.Controllers
             return Ok(temp);
         }
 
-        [HttpPut("update")]
-        public IActionResult UpdateDeductionSumary([FromQuery] string id, [FromBody] UpdateDeductionSumaryDto deductionSumary)
+        [HttpPut("update/deuctionSumary/{deductionId}")]
+        public IActionResult UpdateDeductionSumary(string deductionId, [FromBody] UpdateDeductionSumaryDto deductionSumary)
         {
             if (deductionSumary == null)
             {
                 return BadRequest();
             }
-            var validDS = _deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == id).FirstOrDefault();
+            var validDS = _deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == deductionId).FirstOrDefault();
             if (validDS == null)
             {
                 return BadRequest();
             }
             _mapper.Map(deductionSumary, validDS);
-            validDS.DeductionId = id;
+            validDS.DeductionId = deductionId;
 
             _deductionSumaryRepo.Update(validDS);
             return Ok(validDS);
         }
 
-        [HttpPost("delete")]
-        public IActionResult DeleteDeductionSumary([FromQuery] string id)
-        {
-            var deductionSumary = _mapper.Map<DeductionSumaryDto>(_deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == id).FirstOrDefault());
-            if (deductionSumary == null)
-            {
-                return BadRequest();
-            }
-            if (deductionSumary.Status == "Disable")
-            {
-                return BadRequest("ID = " + id + " is already disabled");
-            }
-            var validDS = _deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == id).FirstOrDefault();
-            _mapper.Map(deductionSumary, validDS);
-            validDS.Status = "Disable";
+        //[HttpPost("delete")]
+        //public IActionResult DeleteDeductionSumary([FromQuery] string id)
+        //{
+        //    var deductionSumary = _mapper.Map<DeductionSumaryDto>(_deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == id).FirstOrDefault());
+        //    if (deductionSumary == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    if (deductionSumary.Status == "Disable")
+        //    {
+        //        return BadRequest("ID = " + id + " is already disabled");
+        //    }
+        //    var validDS = _deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == id).FirstOrDefault();
+        //    _mapper.Map(deductionSumary, validDS);
+        //    validDS.Status = "Disable";
 
-            _deductionSumaryRepo.Update(validDS);
-            return Ok(validDS);
-        }
+        //    _deductionSumaryRepo.Update(validDS);
+        //    return Ok(validDS);
+        //}
     }
 }

@@ -41,10 +41,10 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("get/job")]
-        public IActionResult GetJob([FromQuery] string id)
+        [HttpGet("get/job/{jobId}")]
+        public IActionResult GetJob(string jobId)
         {
-            var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == id).FirstOrDefault());
+            var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == jobId).FirstOrDefault());
             if (job == null)
             {
                 return BadRequest();
@@ -67,42 +67,42 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPut("update")]
-        public IActionResult UpdateJob([FromQuery] string id, [FromBody] UpdateJobDto job)
+        [HttpPut("update/job/{jobId}")]
+        public IActionResult UpdateJob(string jobId, [FromBody] UpdateJobDto job)
         {
             if (job == null)
             {
                 return BadRequest();
             }
-            var validJob = _job.GetAll().Where(j => j.JobId == id).FirstOrDefault();
+            var validJob = _job.GetAll().Where(j => j.JobId == jobId).FirstOrDefault();
             if (validJob == null)
             {
                 return BadRequest();
             }
             _mapper.Map(job, validJob);
-            validJob.JobId = id;
+            validJob.JobId = jobId;
 
             _job.Update(validJob);
             return Ok(validJob);
         }
 
-        [Authorize]
-        [HttpPost("delete")]
-        public IActionResult DeleteJob([FromQuery] string id)
-        {
-            var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == id).FirstOrDefault());
-            if (job == null)
-            {
-                return BadRequest();
-            }
-            var validJob = _job.GetAll().Where(j => j.JobId == id).FirstOrDefault();
-            _mapper.Map(job, validJob);
-            validJob.JobId = id;
-            validJob.Status = "Disable";
+        //[Authorize]
+        //[HttpPost("delete")]
+        //public IActionResult DeleteJob([FromQuery] string id)
+        //{
+        //    var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == id).FirstOrDefault());
+        //    if (job == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    var validJob = _job.GetAll().Where(j => j.JobId == id).FirstOrDefault();
+        //    _mapper.Map(job, validJob);
+        //    validJob.JobId = id;
+        //    validJob.Status = "Disable";
 
-            _job.Update(validJob);
-            return Ok(validJob);
-        }
+        //    _job.Update(validJob);
+        //    return Ok(validJob);
+        //}
     }
 }
 

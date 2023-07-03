@@ -33,10 +33,10 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpGet("get/SkillEmployee")]
-        public IActionResult GetSkillEmployeeById([FromQuery] string id)
+        [HttpGet("get/SkillEmployee/{uniqueId}")]
+        public IActionResult GetSkillEmployeeById(string uniqueId)
         {
-            var skillEmployee = _mapper.Map<SkillEmployeeDto>(_skillEmployeeRepo.GetAll().Where(se => se.UniqueId == id).FirstOrDefault());
+            var skillEmployee = _mapper.Map<SkillEmployeeDto>(_skillEmployeeRepo.GetAll().Where(se => se.UniqueId == uniqueId).FirstOrDefault());
             if (skillEmployee == null)
             {
                 return BadRequest();
@@ -60,42 +60,42 @@ namespace HumanResourceApi.Controllers
             return Ok(temp);
         }
 
-        [HttpPut("update")]
-        public IActionResult UpdateSkillEmployee([FromQuery] string id, [FromBody] UpdateSkillEmployeeDto skillEmployee)
+        [HttpPut("update/SkillEmployee/{uniqueId}")]
+        public IActionResult UpdateSkillEmployee(string uniqueId, [FromBody] UpdateSkillEmployeeDto skillEmployee)
         {
             if (skillEmployee == null)
             {
                 return BadRequest();
             }
-            var validSkillEmployee = _skillEmployeeRepo.GetAll().Where(se => se.UniqueId == id).FirstOrDefault();
+            var validSkillEmployee = _skillEmployeeRepo.GetAll().Where(se => se.UniqueId == uniqueId).FirstOrDefault();
             if (validSkillEmployee == null)
             {
                 return BadRequest();
             }
             _mapper.Map(skillEmployee, validSkillEmployee);
-            validSkillEmployee.UniqueId = id;
+            validSkillEmployee.UniqueId = uniqueId;
 
             _skillEmployeeRepo.Update(validSkillEmployee);
             return Ok(validSkillEmployee);
         }
 
-        [HttpPost("delete")]
-        public IActionResult DeleteSkillEmployee([FromQuery] string id)
-        {
-            var skillEmployee = _mapper.Map<SkillEmployeeDto>(_skillEmployeeRepo.GetAll().Where(se => se.UniqueId == id).FirstOrDefault());
-            if (skillEmployee == null)
-            {
-                return BadRequest();
-            }
-            if (skillEmployee.Status == "Disable")
-            {
-                return BadRequest("ID = " + id + " is already disabled");
-            }
-            var validSE = _skillEmployeeRepo.GetAll().Where(se => se.UniqueId == id).FirstOrDefault();
-            _mapper.Map(skillEmployee, validSE);
-            validSE.Status = "Disable";
-            _skillEmployeeRepo.Update(validSE);
-            return Ok(validSE);
-        }
+        //[HttpPost("delete")]
+        //public IActionResult DeleteSkillEmployee([FromQuery] string id)
+        //{
+        //    var skillEmployee = _mapper.Map<SkillEmployeeDto>(_skillEmployeeRepo.GetAll().Where(se => se.UniqueId == id).FirstOrDefault());
+        //    if (skillEmployee == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    if (skillEmployee.Status == "Disable")
+        //    {
+        //        return BadRequest("ID = " + id + " is already disabled");
+        //    }
+        //    var validSE = _skillEmployeeRepo.GetAll().Where(se => se.UniqueId == id).FirstOrDefault();
+        //    _mapper.Map(skillEmployee, validSE);
+        //    validSE.Status = "Disable";
+        //    _skillEmployeeRepo.Update(validSE);
+        //    return Ok(validSE);
+        //}
     }
 }

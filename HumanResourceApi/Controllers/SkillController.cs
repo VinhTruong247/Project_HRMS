@@ -33,10 +33,10 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpGet("get/skill")]
-        public IActionResult GetSkillById([FromQuery] string id)
+        [HttpGet("get/skill/{skillId}")]
+        public IActionResult GetSkillById(string skillId)
         {
-            var skill = _mapper.Map<SkillDto>(_skillRepo.GetAll().Where(s => s.SkillId == id).FirstOrDefault());
+            var skill = _mapper.Map<SkillDto>(_skillRepo.GetAll().Where(s => s.SkillId == skillId).FirstOrDefault());
             if (skill == null)
             {
                 return BadRequest();
@@ -60,42 +60,42 @@ namespace HumanResourceApi.Controllers
             return Ok(skill);
         }
 
-        [HttpPut("update")]
-        public IActionResult UpdateSkill([FromQuery] string id, [FromBody] UpdateSkillDto skill)
+        [HttpPut("update/skill/{skillId}")]
+        public IActionResult UpdateSkill(string skillId, [FromBody] UpdateSkillDto skill)
         {
             if (skill == null)
             {
                 return BadRequest();
             }
-            var validSkill = _skillRepo.GetAll().Where(s => s.SkillId == id).FirstOrDefault();
+            var validSkill = _skillRepo.GetAll().Where(s => s.SkillId == skillId).FirstOrDefault();
             if (validSkill == null)
             {
                 return BadRequest();
             }
             _mapper.Map(skill, validSkill);
-            validSkill.SkillId = id;
+            validSkill.SkillId = skillId;
 
             _skillRepo.Update(validSkill);
             return Ok(validSkill);
         }
 
-        [HttpPost("delete")]
-        public IActionResult DeleteSkill([FromQuery] string id)
-        {
-            var skill = _mapper.Map<SkillDto>(_skillRepo.GetAll().Where(s => s.SkillId == id).FirstOrDefault());
-            if (skill == null)
-            {
-                return BadRequest();
-            }
-            if (skill.Status == "Disable")
-            {
-                return BadRequest("ID = " + id + " is already disabled");
-            }
-            var validSkill = _skillRepo.GetAll().Where(s => s.SkillId == id).FirstOrDefault();
-            _mapper.Map(skill, validSkill);
-            validSkill.Status = "Disable";
-            _skillRepo.Update(validSkill);
-            return Ok(validSkill);
-        }
+        //[HttpPost("delete")]
+        //public IActionResult DeleteSkill([FromQuery] string id)
+        //{
+        //    var skill = _mapper.Map<SkillDto>(_skillRepo.GetAll().Where(s => s.SkillId == id).FirstOrDefault());
+        //    if (skill == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    if (skill.Status == "Disable")
+        //    {
+        //        return BadRequest("ID = " + id + " is already disabled");
+        //    }
+        //    var validSkill = _skillRepo.GetAll().Where(s => s.SkillId == id).FirstOrDefault();
+        //    _mapper.Map(skill, validSkill);
+        //    validSkill.Status = "Disable";
+        //    _skillRepo.Update(validSkill);
+        //    return Ok(validSkill);
+        //}
     }
 }

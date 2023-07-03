@@ -33,10 +33,10 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpGet("get/deduction")]
-        public IActionResult GetDeductionById([FromQuery] string id)
+        [HttpGet("get/deduction/{deductionId}")]
+        public IActionResult GetDeductionById(string deductionId)
         {
-            var deduction = _mapper.Map<DeductionDto>(_deductionRepo.GetAll().Where(d => d.DeductionId == id).FirstOrDefault());
+            var deduction = _mapper.Map<DeductionDto>(_deductionRepo.GetAll().Where(d => d.DeductionId == deductionId).FirstOrDefault());
             if (deduction == null)
             {
                 return BadRequest();
@@ -60,43 +60,43 @@ namespace HumanResourceApi.Controllers
             return Ok(temp);
         }
 
-        [HttpPut("update")]
-        public IActionResult UpdateDeduction([FromQuery] string id, [FromBody] UpdateDeductionDto deduction)
+        [HttpPut("update/deduction/{deductionId}")]
+        public IActionResult UpdateDeduction(string deductionId, [FromBody] UpdateDeductionDto deduction)
         {
             if (deduction == null)
             {
                 return BadRequest();
             }
-            var validDeduction = _deductionRepo.GetAll().Where(d => d.DeductionId == id).FirstOrDefault();
+            var validDeduction = _deductionRepo.GetAll().Where(d => d.DeductionId == deductionId).FirstOrDefault();
             if (validDeduction == null)
             {
                 return BadRequest();
             }
             _mapper.Map(deduction, validDeduction);
-            validDeduction.DeductionId = id;
+            validDeduction.DeductionId = deductionId;
 
             _deductionRepo.Update(validDeduction);
             return Ok(validDeduction);
         }
 
-        [HttpPost("delete")]
-        public IActionResult DeleteDeduction([FromQuery] string id)
-        {
-            var deduction = _mapper.Map<DeductionDto>(_deductionRepo.GetAll().Where(d => d.DeductionId == id).FirstOrDefault());
-            if (deduction == null)
-            {
-                return BadRequest();
-            }
-            if (deduction.Status == "Disable")
-            {
-                return BadRequest("ID = " + id + " is already disabled");
-            }
-            var validDeduction = _deductionRepo.GetAll().Where(d => d.DeductionId == id).FirstOrDefault();
-            _mapper.Map(deduction, validDeduction);
-            validDeduction.Status = "Disable";
+        //[HttpPost("delete")]
+        //public IActionResult DeleteDeduction([FromQuery] string id)
+        //{
+        //    var deduction = _mapper.Map<DeductionDto>(_deductionRepo.GetAll().Where(d => d.DeductionId == id).FirstOrDefault());
+        //    if (deduction == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    if (deduction.Status == "Disable")
+        //    {
+        //        return BadRequest("ID = " + id + " is already disabled");
+        //    }
+        //    var validDeduction = _deductionRepo.GetAll().Where(d => d.DeductionId == id).FirstOrDefault();
+        //    _mapper.Map(deduction, validDeduction);
+        //    validDeduction.Status = "Disable";
 
-            _deductionRepo.Update(validDeduction);
-            return Ok(validDeduction);
-        }
+        //    _deductionRepo.Update(validDeduction);
+        //    return Ok(validDeduction);
+        //}
     }
 }
