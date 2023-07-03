@@ -119,7 +119,12 @@ namespace YourNamespace
     {
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return default;
+            if (reader.TokenType == JsonTokenType.String && reader.TryGetDateTime(out DateTime dateTime))
+            {
+                return dateTime;
+            }
+
+            throw new JsonException("Invalid date format.");
         }
 
         public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
