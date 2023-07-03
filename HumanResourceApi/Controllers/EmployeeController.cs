@@ -89,7 +89,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return NotFound("Employee seems to be null");
                 }
-                var employeeList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => e.DepartmentId == employee.DepartmentId && e.Status.Equals("Active")).ToList());
+                var employeeList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => e.DepartmentId == employee.DepartmentId).ToList());
                 if (employeeList == null)
                 {
                     return NotFound("Employee in this department seems to be null");
