@@ -446,3 +446,43 @@ main{
 .news .col-lg-12:hover{
     box-shadow: none;
 }
+.managepage {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mininav {
+    display: flex;
+    width: 100%;
+    background-color: #9A3434;
+    color: white;
+  }
+  
+  .navbar-brand {
+    margin-right: auto;
+    padding: 10px;
+    color: #000000;
+  }
+  
+  nav {
+    display: flex;
+  }
+  
+  nav a {
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+  }
+  
+  nav a:hover {
+
+    color: #4b0a0a;
+  }
+  nav a.active {
+    background: var(--color-info-light);
+    color: var(--color-dark);
+    border: 1px solid var(--color-dark);
+    border-left: none;
+    border-radius: 30px 30px 30px 30px;
+}
+  

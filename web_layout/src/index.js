@@ -17,6 +17,9 @@ import Project from './pages/Project';
 import Statistics from './pages/Statistics';
 import Login from './pages/Login';
 import Sidebar from './component/Sidebar';
+import Employee from './pages/Manage/Employee';
+import Department from './pages/Manage/Department';
+import Jobs from './pages/Manage/Jobs';
 
 const router = createBrowserRouter([
   {
@@ -26,34 +29,18 @@ const router = createBrowserRouter([
       path: "",
       element: <Dasboard/>,
     },
-    {
-      path: "profile",
-      element: <Profile/>,
-    },
-    {
-      path: "project",
-      element: <Project/>,
-    },
-    {
-      path: "manage",
-      element: <Manage/>,
-    },
-    {
-      path: "statistics",
-      element: <Statistics/>,
-    },
-    {
-      path: "calendar",
-      element: <Calendar/>,
-    },
-    {
-      path: "groups",
-      element: <Groups/>,
-    },
-    {
-      path: "payment",
-      element: <Payment/>,
-    },
+    {path: "profile",element: <Profile/>},
+    {path: "project",element: <Project/>},
+    {path: "manage",element: <Manage/>,children:
+    [
+        {path: "employee",element: <Employee/>},
+        {path: "department",element: <Department/>},
+        {path: "jobs", element: <Jobs/>},
+                ]},
+    {path: "statistics",element: <Statistics/>,},
+    {path: "calendar",element: <Calendar/>},
+    {path: "groups",element: <Groups/>},
+    {path: "payment",element: <Payment/>},
     ]
   },
   {
