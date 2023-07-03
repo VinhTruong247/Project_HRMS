@@ -115,6 +115,7 @@ p {
 
 .error-message-fadeout {
     background-color: #ffe4e4;
+    border-radius: 1rem;
     padding: 10px;
     margin-top: 10px;
     animation: fadeout 3s linear forwards;
