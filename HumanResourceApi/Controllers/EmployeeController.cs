@@ -146,7 +146,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Invalid Email Format");
                 }
-                var validEmployee = _employeeRepo.GetAll().Where(e => e.EmployeeId == id && e.Status.Equals("active")).FirstOrDefault();
+                var validEmployee = _employeeRepo.GetAll().Where(e => e.EmployeeId == id).FirstOrDefault();
                 if (validEmployee == null)
                 {
                     return BadRequest();
