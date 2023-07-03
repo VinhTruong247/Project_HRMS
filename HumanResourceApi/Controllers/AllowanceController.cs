@@ -37,10 +37,10 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("get/allowance")]
-        public IActionResult GetAllowanceId([FromQuery] string id)
+        [HttpGet("get/allowance/{allowanceId}")]
+        public IActionResult GetAllowanceId(string allowanceId)
         {
-            var allowance = _mapper.Map<AllowanceDto>(_allowance.GetAll().Where(a => a.AllowanceId == id).FirstOrDefault());
+            var allowance = _mapper.Map<AllowanceDto>(_allowance.GetAll().Where(a => a.AllowanceId == allowanceId).FirstOrDefault());
             if (allowance == null)
             {
                 return BadRequest();
@@ -67,44 +67,44 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPut("update")]
-        public IActionResult UpdateAllowanceId([FromQuery] string id, [FromBody] UpdateAllowanceDto allowance)
+        [HttpPut("update/allowance/{allowanceId}")]
+        public IActionResult UpdateAllowanceId(string allowanceId, [FromBody] UpdateAllowanceDto allowance)
         {
             if (allowance == null)
             {
                 return BadRequest();
             }
-            var validAllowance = _allowance.GetAll().Where(a => a.AllowanceId == id).FirstOrDefault();
+            var validAllowance = _allowance.GetAll().Where(a => a.AllowanceId == allowanceId).FirstOrDefault();
             if (validAllowance == null)
             {
                 return BadRequest();
             }
             _mapper.Map(allowance, validAllowance);
-            validAllowance.AllowanceId = id;
+            validAllowance.AllowanceId = allowanceId;
 
             _allowance.Update(validAllowance);
             return Ok(validAllowance);
         }
 
-        [Authorize]
-        [HttpPost("delete")]
-        public IActionResult DeleteAllowance([FromQuery] string id)
-        {
-            var allowance = _mapper.Map<AllowanceDto>(_allowance.GetAll().Where(a => a.AllowanceId == id).FirstOrDefault());
-            if (allowance == null)
-            {
-                return BadRequest();
-            }
-            if (allowance.Status == "Disable")
-            {
-                return BadRequest("ID = " + id + " is already disabled");
-            }
-            var validAllowance = _allowance.GetAll().Where(a => a.AllowanceId == id).FirstOrDefault();
-            _mapper.Map(allowance, validAllowance);
-            validAllowance.Status = "Disable";
+        //[Authorize]
+        //[HttpPost("delete")]
+        //public IActionResult DeleteAllowance([FromQuery] string id)
+        //{
+        //    var allowance = _mapper.Map<AllowanceDto>(_allowance.GetAll().Where(a => a.AllowanceId == id).FirstOrDefault());
+        //    if (allowance == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    if (allowance.Status == "Disable")
+        //    {
+        //        return BadRequest("ID = " + id + " is already disabled");
+        //    }
+        //    var validAllowance = _allowance.GetAll().Where(a => a.AllowanceId == id).FirstOrDefault();
+        //    _mapper.Map(allowance, validAllowance);
+        //    validAllowance.Status = "Disable";
 
-            _allowance.Update(validAllowance);
-            return Ok(validAllowance);
-        }
+        //    _allowance.Update(validAllowance);
+        //    return Ok(validAllowance);
+        //}
     }
 }

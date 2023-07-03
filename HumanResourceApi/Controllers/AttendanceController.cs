@@ -35,10 +35,10 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("get/attendance")]
-        public IActionResult GetAttendanceId([FromBody] string id)
+        [HttpGet("get/attendance/{employeeId}")]
+        public IActionResult GetAttendanceId(string employeeId)
         {
-            var attendance = _mapper.Map<AttendanceDto>(_attendance.GetAll().Where(a => a.EmployeeId == id).FirstOrDefault());
+            var attendance = _mapper.Map<AttendanceDto>(_attendance.GetAll().Where(a => a.EmployeeId == employeeId).FirstOrDefault());
             if (attendance == null)
             {
                 return BadRequest();
@@ -65,44 +65,44 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPut("update")]
-        public IActionResult UpdateAttendance([FromQuery] string id, [FromBody] UpdateAttendanceDto attendance)
+        [HttpPut("update/attendance/{employeeId}")]
+        public IActionResult UpdateAttendance(string employeeId, [FromBody] UpdateAttendanceDto attendance)
         {
             if (attendance == null)
             {
                 return BadRequest();
             }
-            var validAttendance = _attendance.GetAll().Where(a => a.EmployeeId == id).FirstOrDefault();
+            var validAttendance = _attendance.GetAll().Where(a => a.EmployeeId == employeeId).FirstOrDefault();
             if (validAttendance == null)
             {
                 return BadRequest();
             }
             _mapper.Map(attendance, validAttendance);
-            validAttendance.EmployeeId = id;
+            validAttendance.EmployeeId = employeeId;
 
             _attendance.Update(validAttendance);
             return Ok(validAttendance);
         }
 
-        [Authorize]
-        [HttpPost("delete")]
-        public IActionResult DeleteAttendance([FromQuery] string id)
-        {
-            var attendance = _mapper.Map<AttendanceDto>(_attendance.GetAll().Where(a => a.EmployeeId == id).FirstOrDefault());
-            if (attendance == null)
-            {
-                return BadRequest();
-            }
-            if (attendance.AttendanceStatus == "Disable")
-            {
-                return BadRequest("ID = " + id + " is already disabled");
-            }
-            var validAttendance = _attendance.GetAll().Where(a => a.EmployeeId == id).FirstOrDefault();
-            _mapper.Map(attendance, validAttendance);
-            validAttendance.AttendanceStatus = "Disable";
+        //[Authorize]
+        //[HttpPost("delete")]
+        //public IActionResult DeleteAttendance([FromQuery] string id)
+        //{
+        //    var attendance = _mapper.Map<AttendanceDto>(_attendance.GetAll().Where(a => a.EmployeeId == id).FirstOrDefault());
+        //    if (attendance == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    if (attendance.AttendanceStatus == "Disable")
+        //    {
+        //        return BadRequest("ID = " + id + " is already disabled");
+        //    }
+        //    var validAttendance = _attendance.GetAll().Where(a => a.EmployeeId == id).FirstOrDefault();
+        //    _mapper.Map(attendance, validAttendance);
+        //    validAttendance.AttendanceStatus = "Disable";
 
-            _attendance.Update(validAttendance);
-            return Ok(validAttendance);
-        }
+        //    _attendance.Update(validAttendance);
+        //    return Ok(validAttendance);
+        //}
     }
 }

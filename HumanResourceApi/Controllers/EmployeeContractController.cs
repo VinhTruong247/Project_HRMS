@@ -36,10 +36,10 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("get/contract")]
-        public IActionResult GetContract([FromQuery] string id)
+        [HttpGet("get/contract/{contractId}")]
+        public IActionResult GetContract(string contractId)
         {
-            var contract = _mapper.Map<EmployeeContractDto>(_employeeContractRepo.GetAll().Where(c => c.ContractId == id));
+            var contract = _mapper.Map<EmployeeContractDto>(_employeeContractRepo.GetAll().Where(c => c.ContractId == contractId));
             if (contract == null)
             {
                 return BadRequest();
@@ -66,44 +66,44 @@ namespace HumanResourceApi.Controllers
         }
 
         [Authorize]
-        [HttpPut("update")]
-        public IActionResult UpdateContractId([FromQuery] string id, [FromBody] UpdateEmployeeContractDto contract)
+        [HttpPut("update/contract/{contractId}")]
+        public IActionResult UpdateContractId(string contractId, [FromBody] UpdateEmployeeContractDto contract)
         {
             if (contract == null)
             {
                 return BadRequest();
             }
-            var validContract = _employeeContractRepo.GetAll().Where(c => c.ContractId == id).FirstOrDefault();
+            var validContract = _employeeContractRepo.GetAll().Where(c => c.ContractId == contractId).FirstOrDefault();
             if (validContract == null)
             {
                 return BadRequest();
             }
             _mapper.Map(contract, validContract);
-            validContract.ContractId = id;
+            validContract.ContractId = contractId;
 
             _employeeContractRepo.Update(validContract);
             return Ok(validContract);
         }
 
-        [Authorize]
-        [HttpPost("delete")]
-        public IActionResult DeleteContract([FromQuery] string id)
-        {
-            var contract = _mapper.Map<EmployeeContractDto>(_employeeContractRepo.GetAll().Where(c => c.ContractId == id).FirstOrDefault());
-            if (contract == null)
-            {
-                return BadRequest();
-            }
-            if (contract.Status == "Disable")
-            {
-                return BadRequest("ID = " + id + " is already disabled");
-            }
-            var validContract = _employeeContractRepo.GetAll().Where(c => c.ContractId == id).FirstOrDefault();
-            _mapper.Map(contract, validContract);
-            validContract.Status = "Disable";
+        //[Authorize]
+        //[HttpPost("delete")]
+        //public IActionResult DeleteContract([FromQuery] string id)
+        //{
+        //    var contract = _mapper.Map<EmployeeContractDto>(_employeeContractRepo.GetAll().Where(c => c.ContractId == id).FirstOrDefault());
+        //    if (contract == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    if (contract.Status == "Disable")
+        //    {
+        //        return BadRequest("ID = " + id + " is already disabled");
+        //    }
+        //    var validContract = _employeeContractRepo.GetAll().Where(c => c.ContractId == id).FirstOrDefault();
+        //    _mapper.Map(contract, validContract);
+        //    validContract.Status = "Disable";
 
-            _employeeContractRepo.Update(validContract);
-            return Ok(validContract);
-        }
+        //    _employeeContractRepo.Update(validContract);
+        //    return Ok(validContract);
+        //}
     }
 }
