@@ -10,6 +10,7 @@ using HumanResourceApi.DTO.EmployeeContract;
 using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.DTO.Job;
 using HumanResourceApi.DTO.Leave;
+using HumanResourceApi.DTO.Project;
 using HumanResourceApi.DTO.Skill;
 using HumanResourceApi.DTO.SkillEmployee;
 using HumanResourceApi.DTO.Users;
@@ -78,6 +79,10 @@ namespace HumanResourceApi.Helper
             CreateMap<DepartmentMemberList, DepartmentMemberDto>()
                 .ReverseMap();
             CreateMap<DepartmentMemberList, UpdateDepartmentMemberDto>()
+                .ReverseMap();
+            CreateMap<Project, ProjectDto>()
+                .ReverseMap();
+            CreateMap<Project, UpdateProjectDto>()
                 .ReverseMap();
         }
     }
