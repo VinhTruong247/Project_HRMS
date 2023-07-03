@@ -1,9 +1,14 @@
-﻿namespace HumanResourceApi.DTO.Skill
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HumanResourceApi.DTO.Skill
 {
     public class UpdateSkillDto
     {
+        [Required]
         public string SkillName { get; set; }
+        [Required]
         public string SkillDescription { get; set; }
+        [Required]
         public string Status { get; set; }
     }
 }

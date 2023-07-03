@@ -4,6 +4,7 @@ using HumanResourceApi.DTO.Attendance;
 using HumanResourceApi.DTO.Deduction;
 using HumanResourceApi.DTO.DeductionSummary;
 using HumanResourceApi.DTO.Department;
+using HumanResourceApi.DTO.DepartmentMemberList;
 using HumanResourceApi.DTO.Employee;
 using HumanResourceApi.DTO.EmployeeContract;
 using HumanResourceApi.DTO.Experience;
@@ -73,6 +74,10 @@ namespace HumanResourceApi.Helper
             CreateMap<DeductionSumary, DeductionSumaryDto>()
                 .ReverseMap();
             CreateMap<DeductionSumary, UpdateDeductionSumaryDto>()
+                .ReverseMap();
+            CreateMap<DepartmentMemberList, DepartmentMemberDto>()
+                .ReverseMap();
+            CreateMap<DepartmentMemberList, UpdateDepartmentMemberDto>()
                 .ReverseMap();
         }
     }
