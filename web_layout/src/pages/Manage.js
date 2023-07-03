@@ -47,7 +47,6 @@ function Manage(props) {
             bankAccountNumber: event.target.elements.bankAccountNumber.value,
             bankAccountName: event.target.elements.bankAccountName.value,
             bankName: event.target.elements.bankName.value,
-            userId: event.target.elements.userId.value,
             jobId: event.target.elements.jobId.value,
             departmentId: event.target.elements.departmentId.value,
             status: event.target.elements.status.value,
@@ -85,11 +84,9 @@ function Manage(props) {
     };
 
     const handleStatusChange = (event) => {
-        setUpdateEmployee({
-          ...updateEmployee,
-          status: event.target.value
-        });
-      };
+        const updatedEmployee = { ...updateEmployee, status: event.target.value };
+        setUpdateEmployee(updatedEmployee);
+    };
 
     const handleUpdate = (event) => {
         event.preventDefault();
@@ -107,7 +104,6 @@ function Manage(props) {
             bankAccountNumber: event.target.elements.bankAccountNumber.value,
             bankAccountName: event.target.elements.bankAccountName.value,
             bankName: event.target.elements.bankName.value,
-            userId: event.target.elements.userId.value,
             jobId: event.target.elements.jobId.value,
             departmentId: event.target.elements.departmentId.value,
             status: event.target.elements.status.value,
@@ -178,8 +174,7 @@ function Manage(props) {
                                 <td>{employee.jobId}</td>
                                 <td>{employee.status}</td>
                                 <td>
-                                    <button onClick={() => handleEdit(employee)}>Edit</button> |
-                                    {/* <button onClick={() => handleDisable(employee.employeeId)}>Disable</button> */}
+                                    <button onClick={() => handleEdit(employee)}>Edit</button>
                                 </td>
                             </tr>
                         ))}
@@ -194,23 +189,23 @@ function Manage(props) {
 
                         <div className='row name'>
                             <div class="col-6 mt-3">
-                                <label>Employee ID:</label>
-                                <input type="text" name="employeeId" placeholder='EP######' />
-                            </div>
-                            <div class="col-6 mt-3">
-                                <label>Department:</label>
-                                <input type="text" name="departmentId" placeholder='DP######' />
-                            </div>
-                        </div>
-
-                        <div className='row name'>
-                            <div class="col-6 mt-3">
                                 <label>First Name:</label>
                                 <input type="text" name="firstName" placeholder='First Name' />
                             </div>
                             <div class="col-6 mt-3">
                                 <label>Last Name:</label>
                                 <input type="text" name="lastName" placeholder='Last Name' />
+                            </div>
+                        </div>
+
+                        <div className='row name'>
+                            <div class="col-6 mt-3">
+                                <label>Employee ID:</label>
+                                <input type="text" name="employeeId" placeholder='EP######' />
+                            </div>
+                            <div class="col-6 mt-3">
+                                <label>Phone Number:</label>
+                                <input type="text" name="phoneNumber" placeholder='1234-567-890' />
                             </div>
                         </div>
 
@@ -232,9 +227,6 @@ function Manage(props) {
                         <label>Email:</label>
                         <input type="email" name="email" placeholder='example@mail.com' />
 
-                        <label>Phone Number:</label>
-                        <input type="text" name="phoneNumber" placeholder='1234-567-890' />
-
                         <div className='row name'>
                             <div class="col-6 mt-3">
                                 <label>Bank Account Number:</label>
@@ -255,16 +247,20 @@ function Manage(props) {
                                 <input type="text" name="jobId" placeholder='JB######' />
                             </div>
                             <div class="col-6 mt-3">
-                                <label>User ID:</label>
-                                <input type="text" name="userId" placeholder='US######' />
+                                <label>Department:</label>
+                                <input type="text" name="departmentId" placeholder='DP######' />
                             </div>
                         </div>
 
-                        <label>Status:</label>
-                        <select name="status">
-                            <option value="Active">Active</option>
-                            <option value="Disable">Disable</option>
-                        </select>
+                        <div className='row'>
+                            <div class="col-6 mt-3">
+                                <label>Status:</label>
+                                <select name="status">
+                                    <option value="Active">Active</option>
+                                    <option value="Disable">Disable</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <div className='row btn'>
                             <div class="col-5 mt-3">
@@ -303,51 +299,44 @@ function Manage(props) {
                                 <input type="date" name="dateOfBirth" defaultValue={updateEmployee.dateOfBirth} />
                             </div>
                         </div>
+
+                        <label>Address:</label>
+                        <input type="text" name="employeeAddress" defaultValue={updateEmployee.employeeAddress} />
+
+                        <label>Email:</label>
+                        <input type="email" name="email" defaultValue={updateEmployee.email} />
+
+                        <label>Phone Number:</label>
+                        <input type="text" name="phoneNumber" defaultValue={updateEmployee.phoneNumber} />
+
                         <div className='row'>
                             <div class="col-6 mt-3">
-                                <label>Address:</label>
-                                <input type="text" name="employeeAddress" defaultValue={updateEmployee.employeeAddress} />
-                            </div>
-                            <div class="col-6 mt-3">
-                                <label>Email:</label>
-                                <input type="email" name="email" defaultValue={updateEmployee.email} />
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div class="col-6 mt-3">
-                                <label>Phone Number:</label>
-                                <input type="text" name="phoneNumber" defaultValue={updateEmployee.phoneNumber} />
+                                <label>Bank Account Name:</label>
+                                <input type="text" name="bankAccountName" defaultValue={updateEmployee.bankAccountName} />
+
                             </div>
                             <div class="col-6 mt-3">
                                 <label>Bank Account Number:</label>
                                 <input type="text" name="bankAccountNumber" defaultValue={updateEmployee.bankAccountNumber} />
                             </div>
                         </div>
+
+                        <label>Bank Name:</label>
+                        <input type="text" name="bankName" defaultValue={updateEmployee.bankName} />
+
                         <div className='row'>
-                            <div class="col-6 mt-3">
-                                <label>Bank Account Name:</label>
-                                <input type="text" name="bankAccountName" defaultValue={updateEmployee.bankAccountName} />
-                            </div>
-                            <div class="col-6 mt-3">
-                                <label>Bank Name:</label>
-                                <input type="text" name="bankName" defaultValue={updateEmployee.bankName} />
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div class="col-6 mt-3">
-                                <label>User ID:</label>
-                                <input type="text" name="userId" defaultValue={updateEmployee.userId} />
-                            </div>
                             <div class="col-6 mt-3">
                                 <label>Job ID:</label>
                                 <input type="text" name="jobId" defaultValue={updateEmployee.jobId} />
                             </div>
-                        </div>
-                        <div className='row'>
+
                             <div class="col-6 mt-3">
                                 <label>Department ID:</label>
                                 <input type="text" name="departmentId" defaultValue={updateEmployee.departmentId} />
                             </div>
+                        </div>
+
+                        <div className='row'>
                             <div class="col-6 mt-3">
                                 <label>Status:</label>
                                 <select name="status" value={updateEmployee.status} onChange={handleStatusChange}>

@@ -323,7 +323,7 @@ aside .sidebar a:hover.active span {
     padding-bottom: 3rem;
 }
 
-.manager .table {
+.manager table {
     border: 1px black;
 }
 
@@ -391,7 +391,17 @@ aside .sidebar a:hover.active span {
     color: #2a2a2a;
 }
 
+.manager .table thead, .manager .table tbody {
+    font-weight: 300;
+    font-size: 1.1rem;
+}
+
 .table-striped>tbody>tr:nth-of-type(odd)>* {
+    --bs-table-bg-type: rgba(154, 52, 52, 0.85);
+    color: white!important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>td>button {
     --bs-table-bg-type: rgba(154, 52, 52, 0.85);
     color: white!important;
 }
