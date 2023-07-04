@@ -45,9 +45,9 @@ function Sidebar() {
             <h3>Statistics</h3>
           </NavLink>
 
-          <NavLink to="/calendar" className="nav_link">
+          <NavLink to="/timeline" className="nav_link">
             <span className="material-icons-outlined">insert_invitation</span>
-            <h3>Calendar</h3>
+            <h3>Timeline</h3>
           </NavLink>
 
           <NavLink to="/groups" className="nav_link">

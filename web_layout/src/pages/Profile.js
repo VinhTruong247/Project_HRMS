@@ -25,7 +25,7 @@ function EmployeeCard(props) {
     return (
         <div className="card">
             <div className="card-body">
-                <div className="d-flex flex-column align-items-center text-center">
+                <div className="d-flex flex-column  align-items-center text-center text-xxl">
                     <img src="#" alt="employees-img" className="rounded-circle" />
                     <div className="mt-3">
                         <h4>{props.firstName} {props.lastName}</h4>

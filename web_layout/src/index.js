@@ -8,7 +8,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Dasboard from './pages/Dashboard';
-import Calendar from './pages/Calendar';
+import Timeline from './pages/Timeline';
 import Groups from './pages/Groups';
 import Manage from './pages/Manage';
 import Payment from './pages/Payment';
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         {path: "jobs", element: <Jobs/>},
                 ]},
     {path: "statistics",element: <Statistics/>,},
-    {path: "calendar",element: <Calendar/>},
+    {path: "timeline",element: <Timeline/>},
     {path: "groups",element: <Groups/>},
     {path: "payment",element: <Payment/>},
     ]

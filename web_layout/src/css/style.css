@@ -113,6 +113,29 @@ p {
     color: var(--color-warning);
 }
 
+.error-message-fadeout {
+    background-color: #ffe4e4;
+    border-radius: 1rem;
+    padding: 10px;
+    margin-top: 10px;
+    animation: fadeout 3s linear forwards;
+  }
+
+  @keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
 
 /*<!-------------------- Start Side Menu -------------------->*/
 
@@ -313,155 +336,118 @@ aside .sidebar a:hover.active span {
 }
 
 
+/*<!-------------------- Manage -------------------->*/
 
 
-/*<!-------------------- Container News -------------------->*/
-
-
-.news{
-    display: grid;
+.manager {
+    margin-top: 1rem;
+    margin-left: 2rem;
     width: 100%;
-    margin: 0;
-    padding: 1rem;
-    margin-top: 0.8rem;
 }
 
-main{
-    margin-left: 1rem;
-    margin-top: 2rem;
-}
-
-.news .col-lg-12{
-    background: white;
-    border: 1px solid var(--color-dark);
-    height: 214px;
-    border-radius: var(--box-border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 1.5rem;
-    transition: all 300ms ease;
-}
-
-.news .col-lg-12 .employee{
-    margin-left: 10px;
-}
-
-.news .col-lg-12 .row{
-    margin-left: 10px;
-    margin-top: 2rem;
-    justify-content: center;
-}
-
-.news .col-lg-12:hover{
-    box-shadow: none;
-}
-/*<!-------------------- Manage Content -------------------->*/
 
 .managepage {
     display: flex;
     flex-direction: column;
-  }
-  
-  .mininav {
+    width: 100%;
+}
+
+.mininav {
     display: flex;
     width: 100%;
     background-color: #9A3434;
+    margin-left: 1rem;
+    margin-right: 2rem;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
     color: white;
     gap: 2rem;
     border-radius: 30px 30px 30px 30px;
-    
-}
-  
-  .navbar-brand {
-    margin-right: auto;
-    padding: 10px;
-    color: #000000;
-    font-weight: 500;
-    font-size: 40px;
-  }
-  
-  nav {
-    display: flex;
-  }
-  
-  nav a {
-    padding: 10px;
-    color: white;
-    text-decoration: none;
-  }
-  
-  nav a:hover {
-
-    color: #4b0a0a;
-  }
-  nav a.active {
-    background: var(--color-info-light);
-    color: var(--color-dark);
-    border: 1px solid var(--color-dark);
-    border-left: none;
-    border-radius: 30px 30px 30px 30px;
-    transition:2ms;
-  }
-
-/*<!-------------------- Employee Management -------------------->*/
-
-
-.manager {
-    position: relative;
-    margin-top: 3rem;
-    margin-left: 2rem;
-    padding-bottom: 3rem;
+    box-shadow: var(--box-shadow);
 }
 
-.table {
+.manager table {
     border: 1px black;
+    width: 100%;
 }
 
-.table tr button{
+.manager .table tr button {
     background-color: rgba(0, 0, 0, 0);
 }
 
-.form {
+.manager .form {
     background-color: white;
     width: 35rem;
     padding: 2rem;
     border-radius: var(--box-border-radius);
 }
 
+.manager .btn_create{
+    margin: 1rem;
+    width: fit-content;
+    height: 3.4rem;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: var(--color-primary);
+    border-radius: var(--box-border-radius);
+    border: 1px solid transparent;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.manager .btn_create:hover {
+    background-color: #fff;
+    border: 1px solid #2a2a2a;
+    color: #2a2a2a;
+}
+
 .form-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.form input,.form select{
+.form-container .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.manager .form input,
+.manager .form select {
     width: 100%;
     height: 2rem;
     line-height: 44px;
     padding: 1rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    font-size: 14px;
+    font-size: 16px;
     font-style: italic;
-    font-weight: 500;
-    color: #aaa;
+    font-weight: 550;
+    color: black;
     border-radius: 0px;
     border: 1px solid #7a7a7a;
     box-shadow: none;
 }
 
-.row.btn{
+.manager .row.btn {
     display: inline-flex;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
-.btn button{
+
+.manager .row.btn button {
     width: 8rem;
     height: 3.35rem;
     line-height: 51px;
@@ -473,24 +459,97 @@ main{
     transition: all 0.3s;
 }
 
-.row.btn button:hover {
+.manager .row.btn button:hover {
     background-color: #fff;
     border: 1px solid #2a2a2a;
     color: #2a2a2a;
 }
 
-.table thead,.table tbody {
+.manager .table thead,
+.manager .table tbody {
     font-weight: 300;
     font-size: 1.1rem;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd)>* {
-    --bs-table-bg-type: rgba(154, 52, 52, 0.85);
-    color: white!important;
+.table>tbody>tr:nth-of-type(odd)>* {
+    --bs-table-bg-type: rgba(154, 52, 52);
+    color: white !important;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd)>td>button {
-    --bs-table-bg-type: rgba(154, 52, 52, 0.85);
-    color: white!important;
+.table>tbody>tr:nth-of-type(odd)>td>button {
+    --bs-table-bg-type: rgba(154, 52, 52);
+    color: white !important;
 }
-  
+
+.navbar-brand {
+    margin-right: auto;
+    padding: 10px;
+    color: #000000;
+    font-weight: 500;
+    font-size: 40px;
+}
+
+nav {
+    display: flex;
+}
+
+nav a {
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+nav a:hover {
+
+    color: #4b0a0a;
+}
+
+nav a.active {
+    background: var(--color-info-light);
+    color: var(--color-dark);
+    border: 1px solid var(--color-dark);
+    border-left: none;
+    border-radius: 30px 30px 30px 30px;
+    transition: 2ms;
+}
+
+
+/*<!-------------------- Container News -------------------->*/
+
+
+.news {
+    display: grid;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    margin-top: 0.8rem;
+}
+
+main {
+    margin-left: 1rem;
+    margin-top: 2rem;
+}
+
+.news .col-lg-12 {
+    background: white;
+    border: 1px solid var(--color-dark);
+    height: 214px;
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: all 300ms ease;
+}
+
+.news .col-lg-12 .employee {
+    margin-left: 10px;
+}
+
+.news .col-lg-12 .row {
+    margin-left: 10px;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+.news .col-lg-12:hover {
+    box-shadow: none;
+}
