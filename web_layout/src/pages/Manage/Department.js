@@ -52,7 +52,7 @@ function Department(props) {
 
 
 
-    //  CRATE NEW DeupdateDepartment    
+    //  CRATE NEW DeupdateDepartment
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
@@ -112,7 +112,7 @@ function Department(props) {
 
 
 
-    //  UPDATE NEW Department        
+    //  UPDATE NEW Department
     const handleUpdate = (event) => {
         event.preventDefault();
         const formData = {

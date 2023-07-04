@@ -52,7 +52,7 @@ function Employee(props) {
 
 
 
-    //  CRATE NEW EMPLOYEE    
+    //  CRATE NEW EMPLOYEE
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
@@ -167,7 +167,7 @@ function Employee(props) {
 
 
 
-    //  UPDATE NEW EMPLOYEE        
+    //  UPDATE NEW EMPLOYEE
     const handleUpdate = (event) => {
         event.preventDefault();
         const formData = {

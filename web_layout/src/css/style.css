@@ -123,16 +123,18 @@ p {
 
   @keyframes fadeout {
     0% {
-      opacity: 1;
+        opacity: 1;
     }
+
     90% {
-      opacity: 1;
+        opacity: 1;
     }
+
     100% {
-      opacity: 0;
-      display: none;
+        opacity: 0;
+        display: none;
     }
-  }
+}
 
 
 /*<!-------------------- Start Side Menu -------------------->*/
@@ -338,17 +340,36 @@ aside .sidebar a:hover.active span {
 
 
 .manager {
-    position: relative;
-    margin-top: 3rem;
+    margin-top: 1rem;
     margin-left: 2rem;
-    padding-bottom: 3rem;
+}
+
+
+.managepage {
+    display: flex;
+    flex-direction: column;
+}
+
+.mininav {
+    display: flex;
+    width: 100%;
+    background-color: #9A3434;
+    margin-left: 1rem;
+    margin-right: 2rem;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: white;
+    gap: 2rem;
+    border-radius: 30px 30px 30px 30px;
+    box-shadow: var(--box-shadow);
 }
 
 .manager table {
     border: 1px black;
 }
 
-.manager .table tr button{
+.manager .table tr button {
     background-color: rgba(0, 0, 0, 0);
 }
 
@@ -360,11 +381,12 @@ aside .sidebar a:hover.active span {
 }
 
 .manager .btn_create{
-
     margin: 1rem;
-    width: 8rem;
+    width: fit-content;
     height: 3.4rem;
     align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
     background-color: var(--color-primary);
     border-radius: var(--box-border-radius);
     border: 1px solid transparent;
@@ -379,11 +401,11 @@ aside .sidebar a:hover.active span {
 }
 
 .form-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -396,9 +418,10 @@ aside .sidebar a:hover.active span {
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 5px;
-  }
+}
 
-.manager .form input, .manager .form select{
+.manager .form input,
+.manager .form select {
     width: 100%;
     height: 2rem;
     line-height: 44px;
@@ -414,14 +437,14 @@ aside .sidebar a:hover.active span {
     box-shadow: none;
 }
 
-.manager .row.btn{
+.manager .row.btn {
     display: inline-flex;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
 
-.manager .row.btn button{
+.manager .row.btn button {
     width: 8rem;
     height: 3.35rem;
     line-height: 51px;
@@ -439,26 +462,59 @@ aside .sidebar a:hover.active span {
     color: #2a2a2a;
 }
 
-.manager .table thead, .manager .table tbody {
+.manager .table thead,
+.manager .table tbody {
     font-weight: 300;
     font-size: 1.1rem;
 }
 
 .table>tbody>tr:nth-of-type(odd)>* {
     --bs-table-bg-type: rgba(154, 52, 52);
-    color: white!important;
+    color: white !important;
 }
 
 .table>tbody>tr:nth-of-type(odd)>td>button {
     --bs-table-bg-type: rgba(154, 52, 52);
-    color: white!important;
+    color: white !important;
+}
+
+.navbar-brand {
+    margin-right: auto;
+    padding: 10px;
+    color: #000000;
+    font-weight: 500;
+    font-size: 40px;
+}
+
+nav {
+    display: flex;
+}
+
+nav a {
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+nav a:hover {
+
+    color: #4b0a0a;
+}
+
+nav a.active {
+    background: var(--color-info-light);
+    color: var(--color-dark);
+    border: 1px solid var(--color-dark);
+    border-left: none;
+    border-radius: 30px 30px 30px 30px;
+    transition: 2ms;
 }
 
 
 /*<!-------------------- Container News -------------------->*/
 
 
-.news{
+.news {
     display: grid;
     width: 100%;
     margin: 0;
@@ -466,12 +522,12 @@ aside .sidebar a:hover.active span {
     margin-top: 0.8rem;
 }
 
-main{
+main {
     margin-left: 1rem;
     margin-top: 2rem;
 }
 
-.news .col-lg-12{
+.news .col-lg-12 {
     background: white;
     border: 1px solid var(--color-dark);
     height: 214px;
@@ -481,17 +537,17 @@ main{
     transition: all 300ms ease;
 }
 
-.news .col-lg-12 .employee{
+.news .col-lg-12 .employee {
     margin-left: 10px;
 }
 
-.news .col-lg-12 .row{
+.news .col-lg-12 .row {
     margin-left: 10px;
     margin-top: 2rem;
     justify-content: center;
 }
 
-.news .col-lg-12:hover{
+.news .col-lg-12:hover {
     box-shadow: none;
 }
 /*<!-------------------- Manage Content -------------------->*/
