@@ -11,6 +11,6 @@ namespace HumanResourceApi.DTO.Skill
         [Required]
         public string SkillDescription { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace HumanResourceApi.DTO.DeductionSummary
         [Required]
         public decimal? Amount { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
     }
 }

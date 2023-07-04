@@ -31,6 +31,6 @@ namespace HumanResourceApi.DTO.Employee
         [Required]
         public string DepartmentId { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
     }
 }

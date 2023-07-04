@@ -66,7 +66,7 @@ namespace HumanResourceApi.Controllers
             try
             {
                 var employee = _mapper.Map<EmployeeDto>(_userRepo.getEmployee(userId));
-                if (employee == null)
+                if (employee is null)
                 {
                     return NotFound("Employee seems to be null");
                 }

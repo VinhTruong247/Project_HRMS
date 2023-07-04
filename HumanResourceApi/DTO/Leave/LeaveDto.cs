@@ -17,7 +17,7 @@ namespace HumanResourceApi.DTO.Leave
         [Required]
         public string Reason { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
         [Required]
         public double? LeaveHours { get; set; }
     }

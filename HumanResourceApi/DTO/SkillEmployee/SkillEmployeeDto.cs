@@ -13,6 +13,6 @@ namespace HumanResourceApi.DTO.SkillEmployee
         [Required]
         public string SkillId { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
     }
 }

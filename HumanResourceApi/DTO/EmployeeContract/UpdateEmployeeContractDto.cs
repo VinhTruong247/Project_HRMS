@@ -17,7 +17,7 @@ namespace HumanResourceApi.DTO.EmployeeContract
         [Required]
         public decimal? BaseSalary { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
         [Required]
         public double? PercentDeduction { get; set; }
         [Required]
