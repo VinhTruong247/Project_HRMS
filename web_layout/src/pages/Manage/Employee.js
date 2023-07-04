@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 function Employee(props) {
     const [data, setData] = useState([]);
     const [showCreateForm, setShowForm] = useState(false);
-    const token = localStorage.getItem('jwtToken');
+    const token = JSON.parse(localStorage.getItem('jwtToken'));
     const [updateEmployee, setUpdateEmployee] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState('');
@@ -14,6 +14,8 @@ function Employee(props) {
     };
 
     const timeoutRef = useRef(null);
+
+    console.log(token.token)
 
     useEffect(() => {
         if (validationError) {
@@ -32,7 +34,7 @@ function Employee(props) {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token.token}`
             }
         })
             .then(response => {
@@ -141,7 +143,7 @@ function Employee(props) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token.token}`
             },
             body: JSON.stringify(formData)
         })
@@ -256,7 +258,7 @@ function Employee(props) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token.token}`
             },
             body: JSON.stringify(formData)
         })

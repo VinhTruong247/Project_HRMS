@@ -2,6 +2,7 @@
 using HumanResourceApi.DTO.Employee;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using System.Text.RegularExpressions;
@@ -23,6 +24,7 @@ namespace HumanResourceApi.Controllers
             _userRepo = userRepo;
         }
 
+        [Authorize]
         [HttpGet("employees")]
         public IActionResult GetAllEmployees()
         {

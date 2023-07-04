@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 function Department(props) {
     const [data, setData] = useState([]);
     const [showCreateForm, setShowForm] = useState(false);
-    const token = localStorage.getItem('jwtToken');
+    const token = JSON.parse(localStorage.getItem('jwtToken'));
     const [updateDepartment, setUpdateDepartment] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState('');
@@ -32,7 +32,7 @@ function Department(props) {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token.token}`
             }
         })
             .then(response => {
@@ -44,6 +44,7 @@ function Department(props) {
             })
             .then(departments => {
                 setData(departments)
+                console.log(departments)
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -52,11 +53,11 @@ function Department(props) {
 
 
 
-    //  CRATE NEW DeupdateDepartment
+    //  CRATE NEW DEPARTMENT
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
-            DepartmentId: event.target.elements.departmentId.value,
+            departmentId: event.target.elements.departmentId.value,
             departmentName: event.target.elements.departmentName.value,
             description: event.target.elements.description.value,
             status: event.target.elements.status.value,
