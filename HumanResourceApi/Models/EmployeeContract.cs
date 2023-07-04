@@ -17,7 +17,7 @@ namespace HumanResourceApi.Models
         public DateTime? EndDate { get; set; }
         public string Job { get; set; }
         public decimal? BaseSalary { get; set; }
-        public string Status { get; set; }
+        public bool? Status { get; set; }
         public double? PercentDeduction { get; set; }
         public string SalaryType { get; set; }
         public string ContractType { get; set; }

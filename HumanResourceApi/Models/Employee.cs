@@ -16,6 +16,7 @@ namespace HumanResourceApi.Models
             PaySlips = new HashSet<PaySlip>();
             Reports = new HashSet<Report>();
             SkillEmployees = new HashSet<SkillEmployee>();
+            Users = new HashSet<User>();
         }
 
         public string EmployeeId { get; set; }
@@ -31,7 +32,7 @@ namespace HumanResourceApi.Models
         public string BankName { get; set; }
         public string JobId { get; set; }
         public string DepartmentId { get; set; }
-        public string Status { get; set; }
+        public bool? Status { get; set; }
 
         public virtual Department Department { get; set; }
         public virtual Job Job { get; set; }
