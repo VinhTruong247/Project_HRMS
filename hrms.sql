@@ -7,14 +7,14 @@ CREATE TABLE Department (
   department_id NVARCHAR(10) PRIMARY KEY,
   department_name NVARCHAR(200),
   description NVARCHAR(500),
-  status NVARCHAR(10)
+  status BIT
 );
 
 -- Create Roles table
 CREATE TABLE Roles (
   role_id NVARCHAR(10) PRIMARY KEY,
   role_name NVARCHAR(50),
-  status NVARCHAR(10)
+  status BIT
 );
 
 -- Create Permission table
@@ -22,14 +22,14 @@ CREATE TABLE Permission (
   permission_id NVARCHAR(10) PRIMARY KEY,
   permission_des NVARCHAR(500),
   permission_displayName NVARCHAR(200),
-  status NVARCHAR(10)
+  status BIT
 );
 
 -- Create GrantedPermission table
 CREATE TABLE GrantedPermission (
   role_id NVARCHAR(10),
   permission_id NVARCHAR(10),
-  status NVARCHAR(10),
+  status BIT,
   FOREIGN KEY (role_id) REFERENCES Roles(role_id),
   FOREIGN KEY (permission_id) REFERENCES Permission(permission_id)
 );
@@ -39,7 +39,7 @@ CREATE TABLE Skill (
   skill_id NVARCHAR(10) PRIMARY KEY,
   skill_name NVARCHAR(100),
   skill_description NVARCHAR(500),
-  status NVARCHAR(10)
+  status BIT
 );
 
 -- Create Allowances table
@@ -47,7 +47,7 @@ CREATE TABLE Allowances (
   allowance_id NVARCHAR(10) PRIMARY KEY,
   allowance_type NVARCHAR(200),
   amount DECIMAL(18, 2),
-  status NVARCHAR(10)
+  status BIT
 );
 
 -- Create Deduction table
@@ -55,7 +55,7 @@ CREATE TABLE Deduction (
   deduction_id NVARCHAR(10) PRIMARY KEY,
   deduction_type NVARCHAR,
   amount DECIMAL(18, 2),
-  status NVARCHAR(10)
+  status BIT
 );
 
 -- Create Job table
@@ -64,7 +64,7 @@ CREATE TABLE Job (
   job_title NVARCHAR(200),
   job_description NVARCHAR(500),
   start_date DATE,
-  status NVARCHAR(200),
+  status BIT,
   base_salary_per_hour DECIMAL(18, 2),
   allowance_id NVARCHAR(10),
   bonus DECIMAL(18, 2),
@@ -86,7 +86,7 @@ CREATE TABLE Employee (
   BankName NVARCHAR(50),
   job_id NVARCHAR(10),
   department_id NVARCHAR(10),
-  status NVARCHAR(10),
+  status BIT,
   FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
@@ -99,7 +99,7 @@ CREATE TABLE Users (
   password NVARCHAR(50),
   Email NVARCHAR(100),
   role_id NVARCHAR(10),
-  status NVARCHAR,
+  status BIT,
   FOREIGN KEY (role_id) REFERENCES Roles(role_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
@@ -113,7 +113,7 @@ CREATE TABLE Experience (
   start_date DATE,
   end_date DATE,
   tech_stack NVARCHAR(500),
-  status NVARCHAR(10),
+  status BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
@@ -122,7 +122,7 @@ CREATE TABLE DepartmentMemberList (
   department_id NVARCHAR(10),
   employee_id NVARCHAR(10),
   emp_role NVARCHAR(20),
-  status NVARCHAR(10),
+  status BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
@@ -132,7 +132,7 @@ CREATE TABLE detail_tax_income (
   detail_tax_income_id NVARCHAR(10) PRIMARY KEY,
   muc_chiu_thue FLOAT,
   thue_suat FLOAT,
-  status NVARCHAR(10)
+  status BIT
 );
 
 -- Create Report table
@@ -142,7 +142,7 @@ CREATE TABLE Report (
   reason NVARCHAR(255),
   content TEXT,
   issue_date DATE,
-  status VARCHAR(50),
+  status BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
@@ -163,7 +163,7 @@ CREATE TABLE Skill_employee (
   employee_id NVARCHAR(10),
   level NVARCHAR(50),
   skill_id NVARCHAR(10),
-  status NVARCHAR(10),
+  status BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (skill_id) REFERENCES Skill(skill_id)
 );
@@ -177,7 +177,7 @@ CREATE TABLE EmployeeContract (
   end_date DATE,
   job NVARCHAR(200),
   base_salary DECIMAL(18, 2),
-  status NVARCHAR(200),
+  status BIT,
   percent_deduction FLOAT,
   salary_type NVARCHAR(50),
   contract_type NVARCHAR(50),
@@ -193,7 +193,7 @@ CREATE TABLE Attendance (
   late_hours FLOAT,
   early_leave_hours FLOAT,
   total_hours FLOAT,
-  attendance_status NVARCHAR,
+  attendance_status BIT,
   notes NVARCHAR,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
@@ -222,7 +222,7 @@ CREATE TABLE Leave (
   start_date DATE,
   end_date DATE,
   reason NVARCHAR(50),
-  status NVARCHAR(50),
+  status BIT,
   leave_hours FLOAT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
@@ -243,7 +243,7 @@ CREATE TABLE EmployeeBenefit (
   employee_id NVARCHAR(10),
   allowance_id NVARCHAR(10),
   allowances_id NVARCHAR(10) PRIMARY KEY,
-  status VARCHAR(10),
+  status BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
 );
@@ -269,7 +269,7 @@ CREATE TABLE PaySlip (
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
   approval VARCHAR(10),
-  status VARCHAR,
+  status NVARCHAR(10),
   FOREIGN KEY (contract_id) REFERENCES EmployeeContract(contract_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (allowances_id) REFERENCES EmployeeBenefit(allowances_id)
@@ -280,7 +280,7 @@ CREATE TABLE DeductionSumary (
   deduction_id NVARCHAR(10),
   payslip_id NVARCHAR(10),
   amount DECIMAL(18, 2),
-  status NVARCHAR(10),
+  status BIT,
   FOREIGN KEY (deduction_id) REFERENCES Deduction(deduction_id),
   FOREIGN KEY (payslip_id) REFERENCES PaySlip(payslip_id)
 );

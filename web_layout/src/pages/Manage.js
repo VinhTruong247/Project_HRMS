@@ -1,5 +1,7 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
+import { BrowserRouter as Router, Route, Link, Outlet, NavLink } from 'react-router-dom';
+import DataProvider from '../contexts/DataContext';
 
 function Manage(props) {
     const [data, setData] = useState([]);
@@ -52,7 +54,7 @@ function Manage(props) {
 
 
 
-    //  CRATE NEW EMPLOYEE    
+    //  CRATE NEW EMPLOYEE
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
@@ -167,7 +169,7 @@ function Manage(props) {
 
 
 
-    //  UPDATE NEW EMPLOYEE        
+    //  UPDATE NEW EMPLOYEE
     const handleUpdate = (event) => {
         event.preventDefault();
         const formData = {
@@ -288,6 +290,17 @@ function Manage(props) {
 
     return (
         <div className="manager" style={{ position: "relative" }}>
+        <div className="managepage">
+          <nav className="navbar">
+            <div className="navbar-brand">Manage Page</div>
+           <nav className='mininav'>
+            <NavLink to="employee">Employee Management</NavLink>
+            <NavLink to="department">Department Management</NavLink>
+            <NavLink to="jobs">Jobs Management</NavLink>
+           </nav>
+           <DataProvider><Outlet /></DataProvider>
+          </nav>
+        </div>
             <button className='btn_create' onClick={() => setShowForm(true)}>Add Employee</button>
             <div className='row'>
                 <table className='table'>

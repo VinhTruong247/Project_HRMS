@@ -12,11 +12,11 @@ const DataProvider = ({ children }) => {
         decodedToken = jwt_decode(token);
     }
 
-    const UserId = decodedToken.UserId
-    const employee_url = `https://localhost:7220/api/Employee/get/user/${UserId}/employee`;
+    const DepartmentId = decodedToken.DepartmentId
+    const department_url = `https://localhost:7220/api/Department/get/${DepartmentId}/department`;
 
     useEffect(() => {
-        fetch(employee_url, {
+        fetch(department_url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,14 +30,14 @@ const DataProvider = ({ children }) => {
                     throw new Error('Api response was not ok.');
                 }
             })
-            .then(employee => {
-                setData(employee)
-                console.log(employee);
+            .then(department => {
+                setData(department)
+                console.log(department);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
-    }, [employee_url, token]);
+    }, [department_url, token]);
 
     return (
         <DataContext.Provider value={data}>{children}</DataContext.Provider>
