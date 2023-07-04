@@ -5,7 +5,6 @@ import DataProvider from '../contexts/DataContext';
 function Manage() {
   return (
     <div className="managepage">
-      <nav className="navbar">
         <div className="navbar-brand">Manage Page</div>
        <nav className='mininav'>
         <NavLink to="employee">Employee Management</NavLink>
@@ -13,7 +12,6 @@ function Manage() {
         <NavLink to="jobs">Jobs Management</NavLink>
        </nav>
        <DataProvider><Outlet /></DataProvider>
-      </nav>
     </div>
   );
 }
