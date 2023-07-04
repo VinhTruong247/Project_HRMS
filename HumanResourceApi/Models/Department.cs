@@ -14,7 +14,7 @@ namespace HumanResourceApi.Models
         public string DepartmentId { get; set; }
         public string DepartmentName { get; set; }
         public string Description { get; set; }
-        public string Status { get; set; }
+        public bool? Status { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<Project> Projects { get; set; }

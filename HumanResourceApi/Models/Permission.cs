@@ -8,6 +8,6 @@ namespace HumanResourceApi.Models
         public string PermissionId { get; set; }
         public string PermissionDes { get; set; }
         public string PermissionDisplayName { get; set; }
-        public string Status { get; set; }
+        public bool? Status { get; set; }
     }
 }

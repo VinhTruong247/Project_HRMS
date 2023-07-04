@@ -8,6 +8,6 @@ namespace HumanResourceApi.Models
         public string DetailTaxIncomeId { get; set; }
         public double? MucChiuThue { get; set; }
         public double? ThueSuat { get; set; }
-        public string Status { get; set; }
+        public bool? Status { get; set; }
     }
 }

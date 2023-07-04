@@ -10,7 +10,7 @@ namespace HumanResourceApi.Repositories
         public User CheckLogin(LoginDto loginInfo)
         {
             return _context.Users.Where(u => u.Username.ToUpper().Equals(loginInfo.Username.ToUpper()) 
-            && u.Password.Equals(loginInfo.Password) && u.Status == "1").FirstOrDefault();
+            && u.Password.Equals(loginInfo.Password)).FirstOrDefault();
         }
 
         public Employee getEmployee(string id)

@@ -9,6 +9,7 @@
         public string Email { get; set; }
         public string? RoleId { get; set; }
         public string RoleName { get; set; }
+        public bool? Status { get; set; }
     }
 
 }

@@ -12,7 +12,7 @@ namespace HumanResourceApi.Models
         public double? LateHours { get; set; }
         public double? EarlyLeaveHours { get; set; }
         public double? TotalHours { get; set; }
-        public string AttendanceStatus { get; set; }
+        public bool? AttendanceStatus { get; set; }
         public string Notes { get; set; }
 
         public virtual Employee Employee { get; set; }

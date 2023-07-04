@@ -14,11 +14,15 @@ namespace HumanResourceApi.Controllers
 
         private readonly IMapper _mapper;
         private readonly UserRepo _userRepo;
+        private readonly RoleRepo _roleRepo;
+        private readonly EmployeeRepo _empRepo;
 
-        public UserController(IMapper mapper, UserRepo userRepo)
+        public UserController(IMapper mapper, UserRepo userRepo, RoleRepo roleRepo, EmployeeRepo empRepo)
         {
             _mapper = mapper;
             _userRepo = userRepo;
+            _roleRepo = roleRepo;
+            _empRepo = empRepo;
         }
 
         [HttpGet("get/users")]
@@ -26,7 +30,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var userList = _userRepo.GetAllUsers().Where(u => u.Status == "1");
+                var userList = _userRepo.GetAllUsers();
 
                 if (!ModelState.IsValid)
                 {
@@ -46,8 +50,7 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPost("get/user")]
+        [HttpGet("get/user")]
         public IActionResult GetUserById([FromQuery] string userId)
         {
             try
@@ -55,18 +58,13 @@ namespace HumanResourceApi.Controllers
                 if (userId == null)
                     return BadRequest(ModelState);
                 var tmpUser = _userRepo.GetById(userId);
-                if (tmpUser.Status != "1")
+                if (tmpUser == null)
                 {
                     return NotFound();
                 }
-                var userMap = _mapper.Map<UserDto>(tmpUser);
-
-                if (userMap == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(userMap);
+                var responseUser = _userRepo.GetAllUsers().Where(u => u.UserId == tmpUser.UserId).FirstOrDefault();
+                var responseUserMapped = _mapper.Map<ResponseUserDto>(responseUser);
+                return Ok(responseUserMapped);
 
             }
             catch (Exception e)
@@ -96,20 +94,23 @@ namespace HumanResourceApi.Controllers
 
                 var newUser = _mapper.Map<User>(user);
 
-                //check userId duplicate or unavailable roleId
+                //Validation
                 if (_userRepo.GetAll().Any(u => u.UserId == newUser.UserId))
-                    return BadRequest("Duplicated Id");
-                if (!_userRepo.GetAll().Any(u => u.RoleId == newUser.RoleId))
+                    return BadRequest("Duplicated UserId");
+                if (!_roleRepo.GetAll().Any(u => u.RoleId == newUser.RoleId))
                     return BadRequest("Unavailable RoleId");
+                if(!_empRepo.GetAll().Any(u => u.EmployeeId == newUser.EmployeeId))
+                    return BadRequest("Unavailable EmployeeId");
                 if (_userRepo.GetAll().Any(u => u.EmployeeId == newUser.EmployeeId))
                     return BadRequest("Duplicated EmployeeId");
 
 
                 _userRepo.Add(newUser);
 
-               
 
-                return Ok(newUser);
+                var responseUser = _userRepo.GetAllUsers().Where(u => u.UserId == newUser.UserId).FirstOrDefault();
+                var responseUserMapped = _mapper.Map<ResponseUserDto>(responseUser);
+                return Ok(responseUserMapped);
             }
             catch (Exception ex)
             {
@@ -133,18 +134,21 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Username already exists");
                 }
-                var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "1").FirstOrDefault();
+                var user = _userRepo.GetAll().Where(u => u.UserId == id).FirstOrDefault();
                 if (user == null)
                 {
                     return NotFound();
                 }
-                if (!_userRepo.GetAll().Any(u => u.RoleId == updateUser.RoleId))
+                if (!_roleRepo.GetAll().Any(u => u.RoleId == updateUser.RoleId))
                     return BadRequest("Unavailable RoleId");
 
                 _mapper.Map(updateUser, user);
-                user.UserId = id;
                 _userRepo.Update(user);
-                return Ok(user);
+                var mappedUpdate = _mapper.Map<UserDto>(user);
+
+                var responseUser = _userRepo.GetAllUsers().Where(u => u.UserId == id).FirstOrDefault();
+                var responseUserMapped = _mapper.Map<ResponseUserDto>(responseUser);
+                return Ok(responseUserMapped);
             }
             catch (Exception ex)
             {
@@ -153,17 +157,5 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpPost("remove")]
-        public IActionResult DeleteUser(string id)
-        {
-            var user = _userRepo.GetAll().Where(u => u.UserId == id && u.Status == "1").FirstOrDefault();
-            if (user == null)
-            {
-                return NotFound(id);
-            }
-            user.Status = "0";
-            _userRepo.Update(user);
-            return Ok(user);
-        }
     }
 }
