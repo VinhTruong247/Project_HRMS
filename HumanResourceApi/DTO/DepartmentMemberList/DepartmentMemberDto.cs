@@ -1,17 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HumanResourceApi.DTO.SkillEmployee
+namespace HumanResourceApi.DTO.DepartmentMemberList
 {
-    public class SkillEmployeeDto
+    public class DepartmentMemberDto
     {
         [Required]
-        public string UniqueId { get; set; }
+        public string DepartmentId { get; set; }
         [Required]
         public string EmployeeId { get; set; }
         [Required]
-        public string Level { get; set; }
-        [Required]
-        public string SkillId { get; set; }
+        public string EmpRole { get; set; }
         [Required]
         public string Status { get; set; }
     }

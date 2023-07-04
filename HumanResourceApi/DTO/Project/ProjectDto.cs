@@ -1,22 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HumanResourceApi.DTO.Leave
+namespace HumanResourceApi.DTO.Project
 {
-    public class UpdateLeaveDto
+    public class ProjectDto
     {
         [Required]
-        public string EmployeeId { get; set; }
+        public string ProjectId { get; set; }
         [Required]
-        public string LeaveType { get; set; }
+        public string ProjectName { get; set; }
+        [Required]
+        public string DepartmentId { get; set; }
         [Required]
         public DateTime? StartDate { get; set; }
         [Required]
         public DateTime? EndDate { get; set; }
         [Required]
-        public string Reason { get; set; }
-        [Required]
         public string Status { get; set; }
-        [Required]
-        public double? LeaveHours { get; set; }
     }
 }
