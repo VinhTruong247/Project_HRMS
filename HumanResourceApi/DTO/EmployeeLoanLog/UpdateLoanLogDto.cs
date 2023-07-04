@@ -23,6 +23,6 @@ namespace HumanResourceApi.DTO.EmployeeLoanLog
         [Required]
         public string ApprovalStatus { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
     }
 }

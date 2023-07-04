@@ -21,6 +21,6 @@ namespace HumanResourceApi.DTO.Attendance
         [Required]
         public string AttendanceStatus { get; set; }
         [Required]
-        public string Notes { get; set; }
+        public bool Notes { get; set; }
     }
 }

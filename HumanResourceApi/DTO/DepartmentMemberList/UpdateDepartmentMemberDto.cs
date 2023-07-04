@@ -9,6 +9,6 @@ namespace HumanResourceApi.DTO.DepartmentMemberList
         [Required]
         public string EmpRole { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
     }
 }

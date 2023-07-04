@@ -15,6 +15,6 @@ namespace HumanResourceApi.DTO.Experience
         [Required]
         public string TechStack { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
     }
 }

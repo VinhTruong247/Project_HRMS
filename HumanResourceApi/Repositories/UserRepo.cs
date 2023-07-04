@@ -15,9 +15,15 @@ namespace HumanResourceApi.Repositories
 
         public Employee getEmployee(string id)
         {
+
             var user = _context.Users.Where(u => u.UserId == id).FirstOrDefault();
+            if (user is null)
+            {
+                return null;
+            }
             var empId = user.EmployeeId;
-            return _context.Employees.Where(e => e.EmployeeId ==  empId).FirstOrDefault();
+            return _context.Employees.Where(e => e.EmployeeId == empId).FirstOrDefault();
+
         }
 
         public Role GetRole(string? roleId)

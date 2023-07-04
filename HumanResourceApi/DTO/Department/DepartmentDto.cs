@@ -11,6 +11,6 @@ namespace HumanResourceApi.DTO.Department
         [Required]
         public string Description { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
     }
 }
