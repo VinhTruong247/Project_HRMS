@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 
+<<<<<<< Updated upstream
 function Manage(props) {
     const [data, setData] = useState([]);
     const [showCreateForm, setShowForm] = useState(false);
@@ -517,6 +518,22 @@ function Manage(props) {
             )}
         </div>
     )
+=======
+import { BrowserRouter as Router, Route, Link, Outlet, NavLink } from 'react-router-dom';
+import DataProvider from '../contexts/DataContext';
+function Manage() {
+    return (
+        <div className="managepage">
+            <div className="navbar-brand">Manage Page</div>
+            <nav className='mininav'>
+                <NavLink to="employee">Employee Management</NavLink>
+                <NavLink to="department">Department Management</NavLink>
+                <NavLink to="jobs">Jobs Management</NavLink>
+            </nav>
+            <DataProvider><Outlet /></DataProvider>
+        </div>
+    );
+>>>>>>> Stashed changes
 }
 
 export default Manage;
