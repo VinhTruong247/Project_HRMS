@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React from "react";
 import jwt_decode from 'jwt-decode';
 
@@ -16,6 +17,24 @@ function Profile(props) {
                 </div>
                 <div className="col-md-8">
                     <EmployeeDetails decodedToken={decodedToken} />
+=======
+import React, { useState, useEffect } from "react";
+import useData from "../hooks/useData";
+
+function Profile(props) {
+
+    const data = useData()
+
+    return data && (
+        <div className="main-body">
+            <div className="row gutters-sm">
+                <div className="col-md-4 mb-3">
+                    <EmployeeCard lastName={data.lastName} firstName={data.firstName} employeeId={data.id} departmentId={data.departmentId} jobId={data.jobId} />
+                    <EmployeeLinks />
+                </div>
+                <div className="col-md-8">
+                    <EmployeeDetails employeeId={data.employeeId} lastName={data.lastName} firstName={data.firstName} dateOfBirth={data.dateOfBirth} email={data.email} phoneNumber={data.phoneNumber} employeeAddress={data.employeeAddress} />
+>>>>>>> Stashed changes
                 </div>
             </div>
         </div>
@@ -73,7 +92,228 @@ function EmployeeLinks(props) {
     );
 }
 
+// function EmployeeDetails(props) {
+
+//     return (
+//         <div className="card mb-3">
+//             <div className="card-body">
+//                 <div className="row">
+//                     <div className="col-sm-3">
+//                         <h6 className="mb-0">Full Name</h6>
+//                     </div>
+//                     <div className="col-sm-9 text-secondary">{props.firstName} {props.lastName}</div>
+//                 </div>
+//                 <hr />
+//                 <div className="row">
+//                     <div className="col-sm-3">
+//                         <h6 className="mb-0">First Name</h6>
+//                     </div>
+//                     <div className="col-sm-3 text-secondary">{props.firstName}</div>
+//                     <div className="col-sm-3">
+//                         <h6 className="mb-0">Last Name</h6>
+//                     </div>
+//                     <div className="col-sm-3 text-secondary">{props.lastName}</div>
+//                 </div>
+//                 <hr />
+//                 <div className="row">
+//                     <div className="col-sm-3">
+//                         <h6 className="mb-0">Date of Birth</h6>
+//                     </div>
+//                     <div className="col-sm-9 text-secondary">{props.dateOfBirth}</div>
+//                 </div>
+//                 <hr />
+//                 <div className="row">
+//                     <div className="col-sm-3">
+//                         <h6 className="mb-0">Email</h6>
+//                     </div>
+//                     <div className="col-sm-9 text-secondary">{props.email}</div>
+//                 </div>
+//                 <hr />
+//                 <div className="row">
+//                     <div className="col-sm-3">
+//                         <h6 className="mb-0">Phone</h6>
+//                     </div>
+//                     <div className="col-sm-9 text-secondary">{props.phoneNumber}</div>
+//                 </div>
+//                 <hr />
+//                 <div className="row">
+//                     <div className="col-sm-3">
+//                         <h6 className="mb-0">Address</h6>
+//                     </div>
+//                     <div className="col-sm-9 text-secondary">{props.employeeAddress}</div>
+//                 </div>
+//                 <hr />
+//                 <div className="row">
+//                     <div className="col-sm-3">
+//                         <h6 className="mb-0">Skills</h6>
+//                     </div>
+//                     <div className="col-sm-9 text-secondary">
+//                         React, Node.js, MongoDB, Express.js
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
+
 function EmployeeDetails(props) {
+    const [data, setData] = useState(props);
+    const [isEditing, setIsEditing] = useState(false);
+    const token = JSON.parse(localStorage.getItem('jwtToken'));
+    const [formData, setFormData] = useState({
+        firstName: props.firstName,
+        lastName: props.lastName,
+        dateOfBirth: props.dateOfBirth,
+        email: props.email,
+        phoneNumber: props.phoneNumber,
+        employeeAddress: props.employeeAddress,
+    });
+
+    const handleInputChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value,
+        });
+    };
+
+    const handleSubmit = () => {
+        fetch(`https://localhost:7220/api/Employee/update/user/${props.employeeId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.token}`,
+            },
+            body: JSON.stringify(formData),
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Api response was not ok.');
+                }
+            })
+            .then(updatedEmployee => {
+                const updatedData = data.map(employee => {
+                    if (employee.employeeId === updatedEmployee.employeeId) {
+                        return updatedEmployee;
+                    } else {
+                        return employee;
+                    }
+                });
+                setData(updatedData);
+                console.log('Employee updated successfully');
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+            });
+    };
+
+    if (isEditing) {
+        return (
+            <div className="card mb-3">
+                <div className="card-body">
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="row">
+                            <div className="col-sm-3">
+                                <h6 className="mb-0">First Name</h6>
+                            </div>
+                            <div className="col-sm-9">
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="row">
+                            <div className="col-sm-3">
+                                <h6 className="mb-0">Last Name</h6>
+                            </div>
+                            <div className="col-sm-9">
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="row">
+                            <div className="col-sm-3">
+                                <h6 className="mb-0">Date of Birth</h6>
+                            </div>
+                            <div className="col-sm-9">
+                                <input
+                                    type="date"
+                                    name="dateOfBirth"
+                                    value={formData.dateOfBirth}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="row">
+                            <div className="col-sm-3">
+                                <h6 className="mb-0">Email</h6>
+                            </div>
+                            <div className="col-sm-9">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="row">
+                            <div className="col-sm-3">
+                                <h6 className="mb-0">Phone</h6>
+                            </div>
+                            <div className="col-sm-9">
+                                <input
+                                    type="tel"
+                                    name="phoneNumber"
+                                    value={formData.phoneNumber}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="row">
+                            <div className="col-sm-3">
+                                <h6 className="mb-0">Address</h6>
+                            </div>
+                            <div className="col-sm-9">
+                                <input
+                                    type="text"
+                                    name="employeeAddress"
+                                    value={formData.employeeAddress}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+                        <hr />
+                        <button type="submit" className="btn btn-primary">
+                            Save Changes
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-secondary ml-2"
+                            onClick={() => setIsEditing(false)}
+                        >
+                            Cancel
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="card mb-3">
@@ -146,9 +386,16 @@ function EmployeeDetails(props) {
                         React, Node.js, MongoDB, Express.js
                     </div>
                 </div>
+                <hr />
+                <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => setIsEditing(true)}
+                >
+                    Edit
+                </button>
             </div>
         </div>
     );
 }
-
 export default Profile;

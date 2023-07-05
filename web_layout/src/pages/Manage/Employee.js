@@ -16,8 +16,6 @@ function Employee(props) {
     const timeoutRef = useRef(null);
     
 
-    console.log(token.token)
-
     useEffect(() => {
         if (validationError) {
             timeoutRef.current = setTimeout(() => {
@@ -51,7 +49,7 @@ function Employee(props) {
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
-    }, [token]);
+    });
 
 
 
@@ -187,7 +185,7 @@ function Employee(props) {
             bankName: event.target.elements.bankName.value,
             jobId: event.target.elements.jobId.value,
             departmentId: event.target.elements.departmentId.value,
-            status: event.target.elements.status.value,
+            status: Boolean(event.target.elements.status.value),
         };
 
         if (!formData.employeeId) {
@@ -317,7 +315,11 @@ function Employee(props) {
                                 <td>{employee.phoneNumber}</td>
                                 <td>{employee.departmentId}</td>
                                 <td>{employee.jobId}</td>
-                                <td>{employee.status}</td>
+                                <td>
+                                    {employee.status
+                                        ? 'Active'
+                                        : 'Inactive'}
+                                </td>
                                 <td>
                                     <button onClick={() => handleEdit(employee)}>Edit</button>
                                 </td>

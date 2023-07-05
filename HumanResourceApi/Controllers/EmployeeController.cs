@@ -180,7 +180,8 @@ namespace HumanResourceApi.Controllers
                 validEmployee.Status = "Disable";
 
                 _employeeRepo.Update(validEmployee);
-                return Ok(validEmployee);
+                var mappedEmployee = _mapper.Map<EmployeeDto>(validEmployee);
+                return Ok(mappedEmployee);
             }
             catch (Exception ex)
             {
