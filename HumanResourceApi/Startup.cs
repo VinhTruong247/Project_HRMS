@@ -9,6 +9,7 @@ using System.Text;
 using HumanResourceApi;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Globalization;
 
 namespace YourNamespace
 {
@@ -128,7 +129,8 @@ namespace YourNamespace
                 return dateTime;
             }
 
-            throw new JsonException("Invalid date format.");
+
+            return default;
         }
 
         public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)

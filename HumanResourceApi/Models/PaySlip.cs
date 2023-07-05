@@ -10,7 +10,7 @@ namespace HumanResourceApi.Models
         public string PayPeriod { get; set; }
         public DateTime? PaidDate { get; set; }
         public double? BaseSalary { get; set; }
-        public double? OtHours { get; set; }
+        public TimeSpan? OtHours { get; set; }
         public string AllowancesId { get; set; }
         public string ContractId { get; set; }
         public double? StarndardWorkHours { get; set; }

@@ -1,26 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+using System.ComponentModel.DataAnnotations;
 
 namespace HumanResourceApi.DTO.Attendance
 {
     public class AttendanceDto
     {
+        
         [Required]
         public string EmployeeId { get; set; }
         [Required]
         public DateTime? Day { get; set; }
         [Required]
-        public double? TimeIn { get; set; }
+        public TimeSpan? TimeIn { get; set; }
         [Required]
-        public double? TimeOut { get; set; }
+        public TimeSpan? TimeOut { get; set; }
         [Required]
-        public double? LateHours { get; set; }
+        public TimeSpan? LateHours { get; set; }
         [Required]
-        public double? EarlyLeaveHours { get; set; }
+        public TimeSpan? EarlyLeaveHours { get; set; }
         [Required]
-        public double? TotalHours { get; set; }
+        public TimeSpan? TotalHours { get; set; } 
         [Required]
-        public string AttendanceStatus { get; set; }
+        public bool? AttendanceStatus { get; set; }
         [Required]
-        public bool Notes { get; set; }
+        public string Notes { get; set; }
     }
 }

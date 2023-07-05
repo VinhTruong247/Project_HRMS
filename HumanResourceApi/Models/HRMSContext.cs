@@ -97,7 +97,7 @@ namespace HumanResourceApi.Models
                 entity.Property(e => e.LateHours).HasColumnName("late_hours");
 
                 entity.Property(e => e.Notes)
-                    .HasMaxLength(1)
+                    .HasMaxLength(50)
                     .HasColumnName("notes");
 
                 entity.Property(e => e.TimeIn).HasColumnName("time_in");
@@ -292,7 +292,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<EmployeeBenefit>(entity =>
             {
                 entity.HasKey(e => e.AllowancesId)
-                    .HasName("PK__Employee__BA57CC1BDE70313F");
+                    .HasName("PK__Employee__BA57CC1B46F01958");
 
                 entity.ToTable("EmployeeBenefit");
 
@@ -324,7 +324,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<EmployeeContract>(entity =>
             {
                 entity.HasKey(e => e.ContractId)
-                    .HasName("PK__Employee__F8D664239AF32162");
+                    .HasName("PK__Employee__F8D66423D49CD3B9");
 
                 entity.ToTable("EmployeeContract");
 
@@ -377,7 +377,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<EmployeeLoanLog>(entity =>
             {
                 entity.HasKey(e => e.LoanId)
-                    .HasName("PK__Employee__A1F79554E7FBCFDF");
+                    .HasName("PK__Employee__A1F795546A9D22EF");
 
                 entity.ToTable("EmployeeLoanLog");
 
@@ -590,9 +590,7 @@ namespace HumanResourceApi.Models
 
                 entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
 
-                entity.Property(e => e.OvertimeHours)
-                    .HasColumnType("decimal(5, 2)")
-                    .HasColumnName("overtime_hours");
+                entity.Property(e => e.OvertimeHours).HasColumnName("overtime_hours");
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(50)
@@ -803,7 +801,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<SkillEmployee>(entity =>
             {
                 entity.HasKey(e => e.UniqueId)
-                    .HasName("PK__Skill_em__A2929130C50DA7B0");
+                    .HasName("PK__Skill_em__A292913014D90A6D");
 
                 entity.ToTable("Skill_employee");
 

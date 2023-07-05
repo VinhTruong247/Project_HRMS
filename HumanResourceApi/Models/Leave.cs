@@ -12,7 +12,7 @@ namespace HumanResourceApi.Models
         public DateTime? EndDate { get; set; }
         public string Reason { get; set; }
         public bool? Status { get; set; }
-        public double? LeaveHours { get; set; }
+        public TimeSpan? LeaveHours { get; set; }
 
         public virtual Employee Employee { get; set; }
     }
