@@ -8,7 +8,7 @@ namespace HumanResourceApi.Models
         public string OvertimeId { get; set; }
         public string EmployeeId { get; set; }
         public DateTime? Day { get; set; }
-        public decimal? OvertimeHours { get; set; }
+        public TimeSpan? OvertimeHours { get; set; }
         public string Status { get; set; }
         public bool? IsDeleted { get; set; }
 

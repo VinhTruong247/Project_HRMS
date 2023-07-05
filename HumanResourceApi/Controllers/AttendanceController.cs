@@ -20,16 +20,31 @@ namespace HumanResourceApi.Controllers
             _attendance = attendance;
         }
 
-        [Authorize]
+        
         [HttpGet("attendances")]
         public IActionResult GetAttendance()
         {
             try
             {
-                var attendanceList = _mapper.Map<List<AttendanceDto>>(_attendance.GetAll());
+                var attendanceList = _mapper.Map<List<AttendanceDto>>(_attendance.GetAll().ToList());
                 return Ok(attendanceList);
             } catch (Exception ex)
             {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{date}/attendances")]
+        public IActionResult GetAttendancesByDate(DateTime date)
+        {
+            try
+            {
+                var attendanceList = _mapper.Map<List<AttendanceDto>>(_attendance.GetAll().Where(a => a.Day == date).ToList());
+                return Ok(attendanceList);
+            }
+            catch (Exception ex)
+            {
+
                 return BadRequest(ex.Message);
             }
         }
