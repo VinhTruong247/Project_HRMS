@@ -5,6 +5,8 @@ namespace HumanResourceApi.DTO.Experience
     public class UpdateExperienceDto
     {
         [Required]
+        public string EmployeeId { get; set; }
+        [Required]
         public string NameProject { get; set; }
         [Required]
         public int? TeamSize { get; set; }

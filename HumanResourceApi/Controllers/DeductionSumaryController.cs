@@ -3,6 +3,7 @@ using HumanResourceApi.DTO.DeductionSummary;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -12,6 +13,7 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly DeductionSumaryRepo _deductionSumaryRepo;
+        public Regex x = new Regex(@"^DD\d{6}");
 
         public DeductionSumaryController(IMapper mapper, DeductionSumaryRepo deductionSumaryRepo)
         {
@@ -29,54 +31,89 @@ namespace HumanResourceApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Something went wrong: " + ex.Message);
             }
         }
 
         [HttpGet("get/deductionSumary/{deductionId}")]
         public IActionResult GetUsingId(string deductionId)
         {
-            var deductionSumary = _mapper.Map<DeductionSumaryDto>(_deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == deductionId).FirstOrDefault());
-            if (deductionSumary == null)
+            try
             {
-                return BadRequest();
+                if (!x.IsMatch(deductionId))
+                {
+                    return BadRequest("Wrong DeductionId Format.");
+                }
+                var deductionSumary = _mapper.Map<DeductionSumaryDto>(_deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == deductionId).FirstOrDefault());
+                if (deductionSumary == null)
+                {
+                    return BadRequest("Deduction ID = " + deductionId + " doesn't seem to be found");
+                }
+                return Ok(deductionSumary);
             }
-            return Ok(deductionSumary);
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+
         }
 
         [HttpPost("create")]
         public IActionResult CreateDeductionSumary([FromBody] DeductionSumaryDto deductionSumary)
         {
-            if (deductionSumary == null)
+            try
             {
-                return BadRequest();
+                if (deductionSumary == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!x.IsMatch(deductionSumary.DeductionId))
+                {
+                    return BadRequest("Wrong DeductionId Format.");
+                }
+                if (_deductionSumaryRepo.GetAll().Any(ds => ds.DeductionId == deductionSumary.DeductionId))
+                {
+                    return BadRequest("Deduction ID = " + deductionSumary.DeductionId + " existed");
+                }
+                var temp = _mapper.Map<DeductionSumary>(deductionSumary);
+                _deductionSumaryRepo.Add(temp);
+                return Ok(temp);
             }
-            if (_deductionSumaryRepo.GetAll().Any(ds => ds.DeductionId == deductionSumary.DeductionId))
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest("Something went wrong: " + ex.Message);
             }
-            var temp = _mapper.Map<DeductionSumary>(deductionSumary);
-            _deductionSumaryRepo.Add(temp);
-            return Ok(temp);
+
         }
 
         [HttpPut("update/deuctionSumary/{deductionId}")]
         public IActionResult UpdateDeductionSumary(string deductionId, [FromBody] UpdateDeductionSumaryDto deductionSumary)
         {
-            if (deductionSumary == null)
+            try
             {
-                return BadRequest();
-            }
-            var validDS = _deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == deductionId).FirstOrDefault();
-            if (validDS == null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map(deductionSumary, validDS);
-            validDS.DeductionId = deductionId;
+                if (deductionSumary == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!x.IsMatch(deductionId))
+                {
+                    return BadRequest("Wrong DeductionId Format.");
+                }
+                var validDS = _deductionSumaryRepo.GetAll().Where(ds => ds.DeductionId == deductionId).FirstOrDefault();
+                if (validDS == null)
+                {
+                    return BadRequest("Deduction ID = " + deductionId + " doesn't seem to be found");
+                }
+                _mapper.Map(deductionSumary, validDS);
+                validDS.DeductionId = deductionId;
 
-            _deductionSumaryRepo.Update(validDS);
-            return Ok(validDS);
+                _deductionSumaryRepo.Update(validDS);
+                return Ok(validDS);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         //[HttpPost("delete")]

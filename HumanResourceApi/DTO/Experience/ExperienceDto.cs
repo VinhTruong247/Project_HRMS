@@ -7,6 +7,8 @@ namespace HumanResourceApi.DTO.Experience
         [Required]
         public string ExperienceId { get; set; }
         [Required]
+        public string EmployeeId { get; set; }
+        [Required]
         public string NameProject { get; set; }
         [Required]
         public int? TeamSize { get; set; }

@@ -4,6 +4,7 @@ using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -13,6 +14,7 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly AllowanceRepo _allowance;
+        public Regex x = new Regex(@"^AL\d{6}");
 
         public AllowanceController(IMapper mapper, AllowanceRepo allowance)
         {
@@ -27,7 +29,7 @@ namespace HumanResourceApi.Controllers
             try
             {
                 var allowanceList = _mapper.Map<List<AllowanceDto>>(_allowance.GetAll());
-                
+
                 return Ok(allowanceList);
             }
             catch (Exception ex)
@@ -40,50 +42,83 @@ namespace HumanResourceApi.Controllers
         [HttpGet("get/allowance/{allowanceId}")]
         public IActionResult GetAllowanceId(string allowanceId)
         {
-            var allowance = _mapper.Map<AllowanceDto>(_allowance.GetAll().Where(a => a.AllowanceId == allowanceId).FirstOrDefault());
-            if (allowance == null)
+            try
             {
-                return BadRequest();
+                if (!x.IsMatch(allowanceId))
+                {
+                    return BadRequest("Wrong AllowanceId Format.");
+                }
+                var allowance = _mapper.Map<AllowanceDto>(_allowance.GetAll().Where(a => a.AllowanceId == allowanceId).FirstOrDefault());
+                if (allowance == null)
+                {
+                    return BadRequest("Allowance ID = " + allowanceId + " doesn't seem to be found");
+                }
+                return Ok(allowance);
             }
-            return Ok(allowance);
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         [Authorize]
         [HttpPost("create")]
         public IActionResult CreateAllowance([FromBody] AllowanceDto allowance)
         {
-            if (allowance == null)
+            try
             {
-                return BadRequest();
+                if (allowance == null)
+                {
+                    return BadRequest();
+                }
+                if (!x.IsMatch(allowance.AllowanceId))
+                {
+                    return BadRequest("Wrong AllowanceId Format.");
+                }
+                bool validAllowance = _allowance.GetAll().Any(a => a.AllowanceId == allowance.AllowanceId);
+                if (validAllowance)
+                {
+                    return BadRequest("Allowance ID = " + allowance.AllowanceId + " existed");
+                }
+                var temp = _mapper.Map<Allowance>(allowance);
+                _allowance.Add(temp);
+                return Ok(temp);
             }
-            bool validAllowance = _allowance.GetAll().Any(a => a.AllowanceId == allowance.AllowanceId);
-            if (validAllowance)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest("Something went wrong: " + ex.Message);
             }
-            var temp = _mapper.Map<Allowance>(allowance);
-            _allowance.Add(temp);
-            return Ok(temp);
         }
 
         [Authorize]
         [HttpPut("update/allowance/{allowanceId}")]
         public IActionResult UpdateAllowanceId(string allowanceId, [FromBody] UpdateAllowanceDto allowance)
         {
-            if (allowance == null)
+            try
             {
-                return BadRequest();
-            }
-            var validAllowance = _allowance.GetAll().Where(a => a.AllowanceId == allowanceId).FirstOrDefault();
-            if (validAllowance == null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map(allowance, validAllowance);
-            validAllowance.AllowanceId = allowanceId;
+                if (allowance == null)
+                {
+                    return BadRequest();
+                }
+                if (!x.IsMatch(allowanceId))
+                {
+                    return BadRequest("Wrong AllowanceId Format.");
+                }
+                var validAllowance = _allowance.GetAll().Where(a => a.AllowanceId == allowanceId).FirstOrDefault();
+                if (validAllowance == null)
+                {
+                    return BadRequest("Allowance ID = " + allowanceId + " doesn't seem to be found");
+                }
+                _mapper.Map(allowance, validAllowance);
+                validAllowance.AllowanceId = allowanceId;
 
-            _allowance.Update(validAllowance);
-            return Ok(validAllowance);
+                _allowance.Update(validAllowance);
+                return Ok(validAllowance);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         //[Authorize]

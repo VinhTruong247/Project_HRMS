@@ -3,6 +3,7 @@ using HumanResourceApi.DTO.Project;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -12,6 +13,8 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly ProjectRepo _projectRepo;
+        public Regex projectIdRegex = new Regex(@"^PJ\d{6}");
+        public Regex departmentIdRegex = new Regex(@"^DP\d{6}");
 
         public ProjectController(IMapper mapper, ProjectRepo projectRepo)
         {
@@ -41,6 +44,10 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
+                if (!projectIdRegex.IsMatch(projectId))
+                {
+                    return BadRequest("Wrong projectId Format.");
+                }
                 var project = _mapper.Map<ProjectDto>(_projectRepo.GetAll().Where(p => p.ProjectId == projectId).FirstOrDefault());
                 if (project == null)
                 {
@@ -62,6 +69,14 @@ namespace HumanResourceApi.Controllers
                 if (project == null)
                 {
                     return BadRequest("Some input information is null");
+                }
+                if (!projectIdRegex.IsMatch(project.ProjectId))
+                {
+                    return BadRequest("Wrong projectId Format.");
+                }
+                if (!departmentIdRegex.IsMatch(project.DepartmentId))
+                {
+                    return BadRequest("Wrong departmentId Format.");
                 }
                 if (_projectRepo.GetAll().Any(p => p.ProjectId == project.ProjectId))
                 {
@@ -85,6 +100,14 @@ namespace HumanResourceApi.Controllers
                 if (project == null)
                 {
                     return BadRequest("Some input information is null");
+                }
+                if (!projectIdRegex.IsMatch(projectId))
+                {
+                    return BadRequest("Wrong projectId Format.");
+                }
+                if (!departmentIdRegex.IsMatch(project.DepartmentId))
+                {
+                    return BadRequest("Wrong departmentId Format.");
                 }
                 var valid = _projectRepo.GetAll().Where(p => p.ProjectId == projectId).FirstOrDefault();
                 if (valid == null)
