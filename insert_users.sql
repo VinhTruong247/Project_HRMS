@@ -1,4 +1,6 @@
-
+use HRMS
+delete from Attendance
+delete from Project
 delete from EmployeeBenefit
 delete from Experience
 delete from Users
@@ -127,6 +129,45 @@ VALUES
   ('EB000024', 'EP000007', 'AL000017', 1),  -- Employee 7 has Cybersecurity Allowance
   ('EB000025', 'EP000008', 'AL000008', 1); -- Employee 8 has no allowance
 
+-- Inserting Attendance table
+INSERT INTO Attendance (employee_id, day, time_in, time_out, late_hours, early_leave_hours, total_hours, attendance_status, notes)
+VALUES
+  ('EP000001', '2023-07-01', '08:00:00', '17:00:00', '00:00:00', '00:00:00', '09:00:00', 1, 'Regular working hours'),
+  ('EP000002', '2023-07-01', '08:15:00', '17:15:00', '00:15:00', '00:00:00', '09:00:00', 1, 'Arrived slightly late'),
+  ('EP000003', '2023-07-01', '08:30:00', '17:30:00', '00:30:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
+  ('EP000004', '2023-07-01', '08:45:00', '17:45:00', '00:45:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
+  ('EP000005', '2023-07-02', '09:00:00', '18:00:00', '01:00:00', '00:00:00', '09:00:00', 1, 'Regular working hours'),
+  ('EP000006', '2023-07-02', '09:15:00', '18:15:00', '01:15:00', '00:00:00', '09:00:00', 1, 'Arrived slightly late'),
+  ('EP000007', '2023-07-02', '09:30:00', '18:30:00', '01:30:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
+  ('EP000008', '2023-07-02', '09:45:00', '18:45:00', '01:45:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
+  ('EP000001', '2023-07-03', '10:00:00', '19:00:00', '02:00:00', '00:00:00', '09:00:00', 1, 'Regular working hours'),
+  ('EP000002', '2023-07-03', '10:15:00', '19:15:00', '02:15:00', '00:00:00', '09:00:00', 1, 'Arrived slightly late'),
+  ('EP000003', '2023-07-03', '10:30:00', '19:30:00', '02:30:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
+  ('EP000004', '2023-07-03', '10:45:00', '19:45:00', '02:45:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
+  ('EP000005', '2023-07-04', '11:00:00', '20:00:00', '03:00:00', '00:00:00', '09:00:00', 1, 'Regular working hours'),
+  ('EP000006', '2023-07-04', '11:15:00', '20:15:00', '03:15:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
+  ('EP000007', '2023-07-04', '11:30:00', '20:30:00', '03:30:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
+  ('EP000008', '2023-07-04', '11:45:00', '20:45:00', '03:45:00', '00:00:00', '09:00:00', 1, 'Arrived late');
+
+
+-- Inserting Project table
+INSERT INTO Project (project_id, project_name, department_id, start_date, end_date, status)
+VALUES
+  ('PJ000001', 'Software Application Development', 'DP000001', '2020-07-01', '2023-08-31', 'In Progress'),
+  ('PJ000002', 'Database Migration Project', 'DP000002', '2020-07-01', '2020-09-30', 'Completed'),
+  ('PJ000003', 'Network Infrastructure Upgrade', 'DP000003', '2020-07-01', '2020-08-31', 'On Hold'),
+  ('PJ000004', 'IT Helpdesk Enhancement', 'DP000004', '2020-07-01', '2023-08-31', 'In Progress'),
+  ('PJ000005', 'Quality Assurance Automation', 'DP000005', '2020-07-01', '2023-09-30', 'In Progress'),
+  ('PJ000006', 'Employee Onboarding System', 'DP000006', '2020-07-01', '2020-08-31', 'On Hold'),
+  ('PJ000007', 'Cybersecurity Audit and Remediation', 'DP000007', '2020-07-01', '2020-09-30', 'Completed'),
+  ('PJ000008', 'Business Process Optimization', 'DP000008', '2020-07-01', '2023-08-31', 'In Progress'),
+  ('PJ000009', 'Mobile App Development', 'DP000001', '2020-07-01', '2020-09-30', 'Completed'),
+  ('PJ000010', 'Data Analytics Platform', 'DP000002', '2020-07-01', '2020-08-31', 'Completed'),
+  ('PJ000011', 'Network Security Enhancement', 'DP000003', '2020-07-01', '2020-09-30', 'Cancelled'),
+  ('PJ000012', 'IT Service Desk Upgrade', 'DP000004', '2020-07-01', '2020-08-31', 'Completed');
+
+
+
 
 
   
@@ -138,3 +179,5 @@ select * from Department
 select * from Job
 select * from Allowances
 select * from Roles
+select * from Attendance
+select * from Project

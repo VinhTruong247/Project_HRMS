@@ -188,13 +188,13 @@ CREATE TABLE EmployeeContract (
 CREATE TABLE Attendance (
   employee_id NVARCHAR(10),
   day DATE,
-  time_in FLOAT,
-  time_out FLOAT,
-  late_hours FLOAT,
-  early_leave_hours FLOAT,
-  total_hours FLOAT,
+  time_in TIME,
+  time_out TIME,
+  late_hours TIME,
+  early_leave_hours TIME,
+  total_hours TIME,
   attendance_status BIT,
-  notes NVARCHAR,
+  notes NVARCHAR(50),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
@@ -223,7 +223,7 @@ CREATE TABLE Leave (
   end_date DATE,
   reason NVARCHAR(50),
   status BIT,
-  leave_hours FLOAT,
+  leave_hours TIME,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
@@ -232,7 +232,7 @@ CREATE TABLE Overtime (
   overtime_id NVARCHAR(10) PRIMARY KEY,
   employee_id NVARCHAR(10),
   Day DATE,
-  overtime_hours DECIMAL(5, 2),
+  overtime_hours TIME,
   status NVARCHAR(50),
   isDeleted BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
@@ -255,7 +255,7 @@ CREATE TABLE PaySlip (
   pay_period NVARCHAR(50),
   paid_date DATE,
   base_salary FLOAT,
-  ot_hours FLOAT,
+  ot_hours TIME,
   allowances_id NVARCHAR(10),
   contract_id NVARCHAR(10),
   starndard_work_hours FLOAT,
