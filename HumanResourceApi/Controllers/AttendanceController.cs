@@ -4,6 +4,7 @@ using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HumanResourceApi.Controllers
 {
@@ -99,6 +100,63 @@ namespace HumanResourceApi.Controllers
             return Ok(validAttendance);
         }
 
+        [HttpGet("punch-in/attendance/{employeeId}")]
+        public IActionResult PunchIn(string employeeId)
+        {
+            try
+            {
+                //generate new automatically attendanceID
+                int count = _attendance.GetAll().Count() + 1;
+                var attendanceId = "AT" + count.ToString().PadLeft(6, '0');
+
+                var attendanceList = _attendance.GetAll().Where(a => a.EmployeeId == employeeId);
+                if (attendanceList.ToList().Count() <= 0)
+                {
+                    return BadRequest("Wrong employeeId");
+                }
+                DateTime datePunchIn = DateTime.Now;
+                if(attendanceList.Any(a => a.Day == datePunchIn.Date))
+                {
+                    return BadRequest("Already Attended");
+                }
+                //get timeIn
+                var startOfTheDate = DateTime.Now.Date;
+                var timeIn = datePunchIn - startOfTheDate;
+                //get lateHour
+                DateTime eightAM = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 8, 0, 0);
+                var lateHour = datePunchIn - eightAM;
+                if(lateHour < TimeSpan.Zero)
+                {
+                    lateHour = TimeSpan.Zero;
+                }
+                //get note
+                var note = "";
+                if (lateHour > TimeSpan.Zero)
+                {
+                    note = "Arrived late";
+                }
+                else note = "Regular working hours";
+                Attendance punchInInfo = new Attendance()
+                {
+                    AttendanceId = attendanceId,
+                    EmployeeId = employeeId,
+                    Day = datePunchIn.Date,
+                    TimeIn = timeIn,
+                    LateHours = lateHour,
+                    AttendanceStatus = true,
+                    Notes = note,
+                };
+                _attendance.Add(punchInInfo);
+                return Ok(_mapper.Map<AttendanceDto>(punchInInfo));
+
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
+        }
         //[Authorize]
         //[HttpPost("delete")]
         //public IActionResult DeleteAttendance([FromQuery] string id)
