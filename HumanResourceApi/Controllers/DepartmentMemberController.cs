@@ -3,6 +3,7 @@ using HumanResourceApi.DTO.DepartmentMemberList;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -12,6 +13,8 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly DepartmentMemberRepo _departmentMemberRepo;
+        public Regex x = new Regex(@"^DP\d{6}");
+        public Regex y = new Regex(@"^EP\d{6}");
 
         public DepartmentMemberController(IMapper mapper, DepartmentMemberRepo departmentMemberRepo)
         {
@@ -42,6 +45,10 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
+                if (!x.IsMatch(departmentId))
+                {
+                    return BadRequest("Wrong DepartmentId Format.");
+                }
                 var result = _mapper.Map<DepartmentMemberDto>(_departmentMemberRepo.GetAll().Where(a => a.DepartmentId == departmentId).FirstOrDefault());
                 if (result == null)
                 {
@@ -63,6 +70,14 @@ namespace HumanResourceApi.Controllers
                 if (departmentMember == null)
                 {
                     return BadRequest("Some input information is null");
+                }
+                if (!x.IsMatch(departmentMember.DepartmentId))
+                {
+                    return BadRequest("Wrong DepartmentId Format.");
+                }
+                if (!y.IsMatch(departmentMember.EmployeeId))
+                {
+                    return BadRequest("Wrong EmployeeId Format.");
                 }
                 if (_departmentMemberRepo.GetAll().Any(a => a.DepartmentId == departmentMember.DepartmentId))
                 {
@@ -87,6 +102,14 @@ namespace HumanResourceApi.Controllers
                 if (departmentMember == null)
                 {
                     return BadRequest("Some input information is null");
+                }
+                if (!x.IsMatch(departmentId))
+                {
+                    return BadRequest("Wrong DepartmentId Format.");
+                }
+                if (!y.IsMatch(departmentMember.EmployeeId))
+                {
+                    return BadRequest("Wrong EmployeeId Format.");
                 }
                 var valid = _departmentMemberRepo.GetAll().Where(a => a.DepartmentId == departmentId).FirstOrDefault();
                 if (valid == null)

@@ -3,6 +3,7 @@ using HumanResourceApi.DTO.EmployeeLoanLog;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -12,6 +13,8 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly EmployeeLoanLogRepo _loanLog;
+        public Regex loanIdRegex = new Regex(@"^LN\d{6}");
+        public Regex employeeIdRegex = new Regex(@"^EP\d{6}");
 
         public EmployeeLoanLogController(IMapper mapper, EmployeeLoanLogRepo loanLog)
         {
@@ -42,6 +45,10 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
+                if (!loanIdRegex.IsMatch(loanId))
+                {
+                    return BadRequest("Wrong loanId Format.");
+                }
                 var result = _mapper.Map<LoanLogDto>(_loanLog.GetAll().Where(l => l.LoanId == loanId).FirstOrDefault());
                 if (result == null)
                 {
@@ -63,6 +70,14 @@ namespace HumanResourceApi.Controllers
                 if (log == null)
                 {
                     return BadRequest("Some input information is null");
+                }
+                if (!loanIdRegex.IsMatch(log.LoanId))
+                {
+                    return BadRequest("Wrong loanId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(log.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
                 }
                 if (_loanLog.GetAll().Any(l => l.LoanId == log.LoanId))
                 {
@@ -86,6 +101,14 @@ namespace HumanResourceApi.Controllers
                 if (log == null)
                 {
                     return BadRequest("Some input information is null");
+                }
+                if (!loanIdRegex.IsMatch(loanId))
+                {
+                    return BadRequest("Wrong loanId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(log.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
                 }
                 var valid = _loanLog.GetAll().Where(l => l.LoanId == loanId).FirstOrDefault();
                 if (valid == null)

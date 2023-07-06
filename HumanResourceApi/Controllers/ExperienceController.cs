@@ -4,6 +4,7 @@ using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -13,6 +14,8 @@ namespace HumanResourceApi.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ExperienceRepo _experienceRepo;
+        public Regex experienceIdRegex = new Regex(@"^EX\d{6}");
+        public Regex employeeIdRegex = new Regex(@"^EP\d{6}");
 
         public ExperienceController(IMapper mapper, ExperienceRepo experienceRepo)
         {
@@ -32,9 +35,9 @@ namespace HumanResourceApi.Controllers
                 return Ok(experienceList);
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(e.Message);
+                return BadRequest("Something went wrong: " + ex.Message);
             }
         }
 
@@ -42,45 +45,91 @@ namespace HumanResourceApi.Controllers
         [HttpGet("get/experience/{experienceId}")]
         public IActionResult getExperienceId(string experienceId)
         {
-            var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == experienceId).FirstOrDefault());
-
-            if (experience == null)
+            try
             {
-                return BadRequest();
+                if (!experienceIdRegex.IsMatch(experienceId))
+                {
+                    return BadRequest("Wrong experienceId Format.");
+                }
+                var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == experienceId).FirstOrDefault());
+
+                if (experience == null)
+                {
+                    return BadRequest("Experience ID = " + experienceId + " doesn't seem to be found.");
+
+                }
+                return Ok(experience);
             }
-            return Ok(experience);
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         [Authorize]
         [HttpPost("create")]
         public IActionResult CreateExp([FromBody] ExperienceDto experience)
         {
-            bool validExp = _experienceRepo.GetAll().Any(e => e.ExperienceId == experience.ExperienceId);
-            if (validExp)
+            try
             {
-                return BadRequest();
+                if (experience == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!experienceIdRegex.IsMatch(experience.ExperienceId))
+                {
+                    return BadRequest("Wrong experienceId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(experience.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                bool validExp = _experienceRepo.GetAll().Any(e => e.ExperienceId == experience.ExperienceId);
+                if (validExp)
+                {
+                    return BadRequest("Experience ID = " + experience.ExperienceId + " existed");
+                }
+                var temp = _mapper.Map<Experience>(experience);
+                _experienceRepo.Add(temp);
+                return Ok(temp);
             }
-            var temp = _mapper.Map<Experience>(experience);
-            _experienceRepo.Add(temp);
-            return Ok(temp);
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         [Authorize]
         [HttpPut("update/experience/{experienceId}")]
         public IActionResult UpdateExp(string experienceId, [FromBody] UpdateExperienceDto experience)
         {
-            if (experience == null)
-                return BadRequest();
-            var validExp = _experienceRepo.GetAll().Where(e => e.ExperienceId == experienceId).FirstOrDefault();
-            if (validExp == null)
+            try
             {
-                return BadRequest();
-            }
-            _mapper.Map(experience, validExp);
-            validExp.ExperienceId = experienceId;
+                if (experience == null)
+                    return BadRequest();
+                if (!experienceIdRegex.IsMatch(experienceId))
+                {
+                    return BadRequest("Wrong experienceId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(experience.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                var validExp = _experienceRepo.GetAll().Where(e => e.ExperienceId == experienceId).FirstOrDefault();
+                if (validExp == null)
+                {
+                    return BadRequest("Experience ID = " + experienceId + " doesn't seem to be found.");
+                }
+                _mapper.Map(experience, validExp);
+                validExp.ExperienceId = experienceId;
 
-            _experienceRepo.Update(validExp);
-            return Ok(validExp);
+                _experienceRepo.Update(validExp);
+                return Ok(validExp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         //[Authorize]

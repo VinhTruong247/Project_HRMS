@@ -5,6 +5,7 @@ using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -14,6 +15,8 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly JobRepo _job;
+        public Regex jobIdRegex = new Regex(@"^JB\d{6}");
+        public Regex allowanceIdRegex = new Regex(@"^AL\d{6}");
 
         public JobController(IMapper mapper, JobRepo job)
         {
@@ -36,7 +39,7 @@ namespace HumanResourceApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Something went wrong: " + ex.Message);
             }
         }
 
@@ -44,46 +47,91 @@ namespace HumanResourceApi.Controllers
         [HttpGet("get/job/{jobId}")]
         public IActionResult GetJob(string jobId)
         {
-            var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == jobId).FirstOrDefault());
-            if (job == null)
+            try
             {
-                return BadRequest();
+                if (!jobIdRegex.IsMatch(jobId))
+                {
+                    return BadRequest("Wrong jobId Format.");
+                }
+                var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == jobId).FirstOrDefault());
+                if (job == null)
+                {
+                    return BadRequest("Job ID = " + jobId + " doesn't seem to be found.");
+                }
+                return Ok(job);
             }
-            return Ok(job);
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         [Authorize]
         [HttpPost("create")]
         public IActionResult Create([FromBody] JobDto job)
         {
-            bool validJob = _job.GetAll().Any(j => j.JobId == job.JobId);
-            if (validJob)
+            try
             {
-                return BadRequest();
+                if (job == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!jobIdRegex.IsMatch(job.JobId))
+                {
+                    return BadRequest("Wrong jobId Format.");
+                }
+                if (!allowanceIdRegex.IsMatch(job.AllowanceId))
+                {
+                    return BadRequest("Wrong allowanceId Format.");
+                }
+                bool validJob = _job.GetAll().Any(j => j.JobId == job.JobId);
+                if (validJob)
+                {
+                    return BadRequest("Job ID = " + job.JobId + " existed");
+                }
+                var temp = _mapper.Map<Job>(job);
+                _job.Add(temp);
+                return Ok(temp);
             }
-            var temp = _mapper.Map<Job>(job);
-            _job.Add(temp);
-            return Ok(temp);
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         [Authorize]
         [HttpPut("update/job/{jobId}")]
         public IActionResult UpdateJob(string jobId, [FromBody] UpdateJobDto job)
         {
-            if (job == null)
+            try
             {
-                return BadRequest();
-            }
-            var validJob = _job.GetAll().Where(j => j.JobId == jobId).FirstOrDefault();
-            if (validJob == null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map(job, validJob);
-            validJob.JobId = jobId;
+                if (job == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!jobIdRegex.IsMatch(jobId))
+                {
+                    return BadRequest("Wrong jobId Format.");
+                }
+                if (!allowanceIdRegex.IsMatch(job.AllowanceId))
+                {
+                    return BadRequest("Wrong allowanceId Format.");
+                }
+                var validJob = _job.GetAll().Where(j => j.JobId == jobId).FirstOrDefault();
+                if (validJob == null)
+                {
+                    return BadRequest();
+                }
+                _mapper.Map(job, validJob);
+                validJob.JobId = jobId;
 
-            _job.Update(validJob);
-            return Ok(validJob);
+                _job.Update(validJob);
+                return Ok(validJob);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         //[Authorize]

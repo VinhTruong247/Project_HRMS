@@ -3,6 +3,7 @@ using HumanResourceApi.DTO.SkillEmployee;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -12,6 +13,9 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly SkillEmployeeRepo _skillEmployeeRepo;
+        public Regex uniqueIdRegex = new Regex(@"^UN\d{6}");
+        public Regex employeeIdRegex = new Regex(@"^EP\d{6}");
+        public Regex skillIdRegex = new Regex(@"^SK\d{6}");
 
         public SkillEmployeeController(IMapper mapper, SkillEmployeeRepo skillEmployeeRepo)
         {
@@ -29,54 +33,104 @@ namespace HumanResourceApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Something went wrong: " + ex.Message);
             }
         }
 
         [HttpGet("get/SkillEmployee/{uniqueId}")]
         public IActionResult GetSkillEmployeeById(string uniqueId)
         {
-            var skillEmployee = _mapper.Map<SkillEmployeeDto>(_skillEmployeeRepo.GetAll().Where(se => se.UniqueId == uniqueId).FirstOrDefault());
-            if (skillEmployee == null)
+            try
             {
-                return BadRequest();
+                if (!uniqueIdRegex.IsMatch(uniqueId))
+                {
+                    return BadRequest("Wrong uniqueId Format.");
+                }
+                var skillEmployee = _mapper.Map<SkillEmployeeDto>(_skillEmployeeRepo.GetAll().Where(se => se.UniqueId == uniqueId).FirstOrDefault());
+                if (skillEmployee == null)
+                {
+                    return BadRequest("Unique ID = " + uniqueId + " doesn't seem to be found.");
+                }
+                return Ok(skillEmployee);
             }
-            return Ok(skillEmployee);
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         [HttpPost("create")]
         public IActionResult CreateSkillEmployee(SkillEmployeeDto skillEmployee)
         {
-            if (skillEmployee == null)
+            try
             {
-                return BadRequest();
+                if (skillEmployee == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!uniqueIdRegex.IsMatch(skillEmployee.UniqueId))
+                {
+                    return BadRequest("Wrong uniqueId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(skillEmployee.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(skillEmployee.SkillId))
+                {
+                    return BadRequest("Wrong skillId Format.");
+                }
+                if (_skillEmployeeRepo.GetAll().Any(se => se.UniqueId == skillEmployee.UniqueId))
+                {
+                    return BadRequest("Unique ID = " + skillEmployee.UniqueId + " existed");
+                }
+                var temp = _mapper.Map<SkillEmployee>(skillEmployee);
+                _skillEmployeeRepo.Add(temp);
+                return Ok(temp);
             }
-            if (_skillEmployeeRepo.GetAll().Any(se => se.UniqueId == skillEmployee.UniqueId))
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest("Something went wrong: " + ex.Message);
             }
-            var temp = _mapper.Map<SkillEmployee>(skillEmployee);
-            _skillEmployeeRepo.Add(temp);
-            return Ok(temp);
         }
 
         [HttpPut("update/SkillEmployee/{uniqueId}")]
         public IActionResult UpdateSkillEmployee(string uniqueId, [FromBody] UpdateSkillEmployeeDto skillEmployee)
         {
-            if (skillEmployee == null)
+            try
             {
-                return BadRequest();
-            }
-            var validSkillEmployee = _skillEmployeeRepo.GetAll().Where(se => se.UniqueId == uniqueId).FirstOrDefault();
-            if (validSkillEmployee == null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map(skillEmployee, validSkillEmployee);
-            validSkillEmployee.UniqueId = uniqueId;
+                if (skillEmployee == null)
+                {
+                    return BadRequest();
+                }
+                if (!uniqueIdRegex.IsMatch(uniqueId))
+                {
+                    return BadRequest("Wrong uniqueId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(skillEmployee.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(skillEmployee.SkillId))
+                {
+                    return BadRequest("Wrong skillId Format.");
+                }
+                var validSkillEmployee = _skillEmployeeRepo.GetAll().Where(se => se.UniqueId == uniqueId).FirstOrDefault();
+                if (validSkillEmployee == null)
+                {
+                    return BadRequest("Unique ID = " + uniqueId + " doesn't seem to be found.");
 
-            _skillEmployeeRepo.Update(validSkillEmployee);
-            return Ok(validSkillEmployee);
+                }
+                _mapper.Map(skillEmployee, validSkillEmployee);
+                validSkillEmployee.UniqueId = uniqueId;
+
+                _skillEmployeeRepo.Update(validSkillEmployee);
+                return Ok(validSkillEmployee);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         //[HttpPost("delete")]

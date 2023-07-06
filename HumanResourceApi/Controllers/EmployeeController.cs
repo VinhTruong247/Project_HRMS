@@ -16,6 +16,12 @@ namespace HumanResourceApi.Controllers
         public readonly IMapper _mapper;
         public readonly EmployeeRepo _employeeRepo;
         public readonly UserRepo _userRepo;
+        public Regex x = new Regex(@"^EP\d{6}");
+        public Regex y = new Regex(@"^US\d{6}");
+        public Regex z = new Regex(@"^DP\d{6}");
+        public Regex t = new Regex(@"^JB\d{6}");
+        public Regex emailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+
 
         public EmployeeController(IMapper mapper, EmployeeRepo employeeRepo, UserRepo userRepo)
         {
@@ -39,7 +45,7 @@ namespace HumanResourceApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Something went wrong: " + ex.Message);
             }
 
         }
@@ -49,6 +55,10 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
+                if (!x.IsMatch(employeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
                 var employee = _mapper.Map<EmployeeDto>(_employeeRepo.GetAll().Where(e => e.EmployeeId == employeeId).FirstOrDefault());
                 if (employee == null)
                 {
@@ -67,6 +77,10 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
+                if (!y.IsMatch(userId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
                 var employee = _mapper.Map<EmployeeDto>(_userRepo.getEmployee(userId));
                 if (employee is null)
                 {
@@ -86,6 +100,10 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
+                if (!y.IsMatch(userId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
                 var employee = _mapper.Map<EmployeeDto>(_userRepo.getEmployee(userId));
                 if (employee == null)
                 {
@@ -100,7 +118,6 @@ namespace HumanResourceApi.Controllers
             }
             catch (Exception ex)
             {
-
                 return BadRequest("Something went wrong: " + ex.Message);
             }
 
@@ -114,11 +131,22 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
+                if (!x.IsMatch(employee.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                if (!z.IsMatch(employee.DepartmentId))
+                {
+                    return BadRequest("Wrong departmentId Format.");
+                }
+                if (!t.IsMatch(employee.JobId))
+                {
+                    return BadRequest("Wrong jobId Format.");
+                }
                 if (_employeeRepo.GetAll().Any(e => e.EmployeeId == employee.EmployeeId))
                 {
-                    return BadRequest("EmployeeId existed");
+                    return BadRequest("Employee ID = " + employee.EmployeeId +" existed");
                 }
-                Regex emailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
                 if (!emailRegex.IsMatch(employee.Email))
                 {
                     return BadRequest("Invalid Email Format");
@@ -143,7 +171,18 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                Regex emailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+                if (!x.IsMatch(employeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                if (!z.IsMatch(employee.DepartmentId))
+                {
+                    return BadRequest("Wrong departmentId Format.");
+                }
+                if (!t.IsMatch(employee.JobId))
+                {
+                    return BadRequest("Wrong jobId Format.");
+                }
                 if (!emailRegex.IsMatch(employee.Email))
                 {
                     return BadRequest("Invalid Email Format");
@@ -151,7 +190,7 @@ namespace HumanResourceApi.Controllers
                 var validEmployee = _employeeRepo.GetAll().Where(e => e.EmployeeId == employeeId).FirstOrDefault();
                 if (validEmployee == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");
                 }
                 _mapper.Map(employee, validEmployee);
                 validEmployee.EmployeeId = employeeId;
