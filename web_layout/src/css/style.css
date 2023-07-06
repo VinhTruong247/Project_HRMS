@@ -58,6 +58,9 @@ a {
 
 .box {
     padding: 0 5px 0 5px;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
 }
 
 img {
@@ -119,9 +122,9 @@ p {
     padding: 10px;
     margin-top: 10px;
     animation: fadeout 3s linear forwards;
-  }
+}
 
-  @keyframes fadeout {
+@keyframes fadeout {
     0% {
         opacity: 1;
     }
@@ -381,7 +384,7 @@ aside .sidebar a:hover.active span {
     border-radius: var(--box-border-radius);
 }
 
-.manager .btn_create{
+.manager .btn_create {
     margin: 1rem;
     width: fit-content;
     height: 3.4rem;
@@ -519,127 +522,22 @@ nav a.active {
 
 .news {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    grid-gap: 0.5rem;
-    height: 100%;
-  }
-
-  .box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.form-container .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-
-.manager .form input,
-.manager .form select {
-    width: 100%;
-    height: 2rem;
-    line-height: 44px;
-    padding: 1rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 16px;
-    font-style: italic;
-    font-weight: 550;
-    color: black;
-    border-radius: 0px;
-    border: 1px solid #7a7a7a;
-    box-shadow: none;
-}
-
-.manager .row.btn {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.manager .row.btn button {
-    width: 8rem;
-    height: 3.35rem;
-    line-height: 51px;
-    background-color: var(--color-primary);
-    box-shadow: var(--box-shadow);
-    border-radius: var(--box-border-radius);
-    border: 1px solid transparent;
-    color: #fff;
-    transition: all 0.3s;
-}
-
-.manager .row.btn button:hover {
-    background-color: #fff;
-    border: 1px solid #2a2a2a;
-    color: #2a2a2a;
-}
-
-.manager .table thead,
-.manager .table tbody {
-    font-weight: 300;
-    font-size: 1.1rem;
-}
-
-.table>tbody>tr:nth-of-type(odd)>* {
-    --bs-table-bg-type: rgba(154, 52, 52);
-    color: white !important;
-}
-
-.table>tbody>tr:nth-of-type(odd)>td>button {
-    --bs-table-bg-type: rgba(154, 52, 52);
-    color: white !important;
-}
-
-.navbar-brand {
-    margin-right: auto;
-    padding: 10px;
-    color: #000000;
-    font-weight: 500;
-    font-size: 40px;
-}
-
-nav {
-    display: flex;
-}
-
-nav a {
-    padding: 10px;
-    color: white;
-    text-decoration: none;
-}
-
-nav a:hover {
-
-    color: #4b0a0a;
-}
-
-nav a.active {
-    background: var(--color-info-light);
-    color: var(--color-dark);
-    border: 1px solid var(--color-dark);
-    border-left: none;
-    border-radius: 30px 30px 30px 30px;
-    transition: 2ms;
-}
-
-
-/*<!-------------------- Container News -------------------->*/
-
-
-.news {
-    display: grid;
+    border-radius: 20px;
     width: 100%;
     margin: 0;
     padding: 1rem;
     margin-top: 0.8rem;
-}
+  }
+
+  .big-box {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .small-box {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
 
 main {
     margin-left: 1rem;

@@ -4,6 +4,7 @@ using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -13,6 +14,7 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly DepartmentRepo _repo;
+        public Regex x = new Regex(@"^DP\d{6}");
 
         public DepartmentController(IMapper mapper, DepartmentRepo repo)
         {
@@ -31,7 +33,7 @@ namespace HumanResourceApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Something went wrong: " + ex.Message);
             }
         }
 
@@ -39,49 +41,82 @@ namespace HumanResourceApi.Controllers
         [HttpGet("get/department/{departmentId}")]
         public IActionResult GetDepartmentId(string departmentId)
         {
-            var department = _mapper.Map<DepartmentDto>(_repo.GetAll().Where(d => d.DepartmentId == departmentId).FirstOrDefault());
-            if (department == null)
+            try
             {
-                return BadRequest();
+                if (!x.IsMatch(departmentId))
+                {
+                    return BadRequest("Wrong DepartmentId Format.");
+                }
+                var department = _mapper.Map<DepartmentDto>(_repo.GetAll().Where(d => d.DepartmentId == departmentId).FirstOrDefault());
+                if (department == null)
+                {
+                    return BadRequest("Department ID = " + departmentId + " doesn't seem to be found");
+                }
+                return Ok(department);
             }
-            return Ok(department);
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+
         }
 
         [Authorize]
         [HttpPost("create")]
-        public IActionResult CreateDepartment([FromBody]DepartmentDto department)
+        public IActionResult CreateDepartment([FromBody] DepartmentDto department)
         {
-            if (department == null)
+            try
             {
-                return BadRequest();
+                if (department == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!x.IsMatch(department.DepartmentId))
+                {
+                    return BadRequest("Wrong DepartmentId Format.");
+                }
+                if (_repo.GetAll().Any(d => d.DepartmentId == department.DepartmentId))
+                {
+                    return BadRequest("Department ID = " + department.DepartmentId + " existed.");
+                }
+                var temp = _mapper.Map<Department>(department);
+                _repo.Add(temp);
+                return Ok(temp);
             }
-            if (_repo.GetAll().Any(d => d.DepartmentId == department.DepartmentId))
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest("Something went wrong: " + ex.Message);
             }
-            var temp = _mapper.Map<Department>(department);
-            _repo.Add(temp);
-            return Ok(temp);
         }
 
         [Authorize]
         [HttpPut("update/department/{departmentId}")]
         public IActionResult UpdateDepartment(string departmentId, [FromBody] UpdateDepartmentDto department)
         {
-            if (department == null)
+            try
             {
-                return BadRequest();
-            }
-            var validDepartment = _repo.GetAll().Where(d => d.DepartmentId == departmentId).FirstOrDefault();
-            if (validDepartment == null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map(department, validDepartment);
-            validDepartment.DepartmentId = departmentId;
+                if (department == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!x.IsMatch(departmentId))
+                {
+                    return BadRequest("Wrong DepartmentId Format.");
+                }
+                var validDepartment = _repo.GetAll().Where(d => d.DepartmentId == departmentId).FirstOrDefault();
+                if (validDepartment == null)
+                {
+                    return BadRequest("Department ID = " + departmentId + " doesn't seem to be found");
+                }
+                _mapper.Map(department, validDepartment);
+                validDepartment.DepartmentId = departmentId;
 
-            _repo.Update(validDepartment);
-            return Ok(validDepartment);
+                _repo.Update(validDepartment);
+                return Ok(validDepartment);
+            } catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         //[Authorize]

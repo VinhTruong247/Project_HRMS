@@ -4,6 +4,8 @@ using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Contracts;
+using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
 {
@@ -13,6 +15,9 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly EmployeeContractRepo _employeeContractRepo;
+        public Regex contractIdRegex = new Regex(@"^CT\d{6}");
+        public Regex employeeIdRegex = new Regex(@"^CT\d{6}");
+
 
         public EmployeeContractController(IMapper mapper, EmployeeContractRepo employeeContractRepo)
         {
@@ -31,7 +36,7 @@ namespace HumanResourceApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Something went wrong: " + ex.Message);
             }
         }
 
@@ -39,50 +44,91 @@ namespace HumanResourceApi.Controllers
         [HttpGet("get/contract/{contractId}")]
         public IActionResult GetContract(string contractId)
         {
-            var contract = _mapper.Map<EmployeeContractDto>(_employeeContractRepo.GetAll().Where(c => c.ContractId == contractId));
-            if (contract == null)
+            try
             {
-                return BadRequest();
+                if (!contractIdRegex.IsMatch(contractId))
+                {
+                    return BadRequest("Wrong contractId Format.");
+                }
+                var contract = _mapper.Map<EmployeeContractDto>(_employeeContractRepo.GetAll().Where(c => c.ContractId == contractId));
+                if (contract == null)
+                {
+                    return BadRequest("Contract ID = " + contractId + " doesn't seem to be found.");
+                }
+                return Ok(contract);
             }
-            return Ok(contract);
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         [Authorize]
         [HttpPost("create")]
         public IActionResult CreateContract([FromBody] EmployeeContractDto contract)
         {
-            if (contract == null)
+            try
             {
-                return BadRequest();
+                if (contract == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!contractIdRegex.IsMatch(contract.ContractId))
+                {
+                    return BadRequest("Wrong contractId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(contract.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                bool validContract = _employeeContractRepo.GetAll().Any(c => c.ContractId == contract.ContractId);
+                if (validContract)
+                {
+                    return BadRequest("Contract ID = " + contract.ContractId + " existed");
+                }
+                var temp = _mapper.Map<EmployeeContract>(contract);
+                _employeeContractRepo.Add(temp);
+                return Ok(temp);
             }
-            bool validContract = _employeeContractRepo.GetAll().Any(c =>  c.ContractId == contract.ContractId);
-            if (validContract)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest("Something went wrong: " + ex.Message);
             }
-            var temp = _mapper.Map<EmployeeContract>(contract);
-            _employeeContractRepo.Add(temp);
-            return Ok(temp);
         }
 
         [Authorize]
         [HttpPut("update/contract/{contractId}")]
         public IActionResult UpdateContractId(string contractId, [FromBody] UpdateEmployeeContractDto contract)
         {
-            if (contract == null)
+            try
             {
-                return BadRequest();
-            }
-            var validContract = _employeeContractRepo.GetAll().Where(c => c.ContractId == contractId).FirstOrDefault();
-            if (validContract == null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map(contract, validContract);
-            validContract.ContractId = contractId;
+                if (contract == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!contractIdRegex.IsMatch(contractId))
+                {
+                    return BadRequest("Wrong contractId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(contract.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                var validContract = _employeeContractRepo.GetAll().Where(c => c.ContractId == contractId).FirstOrDefault();
+                if (validContract == null)
+                {
+                    return BadRequest("Contract ID = " + contractId + " doesn't seem to be found.");
+                }
+                _mapper.Map(contract, validContract);
+                validContract.ContractId = contractId;
 
-            _employeeContractRepo.Update(validContract);
-            return Ok(validContract);
+                _employeeContractRepo.Update(validContract);
+                return Ok(validContract);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
         }
 
         //[Authorize]
