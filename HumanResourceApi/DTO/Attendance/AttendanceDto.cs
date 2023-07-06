@@ -5,7 +5,9 @@ namespace HumanResourceApi.DTO.Attendance
 {
     public class AttendanceDto
     {
-        
+        [Required]
+        public string AttendanceId { get; set; }
+
         [Required]
         public string EmployeeId { get; set; }
         [Required]

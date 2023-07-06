@@ -5,6 +5,7 @@ namespace HumanResourceApi.Models
 {
     public partial class Attendance
     {
+        public string AttendanceId { get; set; }
         public string EmployeeId { get; set; }
         public DateTime? Day { get; set; }
         public TimeSpan? TimeIn { get; set; }

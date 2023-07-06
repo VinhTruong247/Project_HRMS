@@ -78,9 +78,11 @@ namespace HumanResourceApi.Models
 
             modelBuilder.Entity<Attendance>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Attendance");
+
+                entity.Property(e => e.AttendanceId)
+                    .HasMaxLength(10)
+                    .HasColumnName("attendance_id");
 
                 entity.Property(e => e.AttendanceStatus).HasColumnName("attendance_status");
 
@@ -107,9 +109,9 @@ namespace HumanResourceApi.Models
                 entity.Property(e => e.TotalHours).HasColumnName("total_hours");
 
                 entity.HasOne(d => d.Employee)
-                    .WithMany()
+                    .WithMany(p => p.Attendances)
                     .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK__Attendanc__emplo__628FA481");
+                    .HasConstraintName("FK__Attendanc__emplo__6383C8BA");
             });
 
             modelBuilder.Entity<Deduction>(entity =>
@@ -154,12 +156,12 @@ namespace HumanResourceApi.Models
                 entity.HasOne(d => d.Deduction)
                     .WithMany()
                     .HasForeignKey(d => d.DeductionId)
-                    .HasConstraintName("FK__Deduction__deduc__75A278F5");
+                    .HasConstraintName("FK__Deduction__deduc__76969D2E");
 
                 entity.HasOne(d => d.Payslip)
                     .WithMany()
                     .HasForeignKey(d => d.PayslipId)
-                    .HasConstraintName("FK__Deduction__paysl__76969D2E");
+                    .HasConstraintName("FK__Deduction__paysl__778AC167");
             });
 
             modelBuilder.Entity<Department>(entity =>
@@ -292,7 +294,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<EmployeeBenefit>(entity =>
             {
                 entity.HasKey(e => e.AllowancesId)
-                    .HasName("PK__Employee__BA57CC1B46F01958");
+                    .HasName("PK__Employee__BA57CC1B382179A7");
 
                 entity.ToTable("EmployeeBenefit");
 
@@ -313,18 +315,18 @@ namespace HumanResourceApi.Models
                 entity.HasOne(d => d.Allowance)
                     .WithMany(p => p.EmployeeBenefits)
                     .HasForeignKey(d => d.AllowanceId)
-                    .HasConstraintName("FK__EmployeeB__allow__6EF57B66");
+                    .HasConstraintName("FK__EmployeeB__allow__6FE99F9F");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.EmployeeBenefits)
                     .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK__EmployeeB__emplo__6E01572D");
+                    .HasConstraintName("FK__EmployeeB__emplo__6EF57B66");
             });
 
             modelBuilder.Entity<EmployeeContract>(entity =>
             {
                 entity.HasKey(e => e.ContractId)
-                    .HasName("PK__Employee__F8D66423D49CD3B9");
+                    .HasName("PK__Employee__F8D664230B905D31");
 
                 entity.ToTable("EmployeeContract");
 
@@ -377,7 +379,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<EmployeeLoanLog>(entity =>
             {
                 entity.HasKey(e => e.LoanId)
-                    .HasName("PK__Employee__A1F795546A9D22EF");
+                    .HasName("PK__Employee__A1F79554E3C390A1");
 
                 entity.ToTable("EmployeeLoanLog");
 
@@ -428,7 +430,7 @@ namespace HumanResourceApi.Models
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.EmployeeLoanLogs)
                     .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK__EmployeeL__emplo__656C112C");
+                    .HasConstraintName("FK__EmployeeL__emplo__66603565");
             });
 
             modelBuilder.Entity<Experience>(entity =>
@@ -571,7 +573,7 @@ namespace HumanResourceApi.Models
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.Leaves)
                     .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK__Leave__employee___68487DD7");
+                    .HasConstraintName("FK__Leave__employee___693CA210");
             });
 
             modelBuilder.Entity<Overtime>(entity =>
@@ -599,7 +601,7 @@ namespace HumanResourceApi.Models
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.Overtimes)
                     .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK__Overtime__employ__6B24EA82");
+                    .HasConstraintName("FK__Overtime__employ__6C190EBB");
             });
 
             modelBuilder.Entity<PaySlip>(entity =>
@@ -666,17 +668,17 @@ namespace HumanResourceApi.Models
                 entity.HasOne(d => d.Allowances)
                     .WithMany(p => p.PaySlips)
                     .HasForeignKey(d => d.AllowancesId)
-                    .HasConstraintName("FK__PaySlip__allowan__73BA3083");
+                    .HasConstraintName("FK__PaySlip__allowan__74AE54BC");
 
                 entity.HasOne(d => d.Contract)
                     .WithMany(p => p.PaySlips)
                     .HasForeignKey(d => d.ContractId)
-                    .HasConstraintName("FK__PaySlip__contrac__71D1E811");
+                    .HasConstraintName("FK__PaySlip__contrac__72C60C4A");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.PaySlips)
                     .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK__PaySlip__employe__72C60C4A");
+                    .HasConstraintName("FK__PaySlip__employe__73BA3083");
             });
 
             modelBuilder.Entity<Permission>(entity =>
@@ -801,7 +803,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<SkillEmployee>(entity =>
             {
                 entity.HasKey(e => e.UniqueId)
-                    .HasName("PK__Skill_em__A292913014D90A6D");
+                    .HasName("PK__Skill_em__A2929130B42B1BD5");
 
                 entity.ToTable("Skill_employee");
 

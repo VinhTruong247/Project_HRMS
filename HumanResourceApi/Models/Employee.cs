@@ -7,6 +7,7 @@ namespace HumanResourceApi.Models
     {
         public Employee()
         {
+            Attendances = new HashSet<Attendance>();
             EmployeeBenefits = new HashSet<EmployeeBenefit>();
             EmployeeContracts = new HashSet<EmployeeContract>();
             EmployeeLoanLogs = new HashSet<EmployeeLoanLog>();
@@ -36,6 +37,7 @@ namespace HumanResourceApi.Models
 
         public virtual Department Department { get; set; }
         public virtual Job Job { get; set; }
+        public virtual ICollection<Attendance> Attendances { get; set; }
         public virtual ICollection<EmployeeBenefit> EmployeeBenefits { get; set; }
         public virtual ICollection<EmployeeContract> EmployeeContracts { get; set; }
         public virtual ICollection<EmployeeLoanLog> EmployeeLoanLogs { get; set; }
