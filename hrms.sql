@@ -186,6 +186,7 @@ CREATE TABLE EmployeeContract (
 
 -- Create Attendance table
 CREATE TABLE Attendance (
+  attendance_id NVARCHAR(10)primary key,
   employee_id NVARCHAR(10),
   day DATE,
   time_in TIME,
