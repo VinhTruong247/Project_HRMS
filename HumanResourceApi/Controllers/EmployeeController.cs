@@ -162,6 +162,33 @@ namespace HumanResourceApi.Controllers
 
         }
 
+        [HttpPut("update/profile/{employeeId}")]
+        public IActionResult UpdateProfile(string employeeId, [FromBody] UpdateProfileDto updateProfile)
+        {
+            try
+            {
+                if (updateProfile == null)
+                {
+                    return BadRequest("Profile input seems to be null");
+                }
+                var updateEmployee = _employeeRepo.GetById(employeeId);
+                if (updateEmployee == null)
+                {
+                    return NotFound($"Can't find employee with Id: {employeeId}");
+                }
+                _mapper.Map(updateProfile, updateEmployee);
+                _employeeRepo.Update(updateEmployee);
+
+                var mappedProfile = _mapper.Map<UpdateProfileDto>(updateEmployee);
+                return Ok(mappedProfile);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPut("update/user/{employeeId}")]
         public IActionResult UpdateEmployee(string employeeId, [FromBody] UpdateEmployeeDto employee)
         {

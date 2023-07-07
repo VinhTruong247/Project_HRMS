@@ -98,6 +98,8 @@ namespace HumanResourceApi.Helper
                 .ReverseMap();
             CreateMap<Employee, UpdateEmployeeDto>()
                 .ReverseMap();
+            CreateMap<Employee, UpdateProfileDto>()
+                .ReverseMap();
         }
         private void EmployeeContractMap()
         {
