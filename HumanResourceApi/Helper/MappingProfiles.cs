@@ -12,6 +12,7 @@ using HumanResourceApi.DTO.EmployeeLoanLog;
 using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.DTO.Job;
 using HumanResourceApi.DTO.Leave;
+using HumanResourceApi.DTO.PaySlip;
 using HumanResourceApi.DTO.Project;
 using HumanResourceApi.DTO.Skill;
 using HumanResourceApi.DTO.SkillEmployee;
@@ -41,6 +42,7 @@ namespace HumanResourceApi.Helper
             SkillMap();
             UserMap();
             EmployeeBenefitMap();
+            PaySlipMap();
         }
 
         private void EmployeeLoanLogMap()
@@ -165,6 +167,14 @@ namespace HumanResourceApi.Helper
             CreateMap<EmployeeBenefit, EmployeeBenefitDto>()
                 .ReverseMap();
             CreateMap<EmployeeBenefit, UpdateEmployeeBenefitDto>()
+                .ReverseMap();
+        }
+
+        private void PaySlipMap()
+        {
+            CreateMap<PaySlip, PaySlipDto>()
+                .ReverseMap();
+            CreateMap<PaySlip, UpdatePaySlipDto>()
                 .ReverseMap();
         }
     }
