@@ -1,0 +1,141 @@
+﻿using AutoMapper;
+using HumanResourceApi.DTO.EmployeeBenefit;
+using HumanResourceApi.Models;
+using HumanResourceApi.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
+
+namespace HumanResourceApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmployeeBenefitController : ControllerBase
+    {
+        public readonly IMapper _mapper;
+        public readonly EmployeeBenefitRepo _employeeBenefitRepo;
+        Regex employeeBenefitIdRegex = new Regex(@"^EB\d{6}");
+        Regex allowanceIdRegex = new Regex(@"^AL\d{6}");
+        Regex employeeIdRegex = new Regex(@"^EP\d{6}");
+
+        public EmployeeBenefitController(IMapper mapper, EmployeeBenefitRepo employeeBenefitRepo)
+        {
+            _mapper = mapper;
+            _employeeBenefitRepo = employeeBenefitRepo;
+        }
+
+        [HttpGet("get/employeeBenefitList")]
+        public IActionResult GetBenefitList()
+        {
+            try
+            {
+                var benefitList = _mapper.Map<List<EmployeeBenefitDto>>(_employeeBenefitRepo.GetAll());
+                if (benefitList == null) return BadRequest("No EmployeeBenefitList found.");
+                return Ok(benefitList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
+
+        [HttpGet("get/employeeBenefit/{employeeId}")]
+        public IActionResult GetBenefitByEmployeeId(string employeeId)
+        {
+            try
+            {
+                if (!employeeIdRegex.IsMatch(employeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                var get = _mapper.Map<List<EmployeeBenefitDto>>(_employeeBenefitRepo.GetAll().Where(eb => eb.EmployeeId == employeeId));
+                if (get == null)
+                {
+                    return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");
+                }
+                return Ok(get);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
+
+        [HttpPost("create")]
+        public IActionResult CreateBenefit([FromBody] EmployeeBenefitDto employeeBenefit)
+        {
+            try
+            {
+                if (employeeBenefit == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!employeeIdRegex.IsMatch(employeeBenefit.EmployeeId))
+                {
+                    return BadRequest("Wrong employeeId Format.");
+                }
+                if (!employeeBenefitIdRegex.IsMatch(employeeBenefit.AllowancesId))
+                {
+                    return BadRequest("Wrong allowancesId Format.");
+                }
+                if (!allowanceIdRegex.IsMatch(employeeBenefit.AllowanceId))
+                {
+                    return BadRequest("Wrong allowancesId Format.");
+                }
+                if (_employeeBenefitRepo.GetAll().Any(eb => eb.AllowancesId == employeeBenefit.AllowancesId))
+                {
+                    return BadRequest("EmployeeBenefit ID = " + employeeBenefit.AllowancesId + " existed");
+                }
+                var temp = _mapper.Map<EmployeeBenefit>(employeeBenefit);
+                _employeeBenefitRepo.Add(temp);
+                return Ok(_mapper.Map<EmployeeBenefitDto>(temp));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
+
+        [HttpPut("update/employeeBenefit/{employeeId}/{allowancesId}")]
+        public IActionResult UpdateBenefit(string allowancesId, string employeeId, [FromBody] UpdateEmployeeBenefitDto employeeBenefit)
+        {
+            try
+            {
+                if (employeeBenefit == null)
+                {
+                    return BadRequest("Some input information is null");
+                }
+                if (!employeeBenefitIdRegex.IsMatch(allowancesId))
+                {
+                    return BadRequest("Wrong EmployeeBenefitId Format.");
+                }
+                if (!employeeIdRegex.IsMatch(employeeId))
+                {
+                    return BadRequest("Wrong EmployeeId Format.");
+                }
+                if (!allowanceIdRegex.IsMatch(employeeBenefit.AllowanceId))
+                {
+                    return BadRequest("Wrong AllowanceId Format.");
+                }
+                var valid = _employeeBenefitRepo.GetAll().Where(eb => eb.AllowancesId == allowancesId && eb.EmployeeId == employeeId).FirstOrDefault();
+                if (valid == null)
+                {
+                    return BadRequest("EmployeeBenefit ID = " + allowancesId + " doesn't seem to exist.");
+                }
+                if (employeeBenefit.AllowanceId == valid.AllowanceId)
+                {
+                    return BadRequest("Duplicated benefit for Employee ID = " + employeeId);
+                }
+                _mapper.Map(employeeBenefit, valid);
+                valid.AllowancesId = allowancesId;
+                valid.EmployeeId = employeeId;
+
+                _employeeBenefitRepo.Update(valid);
+                return Ok(_mapper.Map<EmployeeBenefitDto>(valid));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
+    }
+}
