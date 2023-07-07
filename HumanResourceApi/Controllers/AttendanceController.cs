@@ -4,6 +4,7 @@ using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace HumanResourceApi.Controllers
@@ -21,7 +22,7 @@ namespace HumanResourceApi.Controllers
             _attendance = attendance;
         }
 
-        
+        [SwaggerOperation(Summary = "get list of attendances")]
         [HttpGet("attendances")]
         public IActionResult GetAttendance()
         {
@@ -100,6 +101,8 @@ namespace HumanResourceApi.Controllers
             return Ok(validAttendance);
         }
 
+        [SwaggerOperation(Summary = 
+            "Create a new attendance for the employee and late hour will be calculated automatically, if note will contain \"Arrived late\"")]
         [HttpGet("punch-in/attendance/{employeeId}")]
         public IActionResult PunchIn(string employeeId)
         {
@@ -112,7 +115,7 @@ namespace HumanResourceApi.Controllers
                 var attendanceList = _attendance.GetAll().Where(a => a.EmployeeId == employeeId);
                 if (attendanceList.ToList().Count() <= 0)
                 {
-                    return BadRequest("Wrong employeeId");
+                    return BadRequest("Not found employeeId");
                 }
                 DateTime datePunchIn = DateTime.Now;
                 if(attendanceList.Any(a => a.Day == datePunchIn.Date))
@@ -143,7 +146,7 @@ namespace HumanResourceApi.Controllers
                     Day = datePunchIn.Date,
                     TimeIn = timeIn,
                     LateHours = lateHour,
-                    AttendanceStatus = true,
+                    AttendanceStatus = false,
                     Notes = note,
                 };
                 _attendance.Add(punchInInfo);
@@ -156,6 +159,45 @@ namespace HumanResourceApi.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        [HttpGet("punch-out/attendance/{employeeId}")]
+        public IActionResult PunchOut(string employeeId)
+        {
+            var attendanceList = _attendance.GetAll().Where(a => a.EmployeeId == employeeId);
+            if (attendanceList.ToList().Count() <= 0)
+            {
+                return BadRequest("Not found employeeId");
+            }
+            DateTime datePunchOut = DateTime.Now;
+            if (!attendanceList.Any(a => a.Day == datePunchOut.Date))
+            {
+                return BadRequest("Have not punched in");
+            }
+            var empAttendance = attendanceList.Where(a => a.Day == datePunchOut.Date).FirstOrDefault();
+            //get timeOut
+            var startOfTheDate = DateTime.Now.Date;
+            var timeOut = datePunchOut - startOfTheDate;
+            //get early leave hour 
+            DateTime fivePM = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 0, 0);
+            var earlyLeaveHour = fivePM - datePunchOut;
+            if(earlyLeaveHour < TimeSpan.Zero)
+            {
+                earlyLeaveHour = TimeSpan.Zero;
+            }
+            //get total hour
+            var totalHours = timeOut - empAttendance.TimeIn;
+            if(totalHours > TimeSpan.FromHours(8)) 
+            {
+                totalHours = TimeSpan.FromHours(8);
+            }
+            empAttendance.TimeOut = timeOut;
+            empAttendance.EarlyLeaveHours = earlyLeaveHour;
+            empAttendance.TotalHours = totalHours;
+            empAttendance.AttendanceStatus = true;
+
+            _attendance.Update(empAttendance);
+            return Ok(_mapper.Map<AttendanceDto>(empAttendance));
         }
         //[Authorize]
         //[HttpPost("delete")]
