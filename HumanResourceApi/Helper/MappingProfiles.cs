@@ -6,6 +6,7 @@ using HumanResourceApi.DTO.DeductionSummary;
 using HumanResourceApi.DTO.Department;
 using HumanResourceApi.DTO.DepartmentMemberList;
 using HumanResourceApi.DTO.Employee;
+using HumanResourceApi.DTO.EmployeeBenefit;
 using HumanResourceApi.DTO.EmployeeContract;
 using HumanResourceApi.DTO.EmployeeLoanLog;
 using HumanResourceApi.DTO.Experience;
@@ -39,7 +40,7 @@ namespace HumanResourceApi.Helper
             SkillEmployeeMap();
             SkillMap();
             UserMap();
-
+            EmployeeBenefitMap();
         }
 
         private void EmployeeLoanLogMap()
@@ -154,6 +155,14 @@ namespace HumanResourceApi.Helper
             CreateMap<User, ResponseUserDto>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             CreateMap<User, UpdateUserDto>()
+                .ReverseMap();
+        }
+
+        private void EmployeeBenefitMap()
+        {
+            CreateMap<EmployeeBenefit, EmployeeBenefitDto>()
+                .ReverseMap();
+            CreateMap<EmployeeBenefit, UpdateEmployeeBenefitDto>()
                 .ReverseMap();
         }
     }
