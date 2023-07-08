@@ -8,7 +8,6 @@ namespace HumanResourceApi.Models
         public Allowance()
         {
             EmployeeBenefits = new HashSet<EmployeeBenefit>();
-            Jobs = new HashSet<Job>();
         }
 
         public string AllowanceId { get; set; }
@@ -17,6 +16,5 @@ namespace HumanResourceApi.Models
         public bool? Status { get; set; }
 
         public virtual ICollection<EmployeeBenefit> EmployeeBenefits { get; set; }
-        public virtual ICollection<Job> Jobs { get; set; }
     }
 }

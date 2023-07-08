@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Allowance;
 using HumanResourceApi.DTO.Attendance;
-using HumanResourceApi.DTO.Deduction;
-using HumanResourceApi.DTO.DeductionSummary;
 using HumanResourceApi.DTO.Department;
 using HumanResourceApi.DTO.DepartmentMemberList;
 using HumanResourceApi.DTO.Employee;
@@ -27,8 +25,6 @@ namespace HumanResourceApi.Helper
         {
             AllowanceMap();
             AttendaceMap();
-            DeductionMap();
-            DeductionSummaryMap();
             DepartmentMap();
             DepartmentMemberListMap();
             EmployeeContractMap();
@@ -64,20 +60,6 @@ namespace HumanResourceApi.Helper
             CreateMap<DepartmentMemberList, DepartmentMemberDto>()
                 .ReverseMap();
             CreateMap<DepartmentMemberList, UpdateDepartmentMemberDto>()
-                .ReverseMap();
-        }
-        private void DeductionSummaryMap()
-        {
-            CreateMap<DeductionSumary, DeductionSumaryDto>()
-                .ReverseMap();
-            CreateMap<DeductionSumary, UpdateDeductionSumaryDto>()
-                .ReverseMap();
-        }
-        private void DeductionMap()
-        {
-            CreateMap<Deduction, DeductionDto>()
-                .ReverseMap();
-            CreateMap<Deduction, UpdateDeductionDto>()
                 .ReverseMap();
         }
         private void SkillEmployeeMap()

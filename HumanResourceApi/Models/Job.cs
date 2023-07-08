@@ -16,10 +16,8 @@ namespace HumanResourceApi.Models
         public DateTime? StartDate { get; set; }
         public bool? Status { get; set; }
         public decimal? BaseSalaryPerHour { get; set; }
-        public string AllowanceId { get; set; }
         public decimal? Bonus { get; set; }
 
-        public virtual Allowance Allowance { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
     }
 }

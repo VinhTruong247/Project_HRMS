@@ -13,15 +13,17 @@ namespace HumanResourceApi.Controllers
     {
         public readonly IMapper _mapper;
         public readonly PaySlipRepo _paySlipRepo;
+        private readonly EmployeeBenefitRepo _benefitRepo;
         Regex payslipIdRegex = new Regex(@"^PS\d{6}");
         Regex employeeIdRegex = new Regex(@"^EP\d{6}");
         Regex employeeBenefitIdRegex = new Regex(@"^EB\d{6}");
         Regex contractIdRegex = new Regex(@"^PS\d{6}");
 
-        public PaySlipController(IMapper mapper, PaySlipRepo paySlipRepo)
+        public PaySlipController(IMapper mapper, PaySlipRepo paySlipRepo, EmployeeBenefitRepo benefitRepo)
         {
             _mapper = mapper;
             _paySlipRepo = paySlipRepo;
+            _benefitRepo = benefitRepo;
         }
 
         [HttpGet("get/paysliplist")]
@@ -137,6 +139,12 @@ namespace HumanResourceApi.Controllers
             {
                 return BadRequest("Something went wrong: " + ex.Message);
             }
+        }
+        [HttpGet("payslip")]
+        public IActionResult GetPayslip()
+        {
+            // return Ok(_benefitRepo.GetAllowanceSum(employeeId));
+            return Ok(_paySlipRepo.GetTax(5000000));
         }
     }
 }

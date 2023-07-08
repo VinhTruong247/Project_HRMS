@@ -81,10 +81,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong allowancesId Format.");
                 }
-                if (_employeeBenefitRepo.GetAll().Any(eb => eb.AllowancesId == employeeBenefit.AllowancesId))
-                {
-                    return BadRequest("EmployeeBenefit ID = " + employeeBenefit.AllowancesId + " existed");
-                }
                 var temp = _mapper.Map<EmployeeBenefit>(employeeBenefit);
                 _employeeBenefitRepo.Add(temp);
                 return Ok(_mapper.Map<EmployeeBenefitDto>(temp));
@@ -95,47 +91,6 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpPut("update/employeeBenefit/{employeeId}/{allowancesId}")]
-        public IActionResult UpdateBenefit(string allowancesId, string employeeId, [FromBody] UpdateEmployeeBenefitDto employeeBenefit)
-        {
-            try
-            {
-                if (employeeBenefit == null)
-                {
-                    return BadRequest("Some input information is null");
-                }
-                if (!employeeBenefitIdRegex.IsMatch(allowancesId))
-                {
-                    return BadRequest("Wrong EmployeeBenefitId Format.");
-                }
-                if (!employeeIdRegex.IsMatch(employeeId))
-                {
-                    return BadRequest("Wrong EmployeeId Format.");
-                }
-                if (!allowanceIdRegex.IsMatch(employeeBenefit.AllowanceId))
-                {
-                    return BadRequest("Wrong AllowanceId Format.");
-                }
-                var valid = _employeeBenefitRepo.GetAll().Where(eb => eb.AllowancesId == allowancesId && eb.EmployeeId == employeeId).FirstOrDefault();
-                if (valid == null)
-                {
-                    return BadRequest("EmployeeBenefit ID = " + allowancesId + " doesn't seem to exist.");
-                }
-                if (employeeBenefit.AllowanceId == valid.AllowanceId)
-                {
-                    return BadRequest("Duplicated benefit for Employee ID = " + employeeId);
-                }
-                _mapper.Map(employeeBenefit, valid);
-                valid.AllowancesId = allowancesId;
-                valid.EmployeeId = employeeId;
-
-                _employeeBenefitRepo.Update(valid);
-                return Ok(_mapper.Map<EmployeeBenefitDto>(valid));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Something went wrong: " + ex.Message);
-            }
-        }
+       
     }
 }

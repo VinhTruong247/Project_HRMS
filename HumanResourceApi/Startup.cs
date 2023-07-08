@@ -53,8 +53,6 @@ namespace YourNamespace
             services.AddScoped<EmployeeRepo>();
             services.AddScoped<SkillRepo>();
             services.AddScoped<SkillEmployeeRepo>();
-            services.AddScoped<DeductionRepo>();
-            services.AddScoped<DeductionSumaryRepo>();
             services.AddScoped<DepartmentMemberRepo>();
             services.AddScoped<ProjectRepo>();
             services.AddScoped<EmployeeLoanLogRepo>();
