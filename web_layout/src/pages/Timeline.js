@@ -4,15 +4,16 @@ import moment from 'moment';
 import Year from './Year';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-calendar/dist/Calendar.css';
-import '../css/calendar.css';
+import '../css/style.css';
+
+
 const localizer = momentLocalizer(moment);
 localizer.formats.yearHeaderFormat = 'YYYY';
-
 const Timeline = () => {
   return (
-    <div>
+    <div className='timeline'>
       <h1>
-        GeeksforGeeks is a Computer Science portal for geeks.
+        TimeLine page
       </h1>
       <Calendar
         localizer={localizer}
@@ -29,5 +30,4 @@ const Timeline = () => {
     </div>
   );
 };
-
 export default Timeline;

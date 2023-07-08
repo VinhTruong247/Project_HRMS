@@ -50,13 +50,6 @@ CREATE TABLE Allowances (
   status BIT
 );
 
--- Create Deduction table
-CREATE TABLE Deduction (
-  deduction_id NVARCHAR(10) PRIMARY KEY,
-  deduction_type NVARCHAR,
-  amount DECIMAL(18, 2),
-  status BIT
-);
 
 -- Create Job table
 CREATE TABLE Job (
@@ -66,9 +59,7 @@ CREATE TABLE Job (
   start_date DATE,
   status BIT,
   base_salary_per_hour DECIMAL(18, 2),
-  allowance_id NVARCHAR(10),
   bonus DECIMAL(18, 2),
-  FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
 );
 
 -- Create Employee table
@@ -121,7 +112,7 @@ CREATE TABLE Experience (
 CREATE TABLE DepartmentMemberList (
   department_id NVARCHAR(10),
   employee_id NVARCHAR(10),
-  emp_role NVARCHAR(20),
+  emp_role NVARCHAR(50),
   status BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (department_id) REFERENCES Department(department_id)
@@ -186,7 +177,7 @@ CREATE TABLE EmployeeContract (
 
 -- Create Attendance table
 CREATE TABLE Attendance (
-  attendance_id NVARCHAR(10)primary key,
+  attendance_id NVARCHAR(10) primary key,
   employee_id NVARCHAR(10),
   day DATE,
   time_in TIME,
@@ -243,7 +234,7 @@ CREATE TABLE Overtime (
 CREATE TABLE EmployeeBenefit (
   employee_id NVARCHAR(10),
   allowance_id NVARCHAR(10),
-  allowances_id NVARCHAR(10) PRIMARY KEY,
+  employeebenefit_id NVARCHAR(10) PRIMARY KEY,
   status BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
@@ -255,16 +246,14 @@ CREATE TABLE PaySlip (
   employee_id NVARCHAR(10),
   pay_period NVARCHAR(50),
   paid_date DATE,
-  base_salary FLOAT,
+  base_salary DECIMAL(18, 2),
   ot_hours TIME,
-  allowances_id NVARCHAR(10),
   contract_id NVARCHAR(10),
-  starndard_work_hours FLOAT,
-  actual_work_hours FLOAT,
-  tax_income FLOAT,
-  bonus FLOAT,
-  deduction_sum FLOAT,
-  total_salary FLOAT,
+  standard_work_hours TIME,
+  actual_work_hours TIME,
+  tax_income DECIMAL(18, 2),
+  bonus DECIMAL(18, 2),
+  total_salary DECIMAL(18, 2),
   note NVARCHAR,
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
@@ -273,15 +262,4 @@ CREATE TABLE PaySlip (
   status NVARCHAR(10),
   FOREIGN KEY (contract_id) REFERENCES EmployeeContract(contract_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
-  FOREIGN KEY (allowances_id) REFERENCES EmployeeBenefit(allowances_id)
-);
-
--- Create DeductionSumary table
-CREATE TABLE DeductionSumary (
-  deduction_id NVARCHAR(10),
-  payslip_id NVARCHAR(10),
-  amount DECIMAL(18, 2),
-  status BIT,
-  FOREIGN KEY (deduction_id) REFERENCES Deduction(deduction_id),
-  FOREIGN KEY (payslip_id) REFERENCES PaySlip(payslip_id)
 );
