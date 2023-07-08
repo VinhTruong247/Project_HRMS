@@ -157,6 +157,56 @@ VALUES
   ('AT000014','EP000006', '2023-07-04', '11:15:00', '20:15:00', '03:15:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
   ('AT000015','EP000007', '2023-07-04', '11:30:00', '20:30:00', '03:30:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
   ('AT000016','EP000008', '2023-07-04', '11:45:00', '20:45:00', '03:45:00', '00:00:00', '09:00:00', 1, 'Arrived late');
+<<<<<<< Updated upstream
+
+-- Inserting Project table
+INSERT INTO Project (project_id, project_name, department_id, start_date, end_date, status)
+VALUES
+  ('PJ000001', 'Software Application Development', 'DP000001', '2020-07-01', '2023-08-31', 'In Progress'),
+  ('PJ000002', 'Database Migration Project', 'DP000002', '2020-07-01', '2020-09-30', 'Completed'),
+  ('PJ000003', 'Network Infrastructure Upgrade', 'DP000003', '2020-07-01', '2020-08-31', 'On Hold'),
+  ('PJ000004', 'IT Helpdesk Enhancement', 'DP000004', '2020-07-01', '2023-08-31', 'In Progress'),
+  ('PJ000005', 'Quality Assurance Automation', 'DP000005', '2020-07-01', '2023-09-30', 'In Progress'),
+  ('PJ000006', 'Employee Onboarding System', 'DP000006', '2020-07-01', '2020-08-31', 'On Hold'),
+  ('PJ000007', 'Cybersecurity Audit and Remediation', 'DP000007', '2020-07-01', '2020-09-30', 'Completed'),
+  ('PJ000008', 'Business Process Optimization', 'DP000008', '2020-07-01', '2023-08-31', 'In Progress'),
+  ('PJ000009', 'Mobile App Development', 'DP000001', '2020-07-01', '2020-09-30', 'Completed'),
+  ('PJ000010', 'Data Analytics Platform', 'DP000002', '2020-07-01', '2020-08-31', 'Completed'),
+  ('PJ000011', 'Network Security Enhancement', 'DP000003', '2020-07-01', '2020-09-30', 'Cancelled'),
+  ('PJ000012', 'IT Service Desk Upgrade', 'DP000004', '2020-07-01', '2020-08-31', 'Completed');
+
+  INSERT INTO Skill (skill_id, skill_name, skill_description, status)
+VALUES
+  ('SK000001', 'Java', 'Java programming language', 1),
+  ('SK000002', 'Python', 'Python programming language', 1),
+  ('SK000003', 'JavaScript', 'JavaScript programming language', 1),
+  ('SK000004', 'SQL', 'Structured Query Language', 1),
+  ('SK000005', 'HTML', 'Hypertext Markup Language', 1),
+  ('SK000006', 'CSS', 'Cascading Style Sheets', 1),
+  ('SK000007', 'React', 'React JavaScript library', 1),
+  ('SK000008', 'Angular', 'Angular JavaScript framework', 1),
+  ('SK000009', 'Node.js', 'Node.js runtime environment', 1),
+  ('SK000010', 'PHP', 'PHP programming language', 1),
+  ('SK000011', 'Laravel', 'Laravel PHP framework', 1),
+  ('SK000012', 'MySQL', 'MySQL relational database management system', 1),
+  ('SK000013', 'MongoDB', 'MongoDB document-oriented database', 1),
+  ('SK000014', 'AWS', 'Amazon Web Services', 1),
+  ('SK000015', 'Azure', 'Microsoft Azure cloud computing service', 1),
+  ('SK000016', 'Docker', 'Docker containerization platform', 1),
+  ('SK000017', 'Kubernetes', 'Kubernetes container orchestration platform', 1),
+  ('SK000018', 'Git', 'Version control system', 1),
+  ('SK000019', 'Jenkins', 'Jenkins automation server', 1),
+  ('SK000020', 'Agile', 'Agile software development methodology', 1),
+  ('SK000021', 'Ruby', 'Ruby programming language', 1),
+  ('SK000022', 'Go', 'Go programming language', 1),
+  ('SK000023', 'Swift', 'Swift programming language', 1),
+  ('SK000024', 'Docker', 'Docker containerization platform', 1),
+  ('SK000025', 'Kubernetes', 'Kubernetes container orchestration platform', 1),
+  ('SK000026', 'Git', 'Version control system', 1),
+  ('SK000027', 'Jenkins', 'Jenkins automation server', 1),
+  ('SK000028', 'Agile', 'Agile software development methodology', 1),
+  ('SK000029', 'Scrum', 'Scrum framework for agile development', 1),
+  ('SK000030', 'DevOps', 'Software development methodology combining development and operations', 1);
 
 -- Inserting Project table
 INSERT INTO Project (project_id, project_name, department_id, start_date, end_date, status)
