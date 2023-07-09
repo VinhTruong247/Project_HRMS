@@ -9,7 +9,7 @@ function Department(props) {
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState('');
     const handleEdit = (department) => {
-      setUpdateDepartment(department);
+        setUpdateDepartment(department);
         setShowUpdateForm(true);
     };
 
@@ -117,33 +117,33 @@ function Department(props) {
     const handleUpdate = (event) => {
         event.preventDefault();
         const formData = {
-          DepartmentId: event.target.elements.departmentId.value,
-          departmentName: event.target.elements.departmentName.value,
-          description: event.target.elements.description.value,
-          status: event.target.elements.status.value,
+            DepartmentId: event.target.elements.departmentId.value,
+            departmentName: event.target.elements.departmentName.value,
+            description: event.target.elements.description.value,
+            status: event.target.elements.status.value,
         };
 
         if (!formData.departmentId) {
-          setValidationError('Department ID is required');
-          return;
-      }
+            setValidationError('Department ID is required');
+            return;
+        }
 
-      if (!formData.departmentName) {
-          setValidationError('Department name is required');
-          return;
-      }
+        if (!formData.departmentName) {
+            setValidationError('Department name is required');
+            return;
+        }
 
-      if (!formData.description) {
-          setValidationError('Description is required');
-          return;
-      }
+        if (!formData.description) {
+            setValidationError('Description is required');
+            return;
+        }
 
-      if (!formData.status) {
-          setValidationError('Status is required');
-          return;
-      }
+        if (!formData.status) {
+            setValidationError('Status is required');
+            return;
+        }
 
-        fetch(`https://localhost:7220/api/DeupdateDepartment/update/department/${updateDepartment.departmentId}`, {
+        fetch(`https://localhost:7220/api/Department/update/department/${updateDepartment.departmentId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -197,7 +197,11 @@ function Department(props) {
                                 <td>{department.departmentId}</td>
                                 <td>{department.departmentName}</td>
                                 <td>{department.description}</td>
-                                <td>{department.status}</td>
+                                <td>
+                                    {department.status
+                                    ? 'Active'
+                                    : 'Inactive'}
+                                </td>
                                 <td>
                                     <button onClick={() => handleEdit(department)}>Edit</button>
                                 </td>
@@ -217,26 +221,28 @@ function Department(props) {
                                 {validationError}
                             </div>
                         )}
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Department ID:</label>
+                                <input type="text" name="departmentId" placeholder='DP######' />
+                            </div>
+                        </div>
 
-                        <div className='row name'>
-                            <div className="col-6 mt-3">
+                        <div className='row'>
+                            <div className="col-12 mt-3">
                                 <label>Department Name:</label>
                                 <input type="text" name="departmentName" placeholder='Department Name' />
                             </div>
                         </div>
 
-                        <div className='row name'>
-                            <div className="col-6 mt-3">
-                                <label>Department ID:</label>
-                                <input type="text" name="departmentId" placeholder='DP######' />
-                            </div>
-                            <div className="col-6 mt-3">
+                        <div className='row'>
+                            <div className="col-12 mt-3">
                                 <label>Description:</label>
                                 <input type="text" name="description" placeholder='abcxyz' />
                             </div>
                         </div>
                         <div className='row'>
-                            <div className="col-6 mt-3">
+                            <div className="col-12 mt-3">
                                 <label>Status:</label>
                                 <input type="text" name="status" placeholder='Active or Disable' />
                                 {/* <select className="form-select" name="status">
@@ -271,25 +277,23 @@ function Department(props) {
                         )}
 
                         <div className='row name'>
-                            <div className="col-6 mt-3">
+                            <div className="col-12 mt-3">
                                 <label>Department Name:</label>
                                 <input type="text" name="departmentName" defaultValue={updateDepartment.departmentName} />
                             </div>
                         </div>
                         <div className='row'>
-                            <div className="col-6 mt-3">
+                            <div className="col-12 mt-3">
                                 <label>Description:</label>
-                                <input type="date" name="description" defaultValue={updateDepartment.description} />
+                                <input type="text" name="description" defaultValue={updateDepartment.description} />
                             </div>
                         </div>
 
-                        <label>Address:</label>
-                        <input type="text" name="DeupdateDepartmentAddress" defaultValue={updateDepartment.DeupdateDepartmentAddress} />
                         <div className='row'>
-                            <div className="col-6 mt-3">
+                            <div className="col-12 mt-3">
                                 <label>Status:</label>
                                 <input type="text" name="status" defaultValue={updateDepartment.status} />
-                                {/* <select name="status" value={updateDepartment.status} onChange={handleStatusChange}>
+                                {/* <select name="status" value={updateEmployee.status} onChange={handleStatusChange}>
                                     <option value="Active">Active</option>
                                     <option value="Disable">Disable</option>
                                 </select> */}

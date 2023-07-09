@@ -567,3 +567,106 @@ main {
 .news .col-lg-12:hover {
     box-shadow: none;
 }
+
+
+/*<!-------------------- Groups Page -------------------->*/
+
+
+.inbox-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .inbox-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .inbox-messages {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .inbox-message {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    pointer-events: none;
+  }
+  
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .message-header h2 {
+    margin: 0;
+  }
+  
+  .message-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .message-body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+
+  /*<!-------------------- Project Page -------------------->*/
+
+
+  .projects-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .projects-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .projects-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .project-card {
+    width: calc(33.33% - 20px);
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .project-card h2 {
+    margin: 0;
+  }
+  
+  .project-card p {
+    margin: 10px 0;
+  }
+  
+  .project-details {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .project-detail {
+    flex-basis: 30%;
+  }
+  
+  .project-detail h3 {
+    margin: 0;
+  }
+  
+  .project-detail p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+  }
