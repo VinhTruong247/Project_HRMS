@@ -254,7 +254,7 @@ CREATE TABLE PaySlip (
   tax_income DECIMAL(18, 2),
   bonus DECIMAL(18, 2),
   total_salary DECIMAL(18, 2),
-  note NVARCHAR,
+  note NVARCHAR(255),
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
