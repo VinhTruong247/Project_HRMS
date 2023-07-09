@@ -7,7 +7,7 @@ namespace HumanResourceApi.Models
     {
         public string AttendanceId { get; set; }
         public string EmployeeId { get; set; }
-        public DateTime? Day { get; set; }
+        public DateTime Day { get; set; }
         public TimeSpan? TimeIn { get; set; }
         public TimeSpan? TimeOut { get; set; }
         public TimeSpan? LateHours { get; set; }

@@ -52,7 +52,7 @@ namespace HumanResourceApi.Repositories.BaseRepository
             catch (Exception ex)
             {
 
-                throw new Exception($"Error adding entity: {ex.Message}", ex);
+                throw new Exception($"Error adding entity: {ex.InnerException.Message}", ex);
             }
 
         }

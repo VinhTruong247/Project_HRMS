@@ -16,11 +16,13 @@ using HumanResourceApi.DTO.Skill;
 using HumanResourceApi.DTO.SkillEmployee;
 using HumanResourceApi.DTO.Users;
 using HumanResourceApi.Models;
+using HumanResourceApi.Repositories;
 
 namespace HumanResourceApi.Helper
 {
     public class MappingProfiles : Profile
     {
+
         public MappingProfiles()
         {
             AllowanceMap();
@@ -154,6 +156,8 @@ namespace HumanResourceApi.Helper
 
         private void PaySlipMap()
         {
+            CreateMap<PaySlip, PaySlipRequestModel>()
+                .ReverseMap();
             CreateMap<PaySlip, PaySlipDto>()
                 .ReverseMap();
             CreateMap<PaySlip, UpdatePaySlipDto>()

@@ -8,6 +8,11 @@ namespace HumanResourceApi.Repositories
 {
     public class PaySlipRepo : BaseRepository.BaseRepository<PaySlip>
     {
+        public decimal GetTotalSalary(decimal taxIncome, decimal allowanceSum, decimal tax)
+        {
+            decimal salary = 0;
+            return salary = taxIncome + allowanceSum - tax;
+        }
         public decimal GetTaxIncome(string employeeId, DateTime targetDate)
         {
             var employee = _context.Employees.Include(e => e.Job).Where(e => e.EmployeeId == employeeId).FirstOrDefault();
