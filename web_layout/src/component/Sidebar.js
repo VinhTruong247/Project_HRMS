@@ -47,7 +47,9 @@ function Sidebar() {
 
           <NavLink to="/timeline" className="nav_link">
             <span className="material-icons-outlined">insert_invitation</span>
-            <h3>Timeline</h3>
+
+            <h3>TimeLine</h3>
+
           </NavLink>
 
           <NavLink to="/groups" className="nav_link">

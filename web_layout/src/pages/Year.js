@@ -151,3 +151,4 @@ Year.title = (date, { localizer }) =>
   localizer.format(date, 'yearHeaderFormat');
 
 export default Year; 
+

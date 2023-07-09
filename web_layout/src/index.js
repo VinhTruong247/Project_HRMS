@@ -8,7 +8,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Dasboard from './pages/Dashboard';
-
 import Groups from './pages/Groups';
 import Manage from './pages/Manage';
 import Payment from './pages/Payment';
@@ -20,7 +19,7 @@ import Sidebar from './component/Sidebar';
 import Employee from './pages/Manage/Employee';
 import Department from './pages/Manage/Department';
 import Jobs from './pages/Manage/Jobs';
-import Timeline from './pages/Timeline';
+import Timeline from './pages/Timline';
 
 const router = createBrowserRouter([
   {

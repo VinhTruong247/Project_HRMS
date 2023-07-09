@@ -512,6 +512,59 @@ nav a.active {
     border-radius: 30px 30px 30px 30px;
     transition: 2ms;
 }
+/*<!-------------------- Timeline -------------------->*/
+
+.timeline{
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    .year {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+     }
+  
+     .month {
+    margin: 5px 5px 15px 5px;
+    }
+  
+    .month-name {
+    color: #ccbe88;
+    font-weight: bold;
+    }
+  
+     .day {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+     }
+  
+     .date {
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+     }
+  
+    .date.in-month:hover {
+    cursor: pointer;
+    background: #ccbe88;
+     }
+  
+    .today {
+    background: #ccbe88;
+     }
+  
+    .date.prev-month,
+    .date.next-month {
+    color: grey;
+     }
+}
+
 
 /*<!-------------------- Timeline -------------------->*/
 .timeline{
@@ -578,7 +631,26 @@ nav a.active {
     margin: 0;
     padding: 1rem;
     margin-top: 0.8rem;
-}
+
+    height: fit-content;
+    row-gap: 2rem;
+    overflow-y: scroll;
+  }
+
+  .big-box {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .wide-box{
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  .small-box {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
 
 main {
     margin-left: 1rem;

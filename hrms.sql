@@ -247,3 +247,5 @@ CREATE TABLE PaySlip (
   FOREIGN KEY (contract_id) REFERENCES EmployeeContract(contract_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
 );
+
+

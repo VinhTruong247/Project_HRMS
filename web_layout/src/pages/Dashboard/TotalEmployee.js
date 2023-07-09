@@ -1,7 +1,6 @@
 import React from 'react'
 import Counter from '../../component/Counter';
 
-
 export default function TotalEmployee() {
     return (
         <div className="col-lg-4">

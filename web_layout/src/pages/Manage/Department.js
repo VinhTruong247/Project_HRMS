@@ -278,12 +278,9 @@ function Department(props) {
                         <div className='row'>
                             <div className="col-6 mt-3">
                                 <label>Description:</label>
-                                <input type="date" name="description" defaultValue={updateDepartment.description} />
+                                <input type="text" name="description" defaultValue={updateDepartment.description} />
                             </div>
                         </div>
-
-                        <label>Address:</label>
-                        <input type="text" name="DeupdateDepartmentAddress" defaultValue={updateDepartment.DeupdateDepartmentAddress} />
                         <div className='row'>
                             <div className="col-6 mt-3">
                                 <label>Status:</label>
