@@ -157,7 +157,6 @@ VALUES
   ('AT000014','EP000006', '2023-07-04', '11:15:00', '20:15:00', '03:15:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
   ('AT000015','EP000007', '2023-07-04', '11:30:00', '20:30:00', '03:30:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
   ('AT000016','EP000008', '2023-07-04', '11:45:00', '20:45:00', '03:45:00', '00:00:00', '09:00:00', 1, 'Arrived late');
-<<<<<<< Updated upstream
 
 -- Inserting Project table
 INSERT INTO Project (project_id, project_name, department_id, start_date, end_date, status)
@@ -308,15 +307,40 @@ VALUES
 
   INSERT INTO PaySlip (payslip_id, employee_id, pay_period, paid_date, base_salary, ot_hours, contract_id, standard_work_hours, actual_work_hours, tax_income, bonus, total_salary, note, BankAccountNumber, BankAccountName, BankName, approval, status)
 VALUES
-  ('PS000001', 'EP000001', 'June 2023', '2023-07-01', 1000000.00, '20:00:00', 'CN000001', '08:00:00', '08:30:00', 200000.00, 500000.00, 1500000.00, 'Received a bonus for outstanding performance.', 123456789, N'Hồ Nguyễn', 'Bank XYZ', 'Approved', 'Paid'),
-  ('PS000002', 'EP000002', 'June 2023', '2023-07-01', 1000000.00, '15:30:00', 'CN000002', '08:00:00', '07:45:00', 150000.00, 300000.00, 1350000.00, 'Overtime hours were reduced due to completion of a project ahead of schedule.', 987654321, N'Mai Trần', 'Bank ABC', 'Approved', 'Paid'),
-  ('PS000003', 'EP000003', 'June 2023', '2023-07-01', 1000000.00, '08:30:00', 'CN000003', '08:00:00', '08:45:00', 250000.00, 700000.00, 2250000.00, 'Received a tax refund for overpayment in the previous month.', 246813579, N'Thắm Lê', 'Bank DEF', 'Approved', 'Paid'),
-  ('PS000004', 'EP000005', 'June 2023', '2023-07-01', 800000.00, '10:00:00', 'CN000004', '08:00:00', '08:15:00', 100000.00, 200000.00, 900000.00, 'Base salary was adjusted due to a promotion.', 123456789, N'Bình Lê', 'Bank ABC', 'Approved', 'Paid'),
-  ('PS000005', 'EP000004', 'June 2023', '2023-07-01', 900000.00, '18:00:00', 'CN000005', '08:00:00', '08:30:00', 180000.00, 400000.00, 1220000.00, 'Earned a performance bonus for achieving sales targets.', 987654321, N'Nam Trần', 'Bank XYZ', 'Approved', 'Paid'),
-  ('PS000006', 'EP000006', 'June 2023', '2023-07-01', 1200000.00, '22:30:00', 'CN000006', '08:00:00', '08:45:00', 225000.00, 800000.00, 2175000.00, 'Received a pay raise as part of the annual salary review.', 246813579, N'Lan Vũ', 'Bank DEF', 'Approved', 'Paid'),
-  ('PS000007', 'EP000007', 'June 2023', '2023-07-01', 1200000.00, '17:30:00', 'CN000007', '08:00:00', '08:30:00', 175000.00, 350000.00, 1225000.00, 'Base salary adjusted due to a change in job responsibilities.', 987654321, N'Minh Trần', 'Bank XYZ', 'Approved', 'Paid'),
-  ('PS000008', 'EP000008', 'June 2023', '2023-07-01', 800000.00, '12:00:00', 'CN000008', '08:00:00', '08:15:00', 120000.00, 250000.00, 970000.00, 'Received a one-time performance bonus for completing a challenging project.', 123456789, N'An Lê', 'Bank ABC', 'Approved', 'Paid');
+  ('PS000001', 'EP000001', 'June 2023', '2023-07-01', 1000000.00, 20.00, 'CN000001', 18.00, 18.00, 200000.00, 500000.00, 1500000.00, 'Received a bonus for outstanding performance.', 123456789, N'Hồ Nguyễn', 'Bank XYZ', 'Approved', 'Paid'),
+  ('PS000002', 'EP000002', 'June 2023', '2023-07-01', 1000000.00, 15.50, 'CN000002', 18.00, 18.00, 150000.00, 300000.00, 1350000.00, 'Overtime hours were reduced due to completion of a project ahead of schedule.', 987654321, N'Mai Trần', 'Bank ABC', 'Approved', 'Paid'),
+  ('PS000003', 'EP000003', 'June 2023', '2023-07-01', 1000000.00, 8.50, 'CN000003', 18.00, 18.00, 250000.00, 700000.00, 2250000.00, 'Received a tax refund for overpayment in the previous month.', 246813579, N'Thắm Lê', 'Bank DEF', 'Approved', 'Paid'),
+  ('PS000004', 'EP000005', 'June 2023', '2023-07-01', 800000.00, 10.00, 'CN000004', 18.00, 18.00, 100000.00, 200000.00, 900000.00, 'Base salary was adjusted due to a promotion.', 123456789, N'Bình Lê', 'Bank ABC', 'Approved', 'Paid'),
+  ('PS000005', 'EP000004', 'June 2023', '2023-07-01', 900000.00, 18.00, 'CN000005', 18.00, 18.00, 180000.00, 400000.00, 1220000.00, 'Earned a performance bonus for achieving sales targets.', 987654321, N'Nam Trần', 'Bank XYZ', 'Approved', 'Paid'),
+  ('PS000006', 'EP000006', 'June 2023', '2023-07-01', 1200000.00, 22.50, 'CN000006', 18.00, 18.00, 225000.00, 800000.00, 2175000.00, 'Received a pay raise as part of the annual salary review.', 246813579, N'Lan Vũ', 'Bank DEF', 'Approved', 'Paid'),
+  ('PS000007', 'EP000007', 'June 2023', '2023-07-01', 1200000.00, 17.50, 'CN000007', 18.00, 18.00, 175000.00, 350000.00, 1225000.00, 'Base salary adjusted due to a change in job responsibilities.', 987654321, N'Minh Trần', 'Bank XYZ', 'Approved', 'Paid'),
+  ('PS000008', 'EP000008', 'June 2023', '2023-07-01', 800000.00, 12.00, 'CN000008', 18.00, 18.00, 120000.00, 250000.00, 970000.00, 'Received a one-time performance bonus for completing a challenging project.', 123456789, N'An Lê', 'Bank ABC', 'Approved', 'Paid');
 
+-- Insert data into Leave table
+INSERT INTO Leave (leave_id, employee_id, leave_type, start_date, end_date, reason, status, leave_hours)
+VALUES
+('LV000001', 'EP000001', 'Annual Leave', '2023-07-02', '2023-07-05', 'Taking a vacation', 1, 32.00),
+('LV000002', 'EP000002', 'Sick Leave', '2023-07-07', '2023-07-07', 'Not feeling well', 1, 8.00),
+('LV000003', 'EP000003', 'Maternity Leave', '2023-07-01', '2023-08-31', 'Expecting a child', 1, 352.00),
+('LV000004', 'EP000004', 'Personal Leave', '2023-07-10', '2023-07-10', 'Attending a family event', 1, 8.00),
+('LV000005', 'EP000005', 'Annual Leave', '2023-07-15', '2023-07-19', 'Planning a trip', 1, 40.00),
+('LV000006', 'EP000006', 'Sick Leave', '2023-07-03', '2023-07-04', 'Recovering from an illness', 1, 16.00),
+('LV000007', 'EP000007', 'Personal Leave', '2023-07-12', '2023-07-13', 'Handling personal matters', 1, 16.00),
+('LV000008', 'EP000008', 'Annual Leave', '2023-07-25', '2023-07-27', 'Taking a short break', 1, 24.00);
+
+-- Insert data into Overtime table
+INSERT INTO Overtime (overtime_id, employee_id, Day, overtime_hours, status, isDeleted)
+VALUES
+('OT000001', 'EP000001', '2023-07-03', '20:00:00', 'Approved', 0),
+('OT000002', 'EP000002', '2023-07-05', '15:30:00', 'Approved', 0),
+('OT000003', 'EP000003', '2023-07-06', '8:30:00', 'Approved', 0),
+('OT000004', 'EP000005', '2023-07-09', '10:00:00', 'Approved', 0),
+('OT000005', 'EP000004', '2023-07-12', '18:00:00', 'Approved', 0),
+('OT000006', 'EP000006', '2023-07-15', '22:30:00', 'Approved', 0),
+('OT000007', 'EP000007', '2023-07-18', '17:30:00', 'Approved', 0),
+('OT000008', 'EP000008', '2023-07-20', '12:00:00', 'Approved', 0),
+('OT000009', 'EP000001', '2023-07-22', '10:30:00', 'Approved', 0),
+('OT000010', 'EP000003', '2023-07-25', '9:00:00', 'Approved', 0);
 select * from EmployeeBenefit
 select * from Experience
 select * from Users

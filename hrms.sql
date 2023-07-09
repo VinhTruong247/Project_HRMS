@@ -190,22 +190,6 @@ CREATE TABLE Attendance (
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
--- Create EmployeeLoanLog table
-CREATE TABLE EmployeeLoanLog (
-  loan_id NVARCHAR(10) PRIMARY KEY,
-  employee_id NVARCHAR(10),
-  loan_type NVARCHAR,
-  amount DECIMAL(18, 2),
-  installment_amount DECIMAL(18, 2),
-  installment_frequency NVARCHAR,
-  loan_start_date DATE,
-  loan_end_date DATE,
-  loan_provider NVARCHAR,
-  approval_status NVARCHAR,
-  status NVARCHAR(10),
-  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
-);
-
 -- Create Leave table
 CREATE TABLE Leave (
   leave_id NVARCHAR(10) PRIMARY KEY,
@@ -215,7 +199,7 @@ CREATE TABLE Leave (
   end_date DATE,
   reason NVARCHAR(50),
   status BIT,
-  leave_hours TIME,
+  leave_hours DECIMAL,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
@@ -247,10 +231,10 @@ CREATE TABLE PaySlip (
   pay_period NVARCHAR(50),
   paid_date DATE,
   base_salary DECIMAL(18, 2),
-  ot_hours TIME,
+  ot_hours DECIMAL,
   contract_id NVARCHAR(10),
-  standard_work_hours TIME,
-  actual_work_hours TIME,
+  standard_work_hours DECIMAL,
+  actual_work_hours DECIMAL,
   tax_income DECIMAL(18, 2),
   bonus DECIMAL(18, 2),
   total_salary DECIMAL(18, 2),
