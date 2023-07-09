@@ -15,6 +15,8 @@ namespace HumanResourceApi.DTO.Employee
         public string Email { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
-        
+        [Required]
+        public string EmployeeAddress { get; set; }
+
     }
 }
