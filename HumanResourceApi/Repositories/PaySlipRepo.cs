@@ -38,25 +38,25 @@ namespace HumanResourceApi.Repositories
             }
             if (taxIncome <= 10000000)
             {
-                return tax = ((taxIncome - 5000000) * (decimal)0.1) - 250000;
+                return tax = ((taxIncome - 5000000) * (decimal)0.1) + 250000;
             }
             if (taxIncome <= 18000000)
             {
-                return tax = ((taxIncome - 10000000) * (decimal)0.15) - 750000;
+                return tax = ((taxIncome - 10000000) * (decimal)0.15) + 750000;
             }
             if (taxIncome <= 32000000)
             {
-                return tax = ((taxIncome - 18000000) * (decimal)0.2) - 1650000;
+                return tax = ((taxIncome - 18000000) * (decimal)0.2) + 1950000;
             }
             if (taxIncome <= 52000000)
             {
-                return tax = ((taxIncome - 32000000) * (decimal)0.25) - 3250000;
+                return tax = ((taxIncome - 32000000) * (decimal)0.25) + 4750000;
             }
             if (taxIncome <= 80000000)
             {
-                return tax = ((taxIncome - 52000000) * (decimal)0.3) - 5850000;
+                return tax = ((taxIncome - 52000000) * (decimal)0.3) + 9750000;
             }
-            return tax = ((taxIncome - 80000000) * (decimal)0.35) - 9850000;
+            return tax = ((taxIncome - 80000000) * (decimal)0.35) + 18150000;
         }
     }
 }

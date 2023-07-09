@@ -141,10 +141,10 @@ namespace HumanResourceApi.Controllers
             }
         }
         [HttpGet("payslip")]
-        public IActionResult GetPayslip()
+        public IActionResult GetPayslip(decimal taxIncome)
         {
             // return Ok(_benefitRepo.GetAllowanceSum(employeeId));
-            return Ok(_paySlipRepo.GetTax(5000000));
+            return Ok(_paySlipRepo.GetTax(taxIncome));
         }
     }
 }
