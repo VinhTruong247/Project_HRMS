@@ -156,7 +156,7 @@ function EmployeeDetails(props) {
     };
 
     const handleSubmit = () => {
-        fetch(`https://localhost:7220/api/Employee/update/user/${props.employeeId}`, {
+        fetch(`https://localhost:7220/api/Employee/update/profile/${props.employeeId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
