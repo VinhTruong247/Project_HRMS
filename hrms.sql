@@ -56,7 +56,6 @@ CREATE TABLE Job (
   job_id NVARCHAR(10) PRIMARY KEY,
   job_title NVARCHAR(200),
   job_description NVARCHAR(500),
-  start_date DATE,
   status BIT,
   base_salary_per_hour DECIMAL(18, 2),
   bonus DECIMAL(18, 2),
