@@ -8,9 +8,11 @@ function Employee(props) {
     const [updateEmployee, setUpdateEmployee] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState('');
+    const [departmentNames, setDepartmentNames] = useState([]);
+    const [jobTitles, setJobTitles] = useState([]);
     const employeeIdPattern = /^EP\d{6}$/;
-    const departmentIdPattern = /^DP\d{6}$/;
-    const jobIdPattern = /^JB\d{6}$/;
+    // const departmentIdPattern = /^DP\d{6}$/;
+    // const jobIdPattern = /^JB\d{6}$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneNumberPattern = /^\d{10}$/;
     // const atmNumberPattern = /^(\d{4}[- ]?){3}\d{4}$/;
@@ -57,6 +59,51 @@ function Employee(props) {
             });
     }, []);
 
+
+    // Fetch department names and job titles
+    useEffect(() => {
+        fetch('https://localhost:7220/api/Department/departments', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.token}`
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('API response was not ok.');
+                }
+            })
+            .then(departments => {
+                setDepartmentNames(departments);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+
+        fetch('https://localhost:7220/api/Job/jobs', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.token}`
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('API response was not ok.');
+                }
+            })
+            .then(jobs => {
+                setJobTitles(jobs);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }, []);
 
 
     //  CRATE NEW EMPLOYEE
@@ -149,25 +196,25 @@ function Employee(props) {
             return;
         }
 
-        if (!formData.jobId) {
-            setValidationError('Job ID is required');
-            return;
-        }
+        // if (!formData.jobId) {
+        //     setValidationError('Job ID is required');
+        //     return;
+        // }
 
-        if (!jobIdPattern.test(formData.jobId)) {
-            setValidationError('Job ID must follow JB###### format');
-            return;
-        }
+        // if (!jobIdPattern.test(formData.jobId)) {
+        //     setValidationError('Job ID must follow JB###### format');
+        //     return;
+        // }
 
-        if (!formData.departmentId) {
-            setValidationError('Department ID is required');
-            return;
-        }
+        // if (!formData.departmentId) {
+        //     setValidationError('Department ID is required');
+        //     return;
+        // }
 
-        if (!departmentIdPattern.test(formData.departmentId)) {
-            setValidationError('Department ID must follow DP###### format');
-            return;
-        }
+        // if (!departmentIdPattern.test(formData.departmentId)) {
+        //     setValidationError('Department ID must follow DP###### format');
+        //     return;
+        // }
 
         fetch('https://localhost:7220/api/Employee/create', {
             method: 'POST',
@@ -279,25 +326,25 @@ function Employee(props) {
             return;
         }
 
-        if (!formData.jobId) {
-            setValidationError('Job ID is required');
-            return;
-        }
+        // if (!formData.jobId) {
+        //     setValidationError('Job ID is required');
+        //     return;
+        // }
 
-        if (!jobIdPattern.test(formData.jobId)) {
-            setValidationError('Job ID must follow JB###### format');
-            return;
-        }
+        // if (!jobIdPattern.test(formData.jobId)) {
+        //     setValidationError('Job ID must follow JB###### format');
+        //     return;
+        // }
 
-        if (!formData.departmentId) {
-            setValidationError('Department ID is required');
-            return;
-        }
+        // if (!formData.departmentId) {
+        //     setValidationError('Department ID is required');
+        //     return;
+        // }
 
-        if (!departmentIdPattern.test(formData.departmentId)) {
-            setValidationError('Department ID must follow DP###### format');
-            return;
-        }
+        // if (!departmentIdPattern.test(formData.departmentId)) {
+        //     setValidationError('Department ID must follow DP###### format');
+        //     return;
+        // }
 
         fetch(`https://localhost:7220/api/Employee/update/user/${updateEmployee.employeeId}`, {
             method: 'PUT',
@@ -441,26 +488,42 @@ function Employee(props) {
                         <input type="text" name="bankName" placeholder='Bank Name' />
 
                         <div className='row name'>
-                            <div className="col-6 mt-3">
+                            <div className="col-6 mt-1">
+                                {/* <label>Job:</label>
+                                <input type="text" name="jobId" placeholder='JB######' /> */}
                                 <label>Job:</label>
-                                <input type="text" name="jobId" placeholder='JB######' />
+                                <select name="jobId" onChange={event => console.log(event.target.value)}>
+                                    {jobTitles.map(job => (
+                                        <option key={job.jobId} value={job.jobId}>
+                                            {job.jobTitle}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
-                            <div className="col-6 mt-3">
+                            <div className="col-6 mt-1">
+                                {/* <label>Department:</label>
+                                <input type="text" name="departmentId" placeholder='DP######' /> */}
                                 <label>Department:</label>
-                                <input type="text" name="departmentId" placeholder='DP######' />
+                                <select name="departmentId" onChange={event => console.log(event.target.value)}>
+                                    {departmentNames.map(department => (
+                                        <option key={department.departmentId} value={department.departmentId}>
+                                            {department.departmentName}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
 
                         <div className='row'>
-                            <div className="col-3 mt-3"></div>
-                            <div className="col-6 mt-3">
+                            <div className="col-3 mt-1"></div>
+                            <div className="col-6 mt-1">
                                 <label>Status:</label>
-                                <select name="status" defaultValue={true}>
+                                <select name="status" defaultValue={true} onChange={event => console.log(event.target.value)}>
                                     <option value={true}>Active</option>
                                     <option value={false}>Inactive</option>
                                 </select>
                             </div>
-                            <div className="col-3 mt-3"></div>
+                            <div className="col-3 mt-1"></div>
                         </div>
 
                         <div className='row butt'>
@@ -534,13 +597,29 @@ function Employee(props) {
 
                         <div className='row'>
                             <div className="col-6 mt-3">
-                                <label>Job ID:</label>
-                                <input type="text" name="jobId" defaultValue={updateEmployee.jobId} />
+                                {/* <label>Job ID:</label>
+                                <input type="text" name="jobId" defaultValue={updateEmployee.jobId} /> */}
+                                <label>Job:</label>
+                                <select name="jobId" defaultValue={updateEmployee.jobId} onChange={event => console.log(event.target.value)}>
+                                    {jobTitles.map(job => (
+                                        <option key={job.jobId} value={job.jobId}>
+                                            {job.jobTitle}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div className="col-6 mt-3">
-                                <label>Department ID:</label>
-                                <input type="text" name="departmentId" defaultValue={updateEmployee.departmentId} />
+                                {/* <label>Department ID:</label>
+                                <input type="text" name="departmentId" defaultValue={updateEmployee.departmentId} /> */}
+                                <label>Department:</label>
+                                <select name="departmentId" defaultValue={updateEmployee.departmentId} onChange={event => console.log(event.target.value)}>
+                                    {departmentNames.map(department => (
+                                        <option key={department.departmentId} value={department.departmentId}>
+                                            {department.departmentName}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
 
@@ -548,11 +627,11 @@ function Employee(props) {
                             <div className="col-3 mt-3"></div>
                             <div className="col-6 mt-3">
                                 <label>Status:</label>
-                                <input type="text" name="status" defaultValue={updateEmployee.status} />
-                                {/* <select name="status" value={updateEmployee.status} onChange={handleStatusChange}>
+                                {/* <input type="text" name="status" defaultValue={updateEmployee.status} /> */}
+                                <select name="status" value={updateEmployee.status} onChange={event => console.log(event.target.value)}>
                                     <option value="Active">Active</option>
                                     <option value="Disable">Disable</option>
-                                </select> */}
+                                </select>
                             </div>
                             <div className="col-3 mt-3"></div>
                         </div>

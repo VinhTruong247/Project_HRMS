@@ -338,7 +338,7 @@ aside .sidebar a:hover.active span {
     background-color: var(--color-primary) !important;
 }
 
-.card-body form input{
+.card-body form input {
     width: 100%;
 }
 
@@ -432,7 +432,6 @@ aside .sidebar a:hover.active span {
 .manager .form select {
     width: 100%;
     height: 2rem;
-    line-height: 44px;
     padding: 1rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -443,6 +442,10 @@ aside .sidebar a:hover.active span {
     border-radius: 0px;
     border: 1px solid #7a7a7a;
     box-shadow: none;
+}
+
+.manager .form select {
+    height: 3.5rem!important;
 }
 
 .manager .row.butt {
@@ -531,17 +534,17 @@ nav a.active {
     margin: 0;
     padding: 1rem;
     margin-top: 0.8rem;
-  }
+}
 
-  .big-box {
+.big-box {
     grid-column: span 2;
     grid-row: span 2;
-  }
+}
 
-  .small-box {
+.small-box {
     grid-column: span 1;
     grid-row: span 1;
-  }
+}
 
 main {
     margin-left: 1rem;
@@ -580,97 +583,97 @@ main {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-  }
-  
-  .inbox-header {
+}
+
+.inbox-header {
     text-align: center;
     margin-bottom: 20px;
-  }
-  
-  .inbox-messages {
+}
+
+.inbox-messages {
     display: flex;
     flex-direction: column;
-  }
-  
-  .inbox-message {
+}
+
+.inbox-message {
     margin-bottom: 20px;
     border: 1px solid #ccc;
     padding: 10px;
     pointer-events: none;
-  }
-  
-  .message-header {
+}
+
+.message-header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
-  }
-  
-  .message-header h2 {
+}
+
+.message-header h2 {
     margin: 0;
-  }
-  
-  .message-header p {
+}
+
+.message-header p {
     margin: 0;
     font-size: 14px;
     color: #666;
-  }
-  
-  .message-body {
+}
+
+.message-body {
     font-size: 16px;
     line-height: 1.5;
-  }
+}
 
 
-  /*<!-------------------- Project Page -------------------->*/
+/*<!-------------------- Project Page -------------------->*/
 
 
-  .projects-container {
+.projects-container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-  }
-  
-  .projects-header {
+}
+
+.projects-header {
     text-align: center;
     margin-bottom: 20px;
-  }
-  
-  .projects-list {
+}
+
+.projects-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-  }
-  
-  .project-card {
+}
+
+.project-card {
     width: calc(33.33% - 20px);
     margin-bottom: 20px;
     border: 1px solid #ccc;
     padding: 10px;
-  }
-  
-  .project-card h2 {
+}
+
+.project-card h2 {
     margin: 0;
-  }
-  
-  .project-card p {
+}
+
+.project-card p {
     margin: 10px 0;
-  }
-  
-  .project-details {
+}
+
+.project-details {
     display: flex;
     justify-content: space-between;
-  }
-  
-  .project-detail {
+}
+
+.project-detail {
     flex-basis: 30%;
-  }
-  
-  .project-detail h3 {
+}
+
+.project-detail h3 {
     margin: 0;
-  }
-  
-  .project-detail p {
+}
+
+.project-detail p {
     margin: 5px 0;
     font-size: 14px;
     color: #666;
-  }
+}
