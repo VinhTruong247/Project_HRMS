@@ -8,6 +8,13 @@ function Employee(props) {
     const [updateEmployee, setUpdateEmployee] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState('');
+    const employeeIdPattern = /^EP\d{6}$/;
+    const departmentIdPattern = /^DP\d{6}$/;
+    const jobIdPattern = /^JB\d{6}$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneNumberPattern = /^\d{10}$/;
+    // const atmNumberPattern = /^(\d{4}[- ]?){3}\d{4}$/;
+    const atmNumberPattern = /^\d{9}$/;
     const handleEdit = (employee) => {
         setUpdateEmployee(employee);
         setShowUpdateForm(true);
@@ -48,7 +55,7 @@ function Employee(props) {
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
-    });
+    }, []);
 
 
 
@@ -69,11 +76,16 @@ function Employee(props) {
             bankName: event.target.elements.bankName.value,
             jobId: event.target.elements.jobId.value,
             departmentId: event.target.elements.departmentId.value,
-            status: event.target.elements.status.value,
+            status: Boolean(event.target.elements.status.value),
         };
 
         if (!formData.employeeId) {
             setValidationError('Employee ID is required');
+            return;
+        }
+
+        if (!employeeIdPattern.test(formData.employeeId)) {
+            setValidationError('Employee ID must follow EP###### format');
             return;
         }
 
@@ -102,13 +114,28 @@ function Employee(props) {
             return;
         }
 
+        if (!emailPattern.test(formData.email)) {
+            setValidationError('Email form is not valid');
+            return;
+        }
+
         if (!formData.phoneNumber) {
             setValidationError('Phone number is required');
             return;
         }
 
+        if (!phoneNumberPattern.test(formData.phoneNumber)) {
+            setValidationError('Phone number is not valid');
+            return;
+        }
+
         if (!formData.bankAccountNumber) {
             setValidationError('Bank account number is required');
+            return;
+        }
+
+        if (!atmNumberPattern.test(formData.bankAccountNumber)) {
+            setValidationError('Bank account number is not valid');
             return;
         }
 
@@ -127,13 +154,18 @@ function Employee(props) {
             return;
         }
 
+        if (!jobIdPattern.test(formData.jobId)) {
+            setValidationError('Job ID must follow JB###### format');
+            return;
+        }
+
         if (!formData.departmentId) {
             setValidationError('Department ID is required');
             return;
         }
 
-        if (!formData.status) {
-            setValidationError('Status is required');
+        if (!departmentIdPattern.test(formData.departmentId)) {
+            setValidationError('Department ID must follow DP###### format');
             return;
         }
 
@@ -187,11 +219,6 @@ function Employee(props) {
             status: Boolean(event.target.elements.status.value),
         };
 
-        if (!formData.employeeId) {
-            setValidationError('Employee ID is required');
-            return;
-        }
-
         if (!formData.firstName) {
             setValidationError('First name is required');
             return;
@@ -217,13 +244,28 @@ function Employee(props) {
             return;
         }
 
+        if (!emailPattern.test(formData.email)) {
+            setValidationError('Email form is not valid');
+            return;
+        }
+
         if (!formData.phoneNumber) {
             setValidationError('Phone number is required');
             return;
         }
 
+        if (!phoneNumberPattern.test(formData.phoneNumber)) {
+            setValidationError('Phone number is not valid');
+            return;
+        }
+
         if (!formData.bankAccountNumber) {
             setValidationError('Bank account number is required');
+            return;
+        }
+
+        if (!atmNumberPattern.test(formData.bankAccountNumber)) {
+            setValidationError('Bank account number is not valid');
             return;
         }
 
@@ -242,13 +284,18 @@ function Employee(props) {
             return;
         }
 
+        if (!jobIdPattern.test(formData.jobId)) {
+            setValidationError('Job ID must follow JB###### format');
+            return;
+        }
+
         if (!formData.departmentId) {
             setValidationError('Department ID is required');
             return;
         }
 
-        if (!formData.status) {
-            setValidationError('Status is required');
+        if (!departmentIdPattern.test(formData.departmentId)) {
+            setValidationError('Department ID must follow DP###### format');
             return;
         }
 
@@ -405,17 +452,18 @@ function Employee(props) {
                         </div>
 
                         <div className='row'>
+                            <div className="col-3 mt-3"></div>
                             <div className="col-6 mt-3">
                                 <label>Status:</label>
-                                <input type="text" name="status" placeholder='Active or Disable' />
-                                {/* <select className="form-select" name="status">
-                                    <option value="Active">Active</option>
-                                    <option value="Disable">Disable</option>
-                                </select> */}
+                                <select name="status" defaultValue={true}>
+                                    <option value={true}>Active</option>
+                                    <option value={false}>Inactive</option>
+                                </select>
                             </div>
+                            <div className="col-3 mt-3"></div>
                         </div>
 
-                        <div className='row btn'>
+                        <div className='row butt'>
                             <div className="col-5 mt-3">
                                 <button type="submit">Submit</button>
                             </div>
@@ -497,6 +545,7 @@ function Employee(props) {
                         </div>
 
                         <div className='row'>
+                            <div className="col-3 mt-3"></div>
                             <div className="col-6 mt-3">
                                 <label>Status:</label>
                                 <input type="text" name="status" defaultValue={updateEmployee.status} />
@@ -505,9 +554,10 @@ function Employee(props) {
                                     <option value="Disable">Disable</option>
                                 </select> */}
                             </div>
+                            <div className="col-3 mt-3"></div>
                         </div>
 
-                        <div className='row btn'>
+                        <div className='row butt'>
                             <div className="col-5 mt-3">
                                 <button type="submit">Update</button>
                             </div>

@@ -16,7 +16,7 @@ namespace HumanResourceApi.DTO.Job
         public decimal? BaseSalaryPerHour { get; set; }
         [Required]
         public string AllowanceId { get; set; }
-        [Required]
+
         public decimal? Bonus { get; set; }
     }
 }
