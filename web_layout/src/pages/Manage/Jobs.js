@@ -8,6 +8,8 @@ function Jobs(props) {
   const [updateJob, setUpdateJob] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [validationError, setValidationError] = useState('');
+  const jobIdPattern = /^JB\d{6}$/;
+  const allowanceIdPattern = /^AL\d{6}$/;
   const handleEdit = (job) => {
     setUpdateJob(job);
     setShowUpdateForm(true);
@@ -44,12 +46,11 @@ function Jobs(props) {
       })
       .then(jobs => {
         setData(jobs)
-        console.log(jobs)
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
       });
-  }, [token]);
+  }, []);
 
 
 
@@ -60,11 +61,18 @@ function Jobs(props) {
       jobId: event.target.elements.jobId.value,
       jobTitle: event.target.elements.jobTitle.value,
       jobDescription: event.target.elements.jobDescription.value,
-      status: event.target.elements.status.value,
+      baseSalaryPerHour: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
+      allowanceId: event.target.elements.allowanceId.value,
+      status: Boolean(event.target.elements.status.value),
     };
 
     if (!formData.jobId) {
       setValidationError('Job ID is required');
+      return;
+    }
+
+    if (!jobIdPattern.test(formData.jobId)) {
+      setValidationError('Job ID must follow JB###### format');
       return;
     }
 
@@ -78,8 +86,18 @@ function Jobs(props) {
       return;
     }
 
-    if (!formData.status) {
-      setValidationError('Status is required');
+    if (!formData.baseSalaryPerHour) {
+      setValidationError('Base salary needed is required');
+      return;
+    }
+
+    if (!formData.allowanceId) {
+      setValidationError('Allowance ID is required');
+      return;
+    }
+
+    if (!allowanceIdPattern.test(formData.allowanceId)) {
+      setValidationError('Allowance ID must follow AL###### format');
       return;
     }
 
@@ -117,16 +135,13 @@ function Jobs(props) {
   const handleUpdate = (event) => {
     event.preventDefault();
     const formData = {
-      jobId: event.target.elements.jobId.value,
+      jobId: updateJob.jobId,
       jobTitle: event.target.elements.jobTitle.value,
       jobDescription: event.target.elements.jobDescription.value,
-      status: event.target.elements.status.value,
+      baseSalaryPerHour: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
+      allowanceId: event.target.elements.allowanceId.value,
+      status: Boolean(event.target.elements.status.value),
     };
-
-    if (!formData.jobId) {
-      setValidationError('Job ID is required');
-      return;
-    }
 
     if (!formData.jobTitle) {
       setValidationError('Job title is required');
@@ -138,8 +153,23 @@ function Jobs(props) {
       return;
     }
 
-    if (!formData.status) {
-      setValidationError('Status is required');
+    if (!formData.baseSalaryPerHour) {
+      setValidationError('Base Salary is required');
+      return;
+    }
+
+    if (isNaN(formData.baseSalaryPerHour)) {
+      setValidationError('Base salary must be in number format');
+      return;
+    }
+
+    if (!formData.allowanceId) {
+      setValidationError('Allowance ID is required');
+      return;
+    }
+
+    if (!allowanceIdPattern.test(formData.allowanceId)) {
+      setValidationError('Allowance ID must follow AL###### format');
       return;
     }
 
@@ -187,6 +217,7 @@ function Jobs(props) {
               <th>Job ID</th>
               <th>Job Name</th>
               <th>Job Description</th>
+              <th>Base Salary</th>
               <th>Status</th>
               <th>Options</th>
             </tr>
@@ -197,6 +228,7 @@ function Jobs(props) {
                 <td>{job.jobId}</td>
                 <td>{job.jobTitle}</td>
                 <td>{job.jobDescription}</td>
+                <td>{job.baseSalaryPerHour.toLocaleString()}</td>
                 <td>
                   {job.status
                     ? 'Active'
@@ -245,16 +277,41 @@ function Jobs(props) {
 
             <div className='row'>
               <div className="col-12 mt-3">
-                <label>Status:</label>
-                <input type="text" name="status" placeholder='Active or Disable' />
-                {/* <select className="form-select" name="status">
-                                    <option value="Active">Active</option>
-                                    <option value="Disable">Disable</option>
-                                </select> */}
+                <label>Base Salary:</label>
+                <input
+                  type="text"
+                  name="baseSalaryPerHour"
+                  placeholder='Number'
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value.replace(/,/g, ''));
+                    if (!isNaN(value)) {
+                      e.target.value = value.toLocaleString();
+                    }
+                  }}
+                />
               </div>
             </div>
 
-            <div className='row btn'>
+            <div className='row'>
+              <div className="col-12 mt-3">
+                <label>Allowance ID:</label>
+                <input type="text" name="allowanceId" placeholder='AL######' />
+              </div>
+            </div>
+
+            <div className='row'>
+              <div className="col-3 mt-3"></div>
+              <div className="col-6 mt-3">
+                <label>Status:</label>
+                <select name="status" >
+                  <option value={true}>Active</option>
+                  <option value={false}>Inactive</option>
+                </select>
+              </div>
+              <div className="col-3 mt-3"></div>
+            </div>
+
+            <div className='row butt'>
               <div className="col-5 mt-3">
                 <button type="submit">Submit</button>
               </div>
@@ -294,12 +351,42 @@ function Jobs(props) {
 
             <div className='row'>
               <div className="col-12 mt-3">
-                <label>Status:</label>
-                <input type="text" name="status" defaultValue={updateJob.status} />
+                <label>Base Salary:</label>
+                <input
+                  type="text"
+                  name="baseSalaryPerHour"
+                  defaultValue={updateJob.baseSalaryPerHour.toLocaleString()}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value.replace(/,/g, ''));
+                    if (!isNaN(value)) {
+                      e.target.value = value.toLocaleString();
+                    }
+                  }}
+                />
               </div>
             </div>
 
-            <div className='row btn'>
+            <div className='row'>
+              <div className="col-12 mt-3">
+                <label>Allowance ID:</label>
+                <input type="text" name="allowanceId" defaultValue={updateJob.allowanceId} />
+              </div>
+            </div>
+
+            <div className='row'>
+              <div className="col-3 mt-3"></div>
+              <div className="col-6 mt-3">
+                <label>Status:</label>
+                <input type="text" name="status" defaultValue={updateJob.status} />
+                {/* <select name="status" defaultValue={updateJob.status} >
+                  <option value={true}>Active</option>
+                  <option value={false}>Inactive</option>
+                </select> */}
+              </div>
+              <div className="col-3 mt-3"></div>
+            </div>
+
+            <div className='row butt'>
               <div className="col-5 mt-3">
                 <button type="submit">Update</button>
               </div>

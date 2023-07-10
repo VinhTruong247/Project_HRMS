@@ -71,74 +71,11 @@ function EmployeeLinks(props) {
     );
 }
 
-// function EmployeeDetails(props) {
-
-//     return (
-//         <div className="card mb-3">
-//             <div className="card-body">
-//                 <div className="row">
-//                     <div className="col-sm-3">
-//                         <h6 className="mb-0">Full Name</h6>
-//                     </div>
-//                     <div className="col-sm-9 text-secondary">{props.firstName} {props.lastName}</div>
-//                 </div>
-//                 <hr />
-//                 <div className="row">
-//                     <div className="col-sm-3">
-//                         <h6 className="mb-0">First Name</h6>
-//                     </div>
-//                     <div className="col-sm-3 text-secondary">{props.firstName}</div>
-//                     <div className="col-sm-3">
-//                         <h6 className="mb-0">Last Name</h6>
-//                     </div>
-//                     <div className="col-sm-3 text-secondary">{props.lastName}</div>
-//                 </div>
-//                 <hr />
-//                 <div className="row">
-//                     <div className="col-sm-3">
-//                         <h6 className="mb-0">Date of Birth</h6>
-//                     </div>
-//                     <div className="col-sm-9 text-secondary">{props.dateOfBirth}</div>
-//                 </div>
-//                 <hr />
-//                 <div className="row">
-//                     <div className="col-sm-3">
-//                         <h6 className="mb-0">Email</h6>
-//                     </div>
-//                     <div className="col-sm-9 text-secondary">{props.email}</div>
-//                 </div>
-//                 <hr />
-//                 <div className="row">
-//                     <div className="col-sm-3">
-//                         <h6 className="mb-0">Phone</h6>
-//                     </div>
-//                     <div className="col-sm-9 text-secondary">{props.phoneNumber}</div>
-//                 </div>
-//                 <hr />
-//                 <div className="row">
-//                     <div className="col-sm-3">
-//                         <h6 className="mb-0">Address</h6>
-//                     </div>
-//                     <div className="col-sm-9 text-secondary">{props.employeeAddress}</div>
-//                 </div>
-//                 <hr />
-//                 <div className="row">
-//                     <div className="col-sm-3">
-//                         <h6 className="mb-0">Skills</h6>
-//                     </div>
-//                     <div className="col-sm-9 text-secondary">
-//                         React, Node.js, MongoDB, Express.js
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
 function EmployeeDetails(props) {
     const [data, setData] = useState(props);
     const [isEditing, setIsEditing] = useState(false);
     const token = JSON.parse(localStorage.getItem('jwtToken'));
+    const [validationErrors, setValidationErrors] = useState({});
     const [formData, setFormData] = useState({
         firstName: props.firstName,
         lastName: props.lastName,
@@ -153,38 +90,67 @@ function EmployeeDetails(props) {
             ...formData,
             [event.target.name]: event.target.value,
         });
+
+        setValidationErrors((prevErrors) => {
+            return {
+                ...prevErrors,
+                [event.target.name]: '',
+            };
+        });
+    };
+
+    const validateForm = () => {
+        const errors = {};
+
+        if (!formData.firstName) {
+            errors.firstName = 'First name is required';
+        }
+
+        if (!formData.lastName) {
+            errors.lastName = 'Last name is required';
+        }
+
+        if (!formData.dateOfBirth) {
+            errors.dateOfBirth = 'Date of birth is required';
+        }
+
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
     };
 
     const handleSubmit = () => {
-        fetch(`https://localhost:7220/api/Employee/update/profile/${props.employeeId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token.token}`,
-            },
-            body: JSON.stringify(formData),
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Api response was not ok.');
-                }
+        const isValid = validateForm();
+        if (isValid) {
+            fetch(`https://localhost:7220/api/Employee/update/profile/${props.employeeId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token.token}`,
+                },
+                body: JSON.stringify(formData),
             })
-            .then(updatedEmployee => {
-                const updatedData = data.map(employee => {
-                    if (employee.employeeId === updatedEmployee.employeeId) {
-                        return updatedEmployee;
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
                     } else {
-                        return employee;
+                        throw new Error('Api response was not ok.');
                     }
+                })
+                .then(updatedEmployee => {
+                    const updatedData = data.map(employee => {
+                        if (employee.employeeId === updatedEmployee.employeeId) {
+                            return updatedEmployee;
+                        } else {
+                            return employee;
+                        }
+                    });
+                    setData(updatedData);
+                    console.log('Employee updated successfully');
+                })
+                .catch(error => {
+                    console.error('Error submitting form:', error);
                 });
-                setData(updatedData);
-                console.log('Employee updated successfully');
-            })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-            });
+        }
     };
 
     if (isEditing) {
@@ -194,103 +160,131 @@ function EmployeeDetails(props) {
 
                     <form onSubmit={handleSubmit}>
                         <div className="row">
-                            <div className="col-sm-3">
+                            <div className="col-3 sm-3">
                                 <h6 className="mb-0">First Name</h6>
                             </div>
-                            <div className="col-sm-9">
+                            <div className="col-9 sm-3">
                                 <input
                                     type="text"
                                     name="firstName"
-                                    value={formData.firstName}
+                                    value={props.firstName}
                                     onChange={handleInputChange}
                                 />
+                                {validationErrors.firstName && (
+                                    <div className="error-message">{validationErrors.firstName}</div>
+                                )}
                             </div>
                         </div>
                         <hr />
                         <div className="row">
-                            <div className="col-sm-3">
+                            <div className="col-3 sm-3">
                                 <h6 className="mb-0">Last Name</h6>
                             </div>
-                            <div className="col-sm-9">
+                            <div className="col-9 sm-3">
                                 <input
                                     type="text"
                                     name="lastName"
-                                    value={formData.lastName}
+                                    value={props.lastName}
                                     onChange={handleInputChange}
                                 />
+                                {validationErrors.lastName && (
+                                    <div className="error-message">{validationErrors.lastName}</div>
+                                )}
                             </div>
                         </div>
                         <hr />
                         <div className="row">
-                            <div className="col-sm-3">
+                            <div className="col-3 sm-3">
                                 <h6 className="mb-0">Date of Birth</h6>
                             </div>
-                            <div className="col-sm-9">
+                            <div className="col-3 sm-3">
                                 <input
                                     type="date"
                                     name="dateOfBirth"
-                                    value={formData.dateOfBirth}
+                                    value={props.dateOfBirth}
                                     onChange={handleInputChange}
                                 />
                             </div>
+                            {validationErrors.dateOfBirth && (
+                                <div className="error-message">{validationErrors.dateOfBirth}</div>
+                            )}
                         </div>
                         <hr />
                         <div className="row">
-                            <div className="col-sm-3">
+                            <div className="col-3 sm-3">
                                 <h6 className="mb-0">Email</h6>
                             </div>
-                            <div className="col-sm-9">
+                            <div className="col-9 sm-3">
                                 <input
                                     type="email"
                                     name="email"
-                                    value={formData.email}
+                                    value={props.email}
                                     onChange={handleInputChange}
                                 />
                             </div>
+                            {validationErrors.email && (
+                                <div className="error-message">{validationErrors.email}</div>
+                            )}
                         </div>
                         <hr />
                         <div className="row">
-                            <div className="col-sm-3">
+                            <div className="col-3 sm-3">
                                 <h6 className="mb-0">Phone</h6>
                             </div>
-                            <div className="col-sm-9">
+                            <div className="col-9 sm-3">
                                 <input
                                     type="tel"
                                     name="phoneNumber"
-                                    value={formData.phoneNumber}
+                                    value={props.phoneNumber}
                                     onChange={handleInputChange}
                                 />
                             </div>
+                            {validationErrors.phoneNumber && (
+                                <div className="error-message">{validationErrors.phoneNumber}</div>
+                            )}
                         </div>
                         <hr />
                         <div className="row">
-                            <div className="col-sm-3">
+                            <div className="col-3 sm-3">
                                 <h6 className="mb-0">Address</h6>
                             </div>
-                            <div className="col-sm-9">
+                            <div className="col-9 sm-3">
                                 <input
                                     type="text"
                                     name="employeeAddress"
-                                    value={formData.employeeAddress}
+                                    value={props.employeeAddress}
                                     onChange={handleInputChange}
                                 />
                             </div>
+                            {validationErrors.employeeAddress && (
+                                <div className="error-message">{validationErrors.employeeAddress}</div>
+                            )}
                         </div>
                         <hr />
-                        <button type="submit" className="btn btn-primary">
-                            Save Changes
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-secondary ml-2"
-                            onClick={() => setIsEditing(false)}
-                        >
-                            Cancel
-                        </button>
+
+                        <div className='row butt'>
+                            <div className="col-6 mt-2">
+
+                            </div>
+                            <div className="col-6 mt-2" style={{ float: 'right' }}>
+                                <button type="submit" className="btn btn-primary">
+                                    Save Changes
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary ml-2"
+                                    onClick={() => setIsEditing(false)}
+                                    style={{ marginLeft: '1rem' }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+
 
                     </form>
-                </div>
-            </div>
+                </div >
+            </div >
         );
     }
 

@@ -8,6 +8,7 @@ function Department(props) {
     const [updateDepartment, setUpdateDepartment] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState('');
+    const departmentIdPattern = /^DP\d{6}$/;
     const handleEdit = (department) => {
         setUpdateDepartment(department);
         setShowUpdateForm(true);
@@ -44,12 +45,11 @@ function Department(props) {
             })
             .then(departments => {
                 setData(departments)
-                console.log(departments)
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
-    }, [token]);
+    }, []);
 
 
 
@@ -60,11 +60,16 @@ function Department(props) {
             departmentId: event.target.elements.departmentId.value,
             departmentName: event.target.elements.departmentName.value,
             description: event.target.elements.description.value,
-            status: event.target.elements.status.value,
+            status: Boolean(event.target.elements.status.value),
         };
 
         if (!formData.departmentId) {
             setValidationError('Department ID is required');
+            return;
+        }
+
+        if (!departmentIdPattern.test(formData.departmentId)) {
+            setValidationError('Department ID must follow DP###### format');
             return;
         }
 
@@ -75,11 +80,6 @@ function Department(props) {
 
         if (!formData.description) {
             setValidationError('Description is required');
-            return;
-        }
-
-        if (!formData.status) {
-            setValidationError('Status is required');
             return;
         }
 
@@ -117,10 +117,10 @@ function Department(props) {
     const handleUpdate = (event) => {
         event.preventDefault();
         const formData = {
-            DepartmentId: event.target.elements.departmentId.value,
+            departmentId: updateDepartment.departmentId,
             departmentName: event.target.elements.departmentName.value,
             description: event.target.elements.description.value,
-            status: event.target.elements.status.value,
+            status: Boolean(event.target.elements.status.value),
         };
 
         if (!formData.departmentId) {
@@ -135,11 +135,6 @@ function Department(props) {
 
         if (!formData.description) {
             setValidationError('Description is required');
-            return;
-        }
-
-        if (!formData.status) {
-            setValidationError('Status is required');
             return;
         }
 
@@ -160,7 +155,7 @@ function Department(props) {
             })
             .then(updatedDepartment => {
                 const updatedData = data.map(department => {
-                    if (department.departmentId === updateDepartment.departmentId) {
+                    if (department.departmentId === updatedDepartment.departmentId) {
                         return updatedDepartment;
                     } else {
                         return department;
@@ -199,8 +194,8 @@ function Department(props) {
                                 <td>{department.description}</td>
                                 <td>
                                     {department.status
-                                    ? 'Active'
-                                    : 'Inactive'}
+                                        ? 'Active'
+                                        : 'Inactive'}
                                 </td>
                                 <td>
                                     <button onClick={() => handleEdit(department)}>Edit</button>
@@ -242,17 +237,18 @@ function Department(props) {
                             </div>
                         </div>
                         <div className='row'>
-                            <div className="col-12 mt-3">
+                            <div className="col-3 mt-3"></div>
+                            <div className="col-6 mt-3">
                                 <label>Status:</label>
-                                <input type="text" name="status" placeholder='Active or Disable' />
-                                {/* <select className="form-select" name="status">
-                                    <option value="Active">Active</option>
-                                    <option value="Disable">Disable</option>
-                                </select> */}
+                                <select name="status" defaultValue={true}>
+                                    <option value={true}>Active</option>
+                                    <option value={false}>Inactive</option>
+                                </select>
                             </div>
+                            <div className="col-3 mt-3"></div>
                         </div>
 
-                        <div className='row btn'>
+                        <div className='row butt'>
                             <div className="col-5 mt-3">
                                 <button type="submit">Submit</button>
                             </div>
@@ -290,17 +286,15 @@ function Department(props) {
                         </div>
 
                         <div className='row'>
-                            <div className="col-12 mt-3">
+                            <div className="col-3 mt-3"></div>
+                            <div className="col-6 mt-3">
                                 <label>Status:</label>
                                 <input type="text" name="status" defaultValue={updateDepartment.status} />
-                                {/* <select name="status" value={updateEmployee.status} onChange={handleStatusChange}>
-                                    <option value="Active">Active</option>
-                                    <option value="Disable">Disable</option>
-                                </select> */}
                             </div>
+                            <div className="col-3 mt-3"></div>
                         </div>
 
-                        <div className='row btn'>
+                        <div className='row butt'>
                             <div className="col-5 mt-3">
                                 <button type="submit">Update</button>
                             </div>

@@ -338,6 +338,10 @@ aside .sidebar a:hover.active span {
     background-color: var(--color-primary) !important;
 }
 
+.card-body form input{
+    width: 100%;
+}
+
 
 /*<!-------------------- Manage -------------------->*/
 
@@ -441,14 +445,14 @@ aside .sidebar a:hover.active span {
     box-shadow: none;
 }
 
-.manager .row.btn {
+.manager .row.butt {
     display: inline-flex;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
 
-.manager .row.btn button {
+.manager .row.butt button {
     width: 8rem;
     height: 3.35rem;
     line-height: 51px;
@@ -460,7 +464,7 @@ aside .sidebar a:hover.active span {
     transition: all 0.3s;
 }
 
-.manager .row.btn button:hover {
+.manager .row.butt button:hover {
     background-color: #fff;
     border: 1px solid #2a2a2a;
     color: #2a2a2a;
