@@ -303,7 +303,7 @@ function Jobs(props) {
               <div className="col-3 mt-3"></div>
               <div className="col-6 mt-3">
                 <label>Status:</label>
-                <select name="status" >
+                <select name="status" defaultValue={true} onChange={event => console.log(event.target.value)}>
                   <option value={true}>Active</option>
                   <option value={false}>Inactive</option>
                 </select>
@@ -376,12 +376,13 @@ function Jobs(props) {
             <div className='row'>
               <div className="col-3 mt-3"></div>
               <div className="col-6 mt-3">
+                {/* <label>Status:</label>
+                <input type="text" name="status" defaultValue={updateJob.status} /> */}
                 <label>Status:</label>
-                <input type="text" name="status" defaultValue={updateJob.status} />
-                {/* <select name="status" defaultValue={updateJob.status} >
+                <select name="status" defaultValue={updateJob.status} onChange={event => console.log(event.target.value)}>
                   <option value={true}>Active</option>
                   <option value={false}>Inactive</option>
-                </select> */}
+                </select>
               </div>
               <div className="col-3 mt-3"></div>
             </div>
