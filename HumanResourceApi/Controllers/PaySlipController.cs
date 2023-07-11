@@ -76,54 +76,54 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpPost("generate")]
-        public IActionResult GeneratePayslip([FromBody] PaySlipRequestModel requestModel)
-        {
-            try
-            {
-                if (!_empRepo.GetAll().Any(e => e.EmployeeId == requestModel.EmployeeId))
-                {
-                    return BadRequest("No employee found");
-                }
-                int count = _paySlipRepo.GetAll().Count() + 1;
-                var payslipId = "PS" + count.ToString().PadLeft(6, '0');
+        //[HttpPost("generate")]
+        //public IActionResult GeneratePayslip([FromBody] PaySlipRequestModel requestModel)
+        //{
+        //    try
+        //    {
+        //        if (!_empRepo.GetAll().Any(e => e.EmployeeId == requestModel.EmployeeId))
+        //        {
+        //            return BadRequest("No employee found");
+        //        }
+        //        int count = _paySlipRepo.GetAll().Count() + 1;
+        //        var payslipId = "PS" + count.ToString().PadLeft(6, '0');
 
-                var tempContract = _contractRepo.GetAll().Where(c => c.EmployeeId == requestModel.EmployeeId).FirstOrDefault();
-                var baseSalary = tempContract.BaseSalary;
+        //        var tempContract = _contractRepo.GetAll().Where(c => c.EmployeeId == requestModel.EmployeeId).FirstOrDefault();
+        //        var baseSalary = tempContract.BaseSalary;
 
-                //OT not complete
-                var otHours = TimeSpan.Zero;
-                string contractId = tempContract.ContractId;
-                TimeSpan? standardWorkHours = TimeSpan.FromHours(8 * 22);
-                TimeSpan? actualWorkHours = _attRepo.GetActualHours(requestModel.EmployeeId, requestModel.PaidDate ?? DateTime.Now);
-                decimal taxIncome = _paySlipRepo.GetTaxIncome(requestModel.EmployeeId, requestModel.PaidDate ?? DateTime.Now);
-                decimal? bonus = _jobRepo.GetBonus(requestModel.EmployeeId);
-                decimal? totalSalary = _paySlipRepo.GetTotalSalary(taxIncome,
-                    _benefitRepo.GetAllowanceSum(requestModel.EmployeeId),
-                    _paySlipRepo.GetTax(taxIncome));
-                var payslip = _mapper.Map<PaySlip>(requestModel);
-                payslip.PayslipId = payslipId;
-                payslip.BaseSalary = baseSalary;
-                payslip.OtHours = otHours;
-                payslip.ContractId = contractId;
-                payslip.StandardWorkHours = TimeSpan.Zero;
-                payslip.ActualWorkHours = actualWorkHours;
-                payslip.TaxIncome = taxIncome;
-                payslip.Bonus = bonus;
-                payslip.TotalSalary = totalSalary;
+        //        //OT not complete
+        //        var otHours = TimeSpan.Zero;
+        //        string contractId = tempContract.ContractId;
+        //        TimeSpan? standardWorkHours = TimeSpan.FromHours(8 * 22);
+        //        TimeSpan? actualWorkHours = _attRepo.GetActualHours(requestModel.EmployeeId, requestModel.PaidDate ?? DateTime.Now);
+        //        decimal taxIncome = _paySlipRepo.GetTaxIncome(requestModel.EmployeeId, requestModel.PaidDate ?? DateTime.Now);
+        //        decimal? bonus = _jobRepo.GetBonus(requestModel.EmployeeId);
+        //        decimal? totalSalary = _paySlipRepo.GetTotalSalary(taxIncome,
+        //            _benefitRepo.GetAllowanceSum(requestModel.EmployeeId),
+        //            _paySlipRepo.GetTax(taxIncome));
+        //        var payslip = _mapper.Map<PaySlip>(requestModel);
+        //        payslip.PayslipId = payslipId;
+        //        payslip.BaseSalary = baseSalary;
+        //        payslip.OtHours = otHours;
+        //        payslip.ContractId = contractId;
+        //        payslip.StandardWorkHours = TimeSpan.Zero;
+        //        payslip.ActualWorkHours = actualWorkHours;
+        //        payslip.TaxIncome = taxIncome;
+        //        payslip.Bonus = bonus;
+        //        payslip.TotalSalary = totalSalary;
 
-                _paySlipRepo.Add(payslip);
-                var mappedPayslip = _mapper.Map<PaySlipDto>(payslip);
-                mappedPayslip.Tax = _paySlipRepo.GetTax(mappedPayslip.TaxIncome);
-                return Ok(mappedPayslip);
+        //        _paySlipRepo.Add(payslip);
+        //        var mappedPayslip = _mapper.Map<PaySlipDto>(payslip);
+        //        mappedPayslip.Tax = _paySlipRepo.GetTax(mappedPayslip.TaxIncome);
+        //        return Ok(mappedPayslip);
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return BadRequest(ex.Message);
-            }
-        }
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         [HttpPut("update/payslip/{employeeId}/{payslipId}")]
         public IActionResult UpdatePaySlip(string employeeId, string payslipId, [FromBody] UpdatePaySlipDto payslip)

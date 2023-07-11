@@ -16,7 +16,6 @@ namespace HumanResourceApi.Controllers
         public readonly IMapper _mapper;
         public readonly JobRepo _job;
         public Regex jobIdRegex = new Regex(@"^JB\d{6}");
-        public Regex allowanceIdRegex = new Regex(@"^AL\d{6}");
 
         public JobController(IMapper mapper, JobRepo job)
         {
@@ -80,10 +79,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong jobId Format.");
                 }
-                if (!allowanceIdRegex.IsMatch(job.AllowanceId))
-                {
-                    return BadRequest("Wrong allowanceId Format.");
-                }
                 bool validJob = _job.GetAll().Any(j => j.JobId == job.JobId);
                 if (validJob)
                 {
@@ -91,7 +86,7 @@ namespace HumanResourceApi.Controllers
                 }
                 var temp = _mapper.Map<Job>(job);
                 _job.Add(temp);
-                return Ok(temp);
+                return Ok(_mapper.Map<JobDto>(temp));
             }
             catch (Exception ex)
             {
@@ -113,10 +108,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong jobId Format.");
                 }
-                if (!allowanceIdRegex.IsMatch(job.AllowanceId))
-                {
-                    return BadRequest("Wrong allowanceId Format.");
-                }
                 var validJob = _job.GetAll().Where(j => j.JobId == jobId).FirstOrDefault();
                 if (validJob == null)
                 {
@@ -126,7 +117,7 @@ namespace HumanResourceApi.Controllers
                 validJob.JobId = jobId;
 
                 _job.Update(validJob);
-                return Ok(validJob);
+                return Ok(_mapper.Map<JobDto>(validJob));
             }
             catch (Exception ex)
             {
