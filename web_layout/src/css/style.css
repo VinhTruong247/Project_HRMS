@@ -367,7 +367,7 @@ aside .sidebar a:hover.active span {
     padding-left: 1rem;
     padding-right: 1rem;
     color: white;
-    gap: 2rem;
+    justify-content: space-between;
     border-radius: 30px 30px 30px 30px;
     box-shadow: var(--box-shadow);
 }

@@ -20,6 +20,8 @@ import Employee from './pages/Manage/Employee';
 import Department from './pages/Manage/Department';
 import Jobs from './pages/Manage/Jobs';
 import Timeline from './pages/Timeline';
+import Report from './pages/Manage/Report';
+import Allowance from './pages/Manage/Allowance';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,8 @@ const router = createBrowserRouter([
         {path: "employee",element: <Employee/>},
         {path: "department",element: <Department/>},
         {path: "jobs", element: <Jobs/>},
+        {path: "report", element: <Report/>},
+        {path: "allowance", element: <Allowance/>},
                 ]},
     {path: "statistics",element: <Statistics/>,},
     {path: "timeline",element: <Timeline/>},
