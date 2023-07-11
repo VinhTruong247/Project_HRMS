@@ -49,19 +49,19 @@ VALUES
 -- Insert 13 jobs
 INSERT INTO Job (job_id, job_title, job_description,  status, base_salary_per_hour, bonus)
 VALUES
-  ('JB000001', 'Software Engineer', N'Trách nhiệm phát triển ứng dụng phần mềm',  1, 1000000.00, 100000000.00),
-  ('JB000002', 'Data Analyst', N'Phân tích dữ liệu và cung cấp thông tin', 1, 900000.00, 80000000.00),
-  ('JB000003', 'Network Administrator', N'Quản lý và duy trì cơ sở hạ tầng mạng', 1, 1100000.00, 120000000.00),
-  ('JB000004', 'Web Developer', N'Trách nhiệm thiết kế và phát triển website',1, 800000.00, 60000000.00),
-  ('JB000005', 'IT Project Manager', N'Lập kế hoạch, thực hiện và quản lý dự án IT', 1, 1200000.00, 140000000.00),
-  ('JB000006', 'Database Administrator', N'Quản lý và duy trì cơ sở dữ liệu', 1, 1000000.00, 100000000.00),
-  ('JB000007', 'Quality Assurance Engineer', N'Đảm bảo chất lượng phần mềm qua kiểm thử và phân tích',  1, 900000.00, 80000000.00),
-  ('JB000008', 'System Analyst', N'Phân tích và cải thiện hệ thống thông tin của công ty',  1, 1100000.00, 120000000.00),
-  ('JB000009', 'UI/UX Designer', N'Thiết kế giao diện người dùng và trải nghiệm người dùng',  1, 800000.00, 60000000.00),
-  ('JB000010', 'IT Support Specialist', N'Cung cấp hỗ trợ kỹ thuật cho người dùng cuối',  1, 1000000.00, 100000000.00),
-  ('JB000011', 'Business Analyst', N'Phân tích nhu cầu và xác định yêu cầu kinh doanh',  1, 950000.00, 90000000.00),
-  ('JB000012', 'IT Consultant', N'Tư vấn và đề xuất giải pháp công nghệ thông tin',  1, 1050000.00, 110000000.00),
-  ('JB000013', 'Cybersecurity Analyst', N'Phân tích và đảm bảo an ninh thông tin', 1, 950000.00, 90000000.00);
+  ('JB000001', 'Software Engineer', N'Trách nhiệm phát triển ứng dụng phần mềm',  1, 50000.00, 100000000.00),
+  ('JB000002', 'Data Analyst', N'Phân tích dữ liệu và cung cấp thông tin', 1, 90000.00, 80000000.00),
+  ('JB000003', 'Network Administrator', N'Quản lý và duy trì cơ sở hạ tầng mạng', 1, 24000.00, 120000000.00),
+  ('JB000004', 'Web Developer', N'Trách nhiệm thiết kế và phát triển website',1, 30000.00, 60000000.00),
+  ('JB000005', 'IT Project Manager', N'Lập kế hoạch, thực hiện và quản lý dự án IT', 1, 29000.00, 140000000.00),
+  ('JB000006', 'Database Administrator', N'Quản lý và duy trì cơ sở dữ liệu', 1, 25000.00, 100000000.00),
+  ('JB000007', 'Quality Assurance Engineer', N'Đảm bảo chất lượng phần mềm qua kiểm thử và phân tích',  1, 30000.00, 80000000.00),
+  ('JB000008', 'System Analyst', N'Phân tích và cải thiện hệ thống thông tin của công ty',  1, 40000.00, 120000000.00),
+  ('JB000009', 'UI/UX Designer', N'Thiết kế giao diện người dùng và trải nghiệm người dùng',  1, 30000.00, 60000000.00),
+  ('JB000010', 'IT Support Specialist', N'Cung cấp hỗ trợ kỹ thuật cho người dùng cuối',  1, 50000.00, 100000000.00),
+  ('JB000011', 'Business Analyst', N'Phân tích nhu cầu và xác định yêu cầu kinh doanh',  1, 50000.00, 90000000.00),
+  ('JB000012', 'IT Consultant', N'Tư vấn và đề xuất giải pháp công nghệ thông tin',  1, 50000.00, 110000000.00),
+  ('JB000013', 'Cybersecurity Analyst', N'Phân tích và đảm bảo an ninh thông tin', 1, 50000.00, 90000000.00);
   INSERT INTO Department (department_id, department_name, description ,status)
 VALUES
   ('DP000001', 'Software Development', 'Responsible for developing software applications and solutions.', 1),
