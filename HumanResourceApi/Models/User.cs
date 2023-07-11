@@ -11,7 +11,7 @@ namespace HumanResourceApi.Models
         public string Password { get; set; }
         public string Email { get; set; }
         public string RoleId { get; set; }
-        public bool? Status { get; set; } = true;
+        public bool? Status { get; set; }
 
         public virtual Employee Employee { get; set; }
         public virtual Role Role { get; set; }

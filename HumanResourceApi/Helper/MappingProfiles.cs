@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Allowance;
 using HumanResourceApi.DTO.Attendance;
-using HumanResourceApi.DTO.Deduction;
-using HumanResourceApi.DTO.DeductionSummary;
 using HumanResourceApi.DTO.Department;
 using HumanResourceApi.DTO.DepartmentMemberList;
 using HumanResourceApi.DTO.Employee;
@@ -18,17 +16,17 @@ using HumanResourceApi.DTO.Skill;
 using HumanResourceApi.DTO.SkillEmployee;
 using HumanResourceApi.DTO.Users;
 using HumanResourceApi.Models;
+using HumanResourceApi.Repositories;
 
 namespace HumanResourceApi.Helper
 {
     public class MappingProfiles : Profile
     {
+
         public MappingProfiles()
         {
             AllowanceMap();
             AttendaceMap();
-            DeductionMap();
-            DeductionSummaryMap();
             DepartmentMap();
             DepartmentMemberListMap();
             EmployeeContractMap();
@@ -64,20 +62,6 @@ namespace HumanResourceApi.Helper
             CreateMap<DepartmentMemberList, DepartmentMemberDto>()
                 .ReverseMap();
             CreateMap<DepartmentMemberList, UpdateDepartmentMemberDto>()
-                .ReverseMap();
-        }
-        private void DeductionSummaryMap()
-        {
-            CreateMap<DeductionSumary, DeductionSumaryDto>()
-                .ReverseMap();
-            CreateMap<DeductionSumary, UpdateDeductionSumaryDto>()
-                .ReverseMap();
-        }
-        private void DeductionMap()
-        {
-            CreateMap<Deduction, DeductionDto>()
-                .ReverseMap();
-            CreateMap<Deduction, UpdateDeductionDto>()
                 .ReverseMap();
         }
         private void SkillEmployeeMap()
@@ -172,6 +156,8 @@ namespace HumanResourceApi.Helper
 
         private void PaySlipMap()
         {
+            CreateMap<PaySlip, PaySlipRequestModel>()
+                .ReverseMap();
             CreateMap<PaySlip, PaySlipDto>()
                 .ReverseMap();
             CreateMap<PaySlip, UpdatePaySlipDto>()

@@ -9,7 +9,6 @@ using System.Text;
 using HumanResourceApi;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Globalization;
 
 namespace YourNamespace
 {
@@ -53,8 +52,6 @@ namespace YourNamespace
             services.AddScoped<EmployeeRepo>();
             services.AddScoped<SkillRepo>();
             services.AddScoped<SkillEmployeeRepo>();
-            services.AddScoped<DeductionRepo>();
-            services.AddScoped<DeductionSumaryRepo>();
             services.AddScoped<DepartmentMemberRepo>();
             services.AddScoped<ProjectRepo>();
             services.AddScoped<EmployeeLoanLogRepo>();
