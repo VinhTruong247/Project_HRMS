@@ -20,6 +20,10 @@ import Sidebar from './component/Sidebar';
 import Employee from './pages/Manage/Employee';
 import Department from './pages/Manage/Department';
 import Jobs from './pages/Manage/Jobs';
+<<<<<<< Updated upstream
+=======
+import Timeline from './pages/Timeline';
+>>>>>>> Stashed changes
 
 const router = createBrowserRouter([
   {

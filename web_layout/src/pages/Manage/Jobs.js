@@ -52,6 +52,28 @@ function Jobs(props) {
       });
   }, []);
 
+  useEffect(() => {
+    fetch('https://localhost:7220/api/Job/jobs', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.token}`
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Api response was not ok.');
+        }
+      })
+      .then(jobs => {
+        setData(jobs)
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []);
 
 
   //  CRATE NEW JOB INFO
