@@ -445,7 +445,7 @@ aside .sidebar a:hover.active span {
 }
 
 .manager .form select {
-    height: 3.5rem!important;
+    height: 3.5rem !important;
 }
 
 .manager .row.butt {
@@ -688,16 +688,16 @@ main {
     flex-wrap: wrap;
     justify-content: space-between;
      }
-  
+
      .month {
     margin: 5px 5px 15px 5px;
     }
-  
+
     .month-name {
     color: #ccbe88;
     font-weight: bold;
     }
-  
+
      .day {
     display: inline-block;
     width: 30px;
@@ -705,7 +705,7 @@ main {
     text-align: center;
     line-height: 30px;
      }
-  
+
      .date {
     width: 30px;
     height: 30px;
@@ -714,16 +714,16 @@ main {
     border: none;
     outline: none;
      }
-  
+
     .date.in-month:hover {
     cursor: pointer;
     background: #ccbe88;
      }
-  
+
     .today {
     background: #ccbe88;
      }
-  
+
     .date.prev-month,
     .date.next-month {
     color: grey;

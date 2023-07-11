@@ -23,6 +23,7 @@ import Timeline from './pages/Timeline';
 import Report from './pages/Manage/Report';
 import Allowance from './pages/Manage/Allowance';
 
+
 const router = createBrowserRouter([
   {
     path: "/",

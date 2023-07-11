@@ -392,8 +392,8 @@ function Employee(props) {
                             <th>Birthday</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Department</th>
                             <th>Job</th>
+                            <th>Department</th>
                             <th>Status</th>
                             <th>Options</th>
                         </tr>
@@ -406,8 +406,8 @@ function Employee(props) {
                                 <td>{employee.dateOfBirth}</td>
                                 <td>{employee.email}</td>
                                 <td>{employee.phoneNumber}</td>
-                                <td>{employee.departmentId}</td>
                                 <td>{employee.jobId}</td>
+                                <td>{employee.departmentId}</td>
                                 <td>
                                     {employee.status
                                         ? 'Active'
