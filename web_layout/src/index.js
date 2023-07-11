@@ -8,7 +8,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Dasboard from './pages/Dashboard';
-import Calendar from './pages/Calendar';
 import Groups from './pages/Groups';
 import Manage from './pages/Manage';
 import Payment from './pages/Payment';
@@ -20,6 +19,7 @@ import Sidebar from './component/Sidebar';
 import Employee from './pages/Manage/Employee';
 import Department from './pages/Manage/Department';
 import Jobs from './pages/Manage/Jobs';
+import Timeline from './pages/Timline';
 
 const router = createBrowserRouter([
   {
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         {path: "jobs", element: <Jobs/>},
                 ]},
     {path: "statistics",element: <Statistics/>,},
-    {path: "calendar",element: <Calendar/>},
+    {path: "timeline",element: <Timeline/>},
     {path: "groups",element: <Groups/>},
     {path: "payment",element: <Payment/>},
     ]
