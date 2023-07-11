@@ -10,6 +10,8 @@ function Manage() {
         <NavLink to="employee">Employee Management</NavLink>
         <NavLink to="department">Department Management</NavLink>
         <NavLink to="jobs">Jobs Management</NavLink>
+        <NavLink to="report">Report Management</NavLink>
+        <NavLink to="allowance">Allowances Management</NavLink>
        </nav>
        <DataProvider><Outlet /></DataProvider>
     </div>

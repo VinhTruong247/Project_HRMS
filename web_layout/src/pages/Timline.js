@@ -25,7 +25,7 @@ const Timeline = () => {
                 <OngoingStatics />
             </div>
         </div>
-        
+
       <Calendar
         localizer={localizer}
         events={[]}
@@ -38,7 +38,6 @@ const Timeline = () => {
         }}
         messages={{ year: 'Year' }}
       />
-    
     </div>
   );
 };
