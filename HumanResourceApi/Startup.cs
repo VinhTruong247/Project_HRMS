@@ -58,6 +58,7 @@ namespace YourNamespace
             services.AddScoped<RoleRepo>();
             services.AddScoped<EmployeeBenefitRepo>();
             services.AddScoped<PaySlipRepo>();
+            services.AddScoped<ReportRepo>();
 
             services.AddEndpointsApiExplorer();
             //services.AddSwaggerGen(c =>
