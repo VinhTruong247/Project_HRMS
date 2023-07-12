@@ -209,7 +209,7 @@ function Jobs(props) {
 
   return (
     <div className="manager" style={{ position: "relative" }}>
-      <button className='btn_create' onClick={() => setShowForm(true)}>Add Job</button>
+     <div className='addbtn'style={{ display: 'flex', justifyContent: 'flex-end' }}><button className='btn_create' onClick={() => setShowForm(true)}>Add Job</button></div>
       <div className='row'>
         <table className='table'>
           <thead>
