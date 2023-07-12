@@ -74,6 +74,7 @@ CREATE TABLE Employee (
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
+  dependents INT.
   job_id NVARCHAR(10),
   department_id NVARCHAR(10),
   status BIT,
