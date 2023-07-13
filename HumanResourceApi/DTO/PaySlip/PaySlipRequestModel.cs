@@ -5,7 +5,7 @@
         //public string PayslipId { get; set; }
         public string EmployeeId { get; set; }
         public string PayPeriod { get; set; }
-        public DateTime? PaidDate { get; set; }
+        public DateTime PaidDate { get; set; }
         //public decimal? BaseSalary { get; set; }
         //public TimeSpan? OtHours { get; set; }
         //public string ContractId { get; set; }

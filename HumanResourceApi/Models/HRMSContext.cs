@@ -66,9 +66,9 @@ namespace HumanResourceApi.Models
                     .HasMaxLength(200)
                     .HasColumnName("allowance_type");
 
-                entity.Property(e => e.Amount)
+                entity.Property(e => e.AmountPerDay)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("amount");
+                    .HasColumnName("amount_per_day");
 
                 entity.Property(e => e.Status).HasColumnName("status");
             });
@@ -196,6 +196,8 @@ namespace HumanResourceApi.Models
                     .HasMaxLength(10)
                     .HasColumnName("department_id");
 
+                entity.Property(e => e.Dependents).HasColumnName("dependents");
+
                 entity.Property(e => e.Email)
                     .HasMaxLength(100)
                     .HasColumnName("email");
@@ -270,7 +272,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<EmployeeContract>(entity =>
             {
                 entity.HasKey(e => e.ContractId)
-                    .HasName("PK__Employee__F8D664236D57414F");
+                    .HasName("PK__Employee__F8D6642307CF2727");
 
                 entity.ToTable("EmployeeContract");
 
@@ -505,10 +507,6 @@ namespace HumanResourceApi.Models
                     .HasColumnType("decimal(18, 2)")
                     .HasColumnName("base_salary");
 
-                entity.Property(e => e.Bonus)
-                    .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("bonus");
-
                 entity.Property(e => e.ContractId)
                     .HasMaxLength(10)
                     .HasColumnName("contract_id");
@@ -682,7 +680,7 @@ namespace HumanResourceApi.Models
             modelBuilder.Entity<SkillEmployee>(entity =>
             {
                 entity.HasKey(e => e.UniqueId)
-                    .HasName("PK__Skill_em__A29291307AF78E38");
+                    .HasName("PK__Skill_em__A29291304399DE49");
 
                 entity.ToTable("Skill_employee");
 
