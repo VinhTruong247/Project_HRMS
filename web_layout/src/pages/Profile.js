@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useData from "../hooks/useData";
+import moment from "moment";
 
 function Profile(props) {
 
@@ -23,33 +24,48 @@ function Profile(props) {
 function EmployeeCard(props) {
     const [department, setDepartment] = useState('');
     const [jobTitle, setJobTitle] = useState('');
+    const token = JSON.parse(localStorage.getItem('jwtToken'));
 
     useEffect(() => {
         async function fetchData() {
             try {
-                // Make the API calls
-                const departmentResponse = await fetch(`https://localhost:7220/api/Department/departments`);
-                const jobTitleResponse = await fetch(`https://localhost:7220/api/Job/jobs`);
+                const departmentResponse = await fetch(`https://localhost:7220/api/Department/departments`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token.token}`
+                    }
+                });
+                const jobTitleResponse = await fetch(`https://localhost:7220/api/Job/jobs`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token.token}`
+                    }
+                });
 
-                // Parse the responses as JSON
                 const departmentData = await departmentResponse.json();
                 const jobTitleData = await jobTitleResponse.json();
 
-                // Update the state with the retrieved data
-                setDepartment(departmentData.departmentName);
-                setJobTitle(jobTitleData.jobTitle);
+                const matchedDepartment = departmentData.find(department => department.departmentId === props.departmentId);
+                if (matchedDepartment) {
+                    setDepartment(matchedDepartment.departmentName);
+                }
+
+                const matchedJobTitle = jobTitleData.find(jobTitle => jobTitle.jobTitleId === props.jobTitleId);
+                if (matchedJobTitle) {
+                    setJobTitle(matchedJobTitle.jobTitle);
+                }
             } catch (error) {
                 console.error(error);
             }
         }
 
         fetchData();
-    }, [props.departmentId, props.jobId]);
+    }, [props.departmentId, props.jobTitleId, token.token]);
 
     return (
         <div className="card">
             <div className="card-body">
-                <div className="d-flex flex-column  align-items-center text-center text-xxl">
+                <div className="d-flex flex-column align-items-center text-center text-xxl">
                     <img src="#" alt="employees-img" className="rounded-circle" />
                     <div className="mt-3">
                         <h4>{props.firstName} {props.lastName}</h4>
@@ -102,6 +118,29 @@ function EmployeeDetails(props) {
     const [isEditing, setIsEditing] = useState(false);
     const token = JSON.parse(localStorage.getItem('jwtToken'));
     const [validationErrors, setValidationErrors] = useState({});
+    const [showCreateForm, setShowForm] = useState(false);
+    const [updateReport, setUpdateReport] = useState(null);
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [validationError, setValidationError] = useState('');
+    const reportIdPattern = /^RP\d{6}$/;
+    const handleEdit = (report) => {
+        setUpdateReport(report);
+        setShowUpdateForm(true);
+    };
+
+    const timeoutRef = useRef(null);
+
+    useEffect(() => {
+        if (validationError) {
+            timeoutRef.current = setTimeout(() => {
+                setValidationError('');
+            }, 3000);
+        }
+        return () => {
+            clearTimeout(timeoutRef.current);
+        };
+    }, [validationError]);
+
     const [formData, setFormData] = useState({
         firstName: props.firstName,
         lastName: props.lastName,
@@ -179,6 +218,64 @@ function EmployeeDetails(props) {
         }
     };
 
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+        const formData = {
+            reportId: event.target.elements.reportId.value,
+            employeeId: event.target.elements.employeeId.value,
+            reason: event.target.elements.reason.value,
+            content: event.target.elements.content.value,
+            issueDate: event.target.elements.content.value,
+        };
+
+        if (!formData.reportId) {
+            setValidationError('Report ID is required');
+            return;
+        }
+
+        if (!reportIdPattern.test(formData.reportId)) {
+            setValidationError('Report ID must follow RP###### format');
+            return;
+        }
+
+        if (!formData.reason) {
+            setValidationError('Reason type is required');
+            return;
+        }
+
+        if (!formData.content) {
+            setValidationError('Content needed is required');
+            return;
+        }
+
+        fetch('https://localhost:7220/api/Report/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.token}`
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Api response was not ok.');
+                }
+            })
+            .then(report => {
+                setData([...data, report]);
+                setShowForm(false);
+                setValidationError('');
+                console.log('Report form created successfully');
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                setValidationError('An error occurred while submitting the form');
+            });
+        console.log(event.target.elements)
+    };
+
     if (isEditing) {
         return (
             <div className="card mb-3">
@@ -227,7 +324,7 @@ function EmployeeDetails(props) {
                                 <input
                                     type="date"
                                     name="dateOfBirth"
-                                    value={props.dateOfBirth}
+                                    defaultValue={moment(moment(props.dateOfBirth, 'DD-MM-YYYY')).format('YYYY-MM-DD')}
                                     onChange={handleInputChange}
                                 />
                             </div>
@@ -372,15 +469,82 @@ function EmployeeDetails(props) {
                     </div>
                 </div>
                 <hr />
-                <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => setIsEditing(true)}
-                >
-                    Edit
-                </button>
+                <div className="row form">
+                    <div className="col-sm-3">
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => setIsEditing(true)}
+                        >
+                            Edit
+                        </button>
+                    </div>
+                    <div className="col-sm-3">
+                        <button
+                            type="button"
+                            className='btn btn-primary'
+                            onClick={() => setShowForm(true)}
+                        >
+                            Add Report
+                        </button>
+                    </div>
+                </div>
             </div>
+
+            {showCreateForm && (
+                <div className="form-container">
+                    <form className="formProfile" onSubmit={handleFormSubmit}>
+                        <h3>Create Report</h3>
+
+                        {validationError && (
+                            <div className="error-message-fadeout">
+                                {validationError}
+                            </div>
+                        )}
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Report ID:</label>
+                                <input type="text" name="reportId" placeholder='RP######' />
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Employee ID:</label>
+                                <input type="text" defaultValue={props.employeeId} name="employeeId" placeholder='EP######' />
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Reason:</label>
+                                <input type="text" name="reason" placeholder='Type in your reason' />
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Content:</label>
+                                <input type="text" name="content" placeholder='Type in what you want...' style={{ height: '15rem' }}/>
+                            </div>
+                        </div>
+
+                        <div className='row butt'>
+                            <div className="col-5 mt-3">
+                                <button type="submit">Submit</button>
+                            </div>
+                            <div className="col-5 mt-3">
+                                <button onClick={() => setShowForm(false)}>Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            )}
+
         </div>
     );
 }
+
 export default Profile;

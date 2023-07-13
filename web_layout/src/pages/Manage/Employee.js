@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
+import moment from 'moment';
 
 function Employee(props) {
     const [data, setData] = useState([]);
@@ -14,7 +15,7 @@ function Employee(props) {
     // const departmentIdPattern = /^DP\d{6}$/;
     // const jobIdPattern = /^JB\d{6}$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneNumberPattern = /^\d{10}$/;
+    const phoneNumberPattern = /^(\+)?\d{10}$/;
     // const atmNumberPattern = /^(\d{4}[- ]?){3}\d{4}$/;
     const atmNumberPattern = /^\d{9}$/;
     const handleEdit = (employee) => {
@@ -577,7 +578,7 @@ function Employee(props) {
                             </div>
                             <div className="col-6 mt-3">
                                 <label>Date of Birth:</label>
-                                <input type="date" name="dateOfBirth" defaultValue={updateEmployee.dateOfBirth} />
+                                <input type="date" name="dateOfBirth" defaultValue={moment(moment(updateEmployee.dateOfBirth, 'DD-MM-YYYY')).format('YYYY-MM-DD')} />
                             </div>
                         </div>
 
