@@ -15,7 +15,6 @@ namespace HumanResourceApi.Models
         public decimal? StandardWorkHours { get; set; }
         public decimal? ActualWorkHours { get; set; }
         public decimal? TaxIncome { get; set; }
-        public decimal? Bonus { get; set; }
         public decimal? TotalSalary { get; set; }
         public string Note { get; set; }
         public int? BankAccountNumber { get; set; }

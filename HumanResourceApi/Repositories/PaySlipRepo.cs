@@ -8,30 +8,19 @@ namespace HumanResourceApi.Repositories
 {
     public class PaySlipRepo : BaseRepository.BaseRepository<PaySlip>
     {
-        public decimal GetTotalSalary(decimal taxIncome, decimal allowanceSum, decimal tax)
+        public decimal GetTotalSalary(decimal baseSalary, decimal allowanceSum, decimal tax, decimal otSalary)
         {
             decimal salary = 0;
-            return salary = taxIncome + allowanceSum - tax;
+            return salary = baseSalary + allowanceSum + (otSalary * (decimal)1.5) - tax;
         }
-        public decimal GetTaxIncome(string employeeId, DateTime targetDate)
+        public decimal GetTaxIncome(decimal baseSalary, decimal overtime, int depends)
         {
-            var employee = _context.Employees.Include(e => e.Job).Where(e => e.EmployeeId == employeeId).FirstOrDefault();
-            var contract = _context.EmployeeContracts.Where(e => e.EmployeeId == employeeId).FirstOrDefault() ?? throw new Exception("contract not found");
-            var ot = _context.Overtimes.Where(o => o.EmployeeId == employeeId).ToList();
-            var filteredOt = ot.Where(o => o.Day.Year == targetDate.Year && o.Day.Month == targetDate.Year).ToList();
-            decimal otHour = 0;
-            filteredOt.ForEach(fo =>
+            decimal taxIncome = baseSalary + overtime - 11000000 - depends * 4400000;
+            if (taxIncome < 0)
             {
-                otHour += (decimal)fo.OvertimeHours.Value.TotalHours;
-            });
-            
-            decimal taxIncome = 0;
-            decimal baseSalary = (decimal)contract.BaseSalary;
-            decimal bonus = (decimal)employee.Job.Bonus;
-            decimal overtime = otHour;
-
-
-            return taxIncome = baseSalary + bonus + overtime;
+                return 0;
+            }
+            return taxIncome;
         }
 
         public decimal GetTax(decimal taxIncome)

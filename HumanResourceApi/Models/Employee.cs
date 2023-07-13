@@ -30,6 +30,7 @@ namespace HumanResourceApi.Models
         public int? BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
         public string BankName { get; set; }
+        public int? Dependents { get; set; }
         public string JobId { get; set; }
         public string DepartmentId { get; set; }
         public bool? Status { get; set; }
