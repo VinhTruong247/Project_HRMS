@@ -55,7 +55,6 @@ const DataProvider = ({ children }) => {
             })
             .then(department => {
                 setData(department)
-                console.log(department);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
