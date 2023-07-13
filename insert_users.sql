@@ -308,7 +308,7 @@ VALUES
   ('AT000165','EP000005', '2023-07-31', '11:00:00', '20:00:00', '03:00:00', '00:00:00', '09:00:00', 1, 'Regular working hours'),
   ('AT000166','EP000006', '2023-07-31', '11:15:00', '20:15:00', '03:15:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
   ('AT000167','EP000007', '2023-07-31', '11:30:00', '20:30:00', '03:30:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
-  ('AT000168','EP000008', '2023-07-31', '11:45:00', '20:45:00', '03:45:00', '00:00:00', '09:00:00', 1, 'Arrived late'),
+  ('AT000168','EP000008', '2023-07-31', '11:45:00', '20:45:00', '03:45:00', '00:00:00', '09:00:00', 1, 'Arrived late');
 -- Inserting Project table
 INSERT INTO Project (project_id, project_name, department_id, start_date, end_date, status)
 VALUES
@@ -381,9 +381,14 @@ VALUES
 
   INSERT INTO Report (report_id, employee_id, reason, content, issue_date, status)
 VALUES
-  ('RP000001', 'EP000001', 'Request for leave', 'I would like to request a leave of absence for personal reasons.', '2023-07-05', 1),
-  ('RP000002', 'EP000002', 'Expense reimbursement', 'I have attached the receipts for the business expenses I incurred during the trip.', '2023-07-06', 1);
-
+  ('RP000001', 'EP000001', 'Request for leave', 'I would like to request a leave of absence for personal reasons.', '2023-07-05', 'Approved'),
+  ('RP000002', 'EP000002', 'Expense reimbursement', 'I have attached the receipts for the business expenses I incurred during the trip.', '2023-07-06', 'Approved'),
+  ('RP000003', 'EP000003', 'Equipment malfunction', 'One of the computers in the office is not functioning properly.', '2023-07-07', 'Pending'),
+  ('RP000004', 'EP000004', 'Safety concern', 'I noticed a potential safety hazard in the workplace and wanted to bring it to your attention.', '2023-07-08', 'Pending'),
+  ('RP000005', 'EP000005', 'IT support request', 'I need assistance with setting up my new laptop.', '2023-07-09', 'Approved'),
+  ('RP000006', 'EP000006', 'Training request', 'I would like to attend a training workshop on project management.', '2023-07-10', 'Approved'),
+  ('RP000007', 'EP000007', 'Supply request', 'We are running low on printer paper and need a new supply.', '2023-07-11', 'Pending'),
+  ('RP000008', 'EP000008', 'Performance feedback', 'I would like to provide feedback on a colleagues performance.', '2023-07-12', 'Pending');
 
   INSERT INTO DepartmentMemberList (department_id, employee_id, emp_role, status)
 VALUES

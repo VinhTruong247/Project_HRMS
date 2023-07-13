@@ -133,7 +133,7 @@ CREATE TABLE Report (
   reason NVARCHAR(255),
   content TEXT,
   issue_date DATE,
-  status BIT,
+  status NVARCHAR(10),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
