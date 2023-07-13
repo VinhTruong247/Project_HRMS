@@ -1,5 +1,4 @@
 import React from 'react';
-import Counter from '../component/Counter';
 import TotalEmployee from './Dashboard/TotalEmployee';
 import Status from './Dashboard/Status';
 import OngoingStatics from './Dashboard/OngoingStatics';
@@ -14,9 +13,9 @@ import useData from "../hooks/useData";
 function Dasboard() {
     const data = useData()
     return (
-        <div className='dasboard_page'>
+    <div className='overflowy'>
         <nav className='dashboardnav'>
-        <NavLink to="profile">Profile{data.lastName} asd {data.firstName}</NavLink>
+        <NavLink to="profile">{data.lastName} {data.firstName}</NavLink>
         </nav>
         <div className="news">
             <div className="row">
@@ -34,7 +33,8 @@ function Dasboard() {
 
             </div>
         </div>
-        </div>
+    </div>
+
     );
 }
 

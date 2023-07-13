@@ -1,12 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-function LeaveCounter() {
+function EmployeeCounter() {
   const [data, setData] = useState([]);
   const token = JSON.parse(localStorage.getItem('jwtToken'));
 
   useEffect(() => {
-    fetch('https://localhost:7220/api/Leave/leaves', {
+    fetch('https://localhost:7220/api/Employee/employees', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -18,28 +18,28 @@ function LeaveCounter() {
       .catch(error => console.error(error));
   }, []);
 
-  const countTotalLeave = data.length;
+  const countTotalEmployee = data.length;
 
-  const countActiveLeave = data.filter(leave => leave.status).length;
-  const countInactiveLeave = data.filter(leave => !leave.status).length;
+  const countActiveEmployee = data.filter(employee => employee.status).length;
+  const countInactiveEmployee = data.filter(employee => !employee.status).length;
 
   return (
     <div className="row">
       <div className="col-4">
-        <h2>{countTotalLeave}</h2>
+        <h2>{countTotalEmployee}</h2>
         <p className="text-secondary mb-1">Total</p>
       </div>
 
       <div className="col-4">
-        <h2>{countActiveLeave}</h2>
-        <p className="text-secondary mb-1">Approved</p>
+        <h2>{countActiveEmployee}</h2>
+        <p className="text-secondary mb-1">Active</p>
       </div>
 
       <div className="col-4">
-        <h2>{countInactiveLeave}</h2>
-        <p className="text-secondary mb-1">Declined</p>
+        <h2>{countInactiveEmployee}</h2>
+        <p className="text-secondary mb-1">Inactive</p>
       </div>
     </div>
   );
 }
-export default LeaveCounter;
+export default EmployeeCounter;
