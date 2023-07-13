@@ -21,6 +21,31 @@ function Profile(props) {
 }
 
 function EmployeeCard(props) {
+    const [department, setDepartment] = useState('');
+    const [jobTitle, setJobTitle] = useState('');
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                // Make the API calls
+                const departmentResponse = await fetch(`https://localhost:7220/api/Department/departments`);
+                const jobTitleResponse = await fetch(`https://localhost:7220/api/Job/jobs`);
+
+                // Parse the responses as JSON
+                const departmentData = await departmentResponse.json();
+                const jobTitleData = await jobTitleResponse.json();
+
+                // Update the state with the retrieved data
+                setDepartment(departmentData.departmentName);
+                setJobTitle(jobTitleData.jobTitle);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchData();
+    }, [props.departmentId, props.jobId]);
+
     return (
         <div className="card">
             <div className="card-body">
@@ -28,8 +53,9 @@ function EmployeeCard(props) {
                     <img src="#" alt="employees-img" className="rounded-circle" />
                     <div className="mt-3">
                         <h4>{props.firstName} {props.lastName}</h4>
-                        <p className="text-secondary mb-1">{props.departmentId}</p>
-                        <p className="text-secondary mb-1">{props.jobId}</p>
+                        {/* Display the department and job title */}
+                        <p className="text-secondary mb-1">{department}</p>
+                        <p className="text-secondary mb-1">{jobTitle}</p>
                         <p className="text-secondary mb-1">{props.employeeId}</p>
                     </div>
                 </div>

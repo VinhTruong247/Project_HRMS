@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/login.css';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -40,6 +43,10 @@ function Login() {
     }
   };
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
     return (
       <div className="login">
         <div className="login-container">
@@ -60,14 +67,19 @@ function Login() {
                     onChange={(event) => setUsername(event.target.value)}
                   />
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 password-input-container">
                   <label htmlFor="password">Password:</label>
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     name="password"
                     placeholder="Enter your password here"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
+                  />
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                    className="password-icon"
+                    onClick={toggleShowPassword}
                   />
                 </div>
                 <div className="row">

@@ -57,8 +57,8 @@ function Allowance(props) {
     const formData = {
       allowanceId: event.target.elements.allowanceId.value,
       allowanceType: event.target.elements.allowanceType.value,
-      amount: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
-      status: Boolean(event.target.elements.status.value),
+      amount: parseFloat(event.target.elements.amount.value.replace(/,/g, '')),
+      status: event.target.elements.status.checked,
     };
 
     if (!formData.allowanceId) {
@@ -120,10 +120,10 @@ function Allowance(props) {
   const handleUpdate = (event) => {
     event.preventDefault();
     const formData = {
-      allowanceId: event.target.elements.allowanceId.value,
+      allowanceId: updateAllowance.allowanceId,
       allowanceType: event.target.elements.allowanceType.value,
-      amount: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
-      status: Boolean(event.target.elements.status.value),
+      amount: parseFloat(event.target.elements.amount.value.replace(/,/g, '')),
+      status: event.target.elements.status.value === 'true',
     };
 
     if (!formData.allowanceType) {
@@ -186,7 +186,7 @@ function Allowance(props) {
               <th>Allowance Type</th>
               <th>Amount</th>
               <th>Status</th>
-              <th>Options</th>
+              <th>Option</th>
             </tr>
           </thead>
           <tbody>
@@ -317,9 +317,9 @@ function Allowance(props) {
                 {/* <label>Status:</label>
                 <input type="text" name="status" defaultValue={updateAllowance.status} /> */}
                 <label>Status:</label>
-                <select name="status" defaultValue={updateAllowance.status} onChange={event => console.log(event.target.value)}>
-                  <option value={true}>Active</option>
-                  <option value={false}>Inactive</option>
+                <select name="status" defaultValue={updateAllowance.status ? 'true' : 'false'} onChange={event => console.log(event.target.value)}>
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
                 </select>
               </div>
               <div className="col-3 mt-3"></div>

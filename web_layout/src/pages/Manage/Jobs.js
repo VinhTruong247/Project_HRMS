@@ -9,7 +9,6 @@ function Jobs(props) {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [validationError, setValidationError] = useState('');
   const jobIdPattern = /^JB\d{6}$/;
-  const allowanceIdPattern = /^AL\d{6}$/;
   const handleEdit = (job) => {
     setUpdateJob(job);
     setShowUpdateForm(true);
@@ -60,8 +59,7 @@ function Jobs(props) {
       jobTitle: event.target.elements.jobTitle.value,
       jobDescription: event.target.elements.jobDescription.value,
       baseSalaryPerHour: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
-      allowanceId: event.target.elements.allowanceId.value,
-      status: Boolean(event.target.elements.status.value),
+      status: event.target.elements.status.checked,
     };
 
     if (!formData.jobId) {
@@ -91,16 +89,6 @@ function Jobs(props) {
 
     if (isNaN(formData.baseSalaryPerHour)) {
       setValidationError('Base salary must be in number format');
-      return;
-    }
-
-    if (!formData.allowanceId) {
-      setValidationError('Allowance ID is required');
-      return;
-    }
-
-    if (!allowanceIdPattern.test(formData.allowanceId)) {
-      setValidationError('Allowance ID must follow AL###### format');
       return;
     }
 
@@ -142,8 +130,7 @@ function Jobs(props) {
       jobTitle: event.target.elements.jobTitle.value,
       jobDescription: event.target.elements.jobDescription.value,
       baseSalaryPerHour: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
-      allowanceId: event.target.elements.allowanceId.value,
-      status: Boolean(event.target.elements.status.value),
+      status: event.target.elements.status.value === 'true',
     };
 
     if (!formData.jobTitle) {
@@ -163,16 +150,6 @@ function Jobs(props) {
 
     if (isNaN(formData.baseSalaryPerHour)) {
       setValidationError('Base salary must be in number format');
-      return;
-    }
-
-    if (!formData.allowanceId) {
-      setValidationError('Allowance ID is required');
-      return;
-    }
-
-    if (!allowanceIdPattern.test(formData.allowanceId)) {
-      setValidationError('Allowance ID must follow AL###### format');
       return;
     }
 
@@ -222,7 +199,7 @@ function Jobs(props) {
               <th>Job Description</th>
               <th>Base Salary</th>
               <th>Status</th>
-              <th>Options</th>
+              <th>Option</th>
             </tr>
           </thead>
           <tbody>
@@ -296,13 +273,6 @@ function Jobs(props) {
             </div>
 
             <div className='row'>
-              <div className="col-12 mt-3">
-                <label>Allowance ID:</label>
-                <input type="text" name="allowanceId" placeholder='AL######' />
-              </div>
-            </div>
-
-            <div className='row'>
               <div className="col-3 mt-3"></div>
               <div className="col-6 mt-3">
                 <label>Status:</label>
@@ -370,21 +340,14 @@ function Jobs(props) {
             </div>
 
             <div className='row'>
-              <div className="col-12 mt-3">
-                <label>Allowance ID:</label>
-                <input type="text" name="allowanceId" defaultValue={updateJob.allowanceId} />
-              </div>
-            </div>
-
-            <div className='row'>
               <div className="col-3 mt-3"></div>
               <div className="col-6 mt-3">
                 {/* <label>Status:</label>
                 <input type="text" name="status" defaultValue={updateJob.status} /> */}
                 <label>Status:</label>
-                <select name="status" defaultValue={updateJob.status} onChange={event => console.log(event.target.value)}>
-                  <option value={true}>Active</option>
-                  <option value={false}>Inactive</option>
+                <select name="status" defaultValue={updateJob.status ? 'true' : 'false'} onChange={event => console.log(event.target.value)}>
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
                 </select>
               </div>
               <div className="col-3 mt-3"></div>
