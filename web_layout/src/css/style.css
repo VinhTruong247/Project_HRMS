@@ -124,6 +124,12 @@ p {
     animation: fadeout 3s linear forwards;
 }
 
+.row.addbtn {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5rem;
+}
+
 @keyframes fadeout {
     0% {
         opacity: 1;
@@ -480,13 +486,15 @@ aside .sidebar a:hover.active span {
 }
 
 .table>tbody>tr:nth-of-type(odd)>* {
-    --bs-table-bg-type: rgba(154, 52, 52);
-    color: white !important;
+    /* --bs-table-bg-type: rgba(154, 52, 52, 0.6); */
+    --bs-table-bg-type: var(--color-info-light);
+    color: black !important;
 }
 
 .table>tbody>tr:nth-of-type(odd)>td>button {
-    --bs-table-bg-type: rgba(154, 52, 52);
-    color: white !important;
+    /* --bs-table-bg-type: rgba(154, 52, 52, 0.6); */
+    --bs-table-bg-type: var(--color-info-light);
+    color: black !important;
 }
 
 .navbar-brand {
@@ -680,10 +688,15 @@ main {
 =======
 }
 
+<<<<<<< Updated upstream
 
 /*<!-------------------- Timeline -------------------->*/
 
 
+=======
+/*<!-------------------- Timeline -------------------->*/
+
+>>>>>>> Stashed changes
 .timeline {
     width: 100%;
     height: 100%;
@@ -734,5 +747,8 @@ main {
     .date.next-month {
         color: grey;
     }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

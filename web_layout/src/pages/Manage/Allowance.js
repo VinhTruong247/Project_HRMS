@@ -1,17 +1,16 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 
-function Jobs(props) {
+function Allowance(props) {
   const [data, setData] = useState([]);
   const [showCreateForm, setShowForm] = useState(false);
   const token = JSON.parse(localStorage.getItem('jwtToken'));
-  const [updateJob, setUpdateJob] = useState(null);
+  const [updateAllowance, setUpdateAllowance] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [validationError, setValidationError] = useState('');
-  const jobIdPattern = /^JB\d{6}$/;
   const allowanceIdPattern = /^AL\d{6}$/;
-  const handleEdit = (job) => {
-    setUpdateJob(job);
+  const handleEdit = (allowance) => {
+    setUpdateAllowance(allowance);
     setShowUpdateForm(true);
   };
 
@@ -28,9 +27,9 @@ function Jobs(props) {
     };
   }, [validationError]);
 
-  //  Get info of Job
+  //  Get info of Allowance
   useEffect(() => {
-    fetch('https://localhost:7220/api/Job/jobs', {
+    fetch('https://localhost:7220/api/Allowance/allowances', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -44,55 +43,23 @@ function Jobs(props) {
           throw new Error('Api response was not ok.');
         }
       })
-      .then(jobs => {
-        setData(jobs)
+      .then(allowances => {
+        setData(allowances)
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
       });
   }, []);
 
-  //  CRATE NEW JOB INFO
+  //  CRATE NEW ALLOWANCE INFO
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const formData = {
-      jobId: event.target.elements.jobId.value,
-      jobTitle: event.target.elements.jobTitle.value,
-      jobDescription: event.target.elements.jobDescription.value,
-      baseSalaryPerHour: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
       allowanceId: event.target.elements.allowanceId.value,
+      allowanceType: event.target.elements.allowanceType.value,
+      amount: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
       status: Boolean(event.target.elements.status.value),
     };
-
-    if (!formData.jobId) {
-      setValidationError('Job ID is required');
-      return;
-    }
-
-    if (!jobIdPattern.test(formData.jobId)) {
-      setValidationError('Job ID must follow JB###### format');
-      return;
-    }
-
-    if (!formData.jobTitle) {
-      setValidationError('Job title is required');
-      return;
-    }
-
-    if (!formData.jobDescription) {
-      setValidationError('Description is required');
-      return;
-    }
-
-    if (!formData.baseSalaryPerHour) {
-      setValidationError('Base salary needed is required');
-      return;
-    }
-
-    if (isNaN(formData.baseSalaryPerHour)) {
-      setValidationError('Base salary must be in number format');
-      return;
-    }
 
     if (!formData.allowanceId) {
       setValidationError('Allowance ID is required');
@@ -104,7 +71,22 @@ function Jobs(props) {
       return;
     }
 
-    fetch('https://localhost:7220/api/Job/create', {
+    if (!formData.allowanceType) {
+      setValidationError('Allowance type is required');
+      return;
+    }
+
+    if (!formData.amount) {
+      setValidationError('Amount needed is required');
+      return;
+    }
+
+    if (isNaN(formData.amount)) {
+      setValidationError('Amount must be in number format');
+      return;
+    }
+
+    fetch('https://localhost:7220/api/Allowance/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -119,11 +101,11 @@ function Jobs(props) {
           throw new Error('Api response was not ok.');
         }
       })
-      .then(job => {
-        setData([...data, job]);
+      .then(allowance => {
+        setData([...data, allowance]);
         setShowForm(false);
         setValidationError('');
-        console.log('Job information created successfully');
+        console.log('Allowance information created successfully');
       })
       .catch(error => {
         console.error('Error submitting form:', error);
@@ -134,49 +116,32 @@ function Jobs(props) {
 
 
 
-  //  UPDATE NEW JOB
+  //  UPDATE NEW ALLOWANCE
   const handleUpdate = (event) => {
     event.preventDefault();
     const formData = {
-      jobId: updateJob.jobId,
-      jobTitle: event.target.elements.jobTitle.value,
-      jobDescription: event.target.elements.jobDescription.value,
-      baseSalaryPerHour: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
       allowanceId: event.target.elements.allowanceId.value,
+      allowanceType: event.target.elements.allowanceType.value,
+      amount: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
       status: Boolean(event.target.elements.status.value),
     };
 
-    if (!formData.jobTitle) {
-      setValidationError('Job title is required');
+    if (!formData.allowanceType) {
+      setValidationError('Allowance type is required');
       return;
     }
 
-    if (!formData.jobDescription) {
-      setValidationError('Description is required');
+    if (!formData.amount) {
+      setValidationError('Amount needed is required');
       return;
     }
 
-    if (!formData.baseSalaryPerHour) {
-      setValidationError('Base Salary is required');
+    if (isNaN(formData.amount)) {
+      setValidationError('Amount must be in number format');
       return;
     }
 
-    if (isNaN(formData.baseSalaryPerHour)) {
-      setValidationError('Base salary must be in number format');
-      return;
-    }
-
-    if (!formData.allowanceId) {
-      setValidationError('Allowance ID is required');
-      return;
-    }
-
-    if (!allowanceIdPattern.test(formData.allowanceId)) {
-      setValidationError('Allowance ID must follow AL###### format');
-      return;
-    }
-
-    fetch(`https://localhost:7220/api/Job/update/job/${updateJob.jobId}`, {
+    fetch(`https://localhost:7220/api/Allowance/update/allowance/${updateAllowance.allowanceId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -191,54 +156,52 @@ function Jobs(props) {
           throw new Error('Api response was not ok.');
         }
       })
-      .then(updatedJob => {
-        const updatedData = data.map(job => {
-          if (job.jobId === updateJob.jobId) {
-            return updatedJob;
+      .then(updateAllowance => {
+        const updatedData = data.map(allowance => {
+          if (allowance.allowanceId === updateAllowance.allowanceId) {
+            return updateAllowance;
           } else {
-            return job;
+            return allowance;
           }
         });
         setData(updatedData);
         setShowUpdateForm(false);
-        setUpdateJob(null);
-        console.log('Job information updated successfully');
+        setUpdateAllowance(null);
+        console.log('Allowance information updated successfully');
       })
       .catch(error => {
         console.error('Error submitting form:', error);
-        setValidationError('An error occurred while updating job information');
+        setValidationError('An error occurred while updating allowance information');
       });
   };
 
   return (
     <div className="manager" style={{ position: "relative" }}>
-      <div className='row addbtn'><button className='btn_create' onClick={() => setShowForm(true)}>Add Job</button></div>
+      <div className='row addbtn' ><button className='btn_create' onClick={() => setShowForm(true)}>Add Allowance</button></div>
       <div className='row'>
         <table className='table'>
           <thead>
             <tr>
-              <th>Job ID</th>
-              <th>Job Name</th>
-              <th>Job Description</th>
-              <th>Base Salary</th>
+              <th>Allowance ID</th>
+              <th>Allowance Type</th>
+              <th>Amount</th>
               <th>Status</th>
               <th>Options</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(job => (
-              <tr key={job.jobId}>
-                <td>{job.jobId}</td>
-                <td>{job.jobTitle}</td>
-                <td>{job.jobDescription}</td>
-                <td>{job.baseSalaryPerHour.toLocaleString()}</td>
+            {data.map(allowance => (
+              <tr key={allowance.allowanceId}>
+                <td>{allowance.allowanceId}</td>
+                <td>{allowance.allowanceType}</td>
+                <td>{allowance.amount.toLocaleString()}</td>
                 <td>
-                  {job.status
+                  {allowance.status
                     ? 'Active'
                     : 'Inactive'}
                 </td>
                 <td>
-                  <button onClick={() => handleEdit(job)}>Edit</button>
+                  <button onClick={() => handleEdit(allowance)}>Edit</button>
                 </td>
               </tr>
             ))}
@@ -249,7 +212,7 @@ function Jobs(props) {
       {showCreateForm && (
         <div className="form-container">
           <form className="form" onSubmit={handleFormSubmit}>
-            <h3>Create Job</h3>
+            <h3>Create Allowance</h3>
 
             {validationError && (
               <div className="error-message-fadeout">
@@ -259,31 +222,24 @@ function Jobs(props) {
 
             <div className='row'>
               <div className="col-12 mt-3">
-                <label>Job ID:</label>
-                <input type="text" name="jobId" placeholder='JB######' />
+                <label>Allowance ID:</label>
+                <input type="text" name="allowanceId" placeholder='AL######' />
               </div>
             </div>
 
             <div className='row'>
               <div className="col-12 mt-3">
-                <label>Job Name:</label>
-                <input type="text" name="jobTitle" placeholder='Job Title' />
+                <label>Allowance Type:</label>
+                <input type="text" name="allowanceType" placeholder='Allowance Type' />
               </div>
             </div>
 
             <div className='row'>
               <div className="col-12 mt-3">
-                <label>Description:</label>
-                <input type="text" name="jobDescription" placeholder='abcxyz' />
-              </div>
-            </div>
-
-            <div className='row'>
-              <div className="col-12 mt-3">
-                <label>Base Salary:</label>
+                <label>Amount:</label>
                 <input
                   type="text"
-                  name="baseSalaryPerHour"
+                  name="amount"
                   placeholder='Number'
                   onChange={(e) => {
                     const value = parseInt(e.target.value.replace(/,/g, ''));
@@ -292,13 +248,6 @@ function Jobs(props) {
                     }
                   }}
                 />
-              </div>
-            </div>
-
-            <div className='row'>
-              <div className="col-12 mt-3">
-                <label>Allowance ID:</label>
-                <input type="text" name="allowanceId" placeholder='AL######' />
               </div>
             </div>
 
@@ -330,7 +279,7 @@ function Jobs(props) {
       {showUpdateForm && (
         <div className="form-container">
           <form className="form" onSubmit={handleUpdate}>
-            <h3>Edit Job Information (ID: {updateJob.jobId})</h3>
+            <h3>Edit Allowance Information (ID: {updateAllowance.allowanceId})</h3>
 
             {validationError && (
               <div className="error-message-fadeout">
@@ -340,25 +289,18 @@ function Jobs(props) {
 
             <div className='row'>
               <div className="col-12 mt-3">
-                <label>Job Name:</label>
-                <input type="text" name="jobTitle" defaultValue={updateJob.jobTitle} />
+                <label>Allowance Type:</label>
+                <input type="text" name="allowanceType" defaultValue={updateAllowance.allowanceType} />
               </div>
             </div>
 
             <div className='row'>
               <div className="col-12 mt-3">
-                <label>Description:</label>
-                <input type="text" name="jobDescription" defaultValue={updateJob.jobDescription} />
-              </div>
-            </div>
-
-            <div className='row'>
-              <div className="col-12 mt-3">
-                <label>Base Salary:</label>
+                <label>Amount:</label>
                 <input
                   type="text"
-                  name="baseSalaryPerHour"
-                  defaultValue={updateJob.baseSalaryPerHour.toLocaleString()}
+                  name="amount"
+                  defaultValue={updateAllowance.amount.toLocaleString()}
                   onChange={(e) => {
                     const value = parseInt(e.target.value.replace(/,/g, ''));
                     if (!isNaN(value)) {
@@ -370,19 +312,12 @@ function Jobs(props) {
             </div>
 
             <div className='row'>
-              <div className="col-12 mt-3">
-                <label>Allowance ID:</label>
-                <input type="text" name="allowanceId" defaultValue={updateJob.allowanceId} />
-              </div>
-            </div>
-
-            <div className='row'>
               <div className="col-3 mt-3"></div>
               <div className="col-6 mt-3">
                 {/* <label>Status:</label>
-                <input type="text" name="status" defaultValue={updateJob.status} /> */}
+                <input type="text" name="status" defaultValue={updateAllowance.status} /> */}
                 <label>Status:</label>
-                <select name="status" defaultValue={updateJob.status} onChange={event => console.log(event.target.value)}>
+                <select name="status" defaultValue={updateAllowance.status} onChange={event => console.log(event.target.value)}>
                   <option value={true}>Active</option>
                   <option value={false}>Inactive</option>
                 </select>
@@ -406,4 +341,4 @@ function Jobs(props) {
   )
 }
 
-export default Jobs;
+export default Allowance;

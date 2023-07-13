@@ -174,7 +174,11 @@ function Department(props) {
 
     return (
         <div className="manager" style={{ position: "relative" }}>
+<<<<<<< Updated upstream
             <button className='btn_create' onClick={() => setShowForm(true)}>Add Department</button>
+=======
+          <div className='row addbtn'><button className='btn_create' onClick={() => setShowForm(true)}>Add Department</button></div>
+>>>>>>> Stashed changes
             <div className='row'>
                 <table className='table'>
                     <thead>
