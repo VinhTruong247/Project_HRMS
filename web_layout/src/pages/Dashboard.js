@@ -1,5 +1,5 @@
 import React from 'react';
-import Counter from '../component/Counter';
+import Counter from '../component/management/Counter/EmployeeCounter';
 import TotalEmployee from './Dashboard/TotalEmployee';
 import Status from './Dashboard/Status';
 import OngoingStatics from './Dashboard/OngoingStatics';
@@ -25,7 +25,6 @@ function Dasboard() {
             </div>
             <div className="row">
                 <WideCalendar/>
-
             </div>
         </div>
     );

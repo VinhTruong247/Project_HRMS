@@ -123,7 +123,7 @@ function Employee(props) {
             bankName: event.target.elements.bankName.value,
             jobId: event.target.elements.jobId.value,
             departmentId: event.target.elements.departmentId.value,
-            status: Boolean(event.target.elements.status.value),
+            status: event.target.elements.status.checked,
         };
 
         if (!formData.employeeId) {
@@ -263,7 +263,7 @@ function Employee(props) {
             bankName: event.target.elements.bankName.value,
             jobId: event.target.elements.jobId.value,
             departmentId: event.target.elements.departmentId.value,
-            status: Boolean(event.target.elements.status.value),
+            status: event.target.elements.status.value === 'true',
         };
 
         if (!formData.firstName) {
@@ -396,7 +396,7 @@ function Employee(props) {
                             <th>Job</th>
                             <th>Department</th>
                             <th>Status</th>
-                            <th>Options</th>
+                            <th>Option</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -421,7 +421,7 @@ function Employee(props) {
                                 <td>
                                     {employee.status
                                         ? 'Active'
-                                        : 'Inactive'}
+                                        : 'Disable'}
                                 </td>
                                 <td>
                                     <button onClick={() => handleEdit(employee)}>Edit</button>
@@ -530,7 +530,7 @@ function Employee(props) {
                                 <label>Status:</label>
                                 <select name="status" defaultValue={true} onChange={event => console.log(event.target.value)}>
                                     <option value={true}>Active</option>
-                                    <option value={false}>Inactive</option>
+                                    <option value={false}>Disable</option>
                                 </select>
                             </div>
                             <div className="col-3 mt-1"></div>
@@ -638,9 +638,9 @@ function Employee(props) {
                             <div className="col-6 mt-3">
                                 <label>Status:</label>
                                 {/* <input type="text" name="status" defaultValue={updateEmployee.status} /> */}
-                                <select name="status" value={updateEmployee.status} onChange={event => console.log(event.target.value)}>
-                                    <option value="Active">Active</option>
-                                    <option value="Disable">Disable</option>
+                                <select name="status" defaultValue={updateEmployee.status ? 'true' : 'false'} onChange={event => console.log(event.target.value)}>
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
                                 </select>
                             </div>
                             <div className="col-3 mt-3"></div>

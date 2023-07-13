@@ -60,7 +60,7 @@ function Department(props) {
             departmentId: event.target.elements.departmentId.value,
             departmentName: event.target.elements.departmentName.value,
             description: event.target.elements.description.value,
-            status: Boolean(event.target.elements.status.value),
+            status: event.target.elements.status.checked,
         };
 
         if (!formData.departmentId) {
@@ -120,7 +120,7 @@ function Department(props) {
             departmentId: updateDepartment.departmentId,
             departmentName: event.target.elements.departmentName.value,
             description: event.target.elements.description.value,
-            status: Boolean(event.target.elements.status.value),
+            status: event.target.elements.status.value === 'true',
         };
 
         if (!formData.departmentId) {
@@ -174,7 +174,7 @@ function Department(props) {
 
     return (
         <div className="manager" style={{ position: "relative" }}>
-          <div className='row addbtn'><button className='btn_create' onClick={() => setShowForm(true)}>Add Department</button></div>
+            <div className='row addbtn'><button className='btn_create' onClick={() => setShowForm(true)}>Add Department</button></div>
             <div className='row'>
                 <table className='table'>
                     <thead>
@@ -183,7 +183,7 @@ function Department(props) {
                             <th>Department Name</th>
                             <th>Description</th>
                             <th>Status</th>
-                            <th>Options</th>
+                            <th>Option</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -288,9 +288,9 @@ function Department(props) {
                         <div className='row'>
                             <div className="col-3 mt-3"></div>
                             <div className="col-6 mt-3">
-                                <select name="status" value={updateDepartment.status} onChange={event => console.log(event.target.value)}>
-                                    <option value="Active">Active</option>
-                                    <option value="Disable">Disable</option>
+                                <select name="status" defaultValue={updateDepartment.status ? 'true' : 'false'} onChange={event => console.log(event.target.value)}>
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
                                 </select>
                             </div>
                             <div className="col-3 mt-3"></div>

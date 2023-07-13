@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 /*-----Root Color-----*/
-:root{
+:root {
     --color-primary: #9A3434;
     --color-dark: #301210;
     --color-danger: #E20F0F;
@@ -9,13 +9,13 @@
     --color-warning: #ffbb55;
     --color-info-dark: #cfb4ab;
     --color-info-light: #f8eae7;
-    --color-gradient: linear-gradient(135deg, rgba(255,92,51,1) 0%, rgba(179,74,55,1) 33%, rgba(166,36,31,1) 66%, rgba(48,18,16,1) 100%);
+    --color-gradient: linear-gradient(135deg, rgba(255, 92, 51, 1) 0%, rgba(179, 74, 55, 1) 33%, rgba(166, 36, 31, 1) 66%, rgba(48, 18, 16, 1) 100%);
 
     --box-border-radius: 2rem;
     --box-shadow: 0 2rem 3rem rgba(132, 139, 200, 0.4);
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     outline: 0;
@@ -26,11 +26,11 @@
     box-sizing: border-box;
 }
 
-html{
+html {
     font-size: 16px;
 }
 
-.login{
+.login {
     height: 100vh;
     font-family: Montserrat Regular;
     font-size: 0.88rem;
@@ -38,26 +38,26 @@ html{
     overflow-x: hidden;
 }
 
-.login-container{
+.login-container {
     display: grid;
     padding: 0;
 }
 
-a{
+a {
     color: black;
     text-decoration: none;
 }
 
-h1{
+h1 {
     font-weight: 800;
     font-size: 2rem;
 }
 
-form{
+form {
     display: grid;
 }
 
-.login{
+.login {
     padding-top: 15%;
 }
 
@@ -65,7 +65,8 @@ form{
     width: 100%;
     height: 3rem;
     line-height: 44px;
-    padding: 1rem;;
+    padding: 1rem;
+    ;
     font-size: 14px;
     font-style: italic;
     font-weight: 500;
@@ -105,12 +106,40 @@ form{
     color: #2a2a2a;
 }
 
-.col-lg-4.login_form{
+.col-lg-4.login_form {
     padding: 2.3rem;
     border-radius: var(--box-border-radius);
     background: #F0F0F0;
 }
 
-.login form .row{
+.login form .row {
     justify-content: center;
+}
+
+.password-input-container {
+    position: relative;
+}
+
+.password-input-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper input[type="password"] {
+    padding-right: 40px;
+}
+
+.password-icon {
+    position: absolute;
+    right: 1.5rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.password-icon {
+    color: #999;
+}
+
+.password-icon:hover {
+    color: #333;
 }
