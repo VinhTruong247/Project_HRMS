@@ -19,13 +19,13 @@ export default function WideCalendar() {
         }
       ]
     return (
-        <div className="col-lg-12">
+        <div className="col-lg-8">
             
                 <div className="static">
+                <div className='calendar'>
                     <h3>Calendar</h3>
-                    <h5>Calendar Table</h5>
                     <ActivityCalendar sampleData={sampleData} colorCustomization={colorCustomization} showMonth={true} />
-                </div>
+                </div></div>
                 <hr />
             
         </div>
