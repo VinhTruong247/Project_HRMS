@@ -52,30 +52,6 @@ function Jobs(props) {
       });
   }, []);
 
-  useEffect(() => {
-    fetch('https://localhost:7220/api/Job/jobs', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token.token}`
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Api response was not ok.');
-        }
-      })
-      .then(jobs => {
-        setData(jobs)
-      })
-      .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-      });
-  }, []);
-
-
   //  CRATE NEW JOB INFO
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -110,6 +86,11 @@ function Jobs(props) {
 
     if (!formData.baseSalaryPerHour) {
       setValidationError('Base salary needed is required');
+      return;
+    }
+
+    if (isNaN(formData.baseSalaryPerHour)) {
+      setValidationError('Base salary must be in number format');
       return;
     }
 
@@ -231,7 +212,7 @@ function Jobs(props) {
 
   return (
     <div className="manager" style={{ position: "relative" }}>
-      <button className='btn_create' onClick={() => setShowForm(true)}>Add Job</button>
+      <div className='row addbtn'><button className='btn_create' onClick={() => setShowForm(true)}>Add Job</button></div>
       <div className='row'>
         <table className='table'>
           <thead>

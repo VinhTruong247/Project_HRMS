@@ -382,7 +382,8 @@ function Employee(props) {
 
     return (
         <div className="manager" style={{ position: "relative" }}>
-           <div className='addbtn'style={{ display: 'flex', justifyContent: 'flex-end' }}> <button className='btn_create' onClick={() => setShowForm(true)}>Add Employee</button></div>
+            <div className='row addbtn'> <button className='btn_create' onClick={() => setShowForm(true)}>Add Employee</button></div>
+
             <div className='row'>
                 <table className='table'>
                     <thead>
@@ -400,14 +401,23 @@ function Employee(props) {
                     </thead>
                     <tbody>
                         {data.map(employee => (
+
                             <tr key={employee.employeeId}>
                                 <td>{employee.employeeId}</td>
                                 <td>{employee.firstName} {employee.lastName}</td>
                                 <td>{employee.dateOfBirth}</td>
                                 <td>{employee.email}</td>
                                 <td>{employee.phoneNumber}</td>
-                                <td>{employee.jobId}</td>
-                                <td>{employee.departmentId}</td>
+                                <td>
+                                    {jobTitles.find(job => job.jobId === employee.jobId)
+                                        ? jobTitles.find(job => job.jobId === employee.jobId).jobTitle
+                                        : 'Unknown'}
+                                </td>
+                                <td>
+                                    {departmentNames.find(department => department.departmentId === employee.departmentId)
+                                        ? departmentNames.find(department => department.departmentId === employee.departmentId).departmentName
+                                        : ''}
+                                </td>
                                 <td>
                                     {employee.status
                                         ? 'Active'

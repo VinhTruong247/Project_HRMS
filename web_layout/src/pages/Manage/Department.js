@@ -174,7 +174,7 @@ function Department(props) {
 
     return (
         <div className="manager" style={{ position: "relative" }}>
-          <div className='addbtn'style={{ display: 'flex', justifyContent: 'flex-end' }}> <button className='btn_create' onClick={() => setShowForm(true)}>Add Department</button></div>
+          <div className='row addbtn'><button className='btn_create' onClick={() => setShowForm(true)}>Add Department</button></div>
             <div className='row'>
                 <table className='table'>
                     <thead>
