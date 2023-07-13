@@ -46,7 +46,7 @@ CREATE TABLE Skill (
 CREATE TABLE Allowances (
   allowance_id NVARCHAR(10) PRIMARY KEY,
   allowance_type NVARCHAR(200),
-  amount DECIMAL(18, 2),
+  amount_per_day DECIMAL(18, 2),
   status BIT
 );
 
@@ -236,7 +236,6 @@ CREATE TABLE PaySlip (
   standard_work_hours DECIMAL,
   actual_work_hours DECIMAL,
   tax_income DECIMAL(18, 2),
-  bonus DECIMAL(18, 2),
   total_salary DECIMAL(18, 2),
   note NVARCHAR(255),
   BankAccountNumber INT,
