@@ -19,7 +19,7 @@ import Sidebar from './component/Sidebar';
 import Employee from './pages/Manage/Employee';
 import Department from './pages/Manage/Department';
 import Jobs from './pages/Manage/Jobs';
-import Timeline from './pages/Timline';
+import Timeline from './pages/Timeline';
 
 const router = createBrowserRouter([
   {
