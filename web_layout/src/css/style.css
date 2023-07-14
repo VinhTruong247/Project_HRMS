@@ -156,7 +156,6 @@ aside {
 }
 
 aside .top {
-    display: flex;
     align-items: center;
     margin-top: 2.5rem;
 }
@@ -166,13 +165,14 @@ aside .top .close {
 }
 
 aside .logo {
+    justify-content: center;
     display: flex;
     gap: 0.8rem;
 }
 
 aside .logo img {
-    width: 2rem;
-    height: 2rem;
+    width: 8rem;
+    height: 8rem;
 }
 
 aside .sidebar {

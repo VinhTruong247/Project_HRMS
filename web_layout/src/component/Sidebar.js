@@ -9,12 +9,8 @@ function Sidebar() {
     <div className='container'>
       <aside>
         <div className="top">
-            <div className="logo">
-              <img src='img/logo.svg' alt="Company logo" />
-              <h3>COMPANY</h3>
-            </div>
-          <div className="close" id="close-btn">
-            <span className="material-icons-outlined">close</span>
+          <div className="logo">
+            <img src={require('../img/logo.svg')} />
           </div>
         </div>
 
