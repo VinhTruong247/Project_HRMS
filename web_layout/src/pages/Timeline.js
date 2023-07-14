@@ -14,7 +14,7 @@ const localizer = momentLocalizer(moment);
 localizer.formats.yearHeaderFormat = 'YYYY';
 const Timeline = () => {
   return (
-    <div className='timeline'>
+    <div className='overflowy'>
       <h1>
         TimeLine page
       </h1>

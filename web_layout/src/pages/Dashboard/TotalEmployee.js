@@ -1,5 +1,6 @@
 import React from 'react'
-import Counter from '../../component/management/Counter/EmployeeCounter';
+import EmployeeCounter from '../../component/management/Counter/EmployeeCounter';
+
 
 export default function TotalEmployee() {
     return (
@@ -11,7 +12,9 @@ export default function TotalEmployee() {
                 </div>
                 <hr />
                 <div className="col-12">
-                    <h4><Counter /></h4>
+
+                    <h4><EmployeeCounter /></h4>
+
                 </div>
             </div>
         </div>

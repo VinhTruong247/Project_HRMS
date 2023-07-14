@@ -128,9 +128,9 @@ namespace HumanResourceApi.Helper
         }
         private void LeaveMap()
         {
-            CreateMap<Leave, ExperienceDto>()
+            CreateMap<Leave, LeaveDto>()
                 .ReverseMap();
-            CreateMap<Experience, UpdateExperienceDto>()
+            CreateMap<Leave, UpdateLeaveDto>()
                 .ReverseMap();
         }
         private void ExperienceMap()

@@ -1,4 +1,8 @@
 import React from 'react';
+import { useEffect, useState, useRef } from 'react';
+import Payslip from './Payment/Payslip';
+
+
 
 function Payment() {
     /**
@@ -34,11 +38,11 @@ function Payment() {
     const payment = calculateEmployeePayment(hoursWorked, hourlyRate);
   
     return (
-      <div>
-        <h2>Employee Payment Calculator</h2>
-        <p>Hours Worked: {hoursWorked}</p>
-        <p>Hourly Rate: ${hourlyRate}</p>
-        <p>Total Payment: ${payment}</p>
+      <div className='payment_page'>
+        <div className="navbar-brand">Payment Details</div>
+        <div className='row'>
+        <Payslip/>
+      </div>
       </div>
     );
   }

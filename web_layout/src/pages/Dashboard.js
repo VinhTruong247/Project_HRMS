@@ -7,11 +7,17 @@ import TotalActivity from './Dashboard/TotalActivity';
 import Overall from './Dashboard/Overall';
 import WorkComplete from './Dashboard/WorkComplete';
 import WideCalendar from './Dashboard/WideCalendar';
-
+import { BrowserRouter as Router, Route, Link, Outlet, NavLink } from 'react-router-dom';
+import useData from "../hooks/useData";
 
 
 function Dasboard() {
+    const data = useData()
     return (
+    <div className='overflowy'>
+        <nav className='dashboardnav'>
+        <NavLink to="profile">{data.lastName} {data.firstName}</NavLink>
+        </nav>
         <div className="news">
             <div className="row">
                 <TotalEmployee />
@@ -27,6 +33,8 @@ function Dasboard() {
                 <WideCalendar/>
             </div>
         </div>
+    </div>
+
     );
 }
 

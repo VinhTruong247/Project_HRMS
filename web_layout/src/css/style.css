@@ -40,6 +40,12 @@ body {
     overflow-x: hidden;
 }
 
+main {
+margin-left: 1rem;
+margin-top: 2rem;
+width: 100%;
+}
+
 .container {
     display: grid;
     max-width: 90vw;
@@ -539,56 +545,86 @@ nav a.active {
 
 /*<!-------------------- Container News -------------------->*/
 
-
-.news {
+.dashboardpage{
+    overflow-y: scroll;
+    }
+    .news {
     display: grid;
     border-radius: 20px;
     width: 100%;
     margin: 0;
+    row-gap: 1rem;
     padding: 1rem;
     margin-top: 0.8rem;
-}
 
-.big-box {
+    }
+    .big-box {
     grid-column: span 2;
-    grid-row: span 2;
-}
-
-.small-box {
-    grid-column: span 1;
-    grid-row: span 1;
-}
-
-main {
-    margin-left: 1rem;
-    margin-top: 2rem;
-}
-
-.news .col-lg-12 {
     background: white;
     border: 1px solid var(--color-dark);
-    height: 214px;
+    height: fit-content;
     border-radius: var(--box-border-radius);
     box-shadow: var(--box-shadow);
     padding: 1.5rem;
     transition: all 300ms ease;
-}
+    }
 
-.news .col-lg-12 .employee {
+    .news .col-lg-12 {
+    background: white;
+    border: 1px solid var(--color-dark);
+    height: max-content;
+    min-height: 214px;
+
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: all 300ms ease;
+    }
+
+    .news .col-lg-8 {
+    background: white;
+    border: 1px solid var(--color-dark);
+    height: max-content;
+    min-height: 214px;
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: all 300ms ease;
+    }
+    .small-box {
+    grid-column: span 1;
+    grid-row: span 1;
+    }
+    .news .col-lg-12 .employee {
+
     margin-left: 10px;
-}
-
-.news .col-lg-12 .row {
+    }
+    .news .col-lg-12 .row {
     margin-left: 5px;
     margin-top: 1.5rem;
     justify-content: center;
-}
-
-.news .col-lg-12:hover {
+    }
+    .news .col-lg-12:hover {
     box-shadow: none;
-}
+    }
+    .dashboardnav{
 
+    display: flex;
+    width: 100%;
+    background-color: #9A3434;
+    align-items: flex-end;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-top:1rem;
+    color: white;
+    border-radius: 30px 30px 30px 30px;
+    box-shadow: var(--box-shadow);
+    justify-content: flex-end;
+    }
+    .calendar{
+    justify-content: center;
 
+    }
 /*<!-------------------- Groups Page -------------------->*/
 
 
@@ -692,7 +728,7 @@ main {
 }
 /*<!-------------------- Timeline -------------------->*/
 
-.timeline{
+.overflowy{
     width: 100%;
     height: 100%;
     overflow-y: scroll;
