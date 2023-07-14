@@ -15,6 +15,6 @@ namespace HumanResourceApi.DTO.Report
         [Required]
         public DateTime? IssueDate { get; set; }
         [Required]
-        public bool? Status { get; set; }
+        public string Status { get; set; }
     }
 }
