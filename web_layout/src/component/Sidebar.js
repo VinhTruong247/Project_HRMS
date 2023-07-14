@@ -1,25 +1,28 @@
-import '../css/style.css';
-import { NavLink, Outlet } from 'react-router-dom';
-import React from 'react';
-import Protected from './Protected';
-import DataProvider from '../contexts/DataContext';
-
+import "../css/style.css";
+import { NavLink, Outlet } from "react-router-dom";
+import React from "react";
+import Protected from "./Protected";
+import DataProvider from "../contexts/DataContext";
+import logo from "../img/logo.svg";
 function Sidebar() {
   return (
-    <div className='container'>
+    <div className="container">
       <aside>
         <div className="top">
           <div className="logo">
+<<<<<<< Updated upstream
             <img src="/img/logo.png" alt="Company logo" />
             <h3>COMPANY</h3>
           </div>
           <div className="close" id="close-btn">
             <span className="material-icons-outlined">close</span>
+=======
+            <img src={require("../img/logo.svg")} />
+>>>>>>> Stashed changes
           </div>
         </div>
 
         <div className="sidebar">
-
           <NavLink to="/" className="nav_link">
             <span className="material-icons-outlined">dashboard</span>
             <h3>Dashboard</h3>
@@ -49,7 +52,6 @@ function Sidebar() {
             <span className="material-icons-outlined">insert_invitation</span>
 
             <h3>Calendar</h3>
-
           </NavLink>
 
           <NavLink to="/groups" className="nav_link">
@@ -62,9 +64,10 @@ function Sidebar() {
             <h3>Payment</h3>
           </NavLink>
 
-          <NavLink to="/login"
+          <NavLink
+            to="/login"
             onClick={() => {
-              console.log('logging out...');
+              console.log("logging out...");
               localStorage.clear();
             }}
             className="nav_link"
@@ -74,7 +77,11 @@ function Sidebar() {
           </NavLink>
         </div>
       </aside>
-      <Protected><DataProvider><Outlet /></DataProvider></Protected>
+      <Protected>
+        <DataProvider>
+          <Outlet />
+        </DataProvider>
+      </Protected>
     </div>
   );
 }
