@@ -99,7 +99,7 @@ namespace HumanResourceApi.Controllers
                 }
                 var temp = _mapper.Map<Report>(report);
                 temp.IssueDate = DateTime.Now;
-                temp.Status = true;
+                temp.Status = "Pending";
 
                 _reportRepo.Add(temp);
                 return Ok(_mapper.Map<ReportDto>(temp));

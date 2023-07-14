@@ -7,7 +7,7 @@ namespace HumanResourceApi.DTO.Allowance
         [Required]
         public string AllowanceType { get; set; }
         [Required]
-        public decimal? Amount { get; set; }
+        public decimal? AmountPerDay { get; set; }
         [Required]
         public bool Status { get; set; }
     }

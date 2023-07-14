@@ -57,7 +57,7 @@ function Allowance(props) {
     const formData = {
       allowanceId: event.target.elements.allowanceId.value,
       allowanceType: event.target.elements.allowanceType.value,
-      amount: parseFloat(event.target.elements.amount.value.replace(/,/g, '')),
+      amountPerDay: parseFloat(event.target.elements.amountPerDay.value.replace(/,/g, '')),
       status: event.target.elements.status.checked,
     };
 
@@ -76,12 +76,12 @@ function Allowance(props) {
       return;
     }
 
-    if (!formData.amount) {
+    if (!formData.amountPerDay) {
       setValidationError('Amount needed is required');
       return;
     }
 
-    if (isNaN(formData.amount)) {
+    if (isNaN(formData.amountPerDay)) {
       setValidationError('Amount must be in number format');
       return;
     }
@@ -122,7 +122,7 @@ function Allowance(props) {
     const formData = {
       allowanceId: updateAllowance.allowanceId,
       allowanceType: event.target.elements.allowanceType.value,
-      amount: parseFloat(event.target.elements.amount.value.replace(/,/g, '')),
+      amountPerDay: parseFloat(event.target.elements.amountPerDay.value.replace(/,/g, '')),
       status: event.target.elements.status.value === 'true',
     };
 
@@ -131,12 +131,12 @@ function Allowance(props) {
       return;
     }
 
-    if (!formData.amount) {
+    if (!formData.amountPerDay) {
       setValidationError('Amount needed is required');
       return;
     }
 
-    if (isNaN(formData.amount)) {
+    if (isNaN(formData.amountPerDay)) {
       setValidationError('Amount must be in number format');
       return;
     }
@@ -194,7 +194,7 @@ function Allowance(props) {
               <tr key={allowance.allowanceId}>
                 <td>{allowance.allowanceId}</td>
                 <td>{allowance.allowanceType}</td>
-                <td>{allowance.amount.toLocaleString()}</td>
+                <td>{allowance.amountPerDay.toLocaleString()}</td>
                 <td>
                   {allowance.status
                     ? 'Active'
@@ -239,7 +239,7 @@ function Allowance(props) {
                 <label>Amount:</label>
                 <input
                   type="text"
-                  name="amount"
+                  name="amountPerDay"
                   placeholder='Number'
                   onChange={(e) => {
                     const value = parseInt(e.target.value.replace(/,/g, ''));
@@ -299,8 +299,8 @@ function Allowance(props) {
                 <label>Amount:</label>
                 <input
                   type="text"
-                  name="amount"
-                  defaultValue={updateAllowance.amount.toLocaleString()}
+                  name="amountPerDay"
+                  defaultValue={updateAllowance.amountPerDay.toLocaleString()}
                   onChange={(e) => {
                     const value = parseInt(e.target.value.replace(/,/g, ''));
                     if (!isNaN(value)) {
