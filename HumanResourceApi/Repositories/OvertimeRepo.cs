@@ -13,7 +13,7 @@ namespace HumanResourceApi.Repositories
             decimal totalOt = 0;
             otList.ForEach(o =>
             {
-                var otTime = o.OvertimeHours ?? TimeSpan.Zero;
+                var otTime = o.OvertimeHours;
                 totalOt += (decimal)otTime.TotalHours;
             });
             return totalOt;
