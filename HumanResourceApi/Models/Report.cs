@@ -9,7 +9,7 @@ namespace HumanResourceApi.Models
         public string EmployeeId { get; set; }
         public string Reason { get; set; }
         public string Content { get; set; }
-        public DateTime? IssueDate { get; set; }
+        public DateTime IssueDate { get; set; }
         public string Status { get; set; }
 
         public virtual Employee Employee { get; set; }

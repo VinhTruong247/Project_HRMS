@@ -3,6 +3,7 @@ using HumanResourceApi.DTO.Report;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
@@ -138,6 +139,25 @@ namespace HumanResourceApi.Controllers
 
                 _reportRepo.Update(validReport);
                 return Ok(_mapper.Map<ReportDto>(validReport));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
+
+        [SwaggerOperation(Summary = "use date to find reports")]
+        [HttpGet("report/search/{date}")]
+        public IActionResult FindEmployee(DateTime date)
+        {
+            try
+            {
+                var resultList = _mapper.Map<List<ReportDto>>(_reportRepo.GetAll().Where(rp => rp.IssueDate.Month == date.Month));
+                if (resultList == null)
+                {
+                    return BadRequest("No report(s) found");
+                }
+                return Ok(resultList);
             }
             catch (Exception ex)
             {

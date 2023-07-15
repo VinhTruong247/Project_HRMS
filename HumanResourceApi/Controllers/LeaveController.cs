@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Leave;
+using HumanResourceApi.DTO.Report;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
@@ -23,7 +25,6 @@ namespace HumanResourceApi.Controllers
             _leaveRepo = leaveRepo;
         }
 
-        [Authorize]
         [HttpGet("leaves")]
         public IActionResult GetLeave()
         {
@@ -130,23 +131,5 @@ namespace HumanResourceApi.Controllers
             }
 
         }
-
-        //[Authorize]
-        //[HttpPost("delete")]
-        //public IActionResult DeleteLeave([FromQuery] string id)
-        //{
-        //    var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault());
-        //    if (leave == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    var validLeave = _leaveRepo.GetAll().Where(l => l.LeaveId == id).FirstOrDefault();
-        //    _mapper.Map(leave, validLeave);
-        //    validLeave.LeaveId = id;
-        //    validLeave.Status = "disabled";
-
-        //    _leaveRepo.Update(validLeave);
-        //    return Ok(validLeave);
-        //}
     }
 }
