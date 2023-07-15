@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Allowance;
+using HumanResourceApi.DTO.Department;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -121,25 +122,22 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        //[Authorize]
-        //[HttpPost("delete")]
-        //public IActionResult DeleteAllowance([FromQuery] string id)
-        //{
-        //    var allowance = _mapper.Map<AllowanceDto>(_allowance.GetAll().Where(a => a.AllowanceId == id).FirstOrDefault());
-        //    if (allowance == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    if (allowance.Status == "Disable")
-        //    {
-        //        return BadRequest("ID = " + id + " is already disabled");
-        //    }
-        //    var validAllowance = _allowance.GetAll().Where(a => a.AllowanceId == id).FirstOrDefault();
-        //    _mapper.Map(allowance, validAllowance);
-        //    validAllowance.Status = "Disable";
-
-        //    _allowance.Update(validAllowance);
-        //    return Ok(validAllowance);
-        //}
+        [HttpGet("allowance/search/{keyword}")]
+        public IActionResult FindProject(string keyword)
+        {
+            try
+            {
+                var resultList = _mapper.Map<List<AllowanceDto>>(_allowance.GetAll().Where(a => a.AllowanceType.Contains(keyword)));
+                if (resultList == null)
+                {
+                    return BadRequest("No active allowance(s) found");
+                }
+                return Ok(resultList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
     }
 }

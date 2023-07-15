@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Department;
+using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -119,24 +120,22 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        //[Authorize]
-        //[HttpPost("delete")]
-        //public IActionResult DeleteDepartment([FromQuery] string id)
-        //{
-        //    var department = _mapper.Map<DepartmentDto>(_repo.GetAll().Where(d => d.DepartmentId == id).FirstOrDefault());
-        //    if (department == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    if (department.Status == "Disable")
-        //    {
-        //        return BadRequest("ID = " + id + " is already disabled");
-        //    }
-        //    var validDepartment = _repo.GetAll().Where(d => d.DepartmentId == id).FirstOrDefault();
-        //    _mapper.Map(department, validDepartment);
-        //    validDepartment.Status = "Disable";
-        //    _repo.Update(validDepartment);
-        //    return Ok(validDepartment);
-        //}
+        [HttpGet("department/search/{keyword}")]
+        public IActionResult FindProject(string keyword)
+        {
+            try
+            {
+                var resultList = _mapper.Map<List<DepartmentDto>>(_repo.GetAll().Where(dp => dp.DepartmentName.Contains(keyword)));
+                if (resultList == null)
+                {
+                    return BadRequest("No active department(s) found");
+                }
+                return Ok(resultList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
     }
 }

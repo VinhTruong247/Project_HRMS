@@ -231,5 +231,23 @@ namespace HumanResourceApi.Controllers
                 return BadRequest("Something went wrong: " + ex.Message);
             }
         }
+
+        [HttpGet("employees/search/{keyword}")]
+        public IActionResult FindEmployee(string keyword)
+        {
+            try
+            {
+                var resultList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => e.FirstName.Contains(keyword) || e.LastName.Contains(keyword)));
+                if (resultList == null)
+                {
+                    return BadRequest("No active employee(s) found");
+                }
+                return Ok(resultList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
     }
 }

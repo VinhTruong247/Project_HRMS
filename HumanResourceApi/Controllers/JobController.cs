@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.DTO.Job;
+using HumanResourceApi.DTO.Project;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -125,23 +126,23 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        //[Authorize]
-        //[HttpPost("delete")]
-        //public IActionResult DeleteJob([FromQuery] string id)
-        //{
-        //    var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == id).FirstOrDefault());
-        //    if (job == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    var validJob = _job.GetAll().Where(j => j.JobId == id).FirstOrDefault();
-        //    _mapper.Map(job, validJob);
-        //    validJob.JobId = id;
-        //    validJob.Status = "Disable";
-
-        //    _job.Update(validJob);
-        //    return Ok(validJob);
-        //}
+        [HttpGet("jobs/search/{keyword}")]
+        public IActionResult FindProject(string keyword)
+        {
+            try
+            {
+                var resultList = _mapper.Map<List<JobDto>>(_job.GetAll().Where(j => j.JobTitle.Contains(keyword)));
+                if (resultList == null)
+                {
+                    return BadRequest("No active job(s) found");
+                }
+                return Ok(resultList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.EmployeeContract;
+using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -130,26 +131,5 @@ namespace HumanResourceApi.Controllers
                 return BadRequest("Something went wrong: " + ex.Message);
             }
         }
-
-        //[Authorize]
-        //[HttpPost("delete")]
-        //public IActionResult DeleteContract([FromQuery] string id)
-        //{
-        //    var contract = _mapper.Map<EmployeeContractDto>(_employeeContractRepo.GetAll().Where(c => c.ContractId == id).FirstOrDefault());
-        //    if (contract == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    if (contract.Status == "Disable")
-        //    {
-        //        return BadRequest("ID = " + id + " is already disabled");
-        //    }
-        //    var validContract = _employeeContractRepo.GetAll().Where(c => c.ContractId == id).FirstOrDefault();
-        //    _mapper.Map(contract, validContract);
-        //    validContract.Status = "Disable";
-
-        //    _employeeContractRepo.Update(validContract);
-        //    return Ok(validContract);
-        //}
     }
 }

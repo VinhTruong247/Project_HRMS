@@ -5,6 +5,7 @@ using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.RegularExpressions;
+using HumanResourceApi.DTO.Project;
 
 namespace HumanResourceApi.Controllers
 {
@@ -132,27 +133,22 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        //[Authorize]
-        //[HttpPost("delete")]
-        //public IActionResult DisableExperienceId([FromQuery]string id)
-        //{
-        //    var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault());
-
-        //    if (experience == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    if (experience.Status == "disabled")
-        //    {
-        //        return BadRequest("ID = " + id + " is already disabled");
-        //    }
-        //    var validExp = _experienceRepo.GetAll().Where(e => e.ExperienceId == id).FirstOrDefault();
-        //    _mapper.Map(experience, validExp);
-        //    validExp.ExperienceId = id;
-        //    validExp.Status = "disabled";
-
-        //    _experienceRepo.Update(validExp);
-        //    return Ok(validExp);
-        //}
+        [HttpGet("experience/search/{keyword}")]
+        public IActionResult FindProject(string keyword)
+        {
+            try
+            {
+                var resultList = _mapper.Map<List<ExperienceDto>>(_experienceRepo.GetAll().Where(exp => exp.NameProject.Contains(keyword)));
+                if (resultList == null)
+                {
+                    return BadRequest("No active experience(s) found");
+                }
+                return Ok(resultList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
     }
 }

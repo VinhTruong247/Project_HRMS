@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HumanResourceApi.DTO.Employee;
 using HumanResourceApi.DTO.Project;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
@@ -119,6 +120,24 @@ namespace HumanResourceApi.Controllers
 
                 _projectRepo.Update(valid);
                 return Ok(valid);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
+
+        [HttpGet("projects/search/{keyword}")]
+        public IActionResult FindProject(string keyword)
+        {
+            try
+            {
+                var resultList = _mapper.Map<List<ProjectDto>>(_projectRepo.GetAll().Where(e => e.ProjectName.Contains(keyword)));
+                if (resultList == null)
+                {
+                    return BadRequest("No active project(s) found");
+                }
+                return Ok(resultList);
             }
             catch (Exception ex)
             {

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Overtime;
+using HumanResourceApi.DTO.Report;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
@@ -142,6 +144,25 @@ namespace HumanResourceApi.Controllers
 
                 _overtimeRepo.Update(validOvertime);
                 return Ok(_mapper.Map<OvertimeDto>(validOvertime));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
+
+        [SwaggerOperation(Summary = "use date to find overtime")]
+        [HttpGet("report/search/{date}")]
+        public IActionResult FindEmployee(DateTime date)
+        {
+            try
+            {
+                var resultList = _mapper.Map<List<OvertimeDto>>(_overtimeRepo.GetAll().Where(rp => rp.Day.Month == date.Month));
+                if (resultList == null)
+                {
+                    return BadRequest("No overtime(s) found");
+                }
+                return Ok(resultList);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HumanResourceApi.DTO.Project;
 using HumanResourceApi.DTO.Skill;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
@@ -107,23 +108,22 @@ namespace HumanResourceApi.Controllers
             return Ok(validSkill);
         }
 
-        //[HttpPost("delete")]
-        //public IActionResult DeleteSkill([FromQuery] string id)
-        //{
-        //    var skill = _mapper.Map<SkillDto>(_skillRepo.GetAll().Where(s => s.SkillId == id).FirstOrDefault());
-        //    if (skill == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    if (skill.Status == "Disable")
-        //    {
-        //        return BadRequest("ID = " + id + " is already disabled");
-        //    }
-        //    var validSkill = _skillRepo.GetAll().Where(s => s.SkillId == id).FirstOrDefault();
-        //    _mapper.Map(skill, validSkill);
-        //    validSkill.Status = "Disable";
-        //    _skillRepo.Update(validSkill);
-        //    return Ok(validSkill);
-        //}
+        [HttpGet("skills/search/{keyword}")]
+        public IActionResult FindProject(string keyword)
+        {
+            try
+            {
+                var resultList = _mapper.Map<List<SkillDto>>(_skillRepo.GetAll().Where(s => s.SkillName.Contains(keyword)));
+                if (resultList == null)
+                {
+                    return BadRequest("No active skill(s) found");
+                }
+                return Ok(resultList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Something went wrong: " + ex.Message);
+            }
+        }
     }
 }
