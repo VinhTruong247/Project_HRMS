@@ -1,3 +1,15 @@
+use HRMS
+delete from Attendance
+delete from Project
+delete from EmployeeBenefit
+delete from Experience
+delete from Users
+delete from Employee
+delete from Department
+delete from Job
+delete from Allowances
+delete from Roles
+
 INSERT INTO Permission (permission_id, permission_des, permission_displayName, status)
 VALUES
   ('PM000001', 'Can access employee information', 'Access Employee Information', 1),
@@ -14,26 +26,26 @@ VALUES
   ('RL000003', 'HR_Staff', 1),
   ('RL000004', 'Employee', 1);
 -- Insert 10 allowances
-INSERT INTO Allowances (allowance_id, allowance_type, amount_per_day, status)
+INSERT INTO Allowances (allowance_id, allowance_name, allowance_type, amount, status)
 VALUES
-  ('AL000001', 'Transportation', 20000.00, 1),
-  ('AL000002', 'Housing', 50000.00,1),
-  ('AL000003', 'Meal', 60000.00, 1),
-  ('AL000004', 'Medical', 60000.00, 1),
-  ('AL000005', 'Phone', 10000.00, 1),
-  ('AL000006', 'Internet', 30000.00, 1),
-  ('AL000007', 'Education', 20000.00, 1),
-  ('AL000008', 'Travel', 30000.00, 1),
-  ('AL000009', 'Fitness', 20000.00, 1),
-  ('AL000010', 'Parking', 10000.00, 1),
-  ('AL000011', 'Software Development Allowance', 50000.00, 1),
-  ('AL000012', 'Database Administration Allowance',  40000.00, 1),
-  ('AL000013', 'Network Operations Allowance',  60000.00, 1),
-  ('AL000014', 'IT Support Allowance',  30000.00, 1),
-  ('AL000015', 'Quality Assurance Allowance', 40000.00, 1),
-  ('AL000016', 'Human Resources Allowance',  20000.00, 1),
-  ('AL000017', 'Cybersecurity Allowance',  50000.00, 1),
-  ('AL000018', 'Business Analysis Allowance',  45000.00, 1);
+  ('AL000001', 'Transportation','Daily', 20000.00, 1),
+  ('AL000002', 'Housing','Daily', 50000.00,1),
+  ('AL000003', 'Meal','Daily', 60000.00, 1),
+  ('AL000004', 'Medical','Daily', 60000.00, 1),
+  ('AL000005', 'Phone','Daily', 10000.00, 1),
+  ('AL000006', 'Internet','Daily', 30000.00, 1),
+  ('AL000007', 'Education','Daily', 20000.00, 1),
+  ('AL000008', 'Travel','Daily', 30000.00, 1),
+  ('AL000009', 'Fitness','Daily', 20000.00, 1),
+  ('AL000010', 'Parking','Daily', 10000.00, 1),
+  ('AL000011', 'Software Development Allowance','Monthly', 50000.00, 1),
+  ('AL000012', 'Database Administration Allowance','Monthly',  40000.00, 1),
+  ('AL000013', 'Network Operations Allowance','Monthly',  60000.00, 1),
+  ('AL000014', 'IT Support Allowance','Monthly',  30000.00, 1),
+  ('AL000015', 'Quality Assurance Allowance','Monthly', 40000.00, 1),
+  ('AL000016', 'Human Resources Allowance','Monthly',  20000.00, 1),
+  ('AL000017', 'Cybersecurity Allowance','Monthly',  50000.00, 1),
+  ('AL000018', 'Business Analysis Allowance','Monthly', 45000.00, 1);
 -- Insert 13 jobs
 INSERT INTO Job (job_id, job_title, job_description,  status, base_salary_per_hour, bonus)
 VALUES
@@ -98,33 +110,34 @@ VALUES
   ('EX000012','EP000004', 'Chatbot Development', 3, '2022-03-01', '2022-05-31', 'Python, NLTK, Dialogflow',1),
   ('EX000013','EP000005', 'Game Development', 6, '2021-11-01', '2022-07-31', 'Unity, C#, 3D Modeling',1);
 
-INSERT INTO EmployeeBenefit (employeebenefit_id, employee_id, allowance_id,status)
+INSERT INTO EmployeeBenefit (employeebenefit_id, employee_id, allowance_id, status, start_date, end_date)
 VALUES
-  ('EB000001', 'EP000001', 'AL000001', 1),   -- Employee 1 has Transportation allowance
-  ('EB000002', 'EP000001', 'AL000002', 1),   -- Employee 1 has Housing allowance
-  ('EB000003', 'EP000001', 'AL000003', 1),   -- Employee 1 has Meal allowance
-  ('EB000004', 'EP000002', 'AL000004', 1),   -- Employee 2 has Medical allowance
-  ('EB000005', 'EP000002', 'AL000005', 1),   -- Employee 2 has Phone allowance
-  ('EB000006', 'EP000003', 'AL000006', 1),   -- Employee 3 has Internet allowance
-  ('EB000007', 'EP000004', 'AL000007', 1),   -- Employee 4 has Education allowance
-  ('EB000008', 'EP000005', 'AL000008', 1),   -- Employee 5 has Travel allowance
-  ('EB000009', 'EP000005', 'AL000009', 1),   -- Employee 5 has Fitness allowance
-  ('EB000010', 'EP000005', 'AL000010', 1), -- Employee 5 has Parking allowance
-  ('EB000011', 'EP000006', 'AL000001', 1),  -- Employee 6 has Transportation allowance
-  ('EB000012', 'EP000006', 'AL000004', 1),  -- Employee 6 has Medical allowance
-  ('EB000013', 'EP000007', 'AL000006', 1),  -- Employee 7 has Internet allowance
-  ('EB000014', 'EP000007', 'AL000007', 1),  -- Employee 7 has Education allowance
-  ('EB000015', 'EP000007', 'AL000009', 1),  -- Employee 7 has Fitness allowance
-  ('EB000016', 'EP000007', 'AL000010', 1), -- Employee 7 has Parking allowance
-  ('EB000017', 'EP000008', 'AL000017', 1), -- Employee 8 has no allowance
-  ('EB000018', 'EP000001', 'AL000011', 1),  -- Employee 1 has Software Development Allowance
-  ('EB000019', 'EP000002', 'AL000014', 1),  -- Employee 2 has IT Support Allowance
-  ('EB000020', 'EP000003', 'AL000013', 1),  -- Employee 3 has Network Operations Allowance
-  ('EB000021', 'EP000004', 'AL000012', 1),  -- Employee 4 has Database Administration Allowance
-  ('EB000022', 'EP000005', 'AL000015', 1),  -- Employee 5 has Quality Assurance Allowance
-  ('EB000023', 'EP000006', 'AL000016', 1),  -- Employee 6 has Human Resources Allowance
-  ('EB000024', 'EP000007', 'AL000017', 1),  -- Employee 7 has Cybersecurity Allowance
-  ('EB000025', 'EP000008', 'AL000008', 1); -- Employee 8 has no allowance
+  ('EB000001', 'EP000001', 'AL000001', 1, '2023-01-01', '2023-12-31'),   -- Employee 1 has Transportation allowance
+  ('EB000002', 'EP000001', 'AL000002', 1, '2023-01-01', '2023-12-31'),   -- Employee 1 has Housing allowance
+  ('EB000003', 'EP000001', 'AL000003', 1, '2023-01-01', '2023-12-31'),   -- Employee 1 has Meal allowance
+  ('EB000004', 'EP000002', 'AL000004', 1, '2023-01-01', '2023-12-31'),   -- Employee 2 has Medical allowance
+  ('EB000005', 'EP000002', 'AL000005', 1, '2023-01-01', '2023-12-31'),   -- Employee 2 has Phone allowance
+  ('EB000006', 'EP000003', 'AL000006', 1, '2023-01-01', '2023-12-31'),   -- Employee 3 has Internet allowance
+  ('EB000007', 'EP000004', 'AL000007', 1, '2023-01-01', '2023-12-31'),   -- Employee 4 has Education allowance
+  ('EB000008', 'EP000005', 'AL000008', 1, '2023-01-01', '2023-12-31'),   -- Employee 5 has Travel allowance
+  ('EB000009', 'EP000005', 'AL000009', 1, '2023-01-01', '2023-12-31'),   -- Employee 5 has Fitness allowance
+  ('EB000010', 'EP000005', 'AL000010', 1, '2023-01-01', '2023-12-31'),   -- Employee 5 has Parking allowance
+  ('EB000011', 'EP000006', 'AL000001', 1, '2023-01-01', '2023-12-31'),   -- Employee 6 has Transportation allowance
+  ('EB000012', 'EP000006', 'AL000004', 1, '2023-01-01', '2023-12-31'),   -- Employee 6 has Medical allowance
+  ('EB000013', 'EP000007', 'AL000006', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Internet allowance
+  ('EB000014', 'EP000007', 'AL000007', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Education allowance
+  ('EB000015', 'EP000007', 'AL000009', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Fitness allowance
+  ('EB000016', 'EP000007', 'AL000010', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Parking allowance
+  ('EB000017', 'EP000008', 'AL000017', 1, '2023-01-01', '2023-12-31'),   -- Employee 8 has no allowance
+  ('EB000018', 'EP000001', 'AL000011', 1, '2023-01-01', '2023-12-31'),   -- Employee 1 has Software Development Allowance
+  ('EB000019', 'EP000002', 'AL000014', 1, '2023-01-01', '2023-12-31'),   -- Employee 2 has IT Support Allowance
+  ('EB000020', 'EP000003', 'AL000013', 1, '2023-01-01', '2023-12-31'),   -- Employee 3 has Network Operations Allowance
+  ('EB000021', 'EP000004', 'AL000012', 1, '2023-01-01', '2023-12-31'),   -- Employee 4 has Database Administration Allowance
+  ('EB000022', 'EP000005', 'AL000015', 1, '2023-01-01', '2023-12-31'),   -- Employee 5 has Quality Assurance Allowance
+  ('EB000023', 'EP000006', 'AL000016', 1, '2023-01-01', '2023-12-31'),   -- Employee 6 has Human Resources Allowance
+  ('EB000024', 'EP000007', 'AL000017', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Cybersecurity Allowance
+  ('EB000025', 'EP000008', 'AL000008', 1, '2023-01-01', '2023-12-31');   -- Employee 8 has no allowance
+
 
 -- Inserting Attendance table
 INSERT INTO Attendance (attendance_id,employee_id, day, time_in, time_out, late_hours, early_leave_hours, total_hours, attendance_status, notes)

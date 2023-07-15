@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS HRMS;
+CREATE DATABASE HRMS;
+USE HRMS;
+
 -- Create Department table
 CREATE TABLE Department (
   department_id NVARCHAR(10) PRIMARY KEY,
@@ -41,8 +45,9 @@ CREATE TABLE Skill (
 -- Create Allowances table
 CREATE TABLE Allowances (
   allowance_id NVARCHAR(10) PRIMARY KEY,
+  allowance_name NVARCHAR(200),
   allowance_type NVARCHAR(200),
-  amount_per_day DECIMAL(18, 2),
+  amount DECIMAL(18, 2),
   status BIT
 );
 
@@ -215,6 +220,8 @@ CREATE TABLE EmployeeBenefit (
   employee_id NVARCHAR(10),
   allowance_id NVARCHAR(10),
   employeebenefit_id NVARCHAR(10) PRIMARY KEY,
+  start_date DATE,
+  end_date DATE,
   status BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
@@ -242,3 +249,4 @@ CREATE TABLE PaySlip (
   FOREIGN KEY (contract_id) REFERENCES EmployeeContract(contract_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
 );
+
