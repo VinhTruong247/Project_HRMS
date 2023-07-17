@@ -1,6 +1,12 @@
+<<<<<<< Updated upstream
 DROP DATABASE IF EXISTS HRMS;
 CREATE DATABASE HRMS;
 USE HRMS;
+=======
+drop database if exists HRMS
+create database HRMS
+use HRMS
+>>>>>>> Stashed changes
 
 -- Create Department table
 CREATE TABLE Department (
@@ -179,18 +185,21 @@ CREATE TABLE EmployeeContract (
 
 -- Create Attendance table
 CREATE TABLE Attendance (
-  attendance_id NVARCHAR(10) primary key,
   employee_id NVARCHAR(10),
   day DATE,
-  time_in TIME,
-  time_out TIME,
-  late_hours TIME,
-  early_leave_hours TIME,
+  arrivalTime TIME,
   total_hours TIME,
-  attendance_status BIT,
   notes NVARCHAR(50),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
+--Create AttendanceRecord
+create table AttendanceRecord(
+	 employee_id NVARCHAR(10),
+	 day DATE,
+	 CheckinTime TIME,
+	 CheckoutTime TIME,
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+)
 
 -- Create Leave table
 CREATE TABLE Leave (
