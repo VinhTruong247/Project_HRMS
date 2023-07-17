@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS HRMS;
+CREATE DATABASE HRMS;
+USE HRMS;
+
 -- Create Department table
 CREATE TABLE Department (
   department_id NVARCHAR(10) PRIMARY KEY,
@@ -41,8 +45,9 @@ CREATE TABLE Skill (
 -- Create Allowances table
 CREATE TABLE Allowances (
   allowance_id NVARCHAR(10) PRIMARY KEY,
+  allowance_name NVARCHAR(200),
   allowance_type NVARCHAR(200),
-  amount_per_day DECIMAL(18, 2),
+  amount DECIMAL(18, 2),
   status BIT
 );
 
@@ -162,12 +167,13 @@ CREATE TABLE EmployeeContract (
   contract_file NVARCHAR(200),
   start_date DATE,
   end_date DATE,
-  job NVARCHAR(200),
+  job_id NVARCHAR(10),
   base_salary DECIMAL(18, 2),
   status BIT,
   percent_deduction FLOAT,
   salary_type NVARCHAR(50),
   contract_type NVARCHAR(50),
+  FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
@@ -215,6 +221,8 @@ CREATE TABLE EmployeeBenefit (
   employee_id NVARCHAR(10),
   allowance_id NVARCHAR(10),
   employeebenefit_id NVARCHAR(10) PRIMARY KEY,
+  start_date DATE,
+  end_date DATE,
   status BIT,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
   FOREIGN KEY (allowance_id) REFERENCES Allowances(allowance_id)
@@ -237,8 +245,8 @@ CREATE TABLE PaySlip (
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
-  approval VARCHAR(10),
   status NVARCHAR(10),
   FOREIGN KEY (contract_id) REFERENCES EmployeeContract(contract_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
 );
+

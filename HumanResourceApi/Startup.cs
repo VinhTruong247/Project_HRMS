@@ -54,7 +54,6 @@ namespace YourNamespace
             services.AddScoped<SkillEmployeeRepo>();
             services.AddScoped<DepartmentMemberRepo>();
             services.AddScoped<ProjectRepo>();
-            services.AddScoped<EmployeeLoanLogRepo>();
             services.AddScoped<RoleRepo>();
             services.AddScoped<EmployeeBenefitRepo>();
             services.AddScoped<PaySlipRepo>();

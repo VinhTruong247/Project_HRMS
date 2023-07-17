@@ -1,3 +1,15 @@
+use HRMS
+delete from Attendance
+delete from Project
+delete from EmployeeBenefit
+delete from Experience
+delete from Users
+delete from Employee
+delete from Department
+delete from Job
+delete from Allowances
+delete from Roles
+
 INSERT INTO Permission (permission_id, permission_des, permission_displayName, status)
 VALUES
   ('PM000001', 'Can access employee information', 'Access Employee Information', 1),
@@ -14,26 +26,26 @@ VALUES
   ('RL000003', 'HR_Staff', 1),
   ('RL000004', 'Employee', 1);
 -- Insert 10 allowances
-INSERT INTO Allowances (allowance_id, allowance_type, amount_per_day, status)
+INSERT INTO Allowances (allowance_id, allowance_name, allowance_type, amount, status)
 VALUES
-  ('AL000001', 'Transportation', 20000.00, 1),
-  ('AL000002', 'Housing', 50000.00,1),
-  ('AL000003', 'Meal', 60000.00, 1),
-  ('AL000004', 'Medical', 60000.00, 1),
-  ('AL000005', 'Phone', 10000.00, 1),
-  ('AL000006', 'Internet', 30000.00, 1),
-  ('AL000007', 'Education', 20000.00, 1),
-  ('AL000008', 'Travel', 30000.00, 1),
-  ('AL000009', 'Fitness', 20000.00, 1),
-  ('AL000010', 'Parking', 10000.00, 1),
-  ('AL000011', 'Software Development Allowance', 50000.00, 1),
-  ('AL000012', 'Database Administration Allowance',  40000.00, 1),
-  ('AL000013', 'Network Operations Allowance',  60000.00, 1),
-  ('AL000014', 'IT Support Allowance',  30000.00, 1),
-  ('AL000015', 'Quality Assurance Allowance', 40000.00, 1),
-  ('AL000016', 'Human Resources Allowance',  20000.00, 1),
-  ('AL000017', 'Cybersecurity Allowance',  50000.00, 1),
-  ('AL000018', 'Business Analysis Allowance',  45000.00, 1);
+  ('AL000001', 'Transportation','Daily', 20000.00, 1),
+  ('AL000002', 'Housing','Daily', 50000.00,1),
+  ('AL000003', 'Meal','Daily', 60000.00, 1),
+  ('AL000004', 'Medical','Daily', 60000.00, 1),
+  ('AL000005', 'Phone','Daily', 10000.00, 1),
+  ('AL000006', 'Internet','Daily', 30000.00, 1),
+  ('AL000007', 'Education','Daily', 20000.00, 1),
+  ('AL000008', 'Travel','Daily', 30000.00, 1),
+  ('AL000009', 'Fitness','Daily', 20000.00, 1),
+  ('AL000010', 'Parking','Daily', 10000.00, 1),
+  ('AL000011', 'Software Development Allowance','Monthly', 50000.00, 1),
+  ('AL000012', 'Database Administration Allowance','Monthly',  40000.00, 1),
+  ('AL000013', 'Network Operations Allowance','Monthly',  60000.00, 1),
+  ('AL000014', 'IT Support Allowance','Monthly',  30000.00, 1),
+  ('AL000015', 'Quality Assurance Allowance','Monthly', 40000.00, 1),
+  ('AL000016', 'Human Resources Allowance','Monthly',  20000.00, 1),
+  ('AL000017', 'Cybersecurity Allowance','Monthly',  50000.00, 1),
+  ('AL000018', 'Business Analysis Allowance','Monthly', 45000.00, 1);
 -- Insert 13 jobs
 INSERT INTO Job (job_id, job_title, job_description,  status, base_salary_per_hour, bonus)
 VALUES
@@ -98,33 +110,34 @@ VALUES
   ('EX000012','EP000004', 'Chatbot Development', 3, '2022-03-01', '2022-05-31', 'Python, NLTK, Dialogflow',1),
   ('EX000013','EP000005', 'Game Development', 6, '2021-11-01', '2022-07-31', 'Unity, C#, 3D Modeling',1);
 
-INSERT INTO EmployeeBenefit (employeebenefit_id, employee_id, allowance_id,status)
+INSERT INTO EmployeeBenefit (employeebenefit_id, employee_id, allowance_id, status, start_date, end_date)
 VALUES
-  ('EB000001', 'EP000001', 'AL000001', 1),   -- Employee 1 has Transportation allowance
-  ('EB000002', 'EP000001', 'AL000002', 1),   -- Employee 1 has Housing allowance
-  ('EB000003', 'EP000001', 'AL000003', 1),   -- Employee 1 has Meal allowance
-  ('EB000004', 'EP000002', 'AL000004', 1),   -- Employee 2 has Medical allowance
-  ('EB000005', 'EP000002', 'AL000005', 1),   -- Employee 2 has Phone allowance
-  ('EB000006', 'EP000003', 'AL000006', 1),   -- Employee 3 has Internet allowance
-  ('EB000007', 'EP000004', 'AL000007', 1),   -- Employee 4 has Education allowance
-  ('EB000008', 'EP000005', 'AL000008', 1),   -- Employee 5 has Travel allowance
-  ('EB000009', 'EP000005', 'AL000009', 1),   -- Employee 5 has Fitness allowance
-  ('EB000010', 'EP000005', 'AL000010', 1), -- Employee 5 has Parking allowance
-  ('EB000011', 'EP000006', 'AL000001', 1),  -- Employee 6 has Transportation allowance
-  ('EB000012', 'EP000006', 'AL000004', 1),  -- Employee 6 has Medical allowance
-  ('EB000013', 'EP000007', 'AL000006', 1),  -- Employee 7 has Internet allowance
-  ('EB000014', 'EP000007', 'AL000007', 1),  -- Employee 7 has Education allowance
-  ('EB000015', 'EP000007', 'AL000009', 1),  -- Employee 7 has Fitness allowance
-  ('EB000016', 'EP000007', 'AL000010', 1), -- Employee 7 has Parking allowance
-  ('EB000017', 'EP000008', 'AL000017', 1), -- Employee 8 has no allowance
-  ('EB000018', 'EP000001', 'AL000011', 1),  -- Employee 1 has Software Development Allowance
-  ('EB000019', 'EP000002', 'AL000014', 1),  -- Employee 2 has IT Support Allowance
-  ('EB000020', 'EP000003', 'AL000013', 1),  -- Employee 3 has Network Operations Allowance
-  ('EB000021', 'EP000004', 'AL000012', 1),  -- Employee 4 has Database Administration Allowance
-  ('EB000022', 'EP000005', 'AL000015', 1),  -- Employee 5 has Quality Assurance Allowance
-  ('EB000023', 'EP000006', 'AL000016', 1),  -- Employee 6 has Human Resources Allowance
-  ('EB000024', 'EP000007', 'AL000017', 1),  -- Employee 7 has Cybersecurity Allowance
-  ('EB000025', 'EP000008', 'AL000008', 1); -- Employee 8 has no allowance
+  ('EB000001', 'EP000001', 'AL000001', 1, '2023-01-01', '2023-12-31'),   -- Employee 1 has Transportation allowance
+  ('EB000002', 'EP000001', 'AL000002', 1, '2023-01-01', '2023-12-31'),   -- Employee 1 has Housing allowance
+  ('EB000003', 'EP000001', 'AL000003', 1, '2023-01-01', '2023-12-31'),   -- Employee 1 has Meal allowance
+  ('EB000004', 'EP000002', 'AL000004', 1, '2023-01-01', '2023-12-31'),   -- Employee 2 has Medical allowance
+  ('EB000005', 'EP000002', 'AL000005', 1, '2023-01-01', '2023-12-31'),   -- Employee 2 has Phone allowance
+  ('EB000006', 'EP000003', 'AL000006', 1, '2023-01-01', '2023-12-31'),   -- Employee 3 has Internet allowance
+  ('EB000007', 'EP000004', 'AL000007', 1, '2023-01-01', '2023-12-31'),   -- Employee 4 has Education allowance
+  ('EB000008', 'EP000005', 'AL000008', 1, '2023-01-01', '2023-12-31'),   -- Employee 5 has Travel allowance
+  ('EB000009', 'EP000005', 'AL000009', 1, '2023-01-01', '2023-12-31'),   -- Employee 5 has Fitness allowance
+  ('EB000010', 'EP000005', 'AL000010', 1, '2023-01-01', '2023-12-31'),   -- Employee 5 has Parking allowance
+  ('EB000011', 'EP000006', 'AL000001', 1, '2023-01-01', '2023-12-31'),   -- Employee 6 has Transportation allowance
+  ('EB000012', 'EP000006', 'AL000004', 1, '2023-01-01', '2023-12-31'),   -- Employee 6 has Medical allowance
+  ('EB000013', 'EP000007', 'AL000006', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Internet allowance
+  ('EB000014', 'EP000007', 'AL000007', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Education allowance
+  ('EB000015', 'EP000007', 'AL000009', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Fitness allowance
+  ('EB000016', 'EP000007', 'AL000010', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Parking allowance
+  ('EB000017', 'EP000008', 'AL000017', 1, '2023-01-01', '2023-12-31'),   -- Employee 8 has no allowance
+  ('EB000018', 'EP000001', 'AL000011', 1, '2023-01-01', '2023-12-31'),   -- Employee 1 has Software Development Allowance
+  ('EB000019', 'EP000002', 'AL000014', 1, '2023-01-01', '2023-12-31'),   -- Employee 2 has IT Support Allowance
+  ('EB000020', 'EP000003', 'AL000013', 1, '2023-01-01', '2023-12-31'),   -- Employee 3 has Network Operations Allowance
+  ('EB000021', 'EP000004', 'AL000012', 1, '2023-01-01', '2023-12-31'),   -- Employee 4 has Database Administration Allowance
+  ('EB000022', 'EP000005', 'AL000015', 1, '2023-01-01', '2023-12-31'),   -- Employee 5 has Quality Assurance Allowance
+  ('EB000023', 'EP000006', 'AL000016', 1, '2023-01-01', '2023-12-31'),   -- Employee 6 has Human Resources Allowance
+  ('EB000024', 'EP000007', 'AL000017', 1, '2023-01-01', '2023-12-31'),   -- Employee 7 has Cybersecurity Allowance
+  ('EB000025', 'EP000008', 'AL000008', 1, '2023-01-01', '2023-12-31');   -- Employee 8 has no allowance
+
 
 -- Inserting Attendance table
 INSERT INTO Attendance (attendance_id,employee_id, day, time_in, time_out, late_hours, early_leave_hours, total_hours, attendance_status, notes)
@@ -389,27 +402,27 @@ VALUES
   ('DP000002', 'EP000007', 'Database Administrator', 1),
   ('DP000003', 'EP000008', 'Network Administrator', 1);
 
-  INSERT INTO EmployeeContract (contract_id, employee_id, contract_file, start_date, end_date, job, base_salary, status, percent_deduction, salary_type, contract_type)
+  INSERT INTO EmployeeContract (contract_id, employee_id, contract_file, start_date, end_date, job_id, base_salary, status, percent_deduction, salary_type, contract_type)
 VALUES
-  ('CN000001', 'EP000001', 'contract_file1.pdf', '2022-01-01', '2022-12-31', 'Software Engineer', 1000000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000002', 'EP000002', 'contract_file2.pdf', '2022-03-15', '2022-12-31', 'Software Engineer', 1000000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000003', 'EP000003', 'contract_file3.pdf', '2022-02-10', '2022-12-31', 'Software Engineer', 1000000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000004', 'EP000005', 'contract_file4.pdf', '2022-04-20', '2022-12-31', 'Web Developer', 800000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000005', 'EP000004', 'contract_file5.pdf', '2022-05-01', '2022-12-31', 'Data Analyst', 900000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000006', 'EP000006', 'contract_file6.pdf', '2022-06-15', '2022-12-31', 'IT Project Manager', 1200000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000007', 'EP000007', 'contract_file7.pdf', '2022-07-01', '2022-12-31', 'IT Project Manager', 1200000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000008', 'EP000008', 'contract_file8.pdf', '2022-08-20', '2022-12-31', 'UI/UX Designer', 800000.00, 1, 0.05, 'Monthly', 'Full-time');
+  ('CN000001', 'EP000001', 'contract_file1.pdf', '2022-01-01', '2022-12-31', 'JB000001', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000002', 'EP000002', 'contract_file2.pdf', '2022-03-15', '2022-12-31', 'JB000001', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000003', 'EP000003', 'contract_file3.pdf', '2022-02-10', '2022-12-31', 'JB000001', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000004', 'EP000005', 'contract_file4.pdf', '2022-04-20', '2022-12-31', 'JB000004', 60000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000005', 'EP000004', 'contract_file5.pdf', '2022-05-01', '2022-12-31', 'JB000002', 110000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000006', 'EP000006', 'contract_file6.pdf', '2022-06-15', '2022-12-31', 'JB000005', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000007', 'EP000007', 'contract_file7.pdf', '2022-07-01', '2022-12-31', 'JB000005', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000008', 'EP000008', 'contract_file8.pdf', '2022-08-20', '2022-12-31', 'JB000009', 50000.00, 1, 0.05, 'Monthly', 'Full-time');
 
-  INSERT INTO PaySlip (payslip_id, employee_id, pay_period, paid_date, base_salary, ot_hours, contract_id, standard_work_hours, actual_work_hours, tax_income, total_salary, note, BankAccountNumber, BankAccountName, BankName, approval, status)
+  INSERT INTO PaySlip (payslip_id, employee_id, pay_period, paid_date, base_salary, ot_hours, contract_id, standard_work_hours, actual_work_hours, tax_income, total_salary, note, BankAccountNumber, BankAccountName, BankName, status)
 VALUES
-  ('PS000001', 'EP000001', 'June 2023', '2023-07-01', 1000000.00, 20.00, 'CN000001', 18.00, 18.00, 200000.00, 1500000.00, 'Received a bonus for outstanding performance.', 123456789, N'Hồ Nguyễn', 'Bank XYZ', 'Approved', 'Paid'),
-  ('PS000002', 'EP000002', 'June 2023', '2023-07-01', 1000000.00, 15.50, 'CN000002', 18.00, 18.00, 150000.00, 1350000.00, 'Overtime hours were reduced due to completion of a project ahead of schedule.', 987654321, N'Mai Trần', 'Bank ABC', 'Approved', 'Paid'),
-  ('PS000003', 'EP000003', 'June 2023', '2023-07-01', 1000000.00, 8.50, 'CN000003', 18.00, 18.00, 250000.00, 2250000.00, 'Received a tax refund for overpayment in the previous month.', 246813579, N'Thắm Lê', 'Bank DEF', 'Approved', 'Paid'),
-  ('PS000004', 'EP000005', 'June 2023', '2023-07-01', 800000.00, 10.00, 'CN000004', 18.00, 18.00, 100000.00, 900000.00, 'Base salary was adjusted due to a promotion.', 123456789, N'Bình Lê', 'Bank ABC', 'Approved', 'Paid'),
-  ('PS000005', 'EP000004', 'June 2023', '2023-07-01', 900000.00, 18.00, 'CN000005', 18.00, 18.00, 180000.00, 1220000.00, 'Earned a performance bonus for achieving sales targets.', 987654321, N'Nam Trần', 'Bank XYZ', 'Approved', 'Paid'),
-  ('PS000006', 'EP000006', 'June 2023', '2023-07-01', 1200000.00, 22.50, 'CN000006', 18.00, 18.00, 225000.00, 2175000.00, 'Received a pay raise as part of the annual salary review.', 246813579, N'Lan Vũ', 'Bank DEF', 'Approved', 'Paid'),
-  ('PS000007', 'EP000007', 'June 2023', '2023-07-01', 1200000.00, 17.50, 'CN000007', 18.00, 18.00, 175000.00, 1225000.00, 'Base salary adjusted due to a change in job responsibilities.', 987654321, N'Minh Trần', 'Bank XYZ', 'Approved', 'Paid'),
-  ('PS000008', 'EP000008', 'June 2023', '2023-07-01', 800000.00, 12.00, 'CN000008', 18.00, 18.00, 120000.00, 970000.00, 'Received a one-time performance bonus for completing a challenging project.', 123456789, N'An Lê', 'Bank ABC', 'Approved', 'Paid');
+  ('PS000001', 'EP000001', 'June 2023', '2023-07-01', 1000000.00, 20.00, 'CN000001', 18.00, 18.00, 200000.00, 1500000.00, 'Received a bonus for outstanding performance.', 123456789, N'Hồ Nguyễn', 'Bank XYZ', 'Approved'),
+  ('PS000002', 'EP000002', 'June 2023', '2023-07-01', 1000000.00, 15.50, 'CN000002', 18.00, 18.00, 150000.00, 1350000.00, 'Overtime hours were reduced due to completion of a project ahead of schedule.', 987654321, N'Mai Trần', 'Bank ABC', 'Approved'),
+  ('PS000003', 'EP000003', 'June 2023', '2023-07-01', 1000000.00, 8.50, 'CN000003', 18.00, 18.00, 250000.00, 2250000.00, 'Received a tax refund for overpayment in the previous month.', 246813579, N'Thắm Lê', 'Bank DEF', 'Approved'),
+  ('PS000004', 'EP000005', 'June 2023', '2023-07-01', 800000.00, 10.00, 'CN000004', 18.00, 18.00, 100000.00, 900000.00, 'Base salary was adjusted due to a promotion.', 123456789, N'Bình Lê', 'Bank ABC', 'Approved'),
+  ('PS000005', 'EP000004', 'June 2023', '2023-07-01', 900000.00, 18.00, 'CN000005', 18.00, 18.00, 180000.00, 1220000.00, 'Earned a performance bonus for achieving sales targets.', 987654321, N'Nam Trần', 'Bank XYZ', 'Approved'),
+  ('PS000006', 'EP000006', 'June 2023', '2023-07-01', 1200000.00, 22.50, 'CN000006', 18.00, 18.00, 225000.00, 2175000.00, 'Received a pay raise as part of the annual salary review.', 246813579, N'Lan Vũ', 'Bank DEF', 'Approved'),
+  ('PS000007', 'EP000007', 'June 2023', '2023-07-01', 1200000.00, 17.50, 'CN000007', 18.00, 18.00, 175000.00, 1225000.00, 'Base salary adjusted due to a change in job responsibilities.', 987654321, N'Minh Trần', 'Bank XYZ', 'Approved'),
+  ('PS000008', 'EP000008', 'June 2023', '2023-07-01', 800000.00, 12.00, 'CN000008', 18.00, 18.00, 120000.00, 970000.00, 'Received a one-time performance bonus for completing a challenging project.', 123456789, N'An Lê', 'Bank ABC', 'Approved');
 
 -- Insert data into Leave table
 INSERT INTO Leave (leave_id, employee_id, leave_type, start_date, end_date, reason, status, leave_hours)

@@ -15,7 +15,7 @@ namespace HumanResourceApi.Models
         public string ContractFile { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public string Job { get; set; }
+        public string JobId { get; set; }
         public decimal? BaseSalary { get; set; }
         public bool? Status { get; set; }
         public double? PercentDeduction { get; set; }
@@ -23,6 +23,7 @@ namespace HumanResourceApi.Models
         public string ContractType { get; set; }
 
         public virtual Employee Employee { get; set; }
+        public virtual Job Job { get; set; }
         public virtual ICollection<PaySlip> PaySlips { get; set; }
     }
 }
