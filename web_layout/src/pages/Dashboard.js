@@ -1,9 +1,8 @@
 import React from 'react';
-import Counter from '../component/management/Counter/EmployeeCounter';
 import TotalEmployee from './Dashboard/TotalEmployee';
 import Status from './Dashboard/Status';
 import OngoingStatics from './Dashboard/OngoingStatics';
-import TotalActivity from './Dashboard/TotalActivity';
+import CheckLog from './Dashboard/CheckLog';
 import Overall from './Dashboard/Overall';
 import WorkComplete from './Dashboard/WorkComplete';
 import WideCalendar from './Dashboard/WideCalendar';
@@ -17,7 +16,7 @@ function Dasboard() {
 
     <div className='dashboardpage'>
         <nav className='dashboardnav'>
-        <NavLink to="profile">{data.lastName} {data.firstName}</NavLink>
+        <NavLink to="profile">{data.firstName} {data.lastName}</NavLink>
         </nav>
 
         <div className="news">
@@ -29,7 +28,7 @@ function Dasboard() {
             <div className="row">
                 <Overall/>
                 <WorkComplete/>
-                <TotalActivity/>
+                <CheckLog/>
             </div>
             <div className="row">
                 <WideCalendar/>
