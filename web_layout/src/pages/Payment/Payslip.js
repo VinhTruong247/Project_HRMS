@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import moment from "moment";
+import Employee from "../Manage/Employee";
 
 function Payslip(props) {
     const [data, setData] = useState([]);
@@ -9,12 +10,7 @@ function Payslip(props) {
     const [updatePayslip, setUpdatePayslip] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState("");
-    const [departmentNames, setDepartmentNames] = useState([]);
-    const [jobTitles, setJobTitles] = useState([]);
-    const payslipIdPattern = /^EP\d{6}$/;
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneNumberPattern = /^(\+)?\d{10}$/;
-    const atmNumberPattern = /^\d{9}$/;
+    const [employeeId, setEmployeeId] = useState([]);
     const handleEdit = (payslip) => {
         setUpdatePayslip(payslip);
         setShowUpdateForm(true);
@@ -38,8 +34,8 @@ function Payslip(props) {
         fetch("https://localhost:7220/api/PaySlip/get/paysliplist", {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token.token}`,
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token.token}`,
             },
         })
             .then((response) => {
@@ -57,13 +53,13 @@ function Payslip(props) {
             });
     }, []);
 
-    // Fetch department names and job titles
+    // Fetch employee
     useEffect(() => {
         fetch('https://localhost:7220/api/Employee/employees', {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token.token}`,
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token.token}`,
             },
         })
             .then((response) => {
@@ -74,149 +70,38 @@ function Payslip(props) {
                 }
             })
             .then((employees) => {
-                setDepartmentNames(employees);
-            })
-            .catch((error) => {
-                console.error("There was a problem with the fetch operation:", error);
-            });
-
-        fetch("https://localhost:7220/api/Job/jobs", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token.token}`,
-            },
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("API response was not ok.");
-                }
-            })
-            .then((jobs) => {
-                setJobTitles(jobs);
+                setEmployeeId(employees);
             })
             .catch((error) => {
                 console.error("There was a problem with the fetch operation:", error);
             });
     }, []);
 
-    //  CRATE NEW EMPLOYEE
+    //  GENERATES NEW PAYSLIP
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
-            payslipId: event.target.elements.payslipId.value,
-            firstName: event.target.elements.firstName.value,
-            lastName: event.target.elements.lastName.value,
-            payslipImage: event.target.elements.payslipImage.value,
-            dateOfBirth: event.target.elements.dateOfBirth.value,
-            payslipAddress: event.target.elements.payslipAddress.value,
-            email: event.target.elements.email.value,
-            phoneNumber: event.target.elements.phoneNumber.value,
-            bankAccountNumber: event.target.elements.bankAccountNumber.value,
-            bankAccountName: event.target.elements.bankAccountName.value,
-            bankName: event.target.elements.bankName.value,
-            jobId: event.target.elements.jobId.value,
-            departmentId: event.target.elements.departmentId.value,
-            status: event.target.elements.status.checked,
+            employeeId: event.target.elements.employeeId.value,
+            payPeriod: event.target.elements.payPeriod.value,
+            paidDate: event.target.elements.paidDate.value,
+            note: event.target.elements.note.value,
         };
 
-        if (!formData.payslipId) {
-            setValidationError("Payslip ID is required");
+        if (!formData.payPeriod) {
+            setValidationError("Pay period is required");
             return;
         }
 
-        if (!payslipIdPattern.test(formData.payslipId)) {
-            setValidationError("Payslip ID must follow EP###### format");
+        if (!formData.note) {
+            setValidationError("Note is required");
             return;
         }
 
-        if (!formData.firstName) {
-            setValidationError("First name is required");
-            return;
-        }
-
-        if (!formData.lastName) {
-            setValidationError("Last name is required");
-            return;
-        }
-
-        if (!formData.dateOfBirth) {
-            setValidationError("Date of birth is required");
-            return;
-        }
-
-        if (!formData.payslipAddress) {
-            setValidationError("Payslip address is required");
-            return;
-        }
-
-        if (!formData.email) {
-            setValidationError("Email is required");
-            return;
-        }
-
-        if (!emailPattern.test(formData.email)) {
-            setValidationError("Email form is not valid");
-            return;
-        }
-
-        if (!formData.phoneNumber) {
-            setValidationError("Phone number is required");
-            return;
-        }
-
-        if (!phoneNumberPattern.test(formData.phoneNumber)) {
-            setValidationError("Phone number is not valid");
-            return;
-        }
-
-        if (!formData.bankAccountNumber) {
-            setValidationError("Bank account number is required");
-            return;
-        }
-
-        if (!atmNumberPattern.test(formData.bankAccountNumber)) {
-            setValidationError("Bank account number is not valid");
-            return;
-        }
-
-        if (!formData.bankAccountName) {
-            setValidationError("Bank account name is required");
-            return;
-        }
-
-        if (!formData.bankName) {
-            setValidationError("Bank name is required");
-            return;
-        }
-
-        // if (!formData.jobId) {
-        //     setValidationError('Job ID is required');
-        //     return;
-        // }
-
-        // if (!jobIdPattern.test(formData.jobId)) {
-        //     setValidationError('Job ID must follow JB###### format');
-        //     return;
-        // }
-
-        // if (!formData.departmentId) {
-        //     setValidationError('Department ID is required');
-        //     return;
-        // }
-
-        // if (!departmentIdPattern.test(formData.departmentId)) {
-        //     setValidationError('Department ID must follow DP###### format');
-        //     return;
-        // }
-
-        fetch("https://localhost:7220/api/Payslip/create", {
+        fetch("https://localhost:7220/api/Payslip/generate", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token.token}`,
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token.token}`,
             },
             body: JSON.stringify(formData),
         })
@@ -245,108 +130,29 @@ function Payslip(props) {
         event.preventDefault();
         const formData = {
             payslipId: updatePayslip.payslipId,
-            firstName: event.target.elements.firstName.value,
-            lastName: event.target.elements.lastName.value,
-            payslipImage: event.target.elements.payslipImage.value,
-            dateOfBirth: event.target.elements.dateOfBirth.value,
-            payslipAddress: event.target.elements.payslipAddress.value,
-            email: event.target.elements.email.value,
-            phoneNumber: event.target.elements.phoneNumber.value,
-            bankAccountNumber: event.target.elements.bankAccountNumber.value,
-            bankAccountName: event.target.elements.bankAccountName.value,
-            bankName: event.target.elements.bankName.value,
-            jobId: event.target.elements.jobId.value,
-            departmentId: event.target.elements.departmentId.value,
-            status: event.target.elements.status.value === "true",
+            payPeriod: event.target.elements.payPeriod.value,
+            paidDate: event.target.elements.paidDate.value,
+            note: event.target.elements.note.value,
+            status: event.target.elements.status.value,
         };
 
-        if (!formData.firstName) {
+        if (!formData.payPeriod) {
             setValidationError("First name is required");
             return;
         }
 
-        if (!formData.lastName) {
+        if (!formData.note) {
             setValidationError("Last name is required");
             return;
         }
 
-        if (!formData.dateOfBirth) {
-            setValidationError("Date of birth is required");
-            return;
-        }
-
-        if (!formData.payslipAddress) {
-            setValidationError("Payslip address is required");
-            return;
-        }
-
-        if (!formData.email) {
-            setValidationError("Email is required");
-            return;
-        }
-
-        if (!emailPattern.test(formData.email)) {
-            setValidationError("Email form is not valid");
-            return;
-        }
-
-        if (!formData.phoneNumber) {
-            setValidationError("Phone number is required");
-            return;
-        }
-
-        if (!phoneNumberPattern.test(formData.phoneNumber)) {
-            setValidationError("Phone number is not valid");
-            return;
-        }
-
-        if (!formData.bankAccountNumber) {
-            setValidationError("Bank account number is required");
-            return;
-        }
-
-        if (!atmNumberPattern.test(formData.bankAccountNumber)) {
-            setValidationError("Bank account number is not valid");
-            return;
-        }
-
-        if (!formData.bankAccountName) {
-            setValidationError("Bank account name is required");
-            return;
-        }
-
-        if (!formData.bankName) {
-            setValidationError("Bank name is required");
-            return;
-        }
-
-        // if (!formData.jobId) {
-        //     setValidationError('Job ID is required');
-        //     return;
-        // }
-
-        // if (!jobIdPattern.test(formData.jobId)) {
-        //     setValidationError('Job ID must follow JB###### format');
-        //     return;
-        // }
-
-        // if (!formData.departmentId) {
-        //     setValidationError('Department ID is required');
-        //     return;
-        // }
-
-        // if (!departmentIdPattern.test(formData.departmentId)) {
-        //     setValidationError('Department ID must follow DP###### format');
-        //     return;
-        // }
-
         fetch(
-            `https://localhost:7220/api/Payslip/update/user/${updatePayslip.payslipId}`,
+            `https://localhost:7220/api/Payslip/update/payslip/${updatePayslip.employeeId}/${updatePayslip.payslipId}`,
             {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token.token}`,
+                    'Content-Type': "application/json",
+                    'Authorization': `Bearer ${token.token}`,
                 },
                 body: JSON.stringify(formData),
             }
@@ -390,130 +196,36 @@ function Payslip(props) {
                             <div className="error-message-fadeout">{validationError}</div>
                         )}
 
-                        <div className="row name">
-                            <div className="col-6 mt-3">
-                                <label>First Name:</label>
-                                <input type="text" name="firstName" placeholder="First Name" />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Last Name:</label>
-                                <input type="text" name="lastName" placeholder="Last Name" />
-                            </div>
-                        </div>
-
-                        <div className="row name">
-                            <div className="col-6 mt-3">
-                                <label>Payslip ID:</label>
-                                <input type="text" name="payslipId" placeholder="EP######" />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Phone Number:</label>
-                                <input
-                                    type="text"
-                                    name="phoneNumber"
-                                    placeholder="1234-567-890"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="row name">
-                            <div className="col-6 mt-3">
-                                <label>Payslip Image:</label>
-                                <input type="text" name="payslipImage" placeholder="string" />
-                            </div>
-
-                            <div className="col-6 mt-3">
-                                <label>Date of Birth:</label>
-                                <input
-                                    type="date"
-                                    name="dateOfBirth"
-                                    placeholder="dd-MM-YYYY"
-                                />
-                            </div>
-                        </div>
-
-                        <label>Address:</label>
-                        <input
-                            type="text"
-                            name="payslipAddress"
-                            placeholder="123 Street, City, Country"
-                        />
-
-                        <label>Email:</label>
-                        <input type="email" name="email" placeholder="example@mail.com" />
-
-                        <div className="row name">
-                            <div className="col-6 mt-3">
-                                <label>Bank Account Number:</label>
-                                <input
-                                    type="text"
-                                    name="bankAccountNumber"
-                                    placeholder="123-456-789"
-                                />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Bank Account Name:</label>
-                                <input
-                                    type="text"
-                                    name="bankAccountName"
-                                    placeholder="Holder Name"
-                                />
-                            </div>
-                        </div>
-
-                        <label>Bank Name:</label>
-                        <input type="text" name="bankName" placeholder="Bank Name" />
-
-                        <div className="row name">
-                            <div className="col-6 mt-1">
-                                {/* <label>Job:</label>
-                                <input type="text" name="jobId" placeholder='JB######' /> */}
-                                <label>Job:</label>
-                                <select
-                                    name="jobId"
-                                    onChange={(event) => console.log(event.target.value)}
-                                >
-                                    {jobTitles.map((job) => (
-                                        <option key={job.jobId} value={job.jobId}>
-                                            {job.jobTitle}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="col-6 mt-1">
-                                {/* <label>Department:</label>
-                                <input type="text" name="departmentId" placeholder='DP######' /> */}
-                                <label>Department:</label>
-                                <select
-                                    name="departmentId"
-                                    onChange={(event) => console.log(event.target.value)}
-                                >
-                                    {departmentNames.map((department) => (
-                                        <option
-                                            key={department.departmentId}
-                                            value={department.departmentId}
-                                        >
-                                            {department.departmentName}
+                        <div className='row name'>
+                            <div className="col-12 mt-3">
+                                <label>Employee Id:</label>
+                                <select name="employeeId" onChange={event => console.log(event.target.value)}>
+                                    {employeeId.map(employee => (
+                                        <option key={employee.employeeId} value={employee.employeeId}>
+                                            {employee.employeeId}
                                         </option>
                                     ))}
                                 </select>
                             </div>
                         </div>
 
-                        <div className="row">
-                            <div className="col-3 mt-1"></div>
-                            <div className="col-6 mt-1">
-                                <label>Status:</label>
-                                <select
-                                    name="status"
-                                    defaultValue={true}
-                                    onChange={(event) => console.log(event.target.value)}
-                                >
-                                    <option value={true}>Active</option>
-                                    <option value={false}>Disable</option>
-                                </select>
+                        <div className='row'>
+                            <div className="col-6 mt-3">
+                                <label>Pay Period:</label>
+                                <input type="text" name="payPeriod" placeholder='string' />
                             </div>
-                            <div className="col-3 mt-1"></div>
+
+                            <div className="col-6 mt-3">
+                                <label>Paid Date:</label>
+                                <input type="date" name="paidDate" placeholder='dd-MM-YYYY' />
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Note:</label>
+                                <textarea type="text" name="note" placeholder='Type in what you want...' style={{ height: '15rem' }} />
+                            </div>
                         </div>
 
                         <div className="row butt">
@@ -539,84 +251,10 @@ function Payslip(props) {
                             </div>
                         )}
 
-                        <div className='row name'>
-                            <div className="col-6 mt-3">
-                                <label>First Name:</label>
-                                <input type="text" name="firstName" defaultValue={updatePayslip.firstName} />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Last Name:</label>
-                                <input type="text" name="lastName" defaultValue={updatePayslip.lastName} />
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className="col-6 mt-3">
-                                <label>Payslip Image:</label>
-                                <input type="text" name="payslipImage" defaultValue={updatePayslip.payslipImage} />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Date of Birth:</label>
-                                <input type="date" name="dateOfBirth" defaultValue={moment(moment(updatePayslip.dateOfBirth, 'DD-MM-YYYY')).format('YYYY-MM-DD')} />
-                            </div>
-                        </div>
-
-                        <label>Address:</label>
-                        <input type="text" name="payslipAddress" defaultValue={updatePayslip.payslipAddress} />
-
-                        <label>Email:</label>
-                        <input type="email" name="email" defaultValue={updatePayslip.email} />
-
-                        <label>Phone Number:</label>
-                        <input type="text" name="phoneNumber" defaultValue={updatePayslip.phoneNumber} />
-
-                        <div className='row'>
-                            <div className="col-6 mt-3">
-                                <label>Bank Account Name:</label>
-                                <input type="text" name="bankAccountName" defaultValue={updatePayslip.bankAccountName} />
-
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Bank Account Number:</label>
-                                <input type="text" name="bankAccountNumber" defaultValue={updatePayslip.bankAccountNumber} />
-                            </div>
-                        </div>
-
-                        <label>Bank Name:</label>
-                        <input type="text" name="bankName" defaultValue={updatePayslip.bankName} />
-
-                        <div className='row'>
-                            <div className="col-6 mt-3">
-                                {/* <label>Job ID:</label>
-                                <input type="text" name="jobId" defaultValue={updatePayslip.jobId} /> */}
-                                <label>Job:</label>
-                                <select name="jobId" defaultValue={updatePayslip.jobId} onChange={event => console.log(event.target.value)}>
-                                    {jobTitles.map(job => (
-                                        <option key={job.jobId} value={job.jobId}>
-                                            {job.jobTitle}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className="col-6 mt-3">
-                                {/* <label>Department ID:</label>
-                                <input type="text" name="departmentId" defaultValue={updatePayslip.departmentId} /> */}
-                                <label>Department:</label>
-                                <select name="departmentId" defaultValue={updatePayslip.departmentId} onChange={event => console.log(event.target.value)}>
-                                    {departmentNames.map(department => (
-                                        <option key={department.departmentId} value={department.departmentId}>
-                                            {department.departmentName}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
                         <div className='row'>
                             <div className="col-3 mt-3"></div>
                             <div className="col-6 mt-3">
                                 <label>Status:</label>
-                                {/* <input type="text" name="status" defaultValue={updatePayslip.status} /> */}
                                 <select name="status" defaultValue={updatePayslip.status ? 'true' : 'false'} onChange={event => console.log(event.target.value)}>
                                     <option value="true">Active</option>
                                     <option value="false">Inactive</option>
@@ -649,12 +287,16 @@ function Payslip(props) {
                     <thead>
                         <tr>
                             <th>Payslip ID</th>
-                            <th>Full Name</th>
-                            <th>Birthday</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Job</th>
-                            <th>Department</th>
+                            <th>Employee ID</th>
+                            <th>Pay Period</th>
+                            <th>Paid Date</th>
+                            <th>Base Salary</th>
+                            <th>OT Hours</th>
+                            <th>OT Salary</th>
+                            <th>Allowance</th>
+                            <th>Tax Income</th>
+                            <th>Tax</th>
+                            <th>Total Salary</th>
                             <th>Status</th>
                             <th>Option</th>
                         </tr>
@@ -663,32 +305,24 @@ function Payslip(props) {
                         {data.map((payslip) => (
                             <tr key={payslip.payslipId}>
                                 <td>{payslip.payslipId}</td>
+                                <td>{payslip.employeeId}</td>
+                                <td>{payslip.payPeriod}</td>
+                                <td>{payslip.paidDate}</td>
+                                <td>{payslip.baseSalary.toLocaleString()}</td>
+                                <td>{payslip.otHours}</td>
+                                <td>{payslip.otSalary.toLocaleString()}</td>
+                                <td>{payslip.allowance.toLocaleString()}</td>
+                                <td>{payslip.taxIncome.toLocaleString()}</td>
+                                <td>{payslip.tax.toLocaleString()}</td>
+                                {/* <td>
+                                    {jobTitles.find(job => job.jobId === payslip.employeeId)
+                                        ? jobTitles.find(job => job.jobId === payslip.employeeId).jobTitle
+                                        : 'Unknown'}
+                                </td> */}
+                                <td>{payslip.totalSalary.toLocaleString()}</td>
+                                <td>{payslip.status}</td>
                                 <td>
-                                    {payslip.firstName} {payslip.lastName}
-                                </td>
-                                <td>{payslip.dateOfBirth}</td>
-                                <td>{payslip.email}</td>
-                                <td>{payslip.phoneNumber}</td>
-                                <td>
-                                    {jobTitles.find((job) => job.jobId === payslip.jobId)
-                                        ? jobTitles.find((job) => job.jobId === payslip.jobId)
-                                            .jobTitle
-                                        : "Unknown"}
-                                </td>
-                                <td>
-                                    {departmentNames.find(
-                                        (department) =>
-                                            department.departmentId === payslip.departmentId
-                                    )
-                                        ? departmentNames.find(
-                                            (department) =>
-                                                department.departmentId === payslip.departmentId
-                                        ).departmentName
-                                        : ""}
-                                </td>
-                                <td>{payslip.status ? "Active" : "Disable"}</td>
-                                <td>
-                                    <button onClick={() => handleEdit(payslip)}>Detail</button>
+                                    <button onClick={() => handleEdit(payslip)}>Edit</button>
                                 </td>
                             </tr>
                         ))}

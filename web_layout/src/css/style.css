@@ -462,8 +462,10 @@ aside .sidebar a:hover.active span {
 }
 
 .manager .form input,
+.manager .form textarea,
 .manager .form select,
-.formProfile input {
+.formProfile input,
+.formProfile textarea {
     width: 100%;
     height: 2rem;
     padding: 1rem;
