@@ -2,6 +2,7 @@
 using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.DTO.Job;
 using HumanResourceApi.DTO.Project;
+using HumanResourceApi.Helper;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -131,12 +132,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<JobDto>>(_job.GetAll().Where(j => j.JobTitle.Contains(keyword)));
+                var resultList = _mapper.Map<List<JobDto>>(_job.GetAll().Where(j => RemoveVietnameseSign.RemoveSign(j.JobTitle).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active job(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderBy(j => j.JobId));
             }
             catch (Exception ex)
             {

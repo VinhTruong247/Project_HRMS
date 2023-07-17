@@ -162,7 +162,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("No overtime(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderByDescending(rp => rp.Day));
             }
             catch (Exception ex)
             {

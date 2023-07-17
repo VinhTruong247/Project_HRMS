@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using System.Text.RegularExpressions;
+using HumanResourceApi.Helper;
 
 namespace HumanResourceApi.Controllers
 {
@@ -145,7 +146,7 @@ namespace HumanResourceApi.Controllers
                 }
                 if (_employeeRepo.GetAll().Any(e => e.EmployeeId == employee.EmployeeId))
                 {
-                    return BadRequest("Employee ID = " + employee.EmployeeId +" existed");
+                    return BadRequest("Employee ID = " + employee.EmployeeId + " existed");
                 }
                 if (!emailRegex.IsMatch(employee.Email))
                 {
@@ -237,12 +238,15 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => e.FirstName.Contains(keyword) || e.LastName.Contains(keyword)));
+                var resultList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => RemoveVietnameseSign.RemoveSign(e.FirstName).ToLower().Contains(keyword.ToLower()) ||
+                RemoveVietnameseSign.RemoveSign(e.LastName).ToLower().Contains(keyword.ToLower()))
+                );
                 if (resultList == null)
                 {
                     return BadRequest("No active employee(s) found");
                 }
-                return Ok(resultList);
+
+                return Ok(resultList.OrderBy(e => e.EmployeeId));
             }
             catch (Exception ex)
             {
