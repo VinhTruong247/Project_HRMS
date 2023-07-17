@@ -4,6 +4,7 @@ import Year from '../Year';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-calendar/dist/Calendar.css';
 export default function Overall() {
+<<<<<<< Updated upstream
     return (
         <div className="col-lg-4">
             <div className="col-lg-12">
@@ -15,4 +16,28 @@ export default function Overall() {
             </div>
         </div>
     );
+=======
+  return (
+    <div className="col-lg-4">
+      <div className="row-lg-8">
+        <div className="col-lg-12">
+          <div className="static">
+            <h3>Overall</h3>
+            <hr />
+            <p messages={{ year: 'Year' }}> </p>
+            <h5>Departments</h5>
+            <DepartmentCounter />
+            <hr />
+            <h5>Employess</h5>
+            <EmployeeCounter />
+            <hr />
+            <h5>Jobs</h5>
+            <JobCounter />
+
+          </div>
+
+        </div>
+      </div></div>
+  );
+>>>>>>> Stashed changes
 }

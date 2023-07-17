@@ -19,6 +19,7 @@ export default function WideCalendar() {
     }
   ]
   return (
+<<<<<<< Updated upstream
     <div className="col-lg-12">
 
       <div className="static">
@@ -27,6 +28,18 @@ export default function WideCalendar() {
         <ActivityCalendar sampleData={sampleData} colorCustomization={colorCustomization} showMonth={true} />
       </div>
 
+=======
+    <div className="col-lg-8">
+
+      <div className="static">
+        <div className='calendar'>
+          <h3>Calendar</h3>
+          <hr />
+          <ActivityCalendar sampleData={sampleData} colorCustomization={colorCustomization} showMonth={true} />
+        </div>
+      </div>
+
+>>>>>>> Stashed changes
 
     </div>
   );

@@ -12,6 +12,13 @@ import WideCalendar from './Dashboard/WideCalendar';
 
 function Dasboard() {
     return (
+<<<<<<< Updated upstream
+=======
+    <div className='dashboardpage'>
+        <nav className='dashboardnav'>
+        <NavLink to="profile">{data.lastName} {data.firstName}</NavLink>
+        </nav>
+>>>>>>> Stashed changes
         <div className="news">
             <div className="row">
                 <TotalEmployee />
