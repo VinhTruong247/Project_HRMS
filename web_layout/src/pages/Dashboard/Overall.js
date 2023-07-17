@@ -7,6 +7,7 @@ import EmployeeCounter from '../../component/management/Counter/EmployeeCounter'
 import DepartmentCounter from '../../component/management/Counter/DepartmentCounter';
 import JobCounter from '../../component/management/Counter/JobCounter';
 export default function Overall() {
+<<<<<<< Updated upstream
     return (
         <div className="col-lg-4">
             <div className="row-lg-8">
@@ -28,4 +29,28 @@ export default function Overall() {
             </div>
         </div></div>
     );
+=======
+  return (
+    <div className="col-lg-4">
+      <div className="row-lg-8">
+        <div className="col-lg-12">
+          <div className="static">
+            <h3>Overall</h3>
+            <hr />
+            <p messages={{ year: 'Year' }}> </p>
+            <h5>Departments</h5>
+            <DepartmentCounter />
+            <hr />
+            <h5>Employess</h5>
+            <EmployeeCounter />
+            <hr />
+            <h5>Jobs</h5>
+            <JobCounter />
+
+          </div>
+
+        </div>
+      </div></div>
+  );
+>>>>>>> Stashed changes
 }

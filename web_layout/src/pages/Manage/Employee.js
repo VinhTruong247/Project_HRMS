@@ -197,26 +197,6 @@ function Employee(props) {
             return;
         }
 
-        // if (!formData.jobId) {
-        //     setValidationError('Job ID is required');
-        //     return;
-        // }
-
-        // if (!jobIdPattern.test(formData.jobId)) {
-        //     setValidationError('Job ID must follow JB###### format');
-        //     return;
-        // }
-
-        // if (!formData.departmentId) {
-        //     setValidationError('Department ID is required');
-        //     return;
-        // }
-
-        // if (!departmentIdPattern.test(formData.departmentId)) {
-        //     setValidationError('Department ID must follow DP###### format');
-        //     return;
-        // }
-
         fetch('https://localhost:7220/api/Employee/create', {
             method: 'POST',
             headers: {
@@ -326,26 +306,6 @@ function Employee(props) {
             setValidationError('Bank name is required');
             return;
         }
-
-        // if (!formData.jobId) {
-        //     setValidationError('Job ID is required');
-        //     return;
-        // }
-
-        // if (!jobIdPattern.test(formData.jobId)) {
-        //     setValidationError('Job ID must follow JB###### format');
-        //     return;
-        // }
-
-        // if (!formData.departmentId) {
-        //     setValidationError('Department ID is required');
-        //     return;
-        // }
-
-        // if (!departmentIdPattern.test(formData.departmentId)) {
-        //     setValidationError('Department ID must follow DP###### format');
-        //     return;
-        // }
 
         fetch(`https://localhost:7220/api/Employee/update/user/${updateEmployee.employeeId}`, {
             method: 'PUT',

@@ -48,13 +48,13 @@ width: 100%;
 
 .container {
     display: grid;
-    max-width: 90vw;
+    max-width: 100vw;
     height: 100vh;
     margin: 0 5rem 0 0;
     padding: 0;
     background: #F0F0F0;
     gap: 1.8rem;
-    grid-template-columns: 14rem 84vw;
+    grid-template-columns: 14rem 83vw;
 }
 
 a {
@@ -545,10 +545,12 @@ nav a.active {
 
 /*<!-------------------- Container News -------------------->*/
 
-.dashboardpage{
+
+.dashboardpage {
     overflow-y: scroll;
-    }
-    .news {
+}
+
+.news {
     display: grid;
     border-radius: 20px;
     width: 100%;
@@ -556,10 +558,60 @@ nav a.active {
     row-gap: 1rem;
     padding: 1rem;
     margin-top: 0.8rem;
+}
 
-    }
-    .big-box {
+.big-box {
     grid-column: span 2;
+    grid-row: span 2;
+}
+
+}
+
+.big-box {
+    grid-column: span 2;
+    background: white;
+    border: 1px solid var(--color-dark);
+    height: fit-content;
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: all 300ms ease;
+}
+
+.news .col-lg-12 {
+    background: white;
+    border: 1px solid var(--color-dark);
+    height: max-content;
+    min-height: 214px;
+
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: all 300ms ease;
+}
+
+.news .col-lg-8 {
+    background: white;
+    border: 1px solid var(--color-dark);
+    height: max-content;
+    min-height: 214px;
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: all 300ms ease;
+}
+
+.small-box {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+main {
+    margin-left: 1rem;
+    margin-top: 2rem;
+}
+
+.news .col-lg-12 {
     background: white;
     border: 1px solid var(--color-dark);
     height: fit-content;
@@ -607,24 +659,27 @@ nav a.active {
     .news .col-lg-12:hover {
     box-shadow: none;
     }
-    .dashboardnav{
 
+
+.dashboardnav {
     display: flex;
     width: 100%;
     background-color: #9A3434;
     align-items: flex-end;
     padding-left: 1rem;
     padding-right: 1rem;
-    margin-top:1rem;
+    margin-top: 1rem;
     color: white;
     border-radius: 30px 30px 30px 30px;
     box-shadow: var(--box-shadow);
     justify-content: flex-end;
-    }
-    .calendar{
+}
+
+.calendar {
     justify-content: center;
 
-    }
+}
+
 /*<!-------------------- Groups Page -------------------->*/
 
 
@@ -726,55 +781,61 @@ nav a.active {
     font-size: 14px;
     color: #666;
 }
+
+
 /*<!-------------------- Timeline -------------------->*/
 
-.overflowy{
+.timeline{
     width: 100%;
     height: 100%;
     overflow-y: scroll;
-    .year {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-     }
 
-     .month {
-    margin: 5px 5px 15px 5px;
+    .year {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .month {
+        margin: 5px 5px 15px 5px;
     }
 
     .month-name {
-    color: #ccbe88;
-    font-weight: bold;
+        color: #ccbe88;
+        font-weight: bold;
     }
 
-     .day {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    line-height: 30px;
-     }
+    .day {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+    }
 
-     .date {
-    width: 30px;
-    height: 30px;
-    background: white;
-    border-radius: 50px;
-    border: none;
-    outline: none;
-     }
+    .date {
+        width: 30px;
+        height: 30px;
+        background: white;
+        border-radius: 50px;
+        border: none;
+        outline: none;
+    }
 
     .date.in-month:hover {
-    cursor: pointer;
-    background: #ccbe88;
-     }
+        cursor: pointer;
+        background: #ccbe88;
+    }
 
     .today {
-    background: #ccbe88;
-     }
+        background: #ccbe88;
+    }
 
     .date.prev-month,
     .date.next-month {
-    color: grey;
-     }
+        color: grey;
+    }
 }
+
+
+/*<!-------------------- Payment -------------------->*/
