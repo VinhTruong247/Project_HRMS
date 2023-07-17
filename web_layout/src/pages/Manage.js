@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link, Outlet, NavLink } from 'react-rou
 import DataProvider from '../contexts/DataContext';
 function Manage() {
   return (
-    <div className='overflowy'>
+
     <div className="managepage">
         <div className="navbar-brand">Manage Page</div>
        <nav className='mininav'>
@@ -15,7 +15,6 @@ function Manage() {
         <NavLink to="allowance">Allowances Management</NavLink>
        </nav>
        <DataProvider><Outlet /></DataProvider>
-    </div>
     </div>
   );
 }

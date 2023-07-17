@@ -41,9 +41,9 @@ body {
 }
 
 main {
-margin-left: 1rem;
-margin-top: 2rem;
-width: 100%;
+    margin-left: 1rem;
+    margin-top: 2rem;
+    width: 100%;
 }
 
 .container {
@@ -54,7 +54,13 @@ width: 100%;
     padding: 0;
     background: #F0F0F0;
     gap: 1.8rem;
-    grid-template-columns: 14rem 83vw;
+    position: relative;
+}
+
+.container> :nth-child(2) {
+    margin-top: 1rem;
+    padding-left: 16rem;
+    margin-right: 3rem;
 }
 
 a {
@@ -157,6 +163,11 @@ p {
 
 aside {
     height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 220px;
     font-family: Montserrat Medium;
     background: var(--color-primary);
 }
@@ -359,7 +370,6 @@ aside .sidebar a:hover.active span {
 
 
 .manager {
-    margin-top: 1rem;
     margin-left: 2rem;
 }
 
@@ -546,10 +556,6 @@ nav a.active {
 /*<!-------------------- Container News -------------------->*/
 
 
-.dashboardpage {
-    overflow-y: scroll;
-}
-
 .news {
     display: grid;
     border-radius: 20px;
@@ -565,36 +571,11 @@ nav a.active {
     grid-row: span 2;
 }
 
-}
-
 .big-box {
     grid-column: span 2;
     background: white;
     border: 1px solid var(--color-dark);
     height: fit-content;
-    border-radius: var(--box-border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 1.5rem;
-    transition: all 300ms ease;
-}
-
-.news .col-lg-12 {
-    background: white;
-    border: 1px solid var(--color-dark);
-    height: max-content;
-    min-height: 214px;
-
-    border-radius: var(--box-border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 1.5rem;
-    transition: all 300ms ease;
-}
-
-.news .col-lg-8 {
-    background: white;
-    border: 1px solid var(--color-dark);
-    height: max-content;
-    min-height: 214px;
     border-radius: var(--box-border-radius);
     box-shadow: var(--box-shadow);
     padding: 1.5rem;
@@ -619,21 +600,9 @@ main {
     box-shadow: var(--box-shadow);
     padding: 1.5rem;
     transition: all 300ms ease;
-    }
+}
 
-    .news .col-lg-12 {
-    background: white;
-    border: 1px solid var(--color-dark);
-    height: max-content;
-    min-height: 214px;
-
-    border-radius: var(--box-border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 1.5rem;
-    transition: all 300ms ease;
-    }
-
-    .news .col-lg-8 {
+.news .col-lg-8 {
     background: white;
     border: 1px solid var(--color-dark);
     height: max-content;
@@ -642,23 +611,51 @@ main {
     box-shadow: var(--box-shadow);
     padding: 1.5rem;
     transition: all 300ms ease;
-    }
-    .small-box {
+}
+
+.news .col-lg-6 {
+    align-items: center;
+}
+
+.small-box {
     grid-column: span 1;
     grid-row: span 1;
-    }
-    .news .col-lg-12 .employee {
+}
 
+.news .col-lg-12 .employee {
     margin-left: 10px;
-    }
-    .news .col-lg-12 .row {
+}
+
+.news .col-12 .row {
     margin-left: 5px;
     margin-top: 1.5rem;
     justify-content: center;
-    }
-    .news .col-lg-12:hover {
+}
+
+.news .col-lg-12:hover {
     box-shadow: none;
-    }
+}
+
+.news .row button {
+    float: right;
+    margin-right: 5px;
+    width: 6.5rem;
+    height: 3rem;
+    text-align: center;
+    background-color: var(--color-primary);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--box-border-radius);
+    border: 1px solid transparent;
+    color: #fff;
+    transition: all 0.3s;
+    font-size: 0.8rem;
+}
+
+.news .row button:hover {
+    background-color: #fff;
+    border: 1px solid #2a2a2a;
+    color: #2a2a2a;
+}
 
 
 .dashboardnav {
@@ -682,12 +679,6 @@ main {
 
 /*<!-------------------- Groups Page -------------------->*/
 
-
-.inbox-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
 
 .inbox-header {
     text-align: center;
@@ -730,12 +721,6 @@ main {
 
 /*<!-------------------- Project Page -------------------->*/
 
-
-.projects-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
 
 .projects-header {
     text-align: center;
@@ -785,7 +770,7 @@ main {
 
 /*<!-------------------- Timeline -------------------->*/
 
-.timeline{
+.timeline {
     width: 100%;
     height: 100%;
     overflow-y: scroll;
@@ -838,4 +823,27 @@ main {
 }
 
 
-/*<!-------------------- Payment -------------------->*/
+/*<!-------------------- Checklog -------------------->*/
+
+
+.checklog .row {
+    justify-content: center;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.checklog .row button {
+    margin-right: 0;
+}
+
+.checked-in {
+    color: green;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.checked-out {
+    color: red;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
