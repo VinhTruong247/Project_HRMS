@@ -13,9 +13,17 @@ namespace HumanResourceApi.Repositories
             var listBenefit = _dbSet.Include(b => b.Allowance).Where(b => b.EmployeeId == employeeId).ToList();
             listBenefit.ForEach(e =>
             {
-                allowanceSum += actualDate * (e.Allowance.Amount);
+                if (e.Allowance.AllowanceType.ToLower().Equals("daily"))
+                {
+                    allowanceSum += actualDate * (e.Allowance.Amount);
+                }
+                else
+                {
+                    allowanceSum += e.Allowance.Amount;
+                }
             });
             return allowanceSum;
         }
+
     }
 }

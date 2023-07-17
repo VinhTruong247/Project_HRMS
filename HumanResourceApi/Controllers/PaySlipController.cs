@@ -86,7 +86,7 @@ namespace HumanResourceApi.Controllers
             try
             {
                 var empPaySlips = _paySlipRepo.GetAll().Where(p => p.EmployeeId == requestModel.EmployeeId).ToList();
-                var tempEmp = _empRepo.GetAll().Where(e => e.EmployeeId == requestModel.EmployeeId).FirstOrDefault();
+                var tempEmp = _empRepo.GetAnEmployee(requestModel.EmployeeId);
                 if (tempEmp is null)
                 {
                     return BadRequest("No employee found");
@@ -98,6 +98,7 @@ namespace HumanResourceApi.Controllers
                 int count = _paySlipRepo.GetAll().Count() + 1;
                 var payslipId = "PS" + count.ToString().PadLeft(6, '0');
                 var tempContract = _contractRepo.GetAll().Where(c => c.EmployeeId == requestModel.EmployeeId).FirstOrDefault();
+                decimal baseSalaryPerHour = tempEmp.Job.BaseSalaryPerHour ?? 0;
 
                 //get the missing data
                 var otHours = _otRepo.GetOTHours(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1));
@@ -107,12 +108,10 @@ namespace HumanResourceApi.Controllers
                 actualWorkHours = Math.Round(actualWorkHours, 2);
                 var baseSalary = _jobRepo.GetBaseSalary(tempEmp.EmployeeId, actualWorkHours);
                 decimal otSalary = _otRepo.GetOtSalary(otHours, requestModel.EmployeeId);
-                decimal taxIncome = _paySlipRepo.GetTaxIncome(baseSalary, otSalary, tempEmp.Dependents ?? 0);
-                decimal? bonus = _jobRepo.GetBonus(requestModel.EmployeeId);
-                decimal? totalSalary = _paySlipRepo.GetTotalSalary(baseSalary,
-                    _benefitRepo.GetAllowanceSum(requestModel.EmployeeId, actualWorkHours),
-                    _paySlipRepo.GetTax(taxIncome),
-                    otSalary);
+                decimal allowanceSum = _benefitRepo.GetAllowanceSum(requestModel.EmployeeId, actualWorkHours);
+                decimal taxIncome = _paySlipRepo.GetTaxIncome(baseSalary, otSalary, tempEmp.Dependents ?? 0, allowanceSum);
+                decimal tax = _paySlipRepo.GetTax(taxIncome);
+                decimal? totalSalary = _paySlipRepo.GetTotalSalary(baseSalary, allowanceSum, tax, otSalary);
 
 
                 //insert missing data to payslip
@@ -128,8 +127,10 @@ namespace HumanResourceApi.Controllers
 
                 _paySlipRepo.Add(payslip);
                 var mappedPayslip = _mapper.Map<PaySlipDto>(payslip);
-                mappedPayslip.Tax = _paySlipRepo.GetTax(mappedPayslip.TaxIncome);
-                mappedPayslip.Allowance = _benefitRepo.GetAllowanceSum(requestModel.EmployeeId, actualWorkHours);
+                mappedPayslip.Tax = tax;
+                mappedPayslip.Allowance = allowanceSum;
+                mappedPayslip.OtSalary = otSalary;
+                mappedPayslip.BaseSalaryPerHour = baseSalaryPerHour;
                 return Ok(mappedPayslip);
 
             }

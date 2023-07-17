@@ -23,7 +23,7 @@ namespace HumanResourceApi.Repositories
         {
             var emp = _context.Employees.Include(e => e.Job).Where(e => e.EmployeeId == employeeId).FirstOrDefault();
 
-            return otHours * emp.Job.BaseSalaryPerHour ?? 0;
+            return otHours * emp.Job.BaseSalaryPerHour  * (decimal)1.5 ?? 0;
         }
     }
 }

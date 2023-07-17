@@ -20,7 +20,6 @@ namespace HumanResourceApi.Models
         public int? BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
         public string BankName { get; set; }
-        public string Approval { get; set; }
         public string Status { get; set; }
 
         public virtual EmployeeContract Contract { get; set; }
