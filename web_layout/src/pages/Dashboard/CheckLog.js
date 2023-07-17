@@ -16,11 +16,11 @@ function CheckLog() {
 
     const options = {
         labels: ['Hours Worked', 'Remaining Hours'],
-        colors: ['#13C044', '#9A3434'],
+        colors: ['#84E0BE', '#9A3434'],
     };
 
     return (
-        <div className="col-lg-4" style={{ height: '430px' }}>
+        <div className="col-lg-4" style={{ maxHeight: '450px' }}>
             <div className="col-lg-12">
                 <div className="checklog">
 

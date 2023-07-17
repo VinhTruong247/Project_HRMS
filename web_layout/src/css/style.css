@@ -7,6 +7,7 @@
     --color-dark: #301210;
     --color-danger: #E20F0F;
     --color-success: #13c044;
+    --color-success-light: #84E0BE;
     --color-warning: #ffbb55;
     --color-info-dark: #cfb4ab;
     --color-info-light: #f8eae7;
@@ -99,6 +100,15 @@ h4 {
 
 h5 {
     font-size: 0.8rem;
+}
+
+.news hr {
+    background: linear-gradient(135deg, rgba(255, 92, 51, 1) 0%, rgba(179, 74, 55, 1) 33%, rgba(166, 36, 31, 1) 66%, rgba(48, 18, 16, 1) 100%);
+    border-radius: 2px;
+    height: 4px;
+    max-width: 35%;
+    opacity: 100%!important;
+    border-top: 0!important;
 }
 
 .profile-photo {
@@ -622,10 +632,6 @@ main {
     grid-row: span 1;
 }
 
-.news .col-lg-12 .employee {
-    margin-left: 10px;
-}
-
 .news .col-12 .row {
     margin-left: 5px;
     margin-top: 1.5rem;
@@ -775,7 +781,7 @@ main {
     height: 100%;
     overflow-y: scroll;
 
-    .year {
+   .year {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
@@ -846,4 +852,26 @@ main {
     color: red;
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+
+/*<!-------------------- Payment -------------------->*/
+
+
+.detail-container {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.detail-container .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
 }

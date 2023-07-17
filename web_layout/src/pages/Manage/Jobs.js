@@ -62,6 +62,8 @@ function Jobs(props) {
       status: event.target.elements.status.checked,
     };
 
+    const isDuplicateJobId = data.some(job => job.jobId === formData.jobId);
+
     if (!formData.jobId) {
       setValidationError('Job ID is required');
       return;
@@ -71,6 +73,11 @@ function Jobs(props) {
       setValidationError('Job ID must follow JB###### format');
       return;
     }
+
+    if (isDuplicateJobId) {
+      setValidationError('Job ID is already taken');
+      return;
+  }
 
     if (!formData.jobTitle) {
       setValidationError('Job title is required');

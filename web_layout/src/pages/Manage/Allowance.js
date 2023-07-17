@@ -61,6 +61,8 @@ function Allowance(props) {
       status: event.target.elements.status.checked,
     };
 
+    const isDuplicateAllowanceId = data.some(allowance => allowance.allowanceId === formData.allowanceId);
+
     if (!formData.allowanceId) {
       setValidationError('Allowance ID is required');
       return;
@@ -70,6 +72,11 @@ function Allowance(props) {
       setValidationError('Allowance ID must follow AL###### format');
       return;
     }
+
+    if (isDuplicateAllowanceId) {
+      setValidationError('Allowance ID is already taken');
+      return;
+  }
 
     if (!formData.allowanceType) {
       setValidationError('Allowance type is required');
@@ -194,7 +201,8 @@ function Allowance(props) {
               <tr key={allowance.allowanceId}>
                 <td>{allowance.allowanceId}</td>
                 <td>{allowance.allowanceType}</td>
-                <td>{allowance.amountPerDay.toLocaleString()}</td>
+                <td>{allowance.amountPerDay}</td>
+                {/* <td>{allowance.amountPerDay.toLocaleString()}</td> */}
                 <td>
                   {allowance.status
                     ? 'Active'
