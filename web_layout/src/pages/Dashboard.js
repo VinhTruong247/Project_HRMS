@@ -14,10 +14,12 @@ import useData from "../hooks/useData";
 function Dasboard() {
     const data = useData()
     return (
-    <div className='overflowy'>
+
+    <div className='dashboardpage'>
         <nav className='dashboardnav'>
         <NavLink to="profile">{data.lastName} {data.firstName}</NavLink>
         </nav>
+
         <div className="news">
             <div className="row">
                 <TotalEmployee />
