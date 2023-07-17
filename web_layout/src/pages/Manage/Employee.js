@@ -409,7 +409,7 @@ function Employee(props) {
                             </div>
                         )}
 
-                        <div className='row name'>
+                        <div className='row'>
                             <div className="col-6 mt-3">
                                 <label>First Name:</label>
                                 <input type="text" name="firstName" placeholder='First Name' />
@@ -420,7 +420,7 @@ function Employee(props) {
                             </div>
                         </div>
 
-                        <div className='row name'>
+                        <div className='row'>
                             <div className="col-6 mt-3">
                                 <label>Employee ID:</label>
                                 <input type="text" name="employeeId" placeholder='EP######' />
@@ -431,7 +431,7 @@ function Employee(props) {
                             </div>
                         </div>
 
-                        <div className='row name'>
+                        <div className='row'>
                             <div className="col-6 mt-3">
                                 <label>Employee Image:</label>
                                 <input type="text" name="employeeImage" placeholder='string' />

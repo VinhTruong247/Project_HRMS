@@ -142,10 +142,7 @@ function Report(props) {
             <div className='row'>
               <div className="col-3 mt-3"></div>
               <div className="col-6 mt-3">
-                {/* <label>Status:</label>
-                <input type="text" name="status" defaultValue={updateReport.status} /> */}
                 <label>Status:</label>
-
                 <select name="status" defaultValue={updateReport.status} onChange={event => console.log(event.target.value)}>
                   <option value="Approved">Approved</option>
                   <option value="Pending">Pending</option>
