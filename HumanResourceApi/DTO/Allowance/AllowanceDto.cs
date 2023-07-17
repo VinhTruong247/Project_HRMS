@@ -4,13 +4,10 @@ namespace HumanResourceApi.DTO.Allowance
 {
     public class AllowanceDto
     {
-        [Required]
         public string AllowanceId { get; set; }
-        [Required]
+        public string AllowanceName { get; set; }
         public string AllowanceType { get; set; }
-        [Required]
-        public decimal? AmountPerDay { get; set; }
-        [Required]
-        public bool Status { get; set; }
+        public decimal Amount { get; set; }
+        public bool? Status { get; set; }
     }
 }

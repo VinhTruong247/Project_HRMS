@@ -47,8 +47,11 @@ namespace HumanResourceApi.Controllers
                 if (payslipList == null) return BadRequest("No PaySlipList found.");
                 payslipList.ForEach(x =>
                 {
+                    var tempEmp = _empRepo.GetAnEmployee(x.EmployeeId);
                     x.Tax = _paySlipRepo.GetTax(x.TaxIncome);
                     x.Allowance = _benefitRepo.GetAllowanceSum(x.EmployeeId, x.ActualWorkHours ?? 0);
+                    x.OtSalary = _otRepo.GetOtSalary(x.OtHours ?? 0, x.EmployeeId);
+                    x.BaseSalaryPerHour = tempEmp.Job.BaseSalaryPerHour ?? 0;
                 });
                 return Ok(payslipList);
             }
@@ -67,11 +70,16 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                var get = _mapper.Map<PaySlipDto>(_paySlipRepo.GetAll().Where(ps => ps.EmployeeId == employeeId).FirstOrDefault());
+                var get = _mapper.Map<PaySlipDto>(_paySlipRepo.GetAll().Where(ps => ps.EmployeeId == employeeId && ps.PaidDate.Month == DateTime.Now.AddMonths(1).Month).FirstOrDefault());
                 if (get == null)
                 {
                     return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");
                 }
+                var tempEmp = _empRepo.GetAnEmployee(get.EmployeeId);
+                get.Tax = _paySlipRepo.GetTax(get.TaxIncome);
+                get.Allowance = _benefitRepo.GetAllowanceSum(get.EmployeeId, get.ActualWorkHours ?? 0);
+                get.OtSalary = _otRepo.GetOtSalary(get.OtHours ?? 0, get.EmployeeId);
+                get.BaseSalaryPerHour = tempEmp.Job.BaseSalaryPerHour ?? 0;
                 return Ok(get);
             }
             catch (Exception ex)
@@ -99,6 +107,10 @@ namespace HumanResourceApi.Controllers
                 var payslipId = "PS" + count.ToString().PadLeft(6, '0');
                 var tempContract = _contractRepo.GetAll().Where(c => c.EmployeeId == requestModel.EmployeeId).FirstOrDefault();
                 decimal baseSalaryPerHour = tempEmp.Job.BaseSalaryPerHour ?? 0;
+                int bankAccountNumber = tempEmp.BankAccountNumber ?? 0;
+                string bankAccountName = tempEmp.BankAccountName;
+                string bankName = tempEmp.BankName;
+                
 
                 //get the missing data
                 var otHours = _otRepo.GetOTHours(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1));
@@ -124,6 +136,10 @@ namespace HumanResourceApi.Controllers
                 payslip.ActualWorkHours = actualWorkHours;
                 payslip.TaxIncome = taxIncome;
                 payslip.TotalSalary = totalSalary;
+                payslip.BankAccountNumber = bankAccountNumber;
+                payslip.BankAccountName = bankAccountName;
+                payslip.BankName = bankName;
+                payslip.Status = "Pending";
 
                 _paySlipRepo.Add(payslip);
                 var mappedPayslip = _mapper.Map<PaySlipDto>(payslip);
@@ -158,10 +174,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong EmployeeId Format.");
                 }
-                if (!contractIdRegex.IsMatch(payslip.ContractId))
-                {
-                    return BadRequest("Wrong ContractId Format.");
-                }
                 var valid = _paySlipRepo.GetAll().Where(ps => ps.PayslipId == payslipId && ps.EmployeeId == employeeId).FirstOrDefault();
                 if (valid == null)
                 {
@@ -172,7 +184,7 @@ namespace HumanResourceApi.Controllers
                 valid.EmployeeId = employeeId;
 
                 _paySlipRepo.Update(valid);
-                return Ok(_mapper.Map<PaySlipDto>(valid));
+                return Ok();
             }
             catch (Exception ex)
             {
