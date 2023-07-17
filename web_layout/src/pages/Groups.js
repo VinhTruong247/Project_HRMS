@@ -25,7 +25,7 @@ function Groups() {
   ];
 
   return (
-    <div className="inbox-container">
+    <div className="inbox">
       <div className="inbox-header">
       </div>
       <div className="inbox-messages">

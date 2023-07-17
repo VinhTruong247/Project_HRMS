@@ -6,8 +6,13 @@ export default function Status() {
         <div className="col-lg-4">
             <div className="col-lg-12">
                 <div className="employee">
-                    <h3>Report Status</h3>
-                    <h5>Request Approval Status</h5>
+                    <div className='row'>
+                        <div className="col-lg-6">
+                            <h3>Report Status</h3>
+                            <h5>Request Approval Status</h5>
+                        </div>
+                        <div className="col-lg-6"><button>View More</button></div>
+                    </div>
                 </div>
                 <hr />
                 <div className="col-12">

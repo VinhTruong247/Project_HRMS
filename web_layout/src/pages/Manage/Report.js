@@ -94,7 +94,7 @@ function Report(props) {
   };
 
   return (
-    <div className="manager" style={{ position: "relative" }}>
+    <div className="manager" style={{ position: "relative", marginTop: '2.5rem' }}>
       <div className='row'>
         <table className='table'>
           <thead>
