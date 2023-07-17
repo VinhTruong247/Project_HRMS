@@ -63,6 +63,8 @@ function Department(props) {
             status: event.target.elements.status.checked,
         };
 
+        const isDuplicateDepartmentId = data.some(department => department.departmentId === formData.departmentId);
+
         if (!formData.departmentId) {
             setValidationError('Department ID is required');
             return;
@@ -70,6 +72,11 @@ function Department(props) {
 
         if (!departmentIdPattern.test(formData.departmentId)) {
             setValidationError('Department ID must follow DP###### format');
+            return;
+        }
+
+        if (isDuplicateDepartmentId) {
+            setValidationError('Department ID is already taken');
             return;
         }
 

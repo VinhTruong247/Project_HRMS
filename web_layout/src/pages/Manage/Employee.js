@@ -12,8 +12,6 @@ function Employee(props) {
     const [departmentNames, setDepartmentNames] = useState([]);
     const [jobTitles, setJobTitles] = useState([]);
     const employeeIdPattern = /^EP\d{6}$/;
-    // const departmentIdPattern = /^DP\d{6}$/;
-    // const jobIdPattern = /^JB\d{6}$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneNumberPattern = /^(\+)?\d{10}$/;
     // const atmNumberPattern = /^(\d{4}[- ]?){3}\d{4}$/;
@@ -127,6 +125,8 @@ function Employee(props) {
             status: event.target.elements.status.checked,
         };
 
+        const isDuplicateEmployeeId = data.some(employee => employee.employeeId === formData.employeeId);
+
         if (!formData.employeeId) {
             setValidationError('Employee ID is required');
             return;
@@ -134,6 +134,11 @@ function Employee(props) {
 
         if (!employeeIdPattern.test(formData.employeeId)) {
             setValidationError('Employee ID must follow EP###### format');
+            return;
+        }
+
+        if (isDuplicateEmployeeId) {
+            setValidationError('Employee ID is already taken');
             return;
         }
 
