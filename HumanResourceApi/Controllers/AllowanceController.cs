@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Allowance;
 using HumanResourceApi.DTO.Department;
+using HumanResourceApi.Helper;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -127,12 +128,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<AllowanceDto>>(_allowance.GetAll().Where(a => a.AllowanceType.Contains(keyword)));
+                var resultList = _mapper.Map<List<AllowanceDto>>(_allowance.GetAll().Where(a => RemoveVietnameseSign.RemoveSign(a.AllowanceType).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active allowance(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderBy(e => e.AllowanceId));
             }
             catch (Exception ex)
             {

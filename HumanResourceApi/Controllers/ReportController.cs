@@ -157,7 +157,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("No report(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderByDescending(r => r.IssueDate));
             }
             catch (Exception ex)
             {

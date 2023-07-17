@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Department;
 using HumanResourceApi.DTO.Experience;
+using HumanResourceApi.Helper;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -125,12 +126,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<DepartmentDto>>(_repo.GetAll().Where(dp => dp.DepartmentName.Contains(keyword)));
+                var resultList = _mapper.Map<List<DepartmentDto>>(_repo.GetAll().Where(dp => RemoveVietnameseSign.RemoveSign(dp.DepartmentName).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active department(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderBy(dp => dp.DepartmentId));
             }
             catch (Exception ex)
             {

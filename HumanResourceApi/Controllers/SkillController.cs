@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Project;
 using HumanResourceApi.DTO.Skill;
+using HumanResourceApi.Helper;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -113,7 +114,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<SkillDto>>(_skillRepo.GetAll().Where(s => s.SkillName.Contains(keyword)));
+                var resultList = _mapper.Map<List<SkillDto>>(_skillRepo.GetAll().Where(s => RemoveVietnameseSign.RemoveSign(s.SkillName).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active skill(s) found");

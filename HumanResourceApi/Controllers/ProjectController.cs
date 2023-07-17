@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Employee;
 using HumanResourceApi.DTO.Project;
+using HumanResourceApi.Helper;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -132,12 +133,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<ProjectDto>>(_projectRepo.GetAll().Where(e => e.ProjectName.Contains(keyword)));
+                var resultList = _mapper.Map<List<ProjectDto>>(_projectRepo.GetAll().Where(e => RemoveVietnameseSign.RemoveSign(e.ProjectName).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active project(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderBy(p => p.ProjectId));
             }
             catch (Exception ex)
             {

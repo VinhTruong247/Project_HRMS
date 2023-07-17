@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.RegularExpressions;
 using HumanResourceApi.DTO.Project;
+using HumanResourceApi.Helper;
 
 namespace HumanResourceApi.Controllers
 {
@@ -138,12 +139,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<ExperienceDto>>(_experienceRepo.GetAll().Where(exp => exp.NameProject.Contains(keyword)));
+                var resultList = _mapper.Map<List<ExperienceDto>>(_experienceRepo.GetAll().Where(exp => RemoveVietnameseSign.RemoveSign(exp.NameProject).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active experience(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderBy(exp => exp.ExperienceId));
             }
             catch (Exception ex)
             {
