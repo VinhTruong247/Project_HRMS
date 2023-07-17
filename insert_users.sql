@@ -402,27 +402,27 @@ VALUES
   ('DP000002', 'EP000007', 'Database Administrator', 1),
   ('DP000003', 'EP000008', 'Network Administrator', 1);
 
-  INSERT INTO EmployeeContract (contract_id, employee_id, contract_file, start_date, end_date, job, base_salary, status, percent_deduction, salary_type, contract_type)
+  INSERT INTO EmployeeContract (contract_id, employee_id, contract_file, start_date, end_date, job_id, base_salary, status, percent_deduction, salary_type, contract_type)
 VALUES
-  ('CN000001', 'EP000001', 'contract_file1.pdf', '2022-01-01', '2022-12-31', 'Software Engineer', 1000000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000002', 'EP000002', 'contract_file2.pdf', '2022-03-15', '2022-12-31', 'Software Engineer', 1000000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000003', 'EP000003', 'contract_file3.pdf', '2022-02-10', '2022-12-31', 'Software Engineer', 1000000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000004', 'EP000005', 'contract_file4.pdf', '2022-04-20', '2022-12-31', 'Web Developer', 800000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000005', 'EP000004', 'contract_file5.pdf', '2022-05-01', '2022-12-31', 'Data Analyst', 900000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000006', 'EP000006', 'contract_file6.pdf', '2022-06-15', '2022-12-31', 'IT Project Manager', 1200000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000007', 'EP000007', 'contract_file7.pdf', '2022-07-01', '2022-12-31', 'IT Project Manager', 1200000.00, 1, 0.05, 'Monthly', 'Full-time'),
-  ('CN000008', 'EP000008', 'contract_file8.pdf', '2022-08-20', '2022-12-31', 'UI/UX Designer', 800000.00, 1, 0.05, 'Monthly', 'Full-time');
+  ('CN000001', 'EP000001', 'contract_file1.pdf', '2022-01-01', '2022-12-31', 'JB000001', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000002', 'EP000002', 'contract_file2.pdf', '2022-03-15', '2022-12-31', 'JB000001', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000003', 'EP000003', 'contract_file3.pdf', '2022-02-10', '2022-12-31', 'JB000001', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000004', 'EP000005', 'contract_file4.pdf', '2022-04-20', '2022-12-31', 'JB000004', 60000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000005', 'EP000004', 'contract_file5.pdf', '2022-05-01', '2022-12-31', 'JB000002', 110000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000006', 'EP000006', 'contract_file6.pdf', '2022-06-15', '2022-12-31', 'JB000005', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000007', 'EP000007', 'contract_file7.pdf', '2022-07-01', '2022-12-31', 'JB000005', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
+  ('CN000008', 'EP000008', 'contract_file8.pdf', '2022-08-20', '2022-12-31', 'JB000009', 50000.00, 1, 0.05, 'Monthly', 'Full-time');
 
-  INSERT INTO PaySlip (payslip_id, employee_id, pay_period, paid_date, base_salary, ot_hours, contract_id, standard_work_hours, actual_work_hours, tax_income, total_salary, note, BankAccountNumber, BankAccountName, BankName, approval, status)
+  INSERT INTO PaySlip (payslip_id, employee_id, pay_period, paid_date, base_salary, ot_hours, contract_id, standard_work_hours, actual_work_hours, tax_income, total_salary, note, BankAccountNumber, BankAccountName, BankName, status)
 VALUES
-  ('PS000001', 'EP000001', 'June 2023', '2023-07-01', 1000000.00, 20.00, 'CN000001', 18.00, 18.00, 200000.00, 1500000.00, 'Received a bonus for outstanding performance.', 123456789, N'Hồ Nguyễn', 'Bank XYZ', 'Approved', 'Paid'),
-  ('PS000002', 'EP000002', 'June 2023', '2023-07-01', 1000000.00, 15.50, 'CN000002', 18.00, 18.00, 150000.00, 1350000.00, 'Overtime hours were reduced due to completion of a project ahead of schedule.', 987654321, N'Mai Trần', 'Bank ABC', 'Approved', 'Paid'),
-  ('PS000003', 'EP000003', 'June 2023', '2023-07-01', 1000000.00, 8.50, 'CN000003', 18.00, 18.00, 250000.00, 2250000.00, 'Received a tax refund for overpayment in the previous month.', 246813579, N'Thắm Lê', 'Bank DEF', 'Approved', 'Paid'),
-  ('PS000004', 'EP000005', 'June 2023', '2023-07-01', 800000.00, 10.00, 'CN000004', 18.00, 18.00, 100000.00, 900000.00, 'Base salary was adjusted due to a promotion.', 123456789, N'Bình Lê', 'Bank ABC', 'Approved', 'Paid'),
-  ('PS000005', 'EP000004', 'June 2023', '2023-07-01', 900000.00, 18.00, 'CN000005', 18.00, 18.00, 180000.00, 1220000.00, 'Earned a performance bonus for achieving sales targets.', 987654321, N'Nam Trần', 'Bank XYZ', 'Approved', 'Paid'),
-  ('PS000006', 'EP000006', 'June 2023', '2023-07-01', 1200000.00, 22.50, 'CN000006', 18.00, 18.00, 225000.00, 2175000.00, 'Received a pay raise as part of the annual salary review.', 246813579, N'Lan Vũ', 'Bank DEF', 'Approved', 'Paid'),
-  ('PS000007', 'EP000007', 'June 2023', '2023-07-01', 1200000.00, 17.50, 'CN000007', 18.00, 18.00, 175000.00, 1225000.00, 'Base salary adjusted due to a change in job responsibilities.', 987654321, N'Minh Trần', 'Bank XYZ', 'Approved', 'Paid'),
-  ('PS000008', 'EP000008', 'June 2023', '2023-07-01', 800000.00, 12.00, 'CN000008', 18.00, 18.00, 120000.00, 970000.00, 'Received a one-time performance bonus for completing a challenging project.', 123456789, N'An Lê', 'Bank ABC', 'Approved', 'Paid');
+  ('PS000001', 'EP000001', 'June 2023', '2023-07-01', 1000000.00, 20.00, 'CN000001', 18.00, 18.00, 200000.00, 1500000.00, 'Received a bonus for outstanding performance.', 123456789, N'Hồ Nguyễn', 'Bank XYZ', 'Approved'),
+  ('PS000002', 'EP000002', 'June 2023', '2023-07-01', 1000000.00, 15.50, 'CN000002', 18.00, 18.00, 150000.00, 1350000.00, 'Overtime hours were reduced due to completion of a project ahead of schedule.', 987654321, N'Mai Trần', 'Bank ABC', 'Approved'),
+  ('PS000003', 'EP000003', 'June 2023', '2023-07-01', 1000000.00, 8.50, 'CN000003', 18.00, 18.00, 250000.00, 2250000.00, 'Received a tax refund for overpayment in the previous month.', 246813579, N'Thắm Lê', 'Bank DEF', 'Approved'),
+  ('PS000004', 'EP000005', 'June 2023', '2023-07-01', 800000.00, 10.00, 'CN000004', 18.00, 18.00, 100000.00, 900000.00, 'Base salary was adjusted due to a promotion.', 123456789, N'Bình Lê', 'Bank ABC', 'Approved'),
+  ('PS000005', 'EP000004', 'June 2023', '2023-07-01', 900000.00, 18.00, 'CN000005', 18.00, 18.00, 180000.00, 1220000.00, 'Earned a performance bonus for achieving sales targets.', 987654321, N'Nam Trần', 'Bank XYZ', 'Approved'),
+  ('PS000006', 'EP000006', 'June 2023', '2023-07-01', 1200000.00, 22.50, 'CN000006', 18.00, 18.00, 225000.00, 2175000.00, 'Received a pay raise as part of the annual salary review.', 246813579, N'Lan Vũ', 'Bank DEF', 'Approved'),
+  ('PS000007', 'EP000007', 'June 2023', '2023-07-01', 1200000.00, 17.50, 'CN000007', 18.00, 18.00, 175000.00, 1225000.00, 'Base salary adjusted due to a change in job responsibilities.', 987654321, N'Minh Trần', 'Bank XYZ', 'Approved'),
+  ('PS000008', 'EP000008', 'June 2023', '2023-07-01', 800000.00, 12.00, 'CN000008', 18.00, 18.00, 120000.00, 970000.00, 'Received a one-time performance bonus for completing a challenging project.', 123456789, N'An Lê', 'Bank ABC', 'Approved');
 
 -- Insert data into Leave table
 INSERT INTO Leave (leave_id, employee_id, leave_type, start_date, end_date, reason, status, leave_hours)

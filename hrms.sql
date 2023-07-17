@@ -167,12 +167,13 @@ CREATE TABLE EmployeeContract (
   contract_file NVARCHAR(200),
   start_date DATE,
   end_date DATE,
-  job NVARCHAR(200),
+  job_id NVARCHAR(10),
   base_salary DECIMAL(18, 2),
   status BIT,
   percent_deduction FLOAT,
   salary_type NVARCHAR(50),
   contract_type NVARCHAR(50),
+  FOREIGN KEY (job_id) REFERENCES Job(job_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
@@ -244,7 +245,6 @@ CREATE TABLE PaySlip (
   BankAccountNumber INT,
   BankAccountName NVARCHAR(50),
   BankName NVARCHAR(50),
-  approval VARCHAR(10),
   status NVARCHAR(10),
   FOREIGN KEY (contract_id) REFERENCES EmployeeContract(contract_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
