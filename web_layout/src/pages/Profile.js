@@ -526,7 +526,7 @@ function EmployeeDetails(props) {
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Content:</label>
-                                <input type="text" name="content" placeholder='Type in what you want...' style={{ height: '15rem' }}/>
+                                <textarea name="content" placeholder="Type in what you want..."></textarea>
                             </div>
                         </div>
 

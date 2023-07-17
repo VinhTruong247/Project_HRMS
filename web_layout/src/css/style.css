@@ -437,6 +437,7 @@ aside .sidebar a:hover.active span {
 
 .manager .form input,
 .manager .form select,
+textarea,
 .formProfile input {
     width: 100%;
     height: 2rem;
@@ -451,7 +452,9 @@ aside .sidebar a:hover.active span {
     border: 1px solid #7a7a7a;
     box-shadow: none;
 }
-
+textarea{
+    height: 15rem;
+}
 .manager .form select {
     height: 3.3rem !important;
 }
