@@ -133,6 +133,7 @@ namespace HumanResourceApi.Controllers
                         TimeIn = timeIn,
                         TimeOut = timeOut,
                         Day = today,
+                        Status = true,
                         TotalWorkHours = totalHours
                     };
                     _timesheet.Add(timesheet);
