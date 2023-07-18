@@ -43,14 +43,14 @@ VALUES
   ('AL000008', 'Travel','Daily', 30000.00, 1),
   ('AL000009', 'Fitness','Daily', 20000.00, 1),
   ('AL000010', 'Parking','Daily', 10000.00, 1),
-  ('AL000011', 'Software Development Allowance','Monthly', 50000.00, 1),
-  ('AL000012', 'Database Administration Allowance','Monthly',  40000.00, 1),
-  ('AL000013', 'Network Operations Allowance','Monthly',  60000.00, 1),
-  ('AL000014', 'IT Support Allowance','Monthly',  30000.00, 1),
-  ('AL000015', 'Quality Assurance Allowance','Monthly', 40000.00, 1),
-  ('AL000016', 'Human Resources Allowance','Monthly',  20000.00, 1),
-  ('AL000017', 'Cybersecurity Allowance','Monthly',  50000.00, 1),
-  ('AL000018', 'Business Analysis Allowance','Monthly', 45000.00, 1);
+  ('AL000011', 'Software Development Allowance','Monthly', 500000.00, 1),
+  ('AL000012', 'Database Administration Allowance','Monthly',  400000.00, 1),
+  ('AL000013', 'Network Operations Allowance','Monthly',  600000.00, 1),
+  ('AL000014', 'IT Support Allowance','Monthly',  300000.00, 1),
+  ('AL000015', 'Quality Assurance Allowance','Monthly', 400000.00, 1),
+  ('AL000016', 'Human Resources Allowance','Monthly',  200000.00, 1),
+  ('AL000017', 'Cybersecurity Allowance','Monthly',  500000.00, 1),
+  ('AL000018', 'Business Analysis Allowance','Monthly', 450000.00, 1);
 -- Insert 13 jobs
 INSERT INTO Job (job_id, job_title, job_description,  status, base_salary_per_hour, bonus)
 VALUES
@@ -429,17 +429,6 @@ VALUES
   ('CN000007', 'EP000007', 'contract_file7.pdf', '2022-07-01', '2022-12-31', 'JB000005', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
   ('CN000008', 'EP000008', 'contract_file8.pdf', '2022-08-20', '2022-12-31', 'JB000009', 50000.00, 1, 0.05, 'Monthly', 'Full-time');
 
-  INSERT INTO PaySlip (payslip_id, employee_id, paid_date, base_salary, ot_hours, contract_id, standard_work_hours, actual_work_hours, tax_income, total_salary, note, BankAccountNumber, BankAccountName, BankName, status)
-VALUES
-  ('PS000001', 'EP000001', '2023-07-01', 1000000.00, 20.00, 'CN000001', 18.00, 18.00, 200000.00, 1500000.00, 'Received a bonus for outstanding performance.', 123456789, N'Hồ Nguyễn', 'Bank XYZ', 'Approved'),
-  ('PS000002', 'EP000002', '2023-07-01', 1000000.00, 15.50, 'CN000002', 18.00, 18.00, 150000.00, 1350000.00, 'Overtime hours were reduced due to completion of a project ahead of schedule.', 987654321, N'Mai Trần', 'Bank ABC', 'Approved'),
-  ('PS000003', 'EP000003', '2023-07-01', 1000000.00, 8.50, 'CN000003', 18.00, 18.00, 250000.00, 2250000.00, 'Received a tax refund for overpayment in the previous month.', 246813579, N'Thắm Lê', 'Bank DEF', 'Approved'),
-  ('PS000004', 'EP000005', '2023-07-01', 800000.00, 10.00, 'CN000004', 18.00, 18.00, 100000.00, 900000.00, 'Base salary was adjusted due to a promotion.', 123456789, N'Bình Lê', 'Bank ABC', 'Approved'),
-  ('PS000005', 'EP000004', '2023-07-01', 900000.00, 18.00, 'CN000005', 18.00, 18.00, 180000.00, 1220000.00, 'Earned a performance bonus for achieving sales targets.', 987654321, N'Nam Trần', 'Bank XYZ', 'Approved'),
-  ('PS000006', 'EP000006', '2023-07-01', 1200000.00, 22.50, 'CN000006', 18.00, 18.00, 225000.00, 2175000.00, 'Received a pay raise as part of the annual salary review.', 246813579, N'Lan Vũ', 'Bank DEF', 'Approved'),
-  ('PS000007', 'EP000007', '2023-07-01', 1200000.00, 17.50, 'CN000007', 18.00, 18.00, 175000.00, 1225000.00, 'Base salary adjusted due to a change in job responsibilities.', 987654321, N'Minh Trần', 'Bank XYZ', 'Approved'),
-  ('PS000008', 'EP000008', '2023-07-01', 800000.00, 12.00, 'CN000008', 18.00, 18.00, 120000.00, 970000.00, 'Received a one-time performance bonus for completing a challenging project.', 123456789, N'An Lê', 'Bank ABC', 'Approved');
-
 -- Insert data into Leave table
 INSERT INTO Leave (leave_id, employee_id, leave_type, start_date, end_date, reason, status, leave_hours)
 VALUES
@@ -473,7 +462,7 @@ FROM Attendance;
 
 
 INSERT INTO DailySalary (
-  dailysalary_id, employee_id, date, total_hours, salary_per_hour, ot_type
+  dailysalary_id, employee_id, date, total_hours, salary_per_hour, ot_type, ot_hours, total_salary, ot_salary
 )
 SELECT
   'DS' + RIGHT('000000' + CAST(ROW_NUMBER() OVER (ORDER BY t.employee_id, t.day) AS NVARCHAR(10)), 6) AS dailysalary_id,
@@ -481,25 +470,47 @@ SELECT
   t.day,
   t.totalWorkHours AS total_hours,
   j.base_salary_per_hour AS salary_per_hour,
-  o.overtime_type AS ot_type
+  o.overtime_type AS ot_type,
+  o.overtime_hours AS ot_hours,
+  j.base_salary_per_hour * 9 AS total_salary,
+  CAST(j.base_salary_per_hour * 1.5 * (DATEPART(HOUR, o.overtime_hours) + DATEPART(MINUTE, o.overtime_hours) / 60.0) AS DECIMAL) AS ot_salary
 FROM Timesheet t
 JOIN Employee e ON t.employee_id = e.employee_id
-JOIN Job j ON e.job_id = j.job_id
+JOIN (
+  SELECT job_id, base_salary_per_hour FROM Job
+) j ON e.job_id = j.job_id
 LEFT JOIN (
   SELECT
     overtime_id,
     overtime_type,
     employee_id,
-    Day
+    Day,
+    overtime_hours
   FROM Overtime
-) o ON t.employee_id = o.employee_id AND t.day = o.Day;
-
-UPDATE DailySalary
-SET ot_hours = o.overtime_hours
-FROM DailySalary
-JOIN Overtime o ON DailySalary.employee_id = o.employee_id AND DailySalary.date = o.Day
+) o ON t.employee_id = o.employee_id AND t.day = o.Day
 WHERE o.overtime_type = 'Time-and-a-half';
 
+INSERT INTO Payslip (payslip_id, employee_id, payslip_date, basic_salary, ot_salary, allowance_total, deduction_total, net_salary)
+SELECT
+    'PS' + RIGHT('000000' + CAST(ROW_NUMBER() OVER (ORDER BY e.employee_id, ds.date) AS NVARCHAR(10)), 6) AS payslip_id,
+    e.employee_id,
+    ds.date AS payslip_date,
+    ec.base_salary AS basic_salary,
+    CASE WHEN ds.ot_hours IS NOT NULL THEN ds.ot_salary ELSE 0 END AS ot_salary,
+    COALESCE(SUM(CASE WHEN ab.allowance_type = 'Monthly' THEN ab.amount ELSE ab.amount * (DATEDIFF(DAY, ds.date, ec.end_date) + 1) END), 0) AS allowance_total,
+    COALESCE(SUM(ded.amount), 0) AS deduction_total,
+    (ec.base_salary * 22) + CASE WHEN ds.ot_hours IS NOT NULL THEN ds.ot_salary ELSE 0 END + COALESCE(SUM(CASE WHEN ab.allowance_type = 'Monthly' THEN ab.amount ELSE ab.amount * (DATEDIFF(DAY, ds.date, ec.end_date) + 1) END), 0) - COALESCE(SUM(ded.amount), 0) AS net_salary
+FROM Employee e
+JOIN DailySalary ds ON e.employee_id = ds.employee_id
+JOIN EmployeeContract ec ON e.employee_id = ec.employee_id
+LEFT JOIN (
+    SELECT employee_id, allowance_type, amount
+    FROM EmployeeBenefit
+    WHERE status = 1
+) ab ON e.employee_id = ab.employee_id
+LEFT JOIN Deduction ded ON e.employee_id = ded.employee_id
+WHERE ds.date BETWEEN ec.start_date AND ec.end_date
+GROUP BY e.employee_id, ds.date, ec.base_salary, ds.ot_hours, ds.ot_salary, ec.end_date;
 
 select * from EmployeeBenefit
 select * from Experience
@@ -519,4 +530,6 @@ select * from DepartmentMemberList
 select * from EmployeeContract
 select * from PaySlip
 select * from Timesheet
-select * from DailySalary
+SELECT *
+FROM DailySalary
+WHERE ot_hours IS NOT NULL;
