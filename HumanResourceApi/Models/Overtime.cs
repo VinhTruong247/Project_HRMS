@@ -6,6 +6,7 @@ namespace HumanResourceApi.Models
     public partial class Overtime
     {
         public string OvertimeId { get; set; }
+        public string OvertimeType { get; set; }
         public string EmployeeId { get; set; }
         public DateTime Day { get; set; }
         public TimeSpan OvertimeHours { get; set; }
