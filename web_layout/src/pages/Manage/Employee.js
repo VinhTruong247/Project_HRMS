@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
+import { MDBDataTableV5 } from 'mdbreact';
 
 function Employee(props) {
     const [data, setData] = useState([]);
@@ -11,17 +12,23 @@ function Employee(props) {
     const [validationError, setValidationError] = useState('');
     const [departmentNames, setDepartmentNames] = useState([]);
     const [jobTitles, setJobTitles] = useState([]);
+    const [selectedReport, setSelectedReport] = useState(null);
     const employeeIdPattern = /^EP\d{6}$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneNumberPattern = /^(\+)?\d{10}$/;
     // const atmNumberPattern = /^(\d{4}[- ]?){3}\d{4}$/;
     const atmNumberPattern = /^\d{9}$/;
+
     const handleEdit = (employee) => {
         setUpdateEmployee(employee);
         setShowUpdateForm(true);
     };
 
     const timeoutRef = useRef(null);
+
+    const handleDoubleClick = (report) => {
+        setSelectedReport(report);
+    };
 
     useEffect(() => {
         if (validationError) {
@@ -350,52 +357,184 @@ function Employee(props) {
         <div className="manager" style={{ position: "relative" }}>
             <div className='row addbtn'> <button className='btn_create' onClick={() => setShowForm(true)}>Add Employee</button></div>
 
-            <div className='row'>
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th>Employee ID</th>
-                            <th>Full Name</th>
-                            <th>Birthday</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Job</th>
-                            <th>Department</th>
-                            <th>Status</th>
-                            <th>Option</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map(employee => (
+            <div className="card mb-3">
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-2">
+                            <h3>Employee Details:</h3>
+                        </div>
+                        <div className="col-10 text-secondary">
+                            {selectedReport && (
+                                <div>
 
-                            <tr key={employee.employeeId}>
-                                <td>{employee.employeeId}</td>
-                                <td>{employee.firstName} {employee.lastName}</td>
-                                <td>{employee.dateOfBirth}</td>
-                                <td>{employee.email}</td>
-                                <td>{employee.phoneNumber}</td>
-                                <td>
-                                    {jobTitles.find(job => job.jobId === employee.jobId)
-                                        ? jobTitles.find(job => job.jobId === employee.jobId).jobTitle
-                                        : 'Unknown'}
-                                </td>
-                                <td>
-                                    {departmentNames.find(department => department.departmentId === employee.departmentId)
-                                        ? departmentNames.find(department => department.departmentId === employee.departmentId).departmentName
-                                        : ''}
-                                </td>
-                                <td>
-                                    {employee.status
-                                        ? 'Active'
-                                        : 'Disable'}
-                                </td>
-                                <td>
-                                    <button onClick={() => handleEdit(employee)}>Edit</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Employee ID:</h4>
+                                            <p>{selectedReport.employeeId}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Employee Name:</h4>
+                                            <p>{selectedReport.firstName} {selectedReport.lastName}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Date of Birth:</h4>
+                                            <p>{selectedReport.dateOfBirth}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Department:</h4>
+                                            <p>
+                                                {departmentNames.find(department => department.departmentId === selectedReport.departmentId)
+                                                    ? departmentNames.find(department => department.departmentId === selectedReport.departmentId).departmentName
+                                                    : ''}
+                                            </p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Job:</h4>
+                                            <p>
+                                                {jobTitles.find(job => job.jobId === selectedReport.jobId)
+                                                    ? jobTitles.find(job => job.jobId === selectedReport.jobId).jobTitle
+                                                    : 'Unknown'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Email:</h4>
+                                            <p>{selectedReport.phoneNumber}</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Phone Number:</h4>
+                                            <p>{selectedReport.phoneNumber}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Bank Account Name:</h4>
+                                            <p>{selectedReport.bankAccountName}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Bank Account Number:</h4>
+                                            <p>{selectedReport.bankAccountNumber}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Bank Name:</h4>
+                                            <p>{selectedReport.bankName}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <h4>Address:</h4>
+                                    <p>{selectedReport.employeeAddress}</p>
+                                    <hr />
+
+                                    <h4>Status:</h4>
+                                    <p>
+                                        {selectedReport.status
+                                            ? 'Active'
+                                            : 'Disable'}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className='row'>
+                <MDBDataTableV5
+                    className='custom-table'
+                    data={{
+                        columns: [
+                            {
+                                label: 'Employee ID',
+                                field: 'employeeId',
+                                width: 150,
+                            },
+                            {
+                                label: 'Full Name',
+                                field: 'fullName',
+                                width: 150,
+                            },
+                            {
+                                label: 'Date of Birth',
+                                field: 'dateOfBirth',
+                                width: 150,
+                            },
+                            {
+                                label: 'Email',
+                                field: 'email',
+                                width: 200,
+                            },
+                            {
+                                label: 'Phone',
+                                field: 'phone',
+                                width: 150,
+                            },
+                            {
+                                label: 'Department',
+                                field: 'department',
+                                width: 150,
+                            },
+                            {
+                                label: 'Job',
+                                field: 'job',
+                                width: 150,
+                            },
+                            {
+                                label: 'Status',
+                                field: 'status',
+                                width: 100,
+                            },
+                            {
+                                label: 'Option',
+                                field: 'options',
+                                sort: 'disabled',
+                                width: 100,
+                            },
+                        ],
+                        rows: data.map((employee) => ({
+                            employeeId: employee.employeeId,
+                            fullName: `${employee.firstName} ${employee.lastName}`,
+                            dateOfBirth: employee.dateOfBirth,
+                            email: employee.email,
+                            phone: employee.phoneNumber,
+                            department: departmentNames.find(
+                                (department) => department.departmentId === employee.departmentId
+                            )
+                                ? departmentNames.find(
+                                    (department) => department.departmentId === employee.departmentId
+                                ).departmentName
+                                : '',
+                            job: jobTitles.find((job) => job.jobId === employee.jobId)
+                                ? jobTitles.find((job) => job.jobId === employee.jobId).jobTitle
+                                : 'Unknown',
+                            status: employee.status ? 'Active' : 'Disable',
+                            options: (
+                                <button onClick={() => handleEdit(employee)}>Edit</button>
+                            ),
+                            clickEvent: () => handleDoubleClick(employee)
+                        }))
+                    }}
+                    hover
+                    entriesOptions={[5, 10, 20]}
+                    entries={10}
+                    pagesAmount={5}
+                    searchTop
+                    searchBottom={false}
+                    tbodyCustomRow={(row, rowIndex) => {
+                        return {
+                            onDoubleClick: row.clickEvent
+                        };
+                    }}
+                />
             </div>
 
             {showCreateForm && (

@@ -107,8 +107,8 @@ h5 {
     border-radius: 2px;
     height: 4px;
     max-width: 35%;
-    opacity: 100%!important;
-    border-top: 0!important;
+    opacity: 100% !important;
+    border-top: 0 !important;
 }
 
 .profile-photo {
@@ -124,6 +124,7 @@ h5 {
 
 p {
     color: black;
+    margin-bottom: 0px!important;
 }
 
 .danger {
@@ -383,7 +384,6 @@ aside .sidebar a:hover.active span {
     margin-left: 2rem;
 }
 
-
 .managepage {
     display: flex;
     flex-direction: column;
@@ -404,13 +404,18 @@ aside .sidebar a:hover.active span {
     box-shadow: var(--box-shadow);
 }
 
-.manager table {
+.manager .table {
+    border-radius: var(--box-border-radius);
     border: 1px black;
     width: 100%;
 }
 
 .manager .table tr button {
     background-color: rgba(0, 0, 0, 0);
+}
+
+tr:hover td {
+    background-color: lightgray;
 }
 
 .manager .form,
@@ -519,15 +524,79 @@ aside .sidebar a:hover.active span {
 }
 
 .table>tbody>tr:nth-of-type(odd)>* {
-    /* --bs-table-bg-type: rgba(154, 52, 52, 0.6); */
-    --bs-table-bg-type: var(--color-info-light);
+    background-color: var(--color-info-light);
     color: black !important;
 }
 
+.table>tbody>tr:nth-of-type(odd):hover>* {
+    background-color: lightgray !important;
+}
+
 .table>tbody>tr:nth-of-type(odd)>td>button {
-    /* --bs-table-bg-type: rgba(154, 52, 52, 0.6); */
-    --bs-table-bg-type: var(--color-info-light);
     color: black !important;
+}
+
+table.mdb-dataTable thead>tr>th.sorting_asc,
+table.mdb-dataTable thead>tr>th.sorting_desc,
+table.mdb-dataTable thead>tr>th.sorting,
+table.mdb-dataTable thead>tr>td.sorting_asc,
+table.mdb-dataTable thead>tr>td.sorting_desc,
+table.mdb-dataTable thead>tr>td.sorting,
+table thead.mdb-dataTable-head>tr>th.sorting_asc,
+table thead.mdb-dataTable-head>tr>th.sorting_desc,
+table thead.mdb-dataTable-head>tr>th.sorting,
+table thead.mdb-dataTable-head>tr>td.sorting_asc,
+table thead.mdb-dataTable-head>tr>td.sorting_desc,
+table thead.mdb-dataTable-head>tr>td.sorting {
+    padding-left: 20px;
+}
+
+table.mdb-dataTable thead .sorting:before,
+table.mdb-dataTable thead .sorting:after,
+table.mdb-dataTable thead .sorting_asc:before,
+table.mdb-dataTable thead .sorting_asc:after,
+table.mdb-dataTable thead .sorting_desc:before,
+table.mdb-dataTable thead .sorting_desc:after,
+table.mdb-dataTable thead .sorting_asc_disabled:before,
+table.mdb-dataTable thead .sorting_asc_disabled:after,
+table.mdb-dataTable thead .sorting_desc_disabled:before,
+table.mdb-dataTable thead .sorting_desc_disabled:after,
+table thead.mdb-dataTable-head .sorting:before,
+table thead.mdb-dataTable-head .sorting:after,
+table thead.mdb-dataTable-head .sorting_asc:before,
+table thead.mdb-dataTable-head .sorting_asc:after,
+table thead.mdb-dataTable-head .sorting_desc:before,
+table thead.mdb-dataTable-head .sorting_desc:after,
+table thead.mdb-dataTable-head .sorting_asc_disabled:before,
+table thead.mdb-dataTable-head .sorting_asc_disabled:after,
+table thead.mdb-dataTable-head .sorting_desc_disabled:before,
+table thead.mdb-dataTable-head .sorting_desc_disabled:after {
+    position: absolute;
+    bottom: 0.6rem !important;
+    display: block;
+}
+
+table thead.mdb-dataTable-head .sorting:before,
+table.mdb-dataTable thead .sorting:before,
+table.mdb-dataTable thead .sorting_asc:before,
+table thead.mdb-dataTable-head .sorting_asc:before,
+table.mdb-dataTable thead .sorting:after,
+table.mdb-dataTable thead .sorting_asc:after,
+table.mdb-dataTable thead .sorting_desc:after,
+table.mdb-dataTable thead .sorting_asc_disabled:after,
+table.mdb-dataTable thead .sorting_desc_disabled:after,
+table thead.mdb-dataTable-head .sorting:after,
+table thead.mdb-dataTable-head .sorting_asc:after,
+table thead.mdb-dataTable-head .sorting_desc:after,
+table thead.mdb-dataTable-head .sorting_asc_disabled:after,
+table thead.mdb-dataTable-head .sorting_desc_disabled:after {
+    left: -0.1rem !important;
+    margin-left: 0.4rem;
+}
+
+.my-1 {
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.8rem !important;
 }
 
 .navbar-brand {
@@ -783,7 +852,7 @@ main {
     height: 100%;
     overflow-y: scroll;
 
-   .year {
+    .year {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
