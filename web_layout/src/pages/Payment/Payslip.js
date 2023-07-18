@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import moment from "moment";
-import Employee from "../Manage/Employee";
 
 function Payslip(props) {
     const [data, setData] = useState([]);
@@ -137,12 +136,12 @@ function Payslip(props) {
         };
 
         if (!formData.payPeriod) {
-            setValidationError("First name is required");
+            setValidationError("Pay period is required");
             return;
         }
 
         if (!formData.note) {
-            setValidationError("Last name is required");
+            setValidationError("Note is required");
             return;
         }
 
@@ -210,14 +209,19 @@ function Payslip(props) {
                         </div>
 
                         <div className='row'>
-                            <div className="col-6 mt-3">
+                        <div className="col-6 mt-3">
                                 <label>Pay Period:</label>
-                                <input type="text" name="payPeriod" placeholder='string' />
+                                <select name="payPeriod" defaultValue="Q1" onChange={event => console.log(event.target.value)}>
+                                    <option value="Q1">Q1</option>
+                                    <option value="Q2">Q2</option>
+                                    <option value="Q3">Q3</option>
+                                    <option value="Q4">Q4</option>
+                                </select>
                             </div>
 
                             <div className="col-6 mt-3">
                                 <label>Paid Date:</label>
-                                <input type="date" name="paidDate" placeholder='dd-MM-YYYY' />
+                                <input type="date" name="paidDate" style={{ height: '3.3rem' }}/>
                             </div>
                         </div>
 
@@ -243,7 +247,8 @@ function Payslip(props) {
             {showUpdateForm && (
                 <div className="detail-container">
                     <form className="form" onSubmit={handleUpdate}>
-                        <h3>Edit Payslip (ID: {updatePayslip.payslipId})</h3>
+                        <h3>Edit Payslip ID: {updatePayslip.payslipId}</h3>
+                        <h4>(Employee: {updatePayslip.employeeId})</h4>
 
                         {validationError && (
                             <div className="error-message-fadeout">
@@ -252,12 +257,37 @@ function Payslip(props) {
                         )}
 
                         <div className='row'>
+                            <div className="col-6 mt-3">
+                                <label>Pay Period:</label>
+                                <select name="payPeriod" defaultValue={updatePayslip.payPeriod} onChange={event => console.log(event.target.value)}>
+                                    <option value="Q1">Q1</option>
+                                    <option value="Q2">Q2</option>
+                                    <option value="Q3">Q3</option>
+                                    <option value="Q4">Q4</option>
+                                </select>
+                            </div>
+
+                            <div className="col-6 mt-3">
+                                <label>Paid Date:</label>
+                                <input type="date" name="paidDate" defaultValue={moment(moment(updatePayslip.paidDate, 'DD-MM-YYYY')).format('YYYY-MM-DD')} style={{ height: '3.3rem' }}/>
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Note:</label>
+                                <textarea type="text" name="note" defaultValue={updatePayslip.note} style={{ height: '15rem' }} />
+                            </div>
+                        </div>
+
+                        <div className='row'>
                             <div className="col-3 mt-3"></div>
                             <div className="col-6 mt-3">
                                 <label>Status:</label>
-                                <select name="status" defaultValue={updatePayslip.status ? 'true' : 'false'} onChange={event => console.log(event.target.value)}>
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
+                                <select name="status" defaultValue={updatePayslip.status} onChange={event => console.log(event.target.value)}>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Declined">Declined</option>
                                 </select>
                             </div>
                             <div className="col-3 mt-3"></div>
@@ -310,10 +340,10 @@ function Payslip(props) {
                                 <td>{payslip.paidDate}</td>
                                 <td>{payslip.baseSalary.toLocaleString()}</td>
                                 <td>{payslip.otHours}</td>
-                                <td>{payslip.otSalary.toLocaleString()}</td>
-                                <td>{payslip.allowance.toLocaleString()}</td>
-                                <td>{payslip.taxIncome.toLocaleString()}</td>
-                                <td>{payslip.tax.toLocaleString()}</td>
+                                <td>{payslip.otSalary ? payslip.otSalary.toLocaleString() : 'N/A'}</td>
+                                <td>{payslip.allowance ? payslip.allowance.toLocaleString() : 'N/A'}</td>
+                                <td>{payslip.taxIncome ? payslip.taxIncome.toLocaleString() : 'N/A'}</td>
+                                <td>{payslip.tax ? payslip.tax.toLocaleString() : 'N/A'}</td>
                                 {/* <td>
                                     {jobTitles.find(job => job.jobId === payslip.employeeId)
                                         ? jobTitles.find(job => job.jobId === payslip.employeeId).jobTitle

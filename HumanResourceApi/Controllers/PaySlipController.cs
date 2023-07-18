@@ -24,7 +24,7 @@ namespace HumanResourceApi.Controllers
         Regex employeeBenefitIdRegex = new Regex(@"^EB\d{6}");
         Regex contractIdRegex = new Regex(@"^CN\d{6}");
 
-        public PaySlipController(IMapper mapper, PaySlipRepo paySlipRepo, EmployeeBenefitRepo benefitRepo, 
+        public PaySlipController(IMapper mapper, PaySlipRepo paySlipRepo, EmployeeBenefitRepo benefitRepo,
             EmployeeRepo empRepo, EmployeeContractRepo contractRepo, AttendanceRepo attRepo, JobRepo jobRepo,
             OvertimeRepo otRepo)
         {
@@ -110,7 +110,7 @@ namespace HumanResourceApi.Controllers
                 int bankAccountNumber = tempEmp.BankAccountNumber ?? 0;
                 string bankAccountName = tempEmp.BankAccountName;
                 string bankName = tempEmp.BankName;
-                
+
 
                 //get the missing data
                 var otHours = _otRepo.GetOTHours(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1));
@@ -184,7 +184,13 @@ namespace HumanResourceApi.Controllers
                 valid.EmployeeId = employeeId;
 
                 _paySlipRepo.Update(valid);
-                return Ok();
+                var responsePayslip = _mapper.Map<PaySlipDto>(valid);
+                var tempEmp = _empRepo.GetAnEmployee(valid.EmployeeId);
+                responsePayslip.Tax = _paySlipRepo.GetTax(responsePayslip.TaxIncome);
+                responsePayslip.Allowance = _benefitRepo.GetAllowanceSum(responsePayslip.EmployeeId, responsePayslip.ActualWorkHours ?? 0);
+                responsePayslip.OtSalary = _otRepo.GetOtSalary(responsePayslip.OtHours ?? 0, responsePayslip.EmployeeId);
+                responsePayslip.BaseSalaryPerHour = tempEmp.Job.BaseSalaryPerHour ?? 0;
+                return Ok(responsePayslip);
             }
             catch (Exception ex)
             {
