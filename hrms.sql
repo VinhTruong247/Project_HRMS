@@ -199,7 +199,7 @@ create table Timesheet(
 	 time_out TIME,
 	 day DATE,
 	 status BIT,
-	 totalWorkHours time,
+	 totalWorkHours TIME,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 )
 
@@ -215,7 +215,6 @@ CREATE TABLE Leave (
   leave_hours DECIMAL,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
-
 -- Create Overtime table
 CREATE TABLE Overtime (
   overtime_id NVARCHAR(10) PRIMARY KEY,
@@ -249,8 +248,8 @@ CREATE TABLE PaySlip (
   base_salary DECIMAL(18, 2),
   ot_hours DECIMAL,
   contract_id NVARCHAR(10),
-  standard_work_hours DECIMAL,
-  actual_work_hours DECIMAL,
+  standard_work_hours DECIMAL(18,2),
+  actual_work_hours DECIMAL(18,2),
   tax_income DECIMAL(18, 2),
   total_salary DECIMAL(18, 2),
   note NVARCHAR(255),
@@ -261,18 +260,18 @@ CREATE TABLE PaySlip (
   FOREIGN KEY (contract_id) REFERENCES EmployeeContract(contract_id),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
 );
-
 --Create DailySalary table
-Create table DailySalary (
-	dailysalary_id NVARCHAR(10) PRIMARY KEY,
-	employee_id NVARCHAR(10),
-	date DATE,
-	total_hours DECIMAL(18,2),
-	salary_per_hour DECIMAL(18,2),
-	total_salary DECIMAL(18, 2),
-	ot_hours DECIMAL(18,2),
-	ot_type NVARCHAR(50),
-	ot_salary DECIMAL(18,2),
-	FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+CREATE TABLE DailySalary (
+  dailysalary_id NVARCHAR(10) PRIMARY KEY,
+  employee_id NVARCHAR(10),
+  date DATE,
+  total_hours TIME,
+  salary_per_hour DECIMAL(18, 2),
+  total_salary DECIMAL(18, 2),
+  ot_hours TIME,
+  ot_type NVARCHAR(50),
+  ot_salary DECIMAL(18, 2),
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
+
 

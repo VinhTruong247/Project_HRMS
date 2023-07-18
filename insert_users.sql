@@ -9,6 +9,11 @@ delete from Department
 delete from Job
 delete from Allowances
 delete from Roles
+delete from DailySalary
+delete from Overtime
+
+
+
 
 INSERT INTO Permission (permission_id, permission_des, permission_displayName, status)
 VALUES
@@ -448,23 +453,52 @@ VALUES
 ('LV000008', 'EP000008', 'Annual Leave', '2023-07-25', '2023-07-27', 'Taking a short break', 1, 24.00);
 
 -- Insert data into Overtime table
-INSERT INTO Overtime (overtime_id, employee_id, Day, overtime_hours, status, isDeleted)
+INSERT INTO Overtime (overtime_id, overtime_type, employee_id, Day, overtime_hours, status, isDeleted)
 VALUES
+('OT000001', 'Time-and-a-half', 'EP000001', '2023-06-01', '01:00:00', 'Approved', 0),
+('OT000002', 'Time-and-a-half', 'EP000002', '2023-06-02', '01:30:00', 'Approved', 0),
+('OT000003', 'Time-and-a-half', 'EP000003', '2023-06-03', '00:30:00', 'Approved', 0),
+('OT000004', 'Time-and-a-half', 'EP000005', '2023-06-05', '01:00:00', 'Approved', 0),
+('OT000005', 'Time-and-a-half', 'EP000004', '2023-06-06', '00:30:00', 'Approved', 0),
+('OT000006', 'Time-and-a-half', 'EP000006', '2023-06-07', '00:45:00', 'Approved', 0),
+('OT000007', 'Time-and-a-half', 'EP000007', '2023-06-08', '01:40:00', 'Approved', 0),
+('OT000008', 'Time-and-a-half', 'EP000008', '2023-06-09', '01:00:00', 'Approved', 0),
+('OT000009', 'Time-and-a-half', 'EP000001', '2023-06-12', '01:30:00', 'Approved', 0),
+('OT000010', 'Time-and-a-half', 'EP000003', '2023-06-13', '02:00:00', 'Approved', 0);
 
-('OT000001', 'EP000001', '2023-07-03', '01:00:00', 'Approved', 0),
-('OT000002', 'EP000002', '2023-07-05', '01:30:00', 'Approved', 0),
-('OT000003', 'EP000003', '2023-07-06', '00:30:00', 'Approved', 0),
-('OT000004', 'EP000005', '2023-07-09', '01:00:00', 'Approved', 0),
-('OT000005', 'EP000004', '2023-07-12', '00:30:00', 'Approved', 0),
-('OT000006', 'EP000006', '2023-07-15', '00:45:00', 'Approved', 0),
-('OT000007', 'EP000007', '2023-07-18', '01:40:00', 'Approved', 0),
-('OT000008', 'EP000008', '2023-07-20', '01:00:00', 'Approved', 0),
-('OT000009', 'EP000001', '2023-07-22', '01:30:00', 'Approved', 0),
-('OT000010', 'EP000003', '2023-07-25', '02:00:00', 'Approved', 0);
 
 INSERT INTO Timesheet (timesheet_id, employee_id, time_in, time_out, day, status, totalWorkHours)
 SELECT CONCAT('TS', RIGHT('000000' + CAST(attendance_ID AS VARCHAR), 6)), employee_id, time_in, time_out, day, 1, total_hours
 FROM Attendance;
+
+
+INSERT INTO DailySalary (
+  dailysalary_id, employee_id, date, total_hours, salary_per_hour, ot_type
+)
+SELECT
+  'DS' + RIGHT('000000' + CAST(ROW_NUMBER() OVER (ORDER BY t.employee_id, t.day) AS NVARCHAR(10)), 6) AS dailysalary_id,
+  t.employee_id,
+  t.day,
+  t.totalWorkHours AS total_hours,
+  j.base_salary_per_hour AS salary_per_hour,
+  o.overtime_type AS ot_type
+FROM Timesheet t
+JOIN Employee e ON t.employee_id = e.employee_id
+JOIN Job j ON e.job_id = j.job_id
+LEFT JOIN (
+  SELECT
+    overtime_id,
+    overtime_type,
+    employee_id,
+    Day
+  FROM Overtime
+) o ON t.employee_id = o.employee_id AND t.day = o.Day;
+
+UPDATE DailySalary
+SET ot_hours = o.overtime_hours
+FROM DailySalary
+JOIN Overtime o ON DailySalary.employee_id = o.employee_id AND DailySalary.date = o.Day
+WHERE o.overtime_type = 'Time-and-a-half';
 
 
 select * from EmployeeBenefit
@@ -485,3 +519,4 @@ select * from DepartmentMemberList
 select * from EmployeeContract
 select * from PaySlip
 select * from Timesheet
+select * from DailySalary
