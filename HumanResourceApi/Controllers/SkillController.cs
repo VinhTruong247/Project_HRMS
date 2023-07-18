@@ -68,15 +68,10 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!skillIdRegex.IsMatch(skill.SkillId))
-                {
-                    return BadRequest("Wrong skillId Format.");
-                }
-                if (_skillRepo.GetAll().Any(s => s.SkillId == skill.SkillId))
-                {
-                    return BadRequest("Skill ID = " + skill.SkillId + " existed");
-                }
+                int count = _skillRepo.GetAll().Count() + 1;
+                var skillId = "SK" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Skill>(skill);
+                temp.SkillId = skillId;
                 _skillRepo.Add(temp);
                 return Ok(skill);
             }

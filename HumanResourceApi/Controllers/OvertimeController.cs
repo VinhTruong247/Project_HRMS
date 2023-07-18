@@ -91,10 +91,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                if (!overtimeIdRegex.IsMatch(overtime.OvertimeId))
-                {
-                    return BadRequest("Wrong overtimeId Format.");
-                }
                 if (_overtimeRepo.GetAll().Any(e => e.EmployeeId == overtime.EmployeeId && e.OvertimeId == overtime.OvertimeId))
                 {
                     return BadRequest("Overtime ID = " + overtime.OvertimeId + " existed");
@@ -103,9 +99,12 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Overtime request must be 2 days old.");
                 }
+                int count = _overtimeRepo.GetAll().Count() + 1;
+                var overtimeId = "OT" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Overtime>(overtime);
                 temp.Status = "Pending";
                 temp.IsDeleted = false;
+                temp.OvertimeId = overtimeId;
 
                 _overtimeRepo.Add(temp);
                 return Ok(_mapper.Map<OvertimeDto>(temp));

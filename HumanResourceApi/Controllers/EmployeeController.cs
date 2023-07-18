@@ -132,10 +132,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!x.IsMatch(employee.EmployeeId))
-                {
-                    return BadRequest("Wrong employeeId Format.");
-                }
                 if (!z.IsMatch(employee.DepartmentId))
                 {
                     return BadRequest("Wrong departmentId Format.");
@@ -144,15 +140,15 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong jobId Format.");
                 }
-                if (_employeeRepo.GetAll().Any(e => e.EmployeeId == employee.EmployeeId))
-                {
-                    return BadRequest("Employee ID = " + employee.EmployeeId + " existed");
-                }
+                
                 if (!emailRegex.IsMatch(employee.Email))
                 {
                     return BadRequest("Invalid Email Format");
                 }
+                int count = _employeeRepo.GetAll().Count() + 1;
+                var employeeId = "RP" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Employee>(employee);
+                temp.EmployeeId = employeeId;
                 _employeeRepo.Add(temp);
                 return Ok(temp);
             }

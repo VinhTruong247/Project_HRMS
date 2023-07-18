@@ -74,20 +74,15 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!contractIdRegex.IsMatch(contract.ContractId))
-                {
-                    return BadRequest("Wrong contractId Format.");
-                }
                 if (!employeeIdRegex.IsMatch(contract.EmployeeId))
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
                 bool validContract = _employeeContractRepo.GetAll().Any(c => c.ContractId == contract.ContractId);
-                if (validContract)
-                {
-                    return BadRequest("Contract ID = " + contract.ContractId + " existed");
-                }
+                int count = _employeeContractRepo.GetAll().Count() + 1;
+                var contractId = "CN" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<EmployeeContract>(contract);
+                temp.ContractId = contractId;
                 _employeeContractRepo.Add(temp);
                 return Ok(temp);
             }
