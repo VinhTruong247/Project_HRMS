@@ -171,7 +171,17 @@ namespace HumanResourceApi.Controllers
                 valid.EmployeeId = employeeId;
 
                 _paySlipRepo.Update(valid);
+<<<<<<< Updated upstream
                 return Ok(_mapper.Map<PaySlipDto>(valid));
+=======
+                var responsePayslip = _mapper.Map<PaySlipDto>(valid);
+                var tempEmp = _empRepo.GetAnEmployee(valid.EmployeeId);
+                responsePayslip.Tax = _paySlipRepo.GetTax(responsePayslip.TaxIncome);
+                responsePayslip.Allowance = _benefitRepo.GetAllowanceSum(responsePayslip.EmployeeId, responsePayslip.ActualWorkHours ?? 0);
+                responsePayslip.OtSalary = _otRepo.GetOtSalary(responsePayslip.OtHours ?? 0, responsePayslip.EmployeeId);
+                responsePayslip.BaseSalaryPerHour = tempEmp.Job.BaseSalaryPerHour ?? 0;
+                return Ok(responsePayslip);
+>>>>>>> Stashed changes
             }
             catch (Exception ex)
             {
