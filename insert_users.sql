@@ -490,27 +490,6 @@ LEFT JOIN (
 ) o ON t.employee_id = o.employee_id AND t.day = o.Day
 WHERE o.overtime_type = 'Time-and-a-half';
 
-INSERT INTO Payslip (payslip_id, employee_id, payslip_date, basic_salary, ot_salary, allowance_total, deduction_total, net_salary)
-SELECT
-    'PS' + RIGHT('000000' + CAST(ROW_NUMBER() OVER (ORDER BY e.employee_id, ds.date) AS NVARCHAR(10)), 6) AS payslip_id,
-    e.employee_id,
-    ds.date AS payslip_date,
-    ec.base_salary AS basic_salary,
-    CASE WHEN ds.ot_hours IS NOT NULL THEN ds.ot_salary ELSE 0 END AS ot_salary,
-    COALESCE(SUM(CASE WHEN ab.allowance_type = 'Monthly' THEN ab.amount ELSE ab.amount * (DATEDIFF(DAY, ds.date, ec.end_date) + 1) END), 0) AS allowance_total,
-    COALESCE(SUM(ded.amount), 0) AS deduction_total,
-    (ec.base_salary * 22) + CASE WHEN ds.ot_hours IS NOT NULL THEN ds.ot_salary ELSE 0 END + COALESCE(SUM(CASE WHEN ab.allowance_type = 'Monthly' THEN ab.amount ELSE ab.amount * (DATEDIFF(DAY, ds.date, ec.end_date) + 1) END), 0) - COALESCE(SUM(ded.amount), 0) AS net_salary
-FROM Employee e
-JOIN DailySalary ds ON e.employee_id = ds.employee_id
-JOIN EmployeeContract ec ON e.employee_id = ec.employee_id
-LEFT JOIN (
-    SELECT employee_id, allowance_type, amount
-    FROM EmployeeBenefit
-    WHERE status = 1
-) ab ON e.employee_id = ab.employee_id
-LEFT JOIN Deduction ded ON e.employee_id = ded.employee_id
-WHERE ds.date BETWEEN ec.start_date AND ec.end_date
-GROUP BY e.employee_id, ds.date, ec.base_salary, ds.ot_hours, ds.ot_salary, ec.end_date;
 
 select * from EmployeeBenefit
 select * from Experience
