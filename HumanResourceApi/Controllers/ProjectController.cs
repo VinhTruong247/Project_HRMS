@@ -72,10 +72,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!projectIdRegex.IsMatch(project.ProjectId))
-                {
-                    return BadRequest("Wrong projectId Format.");
-                }
                 if (!departmentIdRegex.IsMatch(project.DepartmentId))
                 {
                     return BadRequest("Wrong departmentId Format.");
@@ -84,7 +80,10 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Project ID = " + project.ProjectId + " existed");
                 }
+                int count = _projectRepo.GetAll().Count() + 1;
+                var projectId = "PJ" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Project>(project);
+                temp.ProjectId = projectId;
                 _projectRepo.Add(temp);
                 return Ok(temp);
             }

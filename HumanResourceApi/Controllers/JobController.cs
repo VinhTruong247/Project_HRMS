@@ -77,16 +77,10 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!jobIdRegex.IsMatch(job.JobId))
-                {
-                    return BadRequest("Wrong jobId Format.");
-                }
-                bool validJob = _job.GetAll().Any(j => j.JobId == job.JobId);
-                if (validJob)
-                {
-                    return BadRequest("Job ID = " + job.JobId + " existed");
-                }
+                int count = _job.GetAll().Count() + 1;
+                var jobId = "RP" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Job>(job);
+                temp.JobId = jobId;
                 _job.Add(temp);
                 return Ok(_mapper.Map<JobDto>(temp));
             }

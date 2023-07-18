@@ -74,15 +74,14 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                if (!employeeBenefitIdRegex.IsMatch(employeeBenefit.AllowancesId))
-                {
-                    return BadRequest("Wrong allowancesId Format.");
-                }
                 if (!allowanceIdRegex.IsMatch(employeeBenefit.AllowanceId))
                 {
                     return BadRequest("Wrong allowancesId Format.");
                 }
+                int count = _employeeBenefitRepo.GetAll().Count() + 1;
+                var benefitId = "EB" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<EmployeeBenefit>(employeeBenefit);
+                temp.EmployeebenefitId = benefitId;
                 _employeeBenefitRepo.Add(temp);
                 return Ok(_mapper.Map<EmployeeBenefitDto>(temp));
             }

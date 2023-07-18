@@ -73,15 +73,10 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!x.IsMatch(department.DepartmentId))
-                {
-                    return BadRequest("Wrong DepartmentId Format.");
-                }
-                if (_repo.GetAll().Any(d => d.DepartmentId == department.DepartmentId))
-                {
-                    return BadRequest("Department ID = " + department.DepartmentId + " existed.");
-                }
+                int count = _repo.GetAll().Count() + 1;
+                var departmentId = "RP" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Department>(department);
+                temp.DepartmentId = departmentId;
                 _repo.Add(temp);
                 return Ok(temp);
             }

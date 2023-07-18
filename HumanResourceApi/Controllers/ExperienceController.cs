@@ -78,20 +78,14 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!experienceIdRegex.IsMatch(experience.ExperienceId))
-                {
-                    return BadRequest("Wrong experienceId Format.");
-                }
                 if (!employeeIdRegex.IsMatch(experience.EmployeeId))
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                bool validExp = _experienceRepo.GetAll().Any(e => e.ExperienceId == experience.ExperienceId);
-                if (validExp)
-                {
-                    return BadRequest("Experience ID = " + experience.ExperienceId + " existed");
-                }
+                int count = _experienceRepo.GetAll().Count() + 1;
+                var experienceId = "EX" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Experience>(experience);
+                temp.ExperienceId = experienceId;
                 _experienceRepo.Add(temp);
                 return Ok(temp);
             }

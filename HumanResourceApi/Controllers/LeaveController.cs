@@ -16,7 +16,7 @@ namespace HumanResourceApi.Controllers
     {
         private readonly IMapper _mapper;
         private readonly LeaveRepo _leaveRepo;
-        public Regex leaveIdRegex = new Regex(@"^LE\d{6}");
+        public Regex leaveIdRegex = new Regex(@"^LV\d{6}");
         public Regex employeeIdRegex = new Regex(@"^EP\d{6}");
 
         public LeaveController(IMapper mapper, LeaveRepo leaveRepo)
@@ -73,20 +73,14 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!leaveIdRegex.IsMatch(leave.LeaveId))
-                {
-                    return BadRequest("Wrong leaveId Format.");
-                }
                 if (!employeeIdRegex.IsMatch(leave.EmployeeId))
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                bool validLeave = _leaveRepo.GetAll().Any(l => l.LeaveId == leave.LeaveId);
-                if (validLeave)
-                {
-                    return BadRequest("Leave ID = " + leave.LeaveId + " existed");
-                }
+                int count = _leaveRepo.GetAll().Count() + 1;
+                var leaveId = "LV" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Leave>(leave);
+                temp.LeaveId = leaveId;
                 _leaveRepo.Add(temp);
                 return Ok(temp);
             }
