@@ -15,6 +15,7 @@ using HumanResourceApi.DTO.Project;
 using HumanResourceApi.DTO.Report;
 using HumanResourceApi.DTO.Skill;
 using HumanResourceApi.DTO.SkillEmployee;
+using HumanResourceApi.DTO.Timesheet;
 using HumanResourceApi.DTO.Users;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
@@ -43,6 +44,7 @@ namespace HumanResourceApi.Helper
             PaySlipMap();
             ReportMap();
             OvertimeMap();
+            TimesheetMap();
         }
 
         private void ProjectMap()
@@ -177,6 +179,13 @@ namespace HumanResourceApi.Helper
                 .ReverseMap();
             CreateMap<Overtime, UpdateOvertimeDto>()
                 .ReverseMap();
+        }
+
+        private void TimesheetMap()
+        {
+            CreateMap<Timesheet, TimesheetDto>()
+                .ReverseMap();
+            
         }
     }
 }

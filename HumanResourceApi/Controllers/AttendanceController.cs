@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Attendance;
+using HumanResourceApi.DTO.Timesheet;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace HumanResourceApi.Controllers
 {
@@ -17,15 +19,17 @@ namespace HumanResourceApi.Controllers
         public readonly IMapper _mapper;
         public readonly AttendanceRepo _attendance;
         public readonly EmployeeRepo _employee;
+        public readonly TimesheetRepo _timesheet;
         public Regex employeeIdRegex = new Regex(@"^EP\d{6}");
 
         public readonly TimeSpan workTime = new TimeSpan(08, 00, 00);
 
-        public AttendanceController(IMapper mapper, AttendanceRepo attendance, EmployeeRepo employee)
+        public AttendanceController(IMapper mapper, AttendanceRepo attendance, EmployeeRepo employee, TimesheetRepo timesheet)
         {
             _mapper = mapper;
             _attendance = attendance;
             _employee = employee;
+            _timesheet = timesheet;
         }
 
         [SwaggerOperation(Summary = "get list of attendances")]
@@ -116,6 +120,24 @@ namespace HumanResourceApi.Controllers
                     TimeOut = timeOut,
                     TotalHours = totalHours
                 };
+
+                //create timesheet for the first time of the day
+                if (!_timesheet.GetAll().Any(t => t.EmployeeId == employeeId && t.Day == today))
+                {
+                    int countTimesheet = _timesheet.GetAll().Count() + 1;
+                    var timesheetId = "TS" + countTimesheet.ToString().PadLeft(6, '0');
+                    Timesheet timesheet = new Timesheet
+                    {
+                        TimesheetId = timesheetId,
+                        EmployeeId = employeeId,
+                        TimeIn = timeIn,
+                        TimeOut = timeOut,
+                        Day = today,
+                        TotalWorkHours = totalHours
+                    };
+                    _timesheet.Add(timesheet);
+                }
+
                 _attendance.Add(temp);
                 return Ok(_mapper.Map<AttendanceDto>(temp));
             }
@@ -152,6 +174,18 @@ namespace HumanResourceApi.Controllers
                 edit.TotalHours = edit.TimeOut - edit.TimeIn;
                 var valid = _attendance.GetAll().Where(a => a.EmployeeId == employeeId).OrderByDescending(a => a.AttendanceId).ToList()[0];
                 _mapper.Map(edit,valid);
+
+                //update timesheet of the day
+                if (_timesheet.GetAll().Any(t => t.EmployeeId == employeeId && t.Day == edit.Day))
+                {
+                    var timesheet = _mapper.Map<TimesheetDto>(_timesheet.GetAll().Where(t => t.EmployeeId == employeeId && t.Day == edit.Day).FirstOrDefault());
+                    timesheet.TimeOut = edit.TimeOut;
+                    timesheet.TotalWorkHours += edit.TotalHours;
+                    var validTimesheet = _timesheet.GetAll().Where(t => t.EmployeeId == employeeId && t.Day == edit.Day).FirstOrDefault();
+                    _mapper.Map(timesheet, validTimesheet);
+                    _timesheet.Update(validTimesheet);
+                }
+
                 _attendance.Update(valid);
                 return Ok(edit);
             }
