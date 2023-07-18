@@ -1,12 +1,6 @@
-<<<<<<< Updated upstream
 DROP DATABASE IF EXISTS HRMS;
 CREATE DATABASE HRMS;
 USE HRMS;
-=======
-drop database if exists HRMS
-create database HRMS
-use HRMS
->>>>>>> Stashed changes
 
 -- Create Department table
 CREATE TABLE Department (
@@ -185,19 +179,27 @@ CREATE TABLE EmployeeContract (
 
 -- Create Attendance table
 CREATE TABLE Attendance (
+  attendance_id NVARCHAR(10) primary key,
   employee_id NVARCHAR(10),
   day DATE,
-  arrivalTime TIME,
+  time_in TIME,
+  time_out TIME,
+  late_hours TIME,
+  early_leave_hours TIME,
   total_hours TIME,
+  attendance_status BIT,
   notes NVARCHAR(50),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
---Create AttendanceRecord
-create table AttendanceRecord(
+--Create Timesheet table
+create table Timesheet(
+	 timesheet_id NVARCHAR(10) PRIMARY KEY,
 	 employee_id NVARCHAR(10),
+	 time_in TIME,
+	 time_out TIME,
 	 day DATE,
-	 CheckinTime TIME,
-	 CheckoutTime TIME,
+	 status BIT,
+	 totalWorkHours time,
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 )
 
@@ -217,6 +219,7 @@ CREATE TABLE Leave (
 -- Create Overtime table
 CREATE TABLE Overtime (
   overtime_id NVARCHAR(10) PRIMARY KEY,
+  overtime_type NVARCHAR(50),
   employee_id NVARCHAR(10),
   Day DATE,
   overtime_hours TIME,
@@ -259,4 +262,17 @@ CREATE TABLE PaySlip (
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
 );
 
+--Create DailySalary table
+Create table DailySalary (
+	dailysalary_id NVARCHAR(10) PRIMARY KEY,
+	employee_id NVARCHAR(10),
+	date DATE,
+	total_hours DECIMAL(18,2),
+	salary_per_hour DECIMAL(18,2),
+	total_salary DECIMAL(18, 2),
+	ot_hours DECIMAL(18,2),
+	ot_type NVARCHAR(50),
+	ot_salary DECIMAL(18,2),
+	FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
 
