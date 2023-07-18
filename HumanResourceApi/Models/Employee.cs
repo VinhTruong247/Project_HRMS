@@ -8,6 +8,7 @@ namespace HumanResourceApi.Models
         public Employee()
         {
             Attendances = new HashSet<Attendance>();
+            DailySalaries = new HashSet<DailySalary>();
             EmployeeBenefits = new HashSet<EmployeeBenefit>();
             EmployeeContracts = new HashSet<EmployeeContract>();
             Experiences = new HashSet<Experience>();
@@ -16,6 +17,7 @@ namespace HumanResourceApi.Models
             PaySlips = new HashSet<PaySlip>();
             Reports = new HashSet<Report>();
             SkillEmployees = new HashSet<SkillEmployee>();
+            Timesheets = new HashSet<Timesheet>();
             Users = new HashSet<User>();
         }
 
@@ -38,6 +40,7 @@ namespace HumanResourceApi.Models
         public virtual Department Department { get; set; }
         public virtual Job Job { get; set; }
         public virtual ICollection<Attendance> Attendances { get; set; }
+        public virtual ICollection<DailySalary> DailySalaries { get; set; }
         public virtual ICollection<EmployeeBenefit> EmployeeBenefits { get; set; }
         public virtual ICollection<EmployeeContract> EmployeeContracts { get; set; }
         public virtual ICollection<Experience> Experiences { get; set; }
@@ -46,6 +49,7 @@ namespace HumanResourceApi.Models
         public virtual ICollection<PaySlip> PaySlips { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<SkillEmployee> SkillEmployees { get; set; }
+        public virtual ICollection<Timesheet> Timesheets { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }
