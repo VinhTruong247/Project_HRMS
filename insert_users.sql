@@ -460,9 +460,11 @@ INSERT INTO Timesheet (timesheet_id, employee_id, time_in, time_out, day, status
 SELECT CONCAT('TS', RIGHT('000000' + CAST(attendance_ID AS VARCHAR), 6)), employee_id, time_in, time_out, day, 1, total_hours
 FROM Attendance;
 
+delete from DailySalary
+
 
 INSERT INTO DailySalary (
-  dailysalary_id, employee_id, date, total_hours, salary_per_hour, ot_type, ot_hours, total_salary, ot_salary
+  dailysalary_id, employee_id, date, total_hours, salary_per_hour, total_salary, ot_type
 )
 SELECT
   'DS' + RIGHT('000000' + CAST(ROW_NUMBER() OVER (ORDER BY t.employee_id, t.day) AS NVARCHAR(10)), 6) AS dailysalary_id,
@@ -470,15 +472,11 @@ SELECT
   t.day,
   t.totalWorkHours AS total_hours,
   j.base_salary_per_hour AS salary_per_hour,
-  o.overtime_type AS ot_type,
-  o.overtime_hours AS ot_hours,
-  j.base_salary_per_hour * 9 AS total_salary,
-  CAST(j.base_salary_per_hour * 1.5 * (DATEPART(HOUR, o.overtime_hours) + DATEPART(MINUTE, o.overtime_hours) / 60.0) AS DECIMAL) AS ot_salary
+  CAST(j.base_salary_per_hour * DATEPART(HOUR,t.totalWorkHours) AS DECIMAL(18, 2)) AS total_salary,
+  o.overtime_type AS ot_type
 FROM Timesheet t
 JOIN Employee e ON t.employee_id = e.employee_id
-JOIN (
-  SELECT job_id, base_salary_per_hour FROM Job
-) j ON e.job_id = j.job_id
+JOIN Job j ON e.job_id = j.job_id
 LEFT JOIN (
   SELECT
     overtime_id,
@@ -487,8 +485,20 @@ LEFT JOIN (
     Day,
     overtime_hours
   FROM Overtime
-) o ON t.employee_id = o.employee_id AND t.day = o.Day
+) o ON t.employee_id = o.employee_id AND t.day = o.Day;
+UPDATE DailySalary
+SET ot_hours = CAST(DATEPART(HOUR, o.overtime_hours) AS NVARCHAR(2)) + ':' + RIGHT('00' + CAST(DATEPART(MINUTE, o.overtime_hours) AS NVARCHAR(2)), 2),
+    ot_salary = CAST(DATEPART(HOUR, o.overtime_hours) AS DECIMAL(18, 2)) * 1.5 * salary_per_hour
+FROM DailySalary
+JOIN Overtime o ON DailySalary.employee_id = o.employee_id AND DailySalary.date = o.Day
 WHERE o.overtime_type = 'Time-and-a-half';
+UPDATE DailySalary
+SET ot_hours = ISNULL(ot_hours, '00:00:00'),
+    ot_salary = ISNULL(ot_salary, 0),
+	ot_type = ISNULL(ot_type,'N/A')
+WHERE ot_type IS NULL OR ot_hours IS NULL OR ot_salary IS NULL;
+
+
 
 
 select * from EmployeeBenefit
@@ -509,6 +519,6 @@ select * from DepartmentMemberList
 select * from EmployeeContract
 select * from PaySlip
 select * from Timesheet
-SELECT *
-FROM DailySalary
-WHERE ot_hours IS NOT NULL;
+SELECT *FROM DailySalary
+WHERE ot_type = 'Time-and-a-half'
+
