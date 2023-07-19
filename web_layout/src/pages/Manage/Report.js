@@ -190,37 +190,31 @@ function Report(props) {
               {
                 label: 'Report ID',
                 field: 'reportId',
-                sort: 'asc',
                 width: 150
               },
               {
                 label: 'Employee Name',
                 field: 'employeeName',
-                sort: 'asc',
                 width: 150
               },
               {
                 label: 'Reason',
                 field: 'reason',
-                sort: 'asc',
                 width: 200
               },
               {
                 label: 'Content',
                 field: 'content',
-                sort: 'asc',
                 width: 200
               },
               {
                 label: 'Issue Date',
                 field: 'issueDate',
-                sort: 'asc',
                 width: 150
               },
               {
                 label: 'Status',
                 field: 'status',
-                sort: 'asc',
                 width: 150
               },
               {
