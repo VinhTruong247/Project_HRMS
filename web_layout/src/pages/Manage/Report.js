@@ -1,20 +1,26 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
+import { MDBDataTableV5 } from 'mdbreact';
 
 function Report(props) {
   const [data, setData] = useState([]);
-  const [showCreateForm, setShowForm] = useState(false);
   const token = JSON.parse(localStorage.getItem('jwtToken'));
   const [updateReport, setUpdateReport] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [validationError, setValidationError] = useState('');
-  const reportIdPattern = /^RP\d{6}$/;
+  const [selectedReport, setSelectedReport] = useState(null);
+  const [employeeNames, setEmployeeName] = useState([]);
+
   const handleEdit = (report) => {
     setUpdateReport(report);
     setShowUpdateForm(true);
   };
 
   const timeoutRef = useRef(null);
+
+  const handleDoubleClick = (report) => {
+    setSelectedReport(report);
+  };
 
   useEffect(() => {
     if (validationError) {
@@ -51,7 +57,31 @@ function Report(props) {
       });
   }, []);
 
-  //  UPDATE NEW REPORT
+  // Fetch employee
+  useEffect(() => {
+    fetch('https://localhost:7220/api/Employee/employees', {
+      method: "GET",
+      headers: {
+        'Content-Type': "application/json",
+        'Authorization': `Bearer ${token.token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("API response was not ok.");
+        }
+      })
+      .then((employees) => {
+        setEmployeeName(employees);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }, []);
+
+  //  UPDATE REPORT
   const handleUpdate = (event) => {
     event.preventDefault();
     const formData = {
@@ -95,37 +125,138 @@ function Report(props) {
 
   return (
     <div className="manager" style={{ position: "relative", marginTop: '2.5rem' }}>
+
+      <div className="card mb-3">
+        <div className="card-body">
+          <div className="row">
+            <div className="col-2">
+              <h3 className="mb-0">Report Details:</h3>
+            </div>
+            <div className="col-10 text-secondary">
+              {selectedReport && (
+                <div>
+
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <h4>Report ID:</h4>
+                      <p>{selectedReport.reportId}</p>
+                    </div>
+                    <div className="col-sm-3">
+                      <h4>Employee Name:</h4>
+                      <p>
+                        {employeeNames.find(employee => employee.employeeId === selectedReport.employeeId)
+                          ? `${employeeNames.find(employee => employee.employeeId === selectedReport.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === selectedReport.employeeId).lastName}`
+                          : 'Unknown'}
+                      </p>
+                    </div>
+                    <div className="col-sm-3">
+                      <h4>Employee ID:</h4>
+                      <p>{selectedReport.employeeId}</p>
+                    </div>
+                  </div>
+                  <hr />
+
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <h4>Reason:</h4>
+                      <p>{selectedReport.reason}</p>
+                    </div>
+                    <div className="col-sm-6">
+                      <h4>Issue Date:</h4>
+                      <p>{selectedReport.issueDate}</p>
+                    </div>
+                  </div>
+                  <hr />
+
+
+                  <h4>Content:</h4>
+                  <p>{selectedReport.content}</p>
+                  <hr />
+
+                  <h4>Status:</h4>
+                  <p>{selectedReport.status}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className='row'>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>Report ID</th>
-              <th>Employee ID</th>
-              <th>Reason</th>
-              <th>Content</th>
-              <th>Issue Date</th>
-              <th>Status</th>
-              <th>Options</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(report => (
-              <tr key={report.reportId}>
-                <td>{report.reportId}</td>
-                <td>{report.employeeId}</td>
-                <td>{report.reason}</td>
-                <td>{report.content}</td>
-                <td>{report.issueDate}</td>
-                <td>
-                  {report.status}
-                </td>
-                <td>
-                  <button onClick={() => handleEdit(report)}>Edit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <MDBDataTableV5
+          className='custom-table'
+          data={{
+            columns: [
+              {
+                label: 'Report ID',
+                field: 'reportId',
+                sort: 'asc',
+                width: 150
+              },
+              {
+                label: 'Employee Name',
+                field: 'employeeName',
+                sort: 'asc',
+                width: 150
+              },
+              {
+                label: 'Reason',
+                field: 'reason',
+                sort: 'asc',
+                width: 200
+              },
+              {
+                label: 'Content',
+                field: 'content',
+                sort: 'asc',
+                width: 200
+              },
+              {
+                label: 'Issue Date',
+                field: 'issueDate',
+                sort: 'asc',
+                width: 150
+              },
+              {
+                label: 'Status',
+                field: 'status',
+                sort: 'asc',
+                width: 150
+              },
+              {
+                label: 'Options',
+                field: 'options',
+                sort: 'disabled',
+                width: 100
+              }
+            ],
+            rows: data.map(report => ({
+              reportId: report.reportId,
+              employeeName: employeeNames.find(employee => employee.employeeId === report.employeeId)
+                ? `${employeeNames.find(employee => employee.employeeId === report.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === report.employeeId).lastName}`
+                : 'Unknown',
+              reason: report.reason,
+              content: report.content.length > 30 ? `${report.content.slice(0, 30)}...` : report.content,
+              issueDate: report.issueDate,
+              status: report.status,
+              options: (
+                <button onClick={() => handleEdit(report)}>Edit</button>
+              ),
+              clickEvent: () => handleDoubleClick(report)
+            }))
+          }}
+          hover
+          entriesOptions={[5, 10, 20]}
+          entries={5}
+          pagesAmount={5}
+          searchTop
+          searchBottom={false}
+          tbodyCustomRow={(row, rowIndex) => {
+            return {
+              onDoubleClick: row.clickEvent
+            };
+          }}
+        />
       </div>
 
       {showUpdateForm && (
