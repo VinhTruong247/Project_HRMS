@@ -7,10 +7,10 @@ namespace HumanResourceApi.Models
     {
         public string DailysalaryId { get; set; }
         public string EmployeeId { get; set; }
-        public DateTime? Date { get; set; }
-        public decimal? TotalHours { get; set; }
+        public DateTime Date { get; set; }
+        public decimal? TotalHours { get; set; }// null until checkout
         public decimal? SalaryPerHour { get; set; }
-        public decimal? TotalSalary { get; set; }
+        public decimal? TotalSalary { get; set; }// null until checkout
         public decimal? OtHours { get; set; }
         public string OtType { get; set; }
         public decimal? OtSalary { get; set; }

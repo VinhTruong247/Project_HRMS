@@ -191,6 +191,17 @@ CREATE TABLE Attendance (
   notes NVARCHAR(50),
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
+--Create Timesheet table
+create table Timesheet(
+	 timesheet_id NVARCHAR(10) PRIMARY KEY,
+	 employee_id NVARCHAR(10),
+	 time_in TIME,
+	 time_out TIME,
+	 day DATE,
+	 status BIT,
+	 totalWorkHours time,
+  FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+)
 
 -- Create Leave table
 CREATE TABLE Leave (
@@ -208,6 +219,7 @@ CREATE TABLE Leave (
 -- Create Overtime table
 CREATE TABLE Overtime (
   overtime_id NVARCHAR(10) PRIMARY KEY,
+  overtime_type NVARCHAR(50),
   employee_id NVARCHAR(10),
   Day DATE,
   overtime_hours TIME,
@@ -250,3 +262,16 @@ CREATE TABLE PaySlip (
   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
 );
 
+--Create DailySalary table
+Create table DailySalary (
+	dailysalary_id NVARCHAR(10) PRIMARY KEY,
+	employee_id NVARCHAR(10),
+	date DATE,
+	total_hours DECIMAL(18,2),
+	salary_per_hour DECIMAL(18,2),
+	total_salary DECIMAL(18, 2),
+	ot_hours DECIMAL(18,2),
+	ot_type NVARCHAR(50),
+	ot_salary DECIMAL(18,2),
+	FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);

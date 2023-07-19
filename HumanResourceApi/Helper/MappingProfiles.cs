@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Allowance;
 using HumanResourceApi.DTO.Attendance;
+using HumanResourceApi.DTO.DailySalary;
 using HumanResourceApi.DTO.Department;
 using HumanResourceApi.DTO.DepartmentMemberList;
 using HumanResourceApi.DTO.Employee;
@@ -45,6 +46,14 @@ namespace HumanResourceApi.Helper
             ReportMap();
             OvertimeMap();
             TimesheetMap();
+            DailySalaryMap();
+        }
+        private void DailySalaryMap()
+        {
+            CreateMap<ResponseDailySalary, DailySalary>()
+                .ReverseMap();
+            CreateMap<RequestDailySalary, DailySalary>()
+                .ReverseMap();
         }
 
         private void ProjectMap()
