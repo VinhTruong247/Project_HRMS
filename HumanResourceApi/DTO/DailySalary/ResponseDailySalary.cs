@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace HumanResourceApi.Models
+﻿namespace HumanResourceApi.DTO.DailySalary
 {
-    public partial class DailySalary
+    public class ResponseDailySalary
     {
         public string DailysalaryId { get; set; }
         public string EmployeeId { get; set; }
@@ -14,7 +11,7 @@ namespace HumanResourceApi.Models
         public TimeSpan OtHours { get; set; }
         public string OtType { get; set; }
         public decimal? OtSalary { get; set; }
-
-        public virtual Employee Employee { get; set; }
+        public decimal? DailyAllowance { get; set; }
+        public decimal? DailySalary { get; set; }
     }
 }

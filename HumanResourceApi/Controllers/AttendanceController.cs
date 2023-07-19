@@ -6,6 +6,7 @@ using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -20,16 +21,26 @@ namespace HumanResourceApi.Controllers
         public readonly AttendanceRepo _attendance;
         public readonly EmployeeRepo _employee;
         public readonly TimesheetRepo _timesheet;
+        private readonly DailySalaryRepo _dailySalaryRepo;
+        private readonly JobRepo _jobRepo;
+        private readonly OvertimeRepo _overtimeRepo;
+        private readonly EmployeeBenefitRepo _employeeBenefit;
         public Regex employeeIdRegex = new Regex(@"^EP\d{6}");
 
         public readonly TimeSpan workTime = new TimeSpan(08, 00, 00);
 
-        public AttendanceController(IMapper mapper, AttendanceRepo attendance, EmployeeRepo employee, TimesheetRepo timesheet)
+        public AttendanceController(IMapper mapper, AttendanceRepo attendance, EmployeeRepo employee, TimesheetRepo timesheet,
+                                    DailySalaryRepo dailySalaryRepo, JobRepo jobRepo, OvertimeRepo overtimeRepo,
+                                    EmployeeBenefitRepo employeeBenefit)
         {
             _mapper = mapper;
             _attendance = attendance;
             _employee = employee;
             _timesheet = timesheet;
+            _dailySalaryRepo = dailySalaryRepo;
+            _jobRepo = jobRepo;
+            _overtimeRepo = overtimeRepo;
+            _employeeBenefit = employeeBenefit;
         }
 
         [SwaggerOperation(Summary = "get list of attendances")]
@@ -139,6 +150,45 @@ namespace HumanResourceApi.Controllers
                     _timesheet.Add(timesheet);
                 }
 
+                //create dailySalary for the first time of the day
+                if (!_dailySalaryRepo.GetAll().Any(d => d.EmployeeId == employeeId && d.Date == today))
+                {
+                    var selectedEmployee = _employee.GetAnEmployee(employeeId);
+                    var salaryPerHour = selectedEmployee.Job.BaseSalaryPerHour ?? 0; 
+                    var overtime = _overtimeRepo.GetAll().Where(o => o.EmployeeId == employeeId && o.Day == today).FirstOrDefault();
+                    TimeSpan otHours = TimeSpan.Zero;
+                    string otType = "N/A";
+                    decimal otSalary = 0;
+                    if (overtime != null)
+                    {
+                        decimal multiplier = (decimal)1.5;
+                        //check if ot in weekend?
+                        if(today.DayOfWeek == DayOfWeek.Saturday || today.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            multiplier = 2;
+                        }
+                        otHours = overtime.OvertimeHours;
+                        otType = overtime.OvertimeType;
+                        otSalary = (decimal)otHours.TotalHours * salaryPerHour * multiplier;
+
+                    }
+                    int countDailySalary = _dailySalaryRepo.GetAll().Count() + 1;
+                    var timesheetId = "DS" + countDailySalary.ToString().PadLeft(6, '0');
+                    
+
+                    DailySalary dailySalary = new DailySalary
+                    {
+                        DailysalaryId = timesheetId,
+                        EmployeeId = employeeId,
+                        Date = today,
+                        SalaryPerHour = salaryPerHour,
+                        OtHours = otHours,
+                        OtType = otType,
+                        OtSalary = otSalary,
+                    };
+                    _dailySalaryRepo.Add(dailySalary);
+                }
+
                 _attendance.Add(temp);
                 return Ok(_mapper.Map<AttendanceDto>(temp));
             }
@@ -188,6 +238,22 @@ namespace HumanResourceApi.Controllers
                 }
 
                 _attendance.Update(valid);
+
+                //update dailySalary of the day
+                if(_dailySalaryRepo.GetAll().Any(d => d.EmployeeId == employeeId && d.Date == edit.Day))
+                {
+                    var timesheet = _timesheet.GetAll().Where(t => t.EmployeeId == employeeId && t.Day == edit.Day).FirstOrDefault();
+
+                    var dailySalary = _dailySalaryRepo.GetAll().Where(d => d.EmployeeId == employeeId && d.Date == edit.Day).FirstOrDefault();
+                    var totalHour = timesheet.TotalWorkHours ?? TimeSpan.Zero;
+                    dailySalary.TotalHours = totalHour;
+                    var dailyAllowance = _employeeBenefit.GetDailyAllowance(employeeId);
+                    decimal dTotalHours = (decimal)totalHour.TotalHours;
+                    var totalSalary = Math.Round((decimal)dailySalary.TotalHours.TotalHours,2) * dailySalary.SalaryPerHour;
+                    dailySalary.TotalSalary = totalSalary;
+
+                    _dailySalaryRepo.Update(dailySalary);
+                }
                 return Ok(edit);
             }
             catch (Exception ex)
