@@ -10,6 +10,7 @@ function Department(props) {
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState('');
     const [selectedReport, setSelectedReport] = useState(null);
+    
     const departmentIdPattern = /^DP\d{6}$/;
     const handleEdit = (department) => {
         setUpdateDepartment(department);
@@ -193,7 +194,7 @@ function Department(props) {
                 <div className="card-body">
                     <div className="row">
                         <div className="col-2">
-                            <h3>Employee Details:</h3>
+                            <h3 className="mb-0">Department Details:</h3>
                         </div>
                         <div className="col-10 text-secondary">
                             {selectedReport && (

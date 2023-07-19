@@ -124,7 +124,7 @@ h5 {
 
 p {
     color: black;
-    margin-bottom: 0px!important;
+    margin-bottom: 0px !important;
 }
 
 .danger {
@@ -538,16 +538,19 @@ tr:hover td {
 
 table.mdb-dataTable thead>tr>th.sorting_asc,
 table.mdb-dataTable thead>tr>th.sorting_desc,
-table.mdb-dataTable thead>tr>th.sorting,
 table.mdb-dataTable thead>tr>td.sorting_asc,
 table.mdb-dataTable thead>tr>td.sorting_desc,
-table.mdb-dataTable thead>tr>td.sorting,
 table thead.mdb-dataTable-head>tr>th.sorting_asc,
 table thead.mdb-dataTable-head>tr>th.sorting_desc,
-table thead.mdb-dataTable-head>tr>th.sorting,
 table thead.mdb-dataTable-head>tr>td.sorting_asc,
-table thead.mdb-dataTable-head>tr>td.sorting_desc,
-table thead.mdb-dataTable-head>tr>td.sorting {
+table thead.mdb-dataTable-head>tr>td.sorting_desc {
+    padding-left: 20px;
+}
+
+table.mdb-dataTable thead>tr>td.sorting:hover,
+table.mdb-dataTable thead>tr>th.sorting:hover,
+table thead.mdb-dataTable-head>tr>td.sorting:hover,
+table thead.mdb-dataTable-head>tr>th.sorting:hover {
     padding-left: 20px;
 }
 
@@ -592,6 +595,13 @@ table thead.mdb-dataTable-head .sorting_asc_disabled:after,
 table thead.mdb-dataTable-head .sorting_desc_disabled:after {
     left: -0.1rem !important;
     margin-left: 0.4rem;
+}
+
+table thead.mdb-dataTable-head .sorting:before,
+table.mdb-dataTable thead .sorting:before,
+table.mdb-dataTable thead .sorting_asc:before,
+table thead.mdb-dataTable-head .sorting_asc:before {
+    left: 0 !important;
 }
 
 .my-1 {

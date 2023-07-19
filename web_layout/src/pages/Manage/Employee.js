@@ -361,7 +361,7 @@ function Employee(props) {
                 <div className="card-body">
                     <div className="row">
                         <div className="col-2">
-                            <h3>Employee Details:</h3>
+                            <h3 className="mb-0">Employee Details:</h3>
                         </div>
                         <div className="col-10 text-secondary">
                             {selectedReport && (
