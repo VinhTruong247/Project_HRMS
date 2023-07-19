@@ -27,8 +27,9 @@ namespace HumanResourceApi.Controllers
                 var dailySalaryList = _mapper.Map<List<ResponseDailySalary>>(_dailySalaryRepo.GetAll().ToList());
                 dailySalaryList.ForEach(dailySalary =>
                 {
-                    dailySalary.BaseSalary = dailySalary.TotalHours * dailySalary.SalaryPerHour;
-                    dailySalary.DailyAllowance = _employeeBenefitRepo.GetDailyAllowance(dailySalary.EmployeeId);
+                    decimal dailyAllowance = _employeeBenefitRepo.GetDailyAllowance(dailySalary.EmployeeId);
+                    dailySalary.DailyAllowance = dailyAllowance;
+                    dailySalary.DailySalary = _dailySalaryRepo.GetDailySalary((decimal)dailySalary.TotalHours.TotalHours, dailySalary.SalaryPerHour ?? 0, dailySalary.OtSalary ?? 0, dailyAllowance);
                 });
                 return Ok(dailySalaryList);
             }
@@ -49,8 +50,9 @@ namespace HumanResourceApi.Controllers
                     .ToList());
                 dailySalaryList.ForEach(dailySalary =>
                 {
-                    dailySalary.BaseSalary = dailySalary.TotalHours * dailySalary.SalaryPerHour;
-                    dailySalary.DailyAllowance = _employeeBenefitRepo.GetDailyAllowance(dailySalary.EmployeeId);
+                    decimal dailyAllowance = _employeeBenefitRepo.GetDailyAllowance(dailySalary.EmployeeId);
+                    dailySalary.DailyAllowance = dailyAllowance;
+                    dailySalary.DailySalary = _dailySalaryRepo.GetDailySalary((decimal)dailySalary.TotalHours.TotalHours, dailySalary.SalaryPerHour ?? 0, dailySalary.OtSalary ?? 0, dailyAllowance);
                 });
                 return Ok(dailySalaryList);
             }

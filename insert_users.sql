@@ -9,6 +9,11 @@ delete from Department
 delete from Job
 delete from Allowances
 delete from Roles
+delete from DailySalary
+delete from Overtime
+
+
+
 
 INSERT INTO Permission (permission_id, permission_des, permission_displayName, status)
 VALUES
@@ -38,14 +43,14 @@ VALUES
   ('AL000008', 'Travel','Daily', 30000.00, 1),
   ('AL000009', 'Fitness','Daily', 20000.00, 1),
   ('AL000010', 'Parking','Daily', 10000.00, 1),
-  ('AL000011', 'Software Development Allowance','Monthly', 50000.00, 1),
-  ('AL000012', 'Database Administration Allowance','Monthly',  40000.00, 1),
-  ('AL000013', 'Network Operations Allowance','Monthly',  60000.00, 1),
-  ('AL000014', 'IT Support Allowance','Monthly',  30000.00, 1),
-  ('AL000015', 'Quality Assurance Allowance','Monthly', 40000.00, 1),
-  ('AL000016', 'Human Resources Allowance','Monthly',  20000.00, 1),
-  ('AL000017', 'Cybersecurity Allowance','Monthly',  50000.00, 1),
-  ('AL000018', 'Business Analysis Allowance','Monthly', 45000.00, 1);
+  ('AL000011', 'Software Development Allowance','Monthly', 500000.00, 1),
+  ('AL000012', 'Database Administration Allowance','Monthly',  400000.00, 1),
+  ('AL000013', 'Network Operations Allowance','Monthly',  600000.00, 1),
+  ('AL000014', 'IT Support Allowance','Monthly',  300000.00, 1),
+  ('AL000015', 'Quality Assurance Allowance','Monthly', 400000.00, 1),
+  ('AL000016', 'Human Resources Allowance','Monthly',  200000.00, 1),
+  ('AL000017', 'Cybersecurity Allowance','Monthly',  500000.00, 1),
+  ('AL000018', 'Business Analysis Allowance','Monthly', 450000.00, 1);
 -- Insert 13 jobs
 INSERT INTO Job (job_id, job_title, job_description,  status, base_salary_per_hour, bonus)
 VALUES
@@ -424,17 +429,6 @@ VALUES
   ('CN000007', 'EP000007', 'contract_file7.pdf', '2022-07-01', '2022-12-31', 'JB000005', 70000.00, 1, 0.05, 'Monthly', 'Full-time'),
   ('CN000008', 'EP000008', 'contract_file8.pdf', '2022-08-20', '2022-12-31', 'JB000009', 50000.00, 1, 0.05, 'Monthly', 'Full-time');
 
-  INSERT INTO PaySlip (payslip_id, employee_id, paid_date, base_salary, ot_hours, contract_id, standard_work_hours, actual_work_hours, tax_income, total_salary, note, BankAccountNumber, BankAccountName, BankName, status)
-VALUES
-  ('PS000001', 'EP000001', '2023-07-01', 1000000.00, 20.00, 'CN000001', 18.00, 18.00, 200000.00, 1500000.00, 'Received a bonus for outstanding performance.', 123456789, N'Hồ Nguyễn', 'Bank XYZ', 'Approved'),
-  ('PS000002', 'EP000002', '2023-07-01', 1000000.00, 15.50, 'CN000002', 18.00, 18.00, 150000.00, 1350000.00, 'Overtime hours were reduced due to completion of a project ahead of schedule.', 987654321, N'Mai Trần', 'Bank ABC', 'Approved'),
-  ('PS000003', 'EP000003', '2023-07-01', 1000000.00, 8.50, 'CN000003', 18.00, 18.00, 250000.00, 2250000.00, 'Received a tax refund for overpayment in the previous month.', 246813579, N'Thắm Lê', 'Bank DEF', 'Approved'),
-  ('PS000004', 'EP000005', '2023-07-01', 800000.00, 10.00, 'CN000004', 18.00, 18.00, 100000.00, 900000.00, 'Base salary was adjusted due to a promotion.', 123456789, N'Bình Lê', 'Bank ABC', 'Approved'),
-  ('PS000005', 'EP000004', '2023-07-01', 900000.00, 18.00, 'CN000005', 18.00, 18.00, 180000.00, 1220000.00, 'Earned a performance bonus for achieving sales targets.', 987654321, N'Nam Trần', 'Bank XYZ', 'Approved'),
-  ('PS000006', 'EP000006', '2023-07-01', 1200000.00, 22.50, 'CN000006', 18.00, 18.00, 225000.00, 2175000.00, 'Received a pay raise as part of the annual salary review.', 246813579, N'Lan Vũ', 'Bank DEF', 'Approved'),
-  ('PS000007', 'EP000007', '2023-07-01', 1200000.00, 17.50, 'CN000007', 18.00, 18.00, 175000.00, 1225000.00, 'Base salary adjusted due to a change in job responsibilities.', 987654321, N'Minh Trần', 'Bank XYZ', 'Approved'),
-  ('PS000008', 'EP000008', '2023-07-01', 800000.00, 12.00, 'CN000008', 18.00, 18.00, 120000.00, 970000.00, 'Received a one-time performance bonus for completing a challenging project.', 123456789, N'An Lê', 'Bank ABC', 'Approved');
-
 -- Insert data into Leave table
 INSERT INTO Leave (leave_id, employee_id, leave_type, start_date, end_date, reason, status, leave_hours)
 VALUES
@@ -448,23 +442,63 @@ VALUES
 ('LV000008', 'EP000008', 'Annual Leave', '2023-07-25', '2023-07-27', 'Taking a short break', 1, 24.00);
 
 -- Insert data into Overtime table
-INSERT INTO Overtime (overtime_id, employee_id, Day, overtime_hours, status, isDeleted)
+INSERT INTO Overtime (overtime_id, overtime_type, employee_id, Day, overtime_hours, status, isDeleted)
 VALUES
+('OT000001', 'Time-and-a-half', 'EP000001', '2023-06-01', '01:00:00', 'Approved', 0),
+('OT000002', 'Time-and-a-half', 'EP000002', '2023-06-02', '01:30:00', 'Approved', 0),
+('OT000003', 'Time-and-a-half', 'EP000003', '2023-06-03', '00:30:00', 'Approved', 0),
+('OT000004', 'Time-and-a-half', 'EP000005', '2023-06-05', '01:00:00', 'Approved', 0),
+('OT000005', 'Time-and-a-half', 'EP000004', '2023-06-06', '00:30:00', 'Approved', 0),
+('OT000006', 'Time-and-a-half', 'EP000006', '2023-06-07', '00:45:00', 'Approved', 0),
+('OT000007', 'Time-and-a-half', 'EP000007', '2023-06-08', '01:40:00', 'Approved', 0),
+('OT000008', 'Time-and-a-half', 'EP000008', '2023-06-09', '01:00:00', 'Approved', 0),
+('OT000009', 'Time-and-a-half', 'EP000001', '2023-06-12', '01:30:00', 'Approved', 0),
+('OT000010', 'Time-and-a-half', 'EP000003', '2023-06-13', '02:00:00', 'Approved', 0);
 
-('OT000001', 'EP000001', '2023-07-03', '01:00:00', 'Approved', 0),
-('OT000002', 'EP000002', '2023-07-05', '01:30:00', 'Approved', 0),
-('OT000003', 'EP000003', '2023-07-06', '00:30:00', 'Approved', 0),
-('OT000004', 'EP000005', '2023-07-09', '01:00:00', 'Approved', 0),
-('OT000005', 'EP000004', '2023-07-12', '00:30:00', 'Approved', 0),
-('OT000006', 'EP000006', '2023-07-15', '00:45:00', 'Approved', 0),
-('OT000007', 'EP000007', '2023-07-18', '01:40:00', 'Approved', 0),
-('OT000008', 'EP000008', '2023-07-20', '01:00:00', 'Approved', 0),
-('OT000009', 'EP000001', '2023-07-22', '01:30:00', 'Approved', 0),
-('OT000010', 'EP000003', '2023-07-25', '02:00:00', 'Approved', 0);
 
 INSERT INTO Timesheet (timesheet_id, employee_id, time_in, time_out, day, status, totalWorkHours)
 SELECT CONCAT('TS', RIGHT('000000' + CAST(attendance_ID AS VARCHAR), 6)), employee_id, time_in, time_out, day, 1, total_hours
 FROM Attendance;
+
+delete from DailySalary
+
+
+INSERT INTO DailySalary (
+  dailysalary_id, employee_id, date, total_hours, salary_per_hour, total_salary, ot_type
+)
+SELECT
+  'DS' + RIGHT('000000' + CAST(ROW_NUMBER() OVER (ORDER BY t.employee_id, t.day) AS NVARCHAR(10)), 6) AS dailysalary_id,
+  t.employee_id,
+  t.day,
+  t.totalWorkHours AS total_hours,
+  j.base_salary_per_hour AS salary_per_hour,
+  CAST(j.base_salary_per_hour * DATEPART(HOUR,t.totalWorkHours) AS DECIMAL(18, 2)) AS total_salary,
+  o.overtime_type AS ot_type
+FROM Timesheet t
+JOIN Employee e ON t.employee_id = e.employee_id
+JOIN Job j ON e.job_id = j.job_id
+LEFT JOIN (
+  SELECT
+    overtime_id,
+    overtime_type,
+    employee_id,
+    Day,
+    overtime_hours
+  FROM Overtime
+) o ON t.employee_id = o.employee_id AND t.day = o.Day;
+UPDATE DailySalary
+SET ot_hours = CAST(DATEPART(HOUR, o.overtime_hours) AS NVARCHAR(2)) + ':' + RIGHT('00' + CAST(DATEPART(MINUTE, o.overtime_hours) AS NVARCHAR(2)), 2),
+    ot_salary = CAST(DATEPART(HOUR, o.overtime_hours) AS DECIMAL(18, 2)) * 1.5 * salary_per_hour
+FROM DailySalary
+JOIN Overtime o ON DailySalary.employee_id = o.employee_id AND DailySalary.date = o.Day
+WHERE o.overtime_type = 'Time-and-a-half';
+UPDATE DailySalary
+SET ot_hours = ISNULL(ot_hours, '00:00:00'),
+    ot_salary = ISNULL(ot_salary, 0),
+	ot_type = ISNULL(ot_type,'N/A')
+WHERE ot_type IS NULL OR ot_hours IS NULL OR ot_salary IS NULL;
+
+
 
 
 select * from EmployeeBenefit
@@ -485,3 +519,5 @@ select * from DepartmentMemberList
 select * from EmployeeContract
 select * from PaySlip
 select * from Timesheet
+SELECT *FROM DailySalary
+WHERE ot_type = 'Time-and-a-half'
