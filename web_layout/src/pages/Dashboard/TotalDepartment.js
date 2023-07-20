@@ -11,7 +11,8 @@ export default function TotalDepartment() {
                             <h3>Total Department</h3>
                             <h5>Base on company list</h5>
                         </div>
-                        <div className="col-lg-6"><button>View More</button></div>
+                        <div className="col-lg-6"><a href="manage/department"><button>View More</button></a></div>
+
                     </div>
                 </div>
                 <hr />

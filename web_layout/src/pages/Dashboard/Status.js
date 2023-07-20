@@ -11,7 +11,7 @@ export default function Status() {
                             <h3>Report Status</h3>
                             <h5>Request Approval Status</h5>
                         </div>
-                        <div className="col-lg-6"><button>View More</button></div>
+                        <div className="col-lg-6"><a href="manage/report"><button>View More</button></a></div>
                     </div>
                 </div>
                 <hr />
