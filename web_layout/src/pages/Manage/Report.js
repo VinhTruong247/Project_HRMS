@@ -8,8 +8,8 @@ function Report(props) {
   const [updateReport, setUpdateReport] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [validationError, setValidationError] = useState('');
-  const [selectedReport, setSelectedReport] = useState(null);
   const [employeeNames, setEmployeeName] = useState([]);
+  const [selectedReport, setSelectedReport] = useState(null);
 
   const handleEdit = (report) => {
     setUpdateReport(report);

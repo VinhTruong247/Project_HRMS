@@ -106,6 +106,11 @@ function Jobs(props) {
       return;
     }
 
+    if (formData.baseSalaryPerHour < 0) {
+      setValidationError('Input cannot be negative')
+      return;
+    }
+
     fetch('https://localhost:7220/api/Job/create', {
       method: 'POST',
       headers: {
@@ -164,6 +169,11 @@ function Jobs(props) {
 
     if (isNaN(formData.baseSalaryPerHour)) {
       setValidationError('Base salary must be in number format');
+      return;
+    }
+
+    if (formData.baseSalaryPerHour < 0) {
+      setValidationError('Input cannot be negative')
       return;
     }
 
