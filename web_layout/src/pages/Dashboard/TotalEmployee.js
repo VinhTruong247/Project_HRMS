@@ -11,7 +11,7 @@ export default function TotalEmployee() {
                             <h3>Total Employee</h3>
                             <h5>Base on company list</h5>
                         </div>
-                        <div className="col-lg-6"><button>View More</button></div>
+                        <div className="col-lg-6"><a href="manage/employee"><button>View More</button></a></div>
                     </div>
                 </div>
                 <hr />

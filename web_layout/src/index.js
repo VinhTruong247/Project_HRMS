@@ -22,6 +22,8 @@ import Jobs from './pages/Manage/Jobs';
 import Timeline from './pages/Timeline';
 import Report from './pages/Manage/Report';
 import Allowance from './pages/Manage/Allowance';
+import Payslip from './pages/Payment/Payslip';
+import DailySalaryDetail from './pages/Payment/DailySalaryDetail';
 
 
 const router = createBrowserRouter([
@@ -45,7 +47,11 @@ const router = createBrowserRouter([
     {path: "statistics",element: <Statistics/>,},
     {path: "timeline",element: <Timeline/>},
     {path: "groups",element: <Groups/>},
-    {path: "payment",element: <Payment/>},
+    {path: "payment",element: <Payment/>,children:
+    [
+      {path: "payslip",element: <Payslip/>},
+      {path: "dailysalarydetail",element: <DailySalaryDetail/>},
+              ]},
     ]
   },
   {
