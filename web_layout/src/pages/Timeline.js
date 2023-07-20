@@ -6,8 +6,9 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-calendar/dist/Calendar.css';
 import '../css/style.css';
 import Status from './Dashboard/Status';
-import OngoingStatics from './Dashboard/OngoingStatics';
 import TotalLeaves from './Timeline/TotalLeaves';
+import DepartmentCounter from '../component/management/Counter/DepartmentCounter';
+import TotalEmployee from './Dashboard/TotalEmployee';
 
 
 const localizer = momentLocalizer(moment);
@@ -22,7 +23,7 @@ const Timeline = () => {
       <div className="row">
                 <TotalLeaves />
                 <Status />
-                <OngoingStatics />
+                <TotalEmployee />
             </div>
         </div>
 

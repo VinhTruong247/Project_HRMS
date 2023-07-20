@@ -8,7 +8,7 @@ function Payment() {
   
     return (
       <div className='payment_page'>
-        <div className="navbar-brand">Payment Details</div>
+        <div className="navbar-brand">Payment</div>
         <div className='row'>
         <Payslip/>
       </div>

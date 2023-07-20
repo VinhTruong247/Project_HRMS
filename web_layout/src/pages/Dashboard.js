@@ -1,13 +1,14 @@
 import React from 'react';
 import TotalEmployee from './Dashboard/TotalEmployee';
 import Status from './Dashboard/Status';
-import OngoingStatics from './Dashboard/OngoingStatics';
+import DepartmentCounter from '../component/management/Counter/DepartmentCounter';
 import CheckLog from './Dashboard/CheckLog';
 import Overall from './Dashboard/Overall';
 import WorkComplete from './Dashboard/WorkComplete';
 import WideCalendar from './Dashboard/WideCalendar';
 import { BrowserRouter as Router, Route, Link, Outlet, NavLink } from 'react-router-dom';
 import useData from "../hooks/useData";
+import TotalDepartment from './Dashboard/TotalDepartment';
 
 
 function Dasboard() {
@@ -23,7 +24,7 @@ function Dasboard() {
             <div className="row">
                 <TotalEmployee />
                 <Status />
-                <OngoingStatics />
+                <TotalDepartment />
             </div>
             <div className="row">
                 <Overall/>

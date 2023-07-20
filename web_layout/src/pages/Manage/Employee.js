@@ -294,6 +294,11 @@ function Employee(props) {
             return;
         }
 
+        if (isNaN(formData.phoneNumber)) {
+            setValidationError('Phone must be in number format');
+            return;
+        }
+
         if (!phoneNumberPattern.test(formData.phoneNumber)) {
             setValidationError('Phone number is not valid');
             return;
@@ -301,6 +306,11 @@ function Employee(props) {
 
         if (!formData.bankAccountNumber) {
             setValidationError('Bank account number is required');
+            return;
+        }
+
+        if (isNaN(formData.bankAccountNumber)) {
+            setValidationError('Input must be in number format');
             return;
         }
 

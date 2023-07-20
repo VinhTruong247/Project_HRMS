@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import moment from "moment";
+import { MDBDataTableV5 } from "mdbreact";
 
 function Payslip(props) {
     const [data, setData] = useState([]);
@@ -10,12 +11,21 @@ function Payslip(props) {
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState("");
     const [employeeId, setEmployeeId] = useState([]);
+    const [employeeNames, setEmployeeName] = useState([]);
+    const [selectedReport, setSelectedReport] = useState(null);
+    // const percentageRegex = /^\d+(\.\d{1,2})?%?$/;
+
     const handleEdit = (payslip) => {
         setUpdatePayslip(payslip);
         setShowUpdateForm(true);
     };
 
     const timeoutRef = useRef(null);
+
+    const handleDoubleClick = (report) => {
+        setSelectedReport(report);
+    };
+
 
     useEffect(() => {
         if (validationError) {
@@ -70,6 +80,7 @@ function Payslip(props) {
             })
             .then((employees) => {
                 setEmployeeId(employees);
+                setEmployeeName(employees);
             })
             .catch((error) => {
                 console.error("There was a problem with the fetch operation:", error);
@@ -83,6 +94,7 @@ function Payslip(props) {
             employeeId: event.target.elements.employeeId.value,
             payPeriod: event.target.elements.payPeriod.value,
             paidDate: event.target.elements.paidDate.value,
+            bhytPercentage: parseFloat(event.target.elements.bhytPercentage.value) / 100,
             note: event.target.elements.note.value,
         };
 
@@ -91,8 +103,33 @@ function Payslip(props) {
             return;
         }
 
+        if (!formData.paidDate) {
+            setValidationError('Pay date is required');
+            return;
+        }
+
         if (!formData.note) {
             setValidationError("Note is required");
+            return;
+        }
+
+        if (!formData.bhytPercentage) {
+            setValidationError('Input needed is required');
+            return;
+        }
+
+        if (isNaN(formData.bhytPercentage)) {
+            setValidationError('Input must be in number format');
+            return;
+        }
+
+        if (formData.bhytPercentage < 0) {
+            setValidationError('Input cannot be negative')
+            return;
+        }
+
+        if (formData.bhytPercentage < 0 || formData.bhytPercentage > 100) {
+            setValidationError('Value must be between 0 and 100')
             return;
         }
 
@@ -137,6 +174,11 @@ function Payslip(props) {
 
         if (!formData.payPeriod) {
             setValidationError("Pay period is required");
+            return;
+        }
+
+        if (!formData.paidDate) {
+            setValidationError('Pay date is required');
             return;
         }
 
@@ -186,10 +228,184 @@ function Payslip(props) {
 
     return (
         <div className="manager" style={{ position: "relative" }}>
+            <div className="row addbtn">
+                <button className="btn_create" onClick={() => setShowForm(true)}>
+                    Add Payslip
+                </button>
+            </div>
+
+            <div className="card mb-3">
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-2">
+                            <h3 className="mb-0">Payment Details:</h3>
+                        </div>
+                        <div className="col-10 text-secondary">
+                            {selectedReport && (
+                                <div>
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Employee ID:</h4>
+                                            <p>{selectedReport.employeeId}</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Employee Name:</h4>
+                                            <p>
+                                                {employeeNames.find(employee => employee.employeeId === selectedReport.employeeId)
+                                                    ? `${employeeNames.find(employee => employee.employeeId === selectedReport.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === selectedReport.employeeId).lastName}`
+                                                    : 'Unknown'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Pay Period:</h4>
+                                            <p>{selectedReport.payPeriod}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Pay Date:</h4>
+                                            <p>{selectedReport.paidDate}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Work Hour Status (OT Hours):</h4>
+                                            <p>{selectedReport.actualWorkHours}H/{selectedReport.standardWorkHours}H ({selectedReport.otHours})</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Base Salary per Hour:</h4>
+                                            <p>{selectedReport.baseSalaryPerHour.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Total Base Salary:</h4>
+                                            <p>{selectedReport.baseSalary.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Allowance:</h4>
+                                            <p>{selectedReport.allowance.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Health Insurance Deduction Amount (%):</h4>
+                                            <p>{selectedReport.bhytAmount.toLocaleString()} ({selectedReport.bhytPercentage * 100}%)</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Before Deduction:</h4>
+                                            <p>{selectedReport.totalBeforeDeduction.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Personal Exemption:</h4>
+                                            <p>{selectedReport.giamTruGiaCanh.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Dependent Exemption ({selectedReport.dependent} person(s)):</h4>
+                                            <p>{selectedReport.giamTruGiaCanhNguoiPhuThuoc.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Tax Income:</h4>
+                                            <p style={{color: 'red', fontWeight: 'bold'}}>{selectedReport.taxIncome}</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Tax:</h4>
+                                            <p>{selectedReport.tax}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-8">
+                                            <h4>Final Outcome:</h4>
+                                            <p style={{color: 'green', fontWeight: 'bold'}}>{selectedReport.totalSalary.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-2">
+                                            <h4>Contract ID:</h4>
+                                            <p>{selectedReport.contractId}</p>
+                                        </div>
+                                        <div className="col-sm-2">
+                                            <h4>Status:</h4>
+                                            <p>{selectedReport.status}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="row">
+                <MDBDataTableV5
+                    className='custom-table'
+                    data={{
+                        columns: [
+                            {
+                                label: 'Payslip ID',
+                                field: 'payslipId',
+                                width: 150,
+                            },
+                            {
+                                label: 'Employee Name',
+                                field: 'employeeName',
+                                width: 150,
+                            },
+                            {
+                                label: 'Status',
+                                field: 'status',
+                                width: 100,
+                            },
+                            {
+                                label: 'Option',
+                                field: 'options',
+                                sort: 'disabled',
+                                width: 100,
+                            },
+                        ],
+                        rows: data.map((payslip) => ({
+                            payslipId: payslip.payslipId,
+                            employeeName: employeeNames.find(employee => employee.employeeId === payslip.employeeId)
+                                ? `${employeeNames.find(employee => employee.employeeId === payslip.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === payslip.employeeId).lastName}`
+                                : 'Unknown',
+                            status: payslip.status,
+                            options: (
+                                <button onClick={() => handleEdit(payslip)}>Edit</button>
+                            ),
+                            clickEvent: () => handleDoubleClick(payslip)
+                        }))
+                    }}
+                    hover
+                    entriesOptions={[5, 10, 20]}
+                    entries={5}
+                    pagesAmount={5}
+                    searchTop
+                    searchBottom={false}
+                    tbodyCustomRow={(row, rowIndex) => {
+                        return {
+                            onDoubleClick: row.clickEvent
+                        };
+                    }}
+                />
+            </div>
             {showCreateForm && (
                 <div className="form-container">
                     <form className="form" onSubmit={handleFormSubmit}>
-                        <h3>Create Payslip</h3>
+                        <h3>Generate Payslip</h3>
 
                         {validationError && (
                             <div className="error-message-fadeout">{validationError}</div>
@@ -209,7 +425,7 @@ function Payslip(props) {
                         </div>
 
                         <div className='row'>
-                        <div className="col-6 mt-3">
+                            <div className="col-6 mt-3">
                                 <label>Pay Period:</label>
                                 <select name="payPeriod" defaultValue="Q1" onChange={event => console.log(event.target.value)}>
                                     <option value="Q1">Q1</option>
@@ -221,7 +437,7 @@ function Payslip(props) {
 
                             <div className="col-6 mt-3">
                                 <label>Paid Date:</label>
-                                <input type="date" name="paidDate" style={{ height: '3.3rem' }}/>
+                                <input type="date" name="paidDate" style={{ height: '3.3rem' }} />
                             </div>
                         </div>
 
@@ -229,6 +445,13 @@ function Payslip(props) {
                             <div className="col-12 mt-3">
                                 <label>Note:</label>
                                 <textarea type="text" name="note" placeholder='Type in what you want...' style={{ height: '15rem' }} />
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-12 mt-3">
+                                <label>BHYT:</label>
+                                <input type="text" name="bhytPercentage" placeholder='Number' />
                             </div>
                         </div>
 
@@ -245,7 +468,7 @@ function Payslip(props) {
             )}
 
             {showUpdateForm && (
-                <div className="detail-container">
+                <div className="form-container">
                     <form className="form" onSubmit={handleUpdate}>
                         <h3>Edit Payslip ID: {updatePayslip.payslipId}</h3>
                         <h4>(Employee: {updatePayslip.employeeId})</h4>
@@ -269,7 +492,7 @@ function Payslip(props) {
 
                             <div className="col-6 mt-3">
                                 <label>Paid Date:</label>
-                                <input type="date" name="paidDate" defaultValue={moment(moment(updatePayslip.paidDate, 'DD-MM-YYYY')).format('YYYY-MM-DD')} style={{ height: '3.3rem' }}/>
+                                <input type="date" name="paidDate" defaultValue={moment(moment(updatePayslip.paidDate, 'DD-MM-YYYY')).format('YYYY-MM-DD')} style={{ height: '3.3rem' }} />
                             </div>
                         </div>
 
@@ -305,60 +528,6 @@ function Payslip(props) {
                     </form>
                 </div>
             )}
-            <div className="row addbtn">
-                {" "}
-                <button className="btn_create" onClick={() => setShowForm(true)}>
-                    Add Payslip
-                </button>
-            </div>
-
-            <div className="row">
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>Payslip ID</th>
-                            <th>Employee ID</th>
-                            <th>Pay Period</th>
-                            <th>Paid Date</th>
-                            <th>Base Salary</th>
-                            <th>OT Hours</th>
-                            <th>OT Salary</th>
-                            <th>Allowance</th>
-                            <th>Tax Income</th>
-                            <th>Tax</th>
-                            <th>Total Salary</th>
-                            <th>Status</th>
-                            <th>Option</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((payslip) => (
-                            <tr key={payslip.payslipId}>
-                                <td>{payslip.payslipId}</td>
-                                <td>{payslip.employeeId}</td>
-                                <td>{payslip.payPeriod}</td>
-                                <td>{payslip.paidDate}</td>
-                                <td>{payslip.baseSalary.toLocaleString()}</td>
-                                <td>{payslip.otHours}</td>
-                                <td>{payslip.otSalary ? payslip.otSalary.toLocaleString() : 'N/A'}</td>
-                                <td>{payslip.allowance ? payslip.allowance.toLocaleString() : 'N/A'}</td>
-                                <td>{payslip.taxIncome ? payslip.taxIncome.toLocaleString() : 'N/A'}</td>
-                                <td>{payslip.tax ? payslip.tax.toLocaleString() : 'N/A'}</td>
-                                {/* <td>
-                                    {jobTitles.find(job => job.jobId === payslip.employeeId)
-                                        ? jobTitles.find(job => job.jobId === payslip.employeeId).jobTitle
-                                        : 'Unknown'}
-                                </td> */}
-                                <td>{payslip.totalSalary.toLocaleString()}</td>
-                                <td>{payslip.status}</td>
-                                <td>
-                                    <button onClick={() => handleEdit(payslip)}>Edit</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
         </div>
     );
 }
