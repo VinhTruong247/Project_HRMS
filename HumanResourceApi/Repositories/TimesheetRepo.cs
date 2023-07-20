@@ -2,7 +2,7 @@
 
 namespace HumanResourceApi.Repositories
 {
-    public class EmployeeLoanLogRepo : BaseRepository.BaseRepository<EmployeeLoanLog>
+    public class TimesheetRepo : BaseRepository.BaseRepository<Timesheet>
     {
     }
 }

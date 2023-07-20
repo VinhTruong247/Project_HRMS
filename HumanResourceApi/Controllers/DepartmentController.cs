@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Department;
 using HumanResourceApi.DTO.Experience;
+using HumanResourceApi.Helper;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -72,15 +73,10 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!x.IsMatch(department.DepartmentId))
-                {
-                    return BadRequest("Wrong DepartmentId Format.");
-                }
-                if (_repo.GetAll().Any(d => d.DepartmentId == department.DepartmentId))
-                {
-                    return BadRequest("Department ID = " + department.DepartmentId + " existed.");
-                }
+                int count = _repo.GetAll().Count() + 1;
+                var departmentId = "RP" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Department>(department);
+                temp.DepartmentId = departmentId;
                 _repo.Add(temp);
                 return Ok(temp);
             }
@@ -125,12 +121,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<DepartmentDto>>(_repo.GetAll().Where(dp => dp.DepartmentName.Contains(keyword)));
+                var resultList = _mapper.Map<List<DepartmentDto>>(_repo.GetAll().Where(dp => RemoveVietnameseSign.RemoveSign(dp.DepartmentName).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active department(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderBy(dp => dp.DepartmentId));
             }
             catch (Exception ex)
             {

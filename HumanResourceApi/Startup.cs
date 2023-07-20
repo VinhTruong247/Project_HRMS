@@ -54,12 +54,13 @@ namespace YourNamespace
             services.AddScoped<SkillEmployeeRepo>();
             services.AddScoped<DepartmentMemberRepo>();
             services.AddScoped<ProjectRepo>();
-            services.AddScoped<EmployeeLoanLogRepo>();
             services.AddScoped<RoleRepo>();
             services.AddScoped<EmployeeBenefitRepo>();
             services.AddScoped<PaySlipRepo>();
             services.AddScoped<ReportRepo>();
             services.AddScoped<OvertimeRepo>();
+            services.AddScoped<TimesheetRepo>();
+            services.AddScoped<DailySalaryRepo>();
 
             services.AddEndpointsApiExplorer();
             //services.AddSwaggerGen(c =>

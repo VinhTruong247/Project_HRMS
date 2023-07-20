@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
+import { MDBDataTableV5 } from 'mdbreact';
 
 function Allowance(props) {
   const [data, setData] = useState([]);
@@ -8,10 +9,21 @@ function Allowance(props) {
   const [updateAllowance, setUpdateAllowance] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [validationError, setValidationError] = useState('');
+  const [filteredData, setFilteredData] = useState(null);
   const allowanceIdPattern = /^AL\d{6}$/;
+
   const handleEdit = (allowance) => {
     setUpdateAllowance(allowance);
     setShowUpdateForm(true);
+  };
+
+  const handleFilter = (allowanceType) => {
+    if (allowanceType === 'All') {
+      setFilteredData(null); // Show all data
+    } else {
+      const filtered = data.filter((allowance) => allowance.allowanceType === allowanceType);
+      setFilteredData(filtered);
+    }
   };
 
   const timeoutRef = useRef(null);
@@ -57,9 +69,11 @@ function Allowance(props) {
     const formData = {
       allowanceId: event.target.elements.allowanceId.value,
       allowanceType: event.target.elements.allowanceType.value,
-      amountPerDay: parseFloat(event.target.elements.amountPerDay.value.replace(/,/g, '')),
+      amount: parseFloat(event.target.elements.amount.value.replace(/,/g, '')),
       status: event.target.elements.status.checked,
     };
+
+    const isDuplicateAllowanceId = data.some(allowance => allowance.allowanceId === formData.allowanceId);
 
     if (!formData.allowanceId) {
       setValidationError('Allowance ID is required');
@@ -71,18 +85,28 @@ function Allowance(props) {
       return;
     }
 
+    if (isDuplicateAllowanceId) {
+      setValidationError('Allowance ID is already taken');
+      return;
+    }
+
     if (!formData.allowanceType) {
       setValidationError('Allowance type is required');
       return;
     }
 
-    if (!formData.amountPerDay) {
+    if (!formData.amount) {
       setValidationError('Amount needed is required');
       return;
     }
 
-    if (isNaN(formData.amountPerDay)) {
+    if (isNaN(formData.amount)) {
       setValidationError('Amount must be in number format');
+      return;
+    }
+
+    if (formData.amount < 0) {
+      setValidationError('Input cannot be negative')
       return;
     }
 
@@ -122,7 +146,7 @@ function Allowance(props) {
     const formData = {
       allowanceId: updateAllowance.allowanceId,
       allowanceType: event.target.elements.allowanceType.value,
-      amountPerDay: parseFloat(event.target.elements.amountPerDay.value.replace(/,/g, '')),
+      amount: parseFloat(event.target.elements.amount.value.replace(/,/g, '')),
       status: event.target.elements.status.value === 'true',
     };
 
@@ -131,13 +155,18 @@ function Allowance(props) {
       return;
     }
 
-    if (!formData.amountPerDay) {
+    if (!formData.amount) {
       setValidationError('Amount needed is required');
       return;
     }
 
-    if (isNaN(formData.amountPerDay)) {
+    if (isNaN(formData.amount)) {
       setValidationError('Amount must be in number format');
+      return;
+    }
+
+    if (formData.amount < 0) {
+      setValidationError('Input cannot be negative')
       return;
     }
 
@@ -177,36 +206,77 @@ function Allowance(props) {
 
   return (
     <div className="manager" style={{ position: "relative" }}>
-      <div className='row addbtn' ><button className='btn_create' onClick={() => setShowForm(true)}>Add Allowance</button></div>
+      <div className='row addbtn' >
+        <button className='btn_create' onClick={() => setShowForm(true)}>Add Allowance</button>
+      </div>
+
       <div className='row'>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>Allowance ID</th>
-              <th>Allowance Type</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Option</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(allowance => (
-              <tr key={allowance.allowanceId}>
-                <td>{allowance.allowanceId}</td>
-                <td>{allowance.allowanceType}</td>
-                <td>{allowance.amountPerDay.toLocaleString()}</td>
-                <td>
-                  {allowance.status
-                    ? 'Active'
-                    : 'Inactive'}
-                </td>
-                <td>
-                  <button onClick={() => handleEdit(allowance)}>Edit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <select onChange={(e) => handleFilter(e.target.value)} style={{ maxWidth: '12%', marginLeft: '1.32rem' }}>
+          <option value="All">All</option>
+          <option value="Daily">Daily</option>
+          <option value="Monthly">Monthly</option>
+        </select>
+        <MDBDataTableV5
+          className='custom-table'
+          data={{
+            columns: [
+              {
+                label: 'Allowance ID',
+                field: 'allowanceId',
+                width: 150,
+              },
+              {
+                label: 'Allowance Name',
+                field: 'allowanceName',
+                width: 150,
+              },
+              {
+                label: 'Allowance Type',
+                field: 'allowanceType',
+                width: 150,
+              },
+              {
+                label: 'Amount',
+                field: 'amount',
+                width: 150,
+              },
+
+              {
+                label: 'Status',
+                field: 'status',
+                width: 100,
+              },
+              {
+                label: 'Option',
+                field: 'options',
+                sort: 'disabled',
+                width: 100,
+              },
+            ],
+            rows: (filteredData || data).map((allowance) => ({
+              allowanceId: allowance.allowanceId,
+              allowanceName: allowance.allowanceName,
+              allowanceType: allowance.allowanceType,
+              amount: allowance.amount.toLocaleString(),
+              status: allowance.status ? 'Active' : 'Disable',
+              options: (
+                <button onClick={() => handleEdit(allowance)}>Edit</button>
+              ),
+              // clickEvent: () => handleDoubleClick(allowance)
+            }))
+          }}
+          hover
+          entriesOptions={[5, 10, 20]}
+          entries={10}
+          pagesAmount={5}
+          searchTop
+          searchBottom={false}
+        // tbodyCustomRow={(row, rowIndex) => {
+        //   return {
+        //     onDoubleClick: row.clickEvent
+        //   };
+        // }}
+        />
       </div>
 
       {showCreateForm && (
@@ -230,7 +300,11 @@ function Allowance(props) {
             <div className='row'>
               <div className="col-12 mt-3">
                 <label>Allowance Type:</label>
-                <input type="text" name="allowanceType" placeholder='Allowance Type' />
+                <select name="allowanceType" onChange={event => console.log(event.target.value)}>
+                  <option value="Daily">Daily</option>
+                  <option value="Weekly">Weekly</option>
+                  <option value="Monthly">Monthly</option>
+                </select>
               </div>
             </div>
 
@@ -239,7 +313,7 @@ function Allowance(props) {
                 <label>Amount:</label>
                 <input
                   type="text"
-                  name="amountPerDay"
+                  name="amount"
                   placeholder='Number'
                   onChange={(e) => {
                     const value = parseInt(e.target.value.replace(/,/g, ''));
@@ -290,7 +364,11 @@ function Allowance(props) {
             <div className='row'>
               <div className="col-12 mt-3">
                 <label>Allowance Type:</label>
-                <input type="text" name="allowanceType" defaultValue={updateAllowance.allowanceType} />
+                <select name="allowanceType" defaultValue={updateAllowance.allowanceType} onChange={event => console.log(event.target.value)}>
+                  <option value="Daily">Daily</option>
+                  <option value="Weekly">Weekly</option>
+                  <option value="Monthly">Monthly</option>
+                </select>
               </div>
             </div>
 
@@ -299,8 +377,8 @@ function Allowance(props) {
                 <label>Amount:</label>
                 <input
                   type="text"
-                  name="amountPerDay"
-                  defaultValue={updateAllowance.amountPerDay.toLocaleString()}
+                  name="amount"
+                  defaultValue={updateAllowance.amount.toLocaleString()}
                   onChange={(e) => {
                     const value = parseInt(e.target.value.replace(/,/g, ''));
                     if (!isNaN(value)) {

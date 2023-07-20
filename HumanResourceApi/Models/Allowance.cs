@@ -11,8 +11,9 @@ namespace HumanResourceApi.Models
         }
 
         public string AllowanceId { get; set; }
+        public string AllowanceName { get; set; }
         public string AllowanceType { get; set; }
-        public decimal? AmountPerDay { get; set; }
+        public decimal Amount { get; set; }
         public bool? Status { get; set; }
 
         public virtual ICollection<EmployeeBenefit> EmployeeBenefits { get; set; }

@@ -11,11 +11,11 @@ namespace HumanResourceApi.Repositories
         public decimal GetTotalSalary(decimal baseSalary, decimal allowanceSum, decimal tax, decimal otSalary)
         {
             decimal salary = 0;
-            return salary = baseSalary + allowanceSum + (otSalary * (decimal)1.5) - tax;
+            return salary = baseSalary + allowanceSum + otSalary  - tax;
         }
-        public decimal GetTaxIncome(decimal baseSalary, decimal overtime, int depends)
+        public decimal GetTaxIncome(decimal baseSalary, decimal overtime, int depends, decimal totalAllowance)
         {
-            decimal taxIncome = baseSalary + overtime - 11000000 - depends * 4400000;
+            decimal taxIncome = baseSalary + overtime/(decimal)1.5 + totalAllowance - 11000000 - depends * 4400000;
             if (taxIncome < 0)
             {
                 return 0;

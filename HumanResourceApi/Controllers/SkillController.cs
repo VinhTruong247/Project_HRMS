@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Project;
 using HumanResourceApi.DTO.Skill;
+using HumanResourceApi.Helper;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -67,15 +68,10 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!skillIdRegex.IsMatch(skill.SkillId))
-                {
-                    return BadRequest("Wrong skillId Format.");
-                }
-                if (_skillRepo.GetAll().Any(s => s.SkillId == skill.SkillId))
-                {
-                    return BadRequest("Skill ID = " + skill.SkillId + " existed");
-                }
+                int count = _skillRepo.GetAll().Count() + 1;
+                var skillId = "SK" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Skill>(skill);
+                temp.SkillId = skillId;
                 _skillRepo.Add(temp);
                 return Ok(skill);
             }
@@ -113,7 +109,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<SkillDto>>(_skillRepo.GetAll().Where(s => s.SkillName.Contains(keyword)));
+                var resultList = _mapper.Map<List<SkillDto>>(_skillRepo.GetAll().Where(s => RemoveVietnameseSign.RemoveSign(s.SkillName).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active skill(s) found");

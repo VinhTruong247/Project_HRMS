@@ -7,6 +7,7 @@ namespace HumanResourceApi.Models
     {
         public Job()
         {
+            EmployeeContracts = new HashSet<EmployeeContract>();
             Employees = new HashSet<Employee>();
         }
 
@@ -17,6 +18,7 @@ namespace HumanResourceApi.Models
         public decimal? BaseSalaryPerHour { get; set; }
         public decimal? Bonus { get; set; }
 
+        public virtual ICollection<EmployeeContract> EmployeeContracts { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
     }
 }

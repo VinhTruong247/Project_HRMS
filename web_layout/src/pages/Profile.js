@@ -221,22 +221,11 @@ function EmployeeDetails(props) {
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
-            reportId: event.target.elements.reportId.value,
             employeeId: event.target.elements.employeeId.value,
             reason: event.target.elements.reason.value,
             content: event.target.elements.content.value,
             issueDate: event.target.elements.content.value,
         };
-
-        if (!formData.reportId) {
-            setValidationError('Report ID is required');
-            return;
-        }
-
-        if (!reportIdPattern.test(formData.reportId)) {
-            setValidationError('Report ID must follow RP###### format');
-            return;
-        }
 
         if (!formData.reason) {
             setValidationError('Reason type is required');
@@ -501,14 +490,7 @@ function EmployeeDetails(props) {
                                 {validationError}
                             </div>
                         )}
-
-                        <div className='row'>
-                            <div className="col-12 mt-3">
-                                <label>Report ID:</label>
-                                <input type="text" name="reportId" placeholder='RP######' />
-                            </div>
-                        </div>
-
+                        
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Employee ID:</label>
@@ -526,7 +508,7 @@ function EmployeeDetails(props) {
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Content:</label>
-                                <input type="text" name="content" placeholder='Type in what you want...' style={{ height: '15rem' }}/>
+                                <textarea type="text" name="content" placeholder='Type in what you want...' style={{ height: '15rem' }}/>
                             </div>
                         </div>
 

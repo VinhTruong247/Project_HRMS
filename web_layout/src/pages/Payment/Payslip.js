@@ -1,33 +1,36 @@
-import React from 'react';
-import { useEffect, useState, useRef } from 'react';
+import React from "react";
+import { useEffect, useState, useRef } from "react";
+import moment from "moment";
+import { MDBDataTableV5 } from "mdbreact";
 
-function Employee(props) {
+function Payslip(props) {
     const [data, setData] = useState([]);
     const [showCreateForm, setShowForm] = useState(false);
-    const token = JSON.parse(localStorage.getItem('jwtToken'));
-    const [updateEmployee, setUpdateEmployee] = useState(null);
+    const token = JSON.parse(localStorage.getItem("jwtToken"));
+    const [updatePayslip, setUpdatePayslip] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
-    const [validationError, setValidationError] = useState('');
-    const [departmentNames, setDepartmentNames] = useState([]);
-    const [jobTitles, setJobTitles] = useState([]);
-    const employeeIdPattern = /^EP\d{6}$/;
-    // const departmentIdPattern = /^DP\d{6}$/;
-    // const jobIdPattern = /^JB\d{6}$/;
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneNumberPattern = /^\d{10}$/;
-    // const atmNumberPattern = /^(\d{4}[- ]?){3}\d{4}$/;
-    const atmNumberPattern = /^\d{9}$/;
-    const handleEdit = (employee) => {
-        setUpdateEmployee(employee);
+    const [validationError, setValidationError] = useState("");
+    const [employeeId, setEmployeeId] = useState([]);
+    const [employeeNames, setEmployeeName] = useState([]);
+    const [selectedReport, setSelectedReport] = useState(null);
+    // const percentageRegex = /^\d+(\.\d{1,2})?%?$/;
+
+    const handleEdit = (payslip) => {
+        setUpdatePayslip(payslip);
         setShowUpdateForm(true);
     };
 
     const timeoutRef = useRef(null);
 
+    const handleDoubleClick = (report) => {
+        setSelectedReport(report);
+    };
+
+
     useEffect(() => {
         if (validationError) {
             timeoutRef.current = setTimeout(() => {
-                setValidationError('');
+                setValidationError("");
             }, 3000);
         }
         return () => {
@@ -35,489 +38,386 @@ function Employee(props) {
         };
     }, [validationError]);
 
-    //  Get info of EMPLOYEE
+    //  Get fulllist of PAYSLIP
+    useEffect(() => {
+        fetch("https://localhost:7220/api/PaySlip/get/paysliplist", {
+            method: "GET",
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token.token}`,
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Api response was not ok.");
+                }
+            })
+            .then((payslips) => {
+                setData(payslips);
+            })
+            .catch((error) => {
+                console.error("There was a problem with the fetch operation:", error);
+            });
+    }, []);
+
+    // Fetch employee
     useEffect(() => {
         fetch('https://localhost:7220/api/Employee/employees', {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token.token}`
-            }
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token.token}`,
+            },
         })
-            .then(response => {
+            .then((response) => {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error('Api response was not ok.');
+                    throw new Error("API response was not ok.");
                 }
             })
-            .then(employees => {
-                setData(employees)
+            .then((employees) => {
+                setEmployeeId(employees);
+                setEmployeeName(employees);
             })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
+            .catch((error) => {
+                console.error("There was a problem with the fetch operation:", error);
             });
     }, []);
 
-
-    // Fetch department names and job titles
-    useEffect(() => {
-        fetch('https://localhost:7220/api/Department/departments', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token.token}`
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('API response was not ok.');
-                }
-            })
-            .then(departments => {
-                setDepartmentNames(departments);
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-
-        fetch('https://localhost:7220/api/Job/jobs', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token.token}`
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('API response was not ok.');
-                }
-            })
-            .then(jobs => {
-                setJobTitles(jobs);
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-    }, []);
-
-
-    //  CRATE NEW EMPLOYEE
+    //  GENERATES NEW PAYSLIP
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
             employeeId: event.target.elements.employeeId.value,
-            firstName: event.target.elements.firstName.value,
-            lastName: event.target.elements.lastName.value,
-            employeeImage: event.target.elements.employeeImage.value,
-            dateOfBirth: event.target.elements.dateOfBirth.value,
-            employeeAddress: event.target.elements.employeeAddress.value,
-            email: event.target.elements.email.value,
-            phoneNumber: event.target.elements.phoneNumber.value,
-            bankAccountNumber: event.target.elements.bankAccountNumber.value,
-            bankAccountName: event.target.elements.bankAccountName.value,
-            bankName: event.target.elements.bankName.value,
-            jobId: event.target.elements.jobId.value,
-            departmentId: event.target.elements.departmentId.value,
-            status: event.target.elements.status.checked,
+            payPeriod: event.target.elements.payPeriod.value,
+            paidDate: event.target.elements.paidDate.value,
+            bhytPercentage: parseFloat(event.target.elements.bhytPercentage.value) / 100,
+            note: event.target.elements.note.value,
         };
 
-        if (!formData.employeeId) {
-            setValidationError('Employee ID is required');
+        if (!formData.payPeriod) {
+            setValidationError("Pay period is required");
             return;
         }
 
-        if (!employeeIdPattern.test(formData.employeeId)) {
-            setValidationError('Employee ID must follow EP###### format');
+        if (!formData.paidDate) {
+            setValidationError('Pay date is required');
             return;
         }
 
-        if (!formData.firstName) {
-            setValidationError('First name is required');
+        if (!formData.note) {
+            setValidationError("Note is required");
             return;
         }
 
-        if (!formData.lastName) {
-            setValidationError('Last name is required');
+        if (!formData.bhytPercentage) {
+            setValidationError('Input needed is required');
             return;
         }
 
-        if (!formData.dateOfBirth) {
-            setValidationError('Date of birth is required');
+        if (isNaN(formData.bhytPercentage)) {
+            setValidationError('Input must be in number format');
             return;
         }
 
-        if (!formData.employeeAddress) {
-            setValidationError('Employee address is required');
+        if (formData.bhytPercentage < 0) {
+            setValidationError('Input cannot be negative')
             return;
         }
 
-        if (!formData.email) {
-            setValidationError('Email is required');
+        if (formData.bhytPercentage < 0 || formData.bhytPercentage > 100) {
+            setValidationError('Value must be between 0 and 100')
             return;
         }
 
-        if (!emailPattern.test(formData.email)) {
-            setValidationError('Email form is not valid');
-            return;
-        }
-
-        if (!formData.phoneNumber) {
-            setValidationError('Phone number is required');
-            return;
-        }
-
-        if (!phoneNumberPattern.test(formData.phoneNumber)) {
-            setValidationError('Phone number is not valid');
-            return;
-        }
-
-        if (!formData.bankAccountNumber) {
-            setValidationError('Bank account number is required');
-            return;
-        }
-
-        if (!atmNumberPattern.test(formData.bankAccountNumber)) {
-            setValidationError('Bank account number is not valid');
-            return;
-        }
-
-        if (!formData.bankAccountName) {
-            setValidationError('Bank account name is required');
-            return;
-        }
-
-        if (!formData.bankName) {
-            setValidationError('Bank name is required');
-            return;
-        }
-
-        // if (!formData.jobId) {
-        //     setValidationError('Job ID is required');
-        //     return;
-        // }
-
-        // if (!jobIdPattern.test(formData.jobId)) {
-        //     setValidationError('Job ID must follow JB###### format');
-        //     return;
-        // }
-
-        // if (!formData.departmentId) {
-        //     setValidationError('Department ID is required');
-        //     return;
-        // }
-
-        // if (!departmentIdPattern.test(formData.departmentId)) {
-        //     setValidationError('Department ID must follow DP###### format');
-        //     return;
-        // }
-
-        fetch('https://localhost:7220/api/Employee/create', {
-            method: 'POST',
+        fetch("https://localhost:7220/api/Payslip/generate", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token.token}`
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token.token}`,
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
         })
-            .then(response => {
+            .then((response) => {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error('Api response was not ok.');
+                    throw new Error("Api response was not ok.");
                 }
             })
-            .then(employee => {
-                setData([...data, employee]);
+            .then((payslip) => {
+                setData([...data, payslip]);
                 setShowForm(false);
-                setValidationError('');
-                console.log('Employee created successfully');
+                setValidationError("");
+                console.log("Payslip created successfully");
             })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-                setValidationError('An error occurred while submitting the form');
+            .catch((error) => {
+                console.error("Error submitting form:", error);
+                setValidationError("An error occurred while submitting the form");
             });
-        console.log(event.target.elements)
+        console.log(event.target.elements);
     };
-
-
 
     //  UPDATE NEW EMPLOYEE
     const handleUpdate = (event) => {
         event.preventDefault();
         const formData = {
-            employeeId: updateEmployee.employeeId,
-            firstName: event.target.elements.firstName.value,
-            lastName: event.target.elements.lastName.value,
-            employeeImage: event.target.elements.employeeImage.value,
-            dateOfBirth: event.target.elements.dateOfBirth.value,
-            employeeAddress: event.target.elements.employeeAddress.value,
-            email: event.target.elements.email.value,
-            phoneNumber: event.target.elements.phoneNumber.value,
-            bankAccountNumber: event.target.elements.bankAccountNumber.value,
-            bankAccountName: event.target.elements.bankAccountName.value,
-            bankName: event.target.elements.bankName.value,
-            jobId: event.target.elements.jobId.value,
-            departmentId: event.target.elements.departmentId.value,
-            status: event.target.elements.status.value === 'true',
+            payslipId: updatePayslip.payslipId,
+            payPeriod: event.target.elements.payPeriod.value,
+            paidDate: event.target.elements.paidDate.value,
+            note: event.target.elements.note.value,
+            status: event.target.elements.status.value,
         };
 
-        if (!formData.firstName) {
-            setValidationError('First name is required');
+        if (!formData.payPeriod) {
+            setValidationError("Pay period is required");
             return;
         }
 
-        if (!formData.lastName) {
-            setValidationError('Last name is required');
+        if (!formData.paidDate) {
+            setValidationError('Pay date is required');
             return;
         }
 
-        if (!formData.dateOfBirth) {
-            setValidationError('Date of birth is required');
+        if (!formData.note) {
+            setValidationError("Note is required");
             return;
         }
 
-        if (!formData.employeeAddress) {
-            setValidationError('Employee address is required');
-            return;
-        }
-
-        if (!formData.email) {
-            setValidationError('Email is required');
-            return;
-        }
-
-        if (!emailPattern.test(formData.email)) {
-            setValidationError('Email form is not valid');
-            return;
-        }
-
-        if (!formData.phoneNumber) {
-            setValidationError('Phone number is required');
-            return;
-        }
-
-        if (!phoneNumberPattern.test(formData.phoneNumber)) {
-            setValidationError('Phone number is not valid');
-            return;
-        }
-
-        if (!formData.bankAccountNumber) {
-            setValidationError('Bank account number is required');
-            return;
-        }
-
-        if (!atmNumberPattern.test(formData.bankAccountNumber)) {
-            setValidationError('Bank account number is not valid');
-            return;
-        }
-
-        if (!formData.bankAccountName) {
-            setValidationError('Bank account name is required');
-            return;
-        }
-
-        if (!formData.bankName) {
-            setValidationError('Bank name is required');
-            return;
-        }
-
-        // if (!formData.jobId) {
-        //     setValidationError('Job ID is required');
-        //     return;
-        // }
-
-        // if (!jobIdPattern.test(formData.jobId)) {
-        //     setValidationError('Job ID must follow JB###### format');
-        //     return;
-        // }
-
-        // if (!formData.departmentId) {
-        //     setValidationError('Department ID is required');
-        //     return;
-        // }
-
-        // if (!departmentIdPattern.test(formData.departmentId)) {
-        //     setValidationError('Department ID must follow DP###### format');
-        //     return;
-        // }
-
-        fetch(`https://localhost:7220/api/Employee/update/user/${updateEmployee.employeeId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token.token}`
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => {
+        fetch(
+            `https://localhost:7220/api/Payslip/update/payslip/${updatePayslip.employeeId}/${updatePayslip.payslipId}`,
+            {
+                method: "PUT",
+                headers: {
+                    'Content-Type': "application/json",
+                    'Authorization': `Bearer ${token.token}`,
+                },
+                body: JSON.stringify(formData),
+            }
+        )
+            .then((response) => {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error('Api response was not ok.');
+                    throw new Error("Api response was not ok.");
                 }
             })
-            .then(updatedEmployee => {
-                const updatedData = data.map(employee => {
-                    if (employee.employeeId === updatedEmployee.employeeId) {
-                        return updatedEmployee;
+            .then((updatedPayslip) => {
+                const updatedData = data.map((payslip) => {
+                    if (payslip.payslipId === updatedPayslip.payslipId) {
+                        return updatedPayslip;
                     } else {
-                        return employee;
+                        return payslip;
                     }
                 });
                 setData(updatedData);
                 setShowUpdateForm(false);
-                setUpdateEmployee(null);
-                console.log('Employee updated successfully');
+                setUpdatePayslip(null);
+                console.log("Payslip updated successfully");
             })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-                setValidationError('An error occurred while updating employee information');
+            .catch((error) => {
+                console.error("Error submitting form:", error);
+                setValidationError(
+                    "An error occurred while updating payslip information"
+                );
             });
     };
 
     return (
         <div className="manager" style={{ position: "relative" }}>
-            <div className='row addbtn'> <button className='btn_create' onClick={() => setShowForm(true)}>Add Employee</button></div>
-
-            <div className='row'>
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th>Employee ID</th>
-                            <th>Full Name</th>
-                            <th>Birthday</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Job</th>
-                            <th>Department</th>
-                            <th>Status</th>
-                            <th>Option</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map(employee => (
-
-                            <tr key={employee.employeeId}>
-                                <td>{employee.employeeId}</td>
-                                <td>{employee.firstName} {employee.lastName}</td>
-                                <td>{employee.dateOfBirth}</td>
-                                <td>{employee.email}</td>
-                                <td>{employee.phoneNumber}</td>
-                                <td>
-                                    {jobTitles.find(job => job.jobId === employee.jobId)
-                                        ? jobTitles.find(job => job.jobId === employee.jobId).jobTitle
-                                        : 'Unknown'}
-                                </td>
-                                <td>
-                                    {departmentNames.find(department => department.departmentId === employee.departmentId)
-                                        ? departmentNames.find(department => department.departmentId === employee.departmentId).departmentName
-                                        : ''}
-                                </td>
-                                <td>
-                                    {employee.status
-                                        ? 'Active'
-                                        : 'Disable'}
-                                </td>
-                                <td>
-                                    <button onClick={() => handleEdit(employee)}>Edit</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="row addbtn">
+                <button className="btn_create" onClick={() => setShowForm(true)}>
+                    Add Payslip
+                </button>
             </div>
 
+            <div className="card mb-3">
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-2">
+                            <h3 className="mb-0">Payment Details:</h3>
+                        </div>
+                        <div className="col-10 text-secondary">
+                            {selectedReport && (
+                                <div>
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Employee ID:</h4>
+                                            <p>{selectedReport.employeeId}</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Employee Name:</h4>
+                                            <p>
+                                                {employeeNames.find(employee => employee.employeeId === selectedReport.employeeId)
+                                                    ? `${employeeNames.find(employee => employee.employeeId === selectedReport.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === selectedReport.employeeId).lastName}`
+                                                    : 'Unknown'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Pay Period:</h4>
+                                            <p>{selectedReport.payPeriod}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Pay Date:</h4>
+                                            <p>{selectedReport.paidDate}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Work Hour Status (OT Hours):</h4>
+                                            <p>{selectedReport.actualWorkHours}H/{selectedReport.standardWorkHours}H ({selectedReport.otHours})</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Base Salary per Hour:</h4>
+                                            <p>{selectedReport.baseSalaryPerHour.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Total Base Salary:</h4>
+                                            <p>{selectedReport.baseSalary.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <h4>Allowance:</h4>
+                                            <p>{selectedReport.allowance.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Health Insurance Deduction Amount (%):</h4>
+                                            <p>{selectedReport.bhytAmount.toLocaleString()} ({selectedReport.bhytPercentage * 100}%)</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Before Deduction:</h4>
+                                            <p>{selectedReport.totalBeforeDeduction.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Personal Exemption:</h4>
+                                            <p>{selectedReport.giamTruGiaCanh.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Dependent Exemption ({selectedReport.dependent} person(s)):</h4>
+                                            <p>{selectedReport.giamTruGiaCanhNguoiPhuThuoc.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Tax Income:</h4>
+                                            <p style={{color: 'red', fontWeight: 'bold'}}>{selectedReport.taxIncome}</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Tax:</h4>
+                                            <p>{selectedReport.tax}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-8">
+                                            <h4>Final Outcome:</h4>
+                                            <p style={{color: 'green', fontWeight: 'bold'}}>{selectedReport.totalSalary.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-2">
+                                            <h4>Contract ID:</h4>
+                                            <p>{selectedReport.contractId}</p>
+                                        </div>
+                                        <div className="col-sm-2">
+                                            <h4>Status:</h4>
+                                            <p>{selectedReport.status}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="row">
+                <MDBDataTableV5
+                    className='custom-table'
+                    data={{
+                        columns: [
+                            {
+                                label: 'Payslip ID',
+                                field: 'payslipId',
+                                width: 150,
+                            },
+                            {
+                                label: 'Employee Name',
+                                field: 'employeeName',
+                                width: 150,
+                            },
+                            {
+                                label: 'Status',
+                                field: 'status',
+                                width: 100,
+                            },
+                            {
+                                label: 'Option',
+                                field: 'options',
+                                sort: 'disabled',
+                                width: 100,
+                            },
+                        ],
+                        rows: data.map((payslip) => ({
+                            payslipId: payslip.payslipId,
+                            employeeName: employeeNames.find(employee => employee.employeeId === payslip.employeeId)
+                                ? `${employeeNames.find(employee => employee.employeeId === payslip.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === payslip.employeeId).lastName}`
+                                : 'Unknown',
+                            status: payslip.status,
+                            options: (
+                                <button onClick={() => handleEdit(payslip)}>Edit</button>
+                            ),
+                            clickEvent: () => handleDoubleClick(payslip)
+                        }))
+                    }}
+                    hover
+                    entriesOptions={[5, 10, 20]}
+                    entries={5}
+                    pagesAmount={5}
+                    searchTop
+                    searchBottom={false}
+                    tbodyCustomRow={(row, rowIndex) => {
+                        return {
+                            onDoubleClick: row.clickEvent
+                        };
+                    }}
+                />
+            </div>
             {showCreateForm && (
                 <div className="form-container">
                     <form className="form" onSubmit={handleFormSubmit}>
-                        <h3>Create Employee</h3>
+                        <h3>Generate Payslip</h3>
 
                         {validationError && (
-                            <div className="error-message-fadeout">
-                                {validationError}
-                            </div>
+                            <div className="error-message-fadeout">{validationError}</div>
                         )}
 
                         <div className='row name'>
-                            <div className="col-6 mt-3">
-                                <label>First Name:</label>
-                                <input type="text" name="firstName" placeholder='First Name' />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Last Name:</label>
-                                <input type="text" name="lastName" placeholder='Last Name' />
-                            </div>
-                        </div>
-
-                        <div className='row name'>
-                            <div className="col-6 mt-3">
-                                <label>Employee ID:</label>
-                                <input type="text" name="employeeId" placeholder='EP######' />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Phone Number:</label>
-                                <input type="text" name="phoneNumber" placeholder='1234-567-890' />
-                            </div>
-                        </div>
-
-                        <div className='row name'>
-                            <div className="col-6 mt-3">
-                                <label>Employee Image:</label>
-                                <input type="text" name="employeeImage" placeholder='string' />
-                            </div>
-
-                            <div className="col-6 mt-3">
-                                <label>Date of Birth:</label>
-                                <input type="date" name="dateOfBirth" placeholder='dd-MM-YYYY' />
-                            </div>
-                        </div>
-
-                        <label>Address:</label>
-                        <input type="text" name="employeeAddress" placeholder='123 Street, City, Country' />
-
-                        <label>Email:</label>
-                        <input type="email" name="email" placeholder='example@mail.com' />
-
-                        <div className='row name'>
-                            <div className="col-6 mt-3">
-                                <label>Bank Account Number:</label>
-                                <input type="text" name="bankAccountNumber" placeholder='123-456-789' />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Bank Account Name:</label>
-                                <input type="text" name="bankAccountName" placeholder='Holder Name' />
-                            </div>
-                        </div>
-
-                        <label>Bank Name:</label>
-                        <input type="text" name="bankName" placeholder='Bank Name' />
-
-                        <div className='row name'>
-                            <div className="col-6 mt-1">
-                                {/* <label>Job:</label>
-                                <input type="text" name="jobId" placeholder='JB######' /> */}
-                                <label>Job:</label>
-                                <select name="jobId" onChange={event => console.log(event.target.value)}>
-                                    {jobTitles.map(job => (
-                                        <option key={job.jobId} value={job.jobId}>
-                                            {job.jobTitle}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="col-6 mt-1">
-                                {/* <label>Department:</label>
-                                <input type="text" name="departmentId" placeholder='DP######' /> */}
-                                <label>Department:</label>
-                                <select name="departmentId" onChange={event => console.log(event.target.value)}>
-                                    {departmentNames.map(department => (
-                                        <option key={department.departmentId} value={department.departmentId}>
-                                            {department.departmentName}
+                            <div className="col-12 mt-3">
+                                <label>Employee Id:</label>
+                                <select name="employeeId" onChange={event => console.log(event.target.value)}>
+                                    {employeeId.map(employee => (
+                                        <option key={employee.employeeId} value={employee.employeeId}>
+                                            {employee.employeeId}
                                         </option>
                                     ))}
                                 </select>
@@ -525,18 +425,37 @@ function Employee(props) {
                         </div>
 
                         <div className='row'>
-                            <div className="col-3 mt-1"></div>
-                            <div className="col-6 mt-1">
-                                <label>Status:</label>
-                                <select name="status" defaultValue={true} onChange={event => console.log(event.target.value)}>
-                                    <option value={true}>Active</option>
-                                    <option value={false}>Disable</option>
+                            <div className="col-6 mt-3">
+                                <label>Pay Period:</label>
+                                <select name="payPeriod" defaultValue="Q1" onChange={event => console.log(event.target.value)}>
+                                    <option value="Q1">Q1</option>
+                                    <option value="Q2">Q2</option>
+                                    <option value="Q3">Q3</option>
+                                    <option value="Q4">Q4</option>
                                 </select>
                             </div>
-                            <div className="col-3 mt-1"></div>
+
+                            <div className="col-6 mt-3">
+                                <label>Paid Date:</label>
+                                <input type="date" name="paidDate" style={{ height: '3.3rem' }} />
+                            </div>
                         </div>
 
-                        <div className='row butt'>
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Note:</label>
+                                <textarea type="text" name="note" placeholder='Type in what you want...' style={{ height: '15rem' }} />
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-12 mt-3">
+                                <label>BHYT:</label>
+                                <input type="text" name="bhytPercentage" placeholder='Number' />
+                            </div>
+                        </div>
+
+                        <div className="row butt">
                             <div className="col-5 mt-3">
                                 <button type="submit">Submit</button>
                             </div>
@@ -544,7 +463,6 @@ function Employee(props) {
                                 <button onClick={() => setShowForm(false)}>Cancel</button>
                             </div>
                         </div>
-
                     </form>
                 </div>
             )}
@@ -552,7 +470,8 @@ function Employee(props) {
             {showUpdateForm && (
                 <div className="form-container">
                     <form className="form" onSubmit={handleUpdate}>
-                        <h3>Edit Employee (ID: {updateEmployee.employeeId})</h3>
+                        <h3>Edit Payslip ID: {updatePayslip.payslipId}</h3>
+                        <h4>(Employee: {updatePayslip.employeeId})</h4>
 
                         {validationError && (
                             <div className="error-message-fadeout">
@@ -560,76 +479,27 @@ function Employee(props) {
                             </div>
                         )}
 
-                        <div className='row name'>
-                            <div className="col-6 mt-3">
-                                <label>First Name:</label>
-                                <input type="text" name="firstName" defaultValue={updateEmployee.firstName} />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Last Name:</label>
-                                <input type="text" name="lastName" defaultValue={updateEmployee.lastName} />
-                            </div>
-                        </div>
                         <div className='row'>
                             <div className="col-6 mt-3">
-                                <label>Employee Image:</label>
-                                <input type="text" name="employeeImage" defaultValue={updateEmployee.employeeImage} />
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Date of Birth:</label>
-                                <input type="date" name="dateOfBirth" defaultValue={updateEmployee.dateOfBirth} />
-                            </div>
-                        </div>
-
-                        <label>Address:</label>
-                        <input type="text" name="employeeAddress" defaultValue={updateEmployee.employeeAddress} />
-
-                        <label>Email:</label>
-                        <input type="email" name="email" defaultValue={updateEmployee.email} />
-
-                        <label>Phone Number:</label>
-                        <input type="text" name="phoneNumber" defaultValue={updateEmployee.phoneNumber} />
-
-                        <div className='row'>
-                            <div className="col-6 mt-3">
-                                <label>Bank Account Name:</label>
-                                <input type="text" name="bankAccountName" defaultValue={updateEmployee.bankAccountName} />
-
-                            </div>
-                            <div className="col-6 mt-3">
-                                <label>Bank Account Number:</label>
-                                <input type="text" name="bankAccountNumber" defaultValue={updateEmployee.bankAccountNumber} />
-                            </div>
-                        </div>
-
-                        <label>Bank Name:</label>
-                        <input type="text" name="bankName" defaultValue={updateEmployee.bankName} />
-
-                        <div className='row'>
-                            <div className="col-6 mt-3">
-                                {/* <label>Job ID:</label>
-                                <input type="text" name="jobId" defaultValue={updateEmployee.jobId} /> */}
-                                <label>Job:</label>
-                                <select name="jobId" defaultValue={updateEmployee.jobId} onChange={event => console.log(event.target.value)}>
-                                    {jobTitles.map(job => (
-                                        <option key={job.jobId} value={job.jobId}>
-                                            {job.jobTitle}
-                                        </option>
-                                    ))}
+                                <label>Pay Period:</label>
+                                <select name="payPeriod" defaultValue={updatePayslip.payPeriod} onChange={event => console.log(event.target.value)}>
+                                    <option value="Q1">Q1</option>
+                                    <option value="Q2">Q2</option>
+                                    <option value="Q3">Q3</option>
+                                    <option value="Q4">Q4</option>
                                 </select>
                             </div>
 
                             <div className="col-6 mt-3">
-                                {/* <label>Department ID:</label>
-                                <input type="text" name="departmentId" defaultValue={updateEmployee.departmentId} /> */}
-                                <label>Department:</label>
-                                <select name="departmentId" defaultValue={updateEmployee.departmentId} onChange={event => console.log(event.target.value)}>
-                                    {departmentNames.map(department => (
-                                        <option key={department.departmentId} value={department.departmentId}>
-                                            {department.departmentName}
-                                        </option>
-                                    ))}
-                                </select>
+                                <label>Paid Date:</label>
+                                <input type="date" name="paidDate" defaultValue={moment(moment(updatePayslip.paidDate, 'DD-MM-YYYY')).format('YYYY-MM-DD')} style={{ height: '3.3rem' }} />
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Note:</label>
+                                <textarea type="text" name="note" defaultValue={updatePayslip.note} style={{ height: '15rem' }} />
                             </div>
                         </div>
 
@@ -637,10 +507,10 @@ function Employee(props) {
                             <div className="col-3 mt-3"></div>
                             <div className="col-6 mt-3">
                                 <label>Status:</label>
-                                {/* <input type="text" name="status" defaultValue={updateEmployee.status} /> */}
-                                <select name="status" defaultValue={updateEmployee.status ? 'true' : 'false'} onChange={event => console.log(event.target.value)}>
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
+                                <select name="status" defaultValue={updatePayslip.status} onChange={event => console.log(event.target.value)}>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Declined">Declined</option>
                                 </select>
                             </div>
                             <div className="col-3 mt-3"></div>
@@ -659,7 +529,7 @@ function Employee(props) {
                 </div>
             )}
         </div>
-    )
+    );
 }
 
-export default Employee;
+export default Payslip;

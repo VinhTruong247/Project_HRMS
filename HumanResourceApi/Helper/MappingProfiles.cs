@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Allowance;
 using HumanResourceApi.DTO.Attendance;
+using HumanResourceApi.DTO.DailySalary;
 using HumanResourceApi.DTO.Department;
 using HumanResourceApi.DTO.DepartmentMemberList;
 using HumanResourceApi.DTO.Employee;
 using HumanResourceApi.DTO.EmployeeBenefit;
 using HumanResourceApi.DTO.EmployeeContract;
-using HumanResourceApi.DTO.EmployeeLoanLog;
 using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.DTO.Job;
 using HumanResourceApi.DTO.Leave;
@@ -16,6 +16,7 @@ using HumanResourceApi.DTO.Project;
 using HumanResourceApi.DTO.Report;
 using HumanResourceApi.DTO.Skill;
 using HumanResourceApi.DTO.SkillEmployee;
+using HumanResourceApi.DTO.Timesheet;
 using HumanResourceApi.DTO.Users;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
@@ -32,7 +33,6 @@ namespace HumanResourceApi.Helper
             DepartmentMap();
             DepartmentMemberListMap();
             EmployeeContractMap();
-            EmployeeLoanLogMap();
             EmployeeMap();
             ExperienceMap();
             JobMap();
@@ -45,15 +45,17 @@ namespace HumanResourceApi.Helper
             PaySlipMap();
             ReportMap();
             OvertimeMap();
+            TimesheetMap();
+            DailySalaryMap();
+        }
+        private void DailySalaryMap()
+        {
+            CreateMap<ResponseDailySalary, DailySalary>()
+                .ReverseMap();
+            CreateMap<RequestDailySalary, DailySalary>()
+                .ReverseMap();
         }
 
-        private void EmployeeLoanLogMap()
-        {
-            CreateMap<EmployeeLoanLog, LoanLogDto>()
-                .ReverseMap();
-            CreateMap<EmployeeLoanLog, UpdateLoanLogDto>()
-                .ReverseMap();
-        }
         private void ProjectMap()
         {
             CreateMap<Project, ProjectDto>()
@@ -186,6 +188,13 @@ namespace HumanResourceApi.Helper
                 .ReverseMap();
             CreateMap<Overtime, UpdateOvertimeDto>()
                 .ReverseMap();
+        }
+
+        private void TimesheetMap()
+        {
+            CreateMap<Timesheet, TimesheetDto>()
+                .ReverseMap();
+            
         }
     }
 }

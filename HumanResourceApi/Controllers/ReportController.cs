@@ -90,17 +90,12 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                if (!reportIdRegex.IsMatch(report.ReportId))
-                {
-                    return BadRequest("Wrong reportId Format.");
-                }
-                if (_reportRepo.GetAll().Any(rp => rp.EmployeeId == report.EmployeeId && rp.ReportId == report.ReportId))
-                {
-                    return BadRequest("Report ID = " + report.ReportId + " existed");
-                }
+                int count = _reportRepo.GetAll().Count() + 1;
+                var reportId = "RP" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Report>(report);
                 temp.IssueDate = DateTime.Now;
                 temp.Status = "Pending";
+                temp.ReportId = reportId;
 
                 _reportRepo.Add(temp);
                 return Ok(_mapper.Map<ReportDto>(temp));
@@ -157,7 +152,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("No report(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderByDescending(r => r.IssueDate));
             }
             catch (Exception ex)
             {

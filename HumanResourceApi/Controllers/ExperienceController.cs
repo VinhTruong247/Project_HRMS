@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.RegularExpressions;
 using HumanResourceApi.DTO.Project;
+using HumanResourceApi.Helper;
 
 namespace HumanResourceApi.Controllers
 {
@@ -77,20 +78,14 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!experienceIdRegex.IsMatch(experience.ExperienceId))
-                {
-                    return BadRequest("Wrong experienceId Format.");
-                }
                 if (!employeeIdRegex.IsMatch(experience.EmployeeId))
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                bool validExp = _experienceRepo.GetAll().Any(e => e.ExperienceId == experience.ExperienceId);
-                if (validExp)
-                {
-                    return BadRequest("Experience ID = " + experience.ExperienceId + " existed");
-                }
+                int count = _experienceRepo.GetAll().Count() + 1;
+                var experienceId = "EX" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Experience>(experience);
+                temp.ExperienceId = experienceId;
                 _experienceRepo.Add(temp);
                 return Ok(temp);
             }
@@ -138,12 +133,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<ExperienceDto>>(_experienceRepo.GetAll().Where(exp => exp.NameProject.Contains(keyword)));
+                var resultList = _mapper.Map<List<ExperienceDto>>(_experienceRepo.GetAll().Where(exp => RemoveVietnameseSign.RemoveSign(exp.NameProject).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active experience(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderBy(exp => exp.ExperienceId));
             }
             catch (Exception ex)
             {

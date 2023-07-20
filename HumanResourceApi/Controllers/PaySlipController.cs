@@ -3,6 +3,8 @@ using HumanResourceApi.DTO.PaySlip;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
 namespace HumanResourceApi.Controllers
@@ -11,6 +13,8 @@ namespace HumanResourceApi.Controllers
     [ApiController]
     public class PaySlipController : ControllerBase
     {
+        private readonly decimal giamTruGiaCanh = 11000000;
+        private readonly decimal mucGiamTruGiaCanhNguoiPhuThuoc = 4400000;
         public readonly IMapper _mapper;
         public readonly PaySlipRepo _paySlipRepo;
         private readonly EmployeeBenefitRepo _benefitRepo;
@@ -19,14 +23,15 @@ namespace HumanResourceApi.Controllers
         private readonly AttendanceRepo _attRepo;
         private readonly JobRepo _jobRepo;
         private readonly OvertimeRepo _otRepo;
+        private readonly DailySalaryRepo _dailySalaryRepo;
         Regex payslipIdRegex = new Regex(@"^PS\d{6}");
         Regex employeeIdRegex = new Regex(@"^EP\d{6}");
         Regex employeeBenefitIdRegex = new Regex(@"^EB\d{6}");
         Regex contractIdRegex = new Regex(@"^CN\d{6}");
 
-        public PaySlipController(IMapper mapper, PaySlipRepo paySlipRepo, EmployeeBenefitRepo benefitRepo, 
+        public PaySlipController(IMapper mapper, PaySlipRepo paySlipRepo, EmployeeBenefitRepo benefitRepo,
             EmployeeRepo empRepo, EmployeeContractRepo contractRepo, AttendanceRepo attRepo, JobRepo jobRepo,
-            OvertimeRepo otRepo)
+            OvertimeRepo otRepo, DailySalaryRepo dailySalaryRepo)
         {
             _mapper = mapper;
             _paySlipRepo = paySlipRepo;
@@ -36,6 +41,7 @@ namespace HumanResourceApi.Controllers
             _attRepo = attRepo;
             _jobRepo = jobRepo;
             _otRepo = otRepo;
+            _dailySalaryRepo = dailySalaryRepo;
         }
 
         [HttpGet("get/paysliplist")]
@@ -45,11 +51,6 @@ namespace HumanResourceApi.Controllers
             {
                 var payslipList = _mapper.Map<List<PaySlipDto>>(_paySlipRepo.GetAll());
                 if (payslipList == null) return BadRequest("No PaySlipList found.");
-                payslipList.ForEach(x =>
-                {
-                    x.Tax = _paySlipRepo.GetTax(x.TaxIncome);
-                    x.Allowance = _benefitRepo.GetAllowanceSum(x.EmployeeId, x.ActualWorkHours ?? 0);
-                });
                 return Ok(payslipList);
             }
             catch (Exception ex)
@@ -67,11 +68,12 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                var get = _mapper.Map<PaySlipDto>(_paySlipRepo.GetAll().Where(ps => ps.EmployeeId == employeeId).FirstOrDefault());
+                var get = _mapper.Map<PaySlipDto>(_paySlipRepo.GetAll().Where(ps => ps.EmployeeId == employeeId && ps.PaidDate.Month == DateTime.Now.AddMonths(1).Month).FirstOrDefault());
                 if (get == null)
                 {
                     return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");
                 }
+                var tempEmp = _empRepo.GetAnEmployee(get.EmployeeId);
                 return Ok(get);
             }
             catch (Exception ex)
@@ -80,13 +82,14 @@ namespace HumanResourceApi.Controllers
             }
         }
 
+        [SwaggerOperation(Summary = "muc bao hiem hien gio: 10.5% => 0.105")]
         [HttpPost("generate")]
         public IActionResult GeneratePayslip([FromBody] PaySlipRequestModel requestModel)
         {
             try
             {
                 var empPaySlips = _paySlipRepo.GetAll().Where(p => p.EmployeeId == requestModel.EmployeeId).ToList();
-                var tempEmp = _empRepo.GetAll().Where(e => e.EmployeeId == requestModel.EmployeeId).FirstOrDefault();
+                var tempEmp = _empRepo.GetAnEmployee(requestModel.EmployeeId);
                 if (tempEmp is null)
                 {
                     return BadRequest("No employee found");
@@ -97,39 +100,60 @@ namespace HumanResourceApi.Controllers
                 }
                 int count = _paySlipRepo.GetAll().Count() + 1;
                 var payslipId = "PS" + count.ToString().PadLeft(6, '0');
-                var tempContract = _contractRepo.GetAll().Where(c => c.EmployeeId == requestModel.EmployeeId).FirstOrDefault();
 
+                var tempContract = _contractRepo.GetAll().Where(c => c.EmployeeId == requestModel.EmployeeId).FirstOrDefault();
                 //get the missing data
-                var otHours = _otRepo.GetOTHours(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1));
+                decimal baseSalaryPerHour = tempEmp.Job.BaseSalaryPerHour ?? 0;
+                int bankAccountNumber = tempEmp.BankAccountNumber ?? 0;
+                string bankAccountName = tempEmp.BankAccountName;
+                string bankName = tempEmp.BankName;
                 string contractId = tempContract.ContractId;
                 decimal standardWorkHours = 8 * 22;
-                decimal actualWorkHours = _attRepo.GetActualHours(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1));
-                actualWorkHours = Math.Round(actualWorkHours, 2);
-                var baseSalary = _jobRepo.GetBaseSalary(tempEmp.EmployeeId, actualWorkHours);
-                decimal otSalary = _otRepo.GetOtSalary(otHours, requestModel.EmployeeId);
-                decimal taxIncome = _paySlipRepo.GetTaxIncome(baseSalary, otSalary, tempEmp.Dependents ?? 0);
-                decimal? bonus = _jobRepo.GetBonus(requestModel.EmployeeId);
-                decimal? totalSalary = _paySlipRepo.GetTotalSalary(baseSalary,
-                    _benefitRepo.GetAllowanceSum(requestModel.EmployeeId, actualWorkHours),
-                    _paySlipRepo.GetTax(taxIncome),
-                    otSalary);
+                decimal actualWorkHours = _dailySalaryRepo.GetMonthlyHour(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1));
+                var otHours = _dailySalaryRepo.GetMonthlyOtHour(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1));
+                var baseSalary = _dailySalaryRepo.GetBaseSalary(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1));
+                decimal otSalary = _dailySalaryRepo.GetOtSalary(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1));
+                decimal dailyAllowance = _benefitRepo.GetDailyAllowance(requestModel.EmployeeId);
+                decimal dailyAllowanceSum = _dailySalaryRepo.GetAllowance(requestModel.EmployeeId, requestModel.PaidDate.AddMonths(-1), dailyAllowance);
+                decimal allowanceSum = _benefitRepo.GetAllowanceSum(requestModel.EmployeeId, dailyAllowanceSum);
+                decimal totalBeforeDeduction = baseSalary + otSalary + allowanceSum;
+                decimal bhytAmount = totalBeforeDeduction * (decimal)requestModel.BhytPercentage;
+                int dependent = tempEmp.Dependents ?? 0;
+                decimal giamTruGiaCanhNguoiPhuThuoc = dependent * mucGiamTruGiaCanhNguoiPhuThuoc;
+                decimal thuNhapTruocThue = totalBeforeDeduction - bhytAmount;
+                decimal taxIncome = thuNhapTruocThue - giamTruGiaCanh - giamTruGiaCanhNguoiPhuThuoc;
+                if (taxIncome < 0)
+                    taxIncome = 0;
+                decimal tax = _paySlipRepo.GetTax(taxIncome);
+                decimal? totalSalary = thuNhapTruocThue - tax;
 
 
                 //insert missing data to payslip
                 var payslip = _mapper.Map<PaySlip>(requestModel);
                 payslip.PayslipId = payslipId;
-                payslip.BaseSalary = baseSalary;
-                payslip.OtHours = otHours;
-                payslip.ContractId = contractId;
                 payslip.StandardWorkHours = standardWorkHours;
                 payslip.ActualWorkHours = actualWorkHours;
+                payslip.OtHours = otHours;
+                payslip.Dependent = dependent;
+                payslip.BaseSalaryPerHour = baseSalaryPerHour;
+                payslip.BaseSalary = baseSalary;
+                payslip.OtSalary = otSalary;
+                payslip.Allowance = allowanceSum;
+                payslip.TotalBeforeDeduction = totalBeforeDeduction;
+                payslip.BhytAmount = bhytAmount;
+                payslip.GiamTruGiaCanh = giamTruGiaCanh;
+                payslip.GiamTruGiaCanhNguoiPhuThuoc = giamTruGiaCanhNguoiPhuThuoc;
                 payslip.TaxIncome = taxIncome;
+                payslip.Tax = tax;
                 payslip.TotalSalary = totalSalary;
+                payslip.BankAccountNumber = bankAccountNumber;
+                payslip.BankAccountName = bankAccountName;
+                payslip.BankName = bankName;
+                payslip.Status = "Pending";
+                payslip.ContractId = contractId;
 
                 _paySlipRepo.Add(payslip);
                 var mappedPayslip = _mapper.Map<PaySlipDto>(payslip);
-                mappedPayslip.Tax = _paySlipRepo.GetTax(mappedPayslip.TaxIncome);
-                mappedPayslip.Allowance = _benefitRepo.GetAllowanceSum(requestModel.EmployeeId, actualWorkHours);
                 return Ok(mappedPayslip);
 
             }
@@ -157,10 +181,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong EmployeeId Format.");
                 }
-                if (!contractIdRegex.IsMatch(payslip.ContractId))
-                {
-                    return BadRequest("Wrong ContractId Format.");
-                }
                 var valid = _paySlipRepo.GetAll().Where(ps => ps.PayslipId == payslipId && ps.EmployeeId == employeeId).FirstOrDefault();
                 if (valid == null)
                 {
@@ -171,7 +191,8 @@ namespace HumanResourceApi.Controllers
                 valid.EmployeeId = employeeId;
 
                 _paySlipRepo.Update(valid);
-                return Ok(_mapper.Map<PaySlipDto>(valid));
+                var responsePayslip = _mapper.Map<PaySlipDto>(valid);
+                return Ok(responsePayslip);
             }
             catch (Exception ex)
             {

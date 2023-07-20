@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
+import { MDBDataTableV5 } from 'mdbreact';
 
 function Department(props) {
     const [data, setData] = useState([]);
@@ -8,6 +9,8 @@ function Department(props) {
     const [updateDepartment, setUpdateDepartment] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState('');
+    const [selectedReport, setSelectedReport] = useState(null);
+    
     const departmentIdPattern = /^DP\d{6}$/;
     const handleEdit = (department) => {
         setUpdateDepartment(department);
@@ -15,6 +18,10 @@ function Department(props) {
     };
 
     const timeoutRef = useRef(null);
+
+    const handleDoubleClick = (report) => {
+        setSelectedReport(report);
+    };
 
     useEffect(() => {
         if (validationError) {
@@ -63,6 +70,8 @@ function Department(props) {
             status: event.target.elements.status.checked,
         };
 
+        const isDuplicateDepartmentId = data.some(department => department.departmentId === formData.departmentId);
+
         if (!formData.departmentId) {
             setValidationError('Department ID is required');
             return;
@@ -70,6 +79,11 @@ function Department(props) {
 
         if (!departmentIdPattern.test(formData.departmentId)) {
             setValidationError('Department ID must follow DP###### format');
+            return;
+        }
+
+        if (isDuplicateDepartmentId) {
+            setValidationError('Department ID is already taken');
             return;
         }
 
@@ -175,35 +189,101 @@ function Department(props) {
     return (
         <div className="manager" style={{ position: "relative" }}>
             <div className='row addbtn'><button className='btn_create' onClick={() => setShowForm(true)}>Add Department</button></div>
+
+            <div className="card mb-3">
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-2">
+                            <h3 className="mb-0">Department Details:</h3>
+                        </div>
+                        <div className="col-10 text-secondary">
+                            {selectedReport && (
+                                <div>
+
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <h4>Department ID:</h4>
+                                            <p>{selectedReport.departmentId}</p>
+                                        </div>
+                                        <div className="col-sm-8">
+                                            <h4>Department Name:</h4>
+                                            <p>{selectedReport.departmentName}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <h4>Description:</h4>
+                                    <p>{selectedReport.description}</p>
+                                    <hr />
+
+                                    <h4>Status:</h4>
+                                    <p>
+                                        {selectedReport.status
+                                            ? 'Active'
+                                            : 'Disable'}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div className='row'>
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th>Department ID</th>
-                            <th>Department Name</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>Option</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map(department => (
-                            <tr key={department.departmentId}>
-                                <td>{department.departmentId}</td>
-                                <td>{department.departmentName}</td>
-                                <td>{department.description}</td>
-                                <td>
-                                    {department.status
-                                        ? 'Active'
-                                        : 'Inactive'}
-                                </td>
-                                <td>
-                                    <button onClick={() => handleEdit(department)}>Edit</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <MDBDataTableV5
+                    className='custom-table'
+                    data={{
+                        columns: [
+                            {
+                                label: 'Department ID',
+                                field: 'departmentId',
+                                width: 150,
+                            },
+                            {
+                                label: 'Department Name',
+                                field: 'departmentName',
+                                width: 150,
+                            },
+                            {
+                                label: 'Description',
+                                field: 'description',
+                                width: 200,
+                            },
+                            {
+                                label: 'Status',
+                                field: 'status',
+                                width: 100,
+                            },
+                            {
+                                label: 'Option',
+                                field: 'options',
+                                sort: 'disabled',
+                                width: 100,
+                            },
+                        ],
+                        rows: data.map((department) => ({
+                            departmentId: department.departmentId,
+                            departmentName: department.departmentName,
+                            description: department.description,
+                            status: department.status ? 'Active' : 'Disable',
+                            options: (
+                                <button onClick={() => handleEdit(department)}>Edit</button>
+                            ),
+                            clickEvent: () => handleDoubleClick(department)
+                        }))
+                    }}
+                    hover
+                    entriesOptions={[5, 10, 20]}
+                    entries={5}
+                    pagesAmount={5}
+                    searchTop
+                    searchBottom={false}
+                    tbodyCustomRow={(row, rowIndex) => {
+                        return {
+                            onDoubleClick: row.clickEvent
+                        };
+                    }}
+                />
             </div>
 
             {showCreateForm && (

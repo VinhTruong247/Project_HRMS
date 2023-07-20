@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
+import { MDBDataTableV5 } from 'mdbreact';
 
 function Jobs(props) {
   const [data, setData] = useState([]);
@@ -8,6 +9,8 @@ function Jobs(props) {
   const [updateJob, setUpdateJob] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [validationError, setValidationError] = useState('');
+  const [selectedReport, setSelectedReport] = useState(null);
+
   const jobIdPattern = /^JB\d{6}$/;
   const handleEdit = (job) => {
     setUpdateJob(job);
@@ -15,6 +18,10 @@ function Jobs(props) {
   };
 
   const timeoutRef = useRef(null);
+
+  const handleDoubleClick = (report) => {
+    setSelectedReport(report);
+  };
 
   useEffect(() => {
     if (validationError) {
@@ -62,6 +69,8 @@ function Jobs(props) {
       status: event.target.elements.status.checked,
     };
 
+    const isDuplicateJobId = data.some(job => job.jobId === formData.jobId);
+
     if (!formData.jobId) {
       setValidationError('Job ID is required');
       return;
@@ -69,6 +78,11 @@ function Jobs(props) {
 
     if (!jobIdPattern.test(formData.jobId)) {
       setValidationError('Job ID must follow JB###### format');
+      return;
+    }
+
+    if (isDuplicateJobId) {
+      setValidationError('Job ID is already taken');
       return;
     }
 
@@ -89,6 +103,11 @@ function Jobs(props) {
 
     if (isNaN(formData.baseSalaryPerHour)) {
       setValidationError('Base salary must be in number format');
+      return;
+    }
+
+    if (formData.baseSalaryPerHour < 0) {
+      setValidationError('Input cannot be negative')
       return;
     }
 
@@ -153,6 +172,11 @@ function Jobs(props) {
       return;
     }
 
+    if (formData.baseSalaryPerHour < 0) {
+      setValidationError('Input cannot be negative')
+      return;
+    }
+
     fetch(`https://localhost:7220/api/Job/update/job/${updateJob.jobId}`, {
       method: 'PUT',
       headers: {
@@ -190,37 +214,118 @@ function Jobs(props) {
   return (
     <div className="manager" style={{ position: "relative" }}>
       <div className='row addbtn'><button className='btn_create' onClick={() => setShowForm(true)}>Add Job</button></div>
+
+      <div className="card mb-3">
+        <div className="card-body">
+          <div className="row">
+            <div className="col-2">
+              <h3 className="mb-0">Job Details:</h3>
+            </div>
+            <div className="col-10 text-secondary">
+              {selectedReport && (
+                <div>
+                  <div className="row">
+                    <div className="col-sm-4">
+                      <h4>Job ID:</h4>
+                      <p>{selectedReport.jobId}</p>
+                    </div>
+                    <div className="col-sm-8">
+                      <h4>Job Title:</h4>
+                      <p>{selectedReport.jobTitle}</p>
+                    </div>
+                  </div>
+                  <hr />
+
+                  <div className="row">
+                    <div className="col-sm-4">
+                      <h4>Base Salary per Hour:</h4>
+                      <p>{selectedReport.baseSalaryPerHour.toLocaleString()}</p>
+                    </div>
+                    <div className="col-sm-8">
+                      <h4>Bonus:</h4>
+                      <p>{selectedReport.bonus.toLocaleString()}</p>
+                    </div>
+                  </div>
+                  <hr />
+
+                  <h4>Description:</h4>
+                  <p>{selectedReport.jobDescription}</p>
+                  <hr />
+
+                  <h4>Status:</h4>
+                  <p>
+                    {selectedReport.status
+                      ? 'Active'
+                      : 'Disable'}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className='row'>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>Job ID</th>
-              <th>Job Name</th>
-              <th>Job Description</th>
-              <th>Base Salary</th>
-              <th>Status</th>
-              <th>Option</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(job => (
-              <tr key={job.jobId}>
-                <td>{job.jobId}</td>
-                <td>{job.jobTitle}</td>
-                <td>{job.jobDescription}</td>
-                <td>{job.baseSalaryPerHour.toLocaleString()}</td>
-                <td>
-                  {job.status
-                    ? 'Active'
-                    : 'Inactive'}
-                </td>
-                <td>
-                  <button onClick={() => handleEdit(job)}>Edit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <MDBDataTableV5
+          className='custom-table'
+          data={{
+            columns: [
+              {
+                label: 'Job ID',
+                field: 'jobId',
+                width: 150,
+              },
+              {
+                label: 'Job Title',
+                field: 'jobTitle',
+                width: 150,
+              },
+              {
+                label: 'Description',
+                field: 'jobDescription',
+                width: 200,
+              },
+              {
+                label: 'Base Salary per Hour',
+                field: 'baseSalaryPerHour',
+                width: 150,
+              },
+              {
+                label: 'Status',
+                field: 'status',
+                width: 100,
+              },
+              {
+                label: 'Option',
+                field: 'options',
+                sort: 'disabled',
+                width: 100,
+              },
+            ],
+            rows: data.map((job) => ({
+              jobId: job.jobId,
+              jobTitle: job.jobTitle,
+              jobDescription: job.jobDescription,
+              baseSalaryPerHour: job.baseSalaryPerHour.toLocaleString(),
+              status: job.status ? 'Active' : 'Disable',
+              options: (
+                <button onClick={() => handleEdit(job)}>Edit</button>
+              ),
+              clickEvent: () => handleDoubleClick(job)
+            }))
+          }}
+          hover
+          entriesOptions={[5, 10, 20]}
+          entries={5}
+          pagesAmount={5}
+          searchTop
+          searchBottom={false}
+          tbodyCustomRow={(row, rowIndex) => {
+            return {
+              onDoubleClick: row.clickEvent
+            };
+          }}
+        />
       </div>
 
       {showCreateForm && (

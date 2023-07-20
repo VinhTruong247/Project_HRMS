@@ -11,7 +11,7 @@ function Project() {
   }, []);
 
   return (
-    <div className="projects-container">
+    <div className="projects">
       <div className="projects-header">
       </div>
       <div className="projects-list">

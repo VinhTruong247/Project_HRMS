@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HumanResourceApi.DTO.Employee;
 using HumanResourceApi.DTO.Project;
+using HumanResourceApi.Helper;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -71,10 +72,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!projectIdRegex.IsMatch(project.ProjectId))
-                {
-                    return BadRequest("Wrong projectId Format.");
-                }
                 if (!departmentIdRegex.IsMatch(project.DepartmentId))
                 {
                     return BadRequest("Wrong departmentId Format.");
@@ -83,7 +80,10 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Project ID = " + project.ProjectId + " existed");
                 }
+                int count = _projectRepo.GetAll().Count() + 1;
+                var projectId = "PJ" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Project>(project);
+                temp.ProjectId = projectId;
                 _projectRepo.Add(temp);
                 return Ok(temp);
             }
@@ -132,12 +132,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<ProjectDto>>(_projectRepo.GetAll().Where(e => e.ProjectName.Contains(keyword)));
+                var resultList = _mapper.Map<List<ProjectDto>>(_projectRepo.GetAll().Where(e => RemoveVietnameseSign.RemoveSign(e.ProjectName).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active project(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderBy(p => p.ProjectId));
             }
             catch (Exception ex)
             {

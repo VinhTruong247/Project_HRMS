@@ -2,6 +2,7 @@
 using HumanResourceApi.DTO.Experience;
 using HumanResourceApi.DTO.Job;
 using HumanResourceApi.DTO.Project;
+using HumanResourceApi.Helper;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -76,16 +77,10 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Some input information is null");
                 }
-                if (!jobIdRegex.IsMatch(job.JobId))
-                {
-                    return BadRequest("Wrong jobId Format.");
-                }
-                bool validJob = _job.GetAll().Any(j => j.JobId == job.JobId);
-                if (validJob)
-                {
-                    return BadRequest("Job ID = " + job.JobId + " existed");
-                }
+                int count = _job.GetAll().Count() + 1;
+                var jobId = "RP" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Job>(job);
+                temp.JobId = jobId;
                 _job.Add(temp);
                 return Ok(_mapper.Map<JobDto>(temp));
             }
@@ -131,12 +126,12 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<JobDto>>(_job.GetAll().Where(j => j.JobTitle.Contains(keyword)));
+                var resultList = _mapper.Map<List<JobDto>>(_job.GetAll().Where(j => RemoveVietnameseSign.RemoveSign(j.JobTitle).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active job(s) found");
                 }
-                return Ok(resultList);
+                return Ok(resultList.OrderBy(j => j.JobId));
             }
             catch (Exception ex)
             {

@@ -13,7 +13,7 @@ namespace HumanResourceApi.Repositories
             decimal totalOt = 0;
             otList.ForEach(o =>
             {
-                var otTime = o.OvertimeHours ?? TimeSpan.Zero;
+                var otTime = o.OvertimeHours;
                 totalOt += (decimal)otTime.TotalHours;
             });
             return totalOt;
@@ -23,7 +23,7 @@ namespace HumanResourceApi.Repositories
         {
             var emp = _context.Employees.Include(e => e.Job).Where(e => e.EmployeeId == employeeId).FirstOrDefault();
 
-            return otHours * emp.Job.BaseSalaryPerHour ?? 0;
+            return otHours * emp.Job.BaseSalaryPerHour  * (decimal)1.5 ?? 0;
         }
     }
 }
