@@ -40,7 +40,7 @@ function Payslip(props) {
 
     //  Get fulllist of PAYSLIP
     useEffect(() => {
-        fetch("https://localhost:7220/api/PaySlip/get/paysliplist", {
+        fetch(`https://localhost:7220/api/PaySlip/get/paysliplist`, {
             method: "GET",
             headers: {
                 'Content-Type': "application/json",
