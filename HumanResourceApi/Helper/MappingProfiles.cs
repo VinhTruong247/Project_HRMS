@@ -54,6 +54,8 @@ namespace HumanResourceApi.Helper
                 .ReverseMap();
             CreateMap<RequestDailySalary, DailySalary>()
                 .ReverseMap();
+            CreateMap<DailyAllowance, Allowance>()
+                .ReverseMap();
         }
 
         private void ProjectMap()
@@ -168,6 +170,8 @@ namespace HumanResourceApi.Helper
                 .ReverseMap();
             CreateMap<PaySlip, UpdatePaySlipDto>()
                 .ReverseMap();
+            CreateMap<MonthlyAllowance, Allowance>()
+               .ReverseMap();
         }
 
         private void ReportMap()

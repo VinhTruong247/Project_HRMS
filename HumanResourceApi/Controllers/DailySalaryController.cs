@@ -30,6 +30,8 @@ namespace HumanResourceApi.Controllers
                     decimal dailyAllowance = _employeeBenefitRepo.GetDailyAllowance(dailySalary.EmployeeId);
                     dailySalary.DailyAllowance = dailyAllowance;
                     dailySalary.DailySalary = _dailySalaryRepo.GetDailySalary((decimal)dailySalary.TotalHours.TotalHours, dailySalary.SalaryPerHour ?? 0, dailySalary.OtSalary ?? 0, dailyAllowance);
+                    dailySalary.DailyAllowanceList =_mapper.Map<List<DailyAllowance>>(_employeeBenefitRepo.GetDailyAllowanceDetail(dailySalary.EmployeeId));
+                    
                 });
                 return Ok(dailySalaryList);
             }
@@ -53,6 +55,7 @@ namespace HumanResourceApi.Controllers
                     decimal dailyAllowance = _employeeBenefitRepo.GetDailyAllowance(dailySalary.EmployeeId);
                     dailySalary.DailyAllowance = dailyAllowance;
                     dailySalary.DailySalary = _dailySalaryRepo.GetDailySalary((decimal)dailySalary.TotalHours.TotalHours, dailySalary.SalaryPerHour ?? 0, dailySalary.OtSalary ?? 0, dailyAllowance);
+                    dailySalary.DailyAllowanceList = _mapper.Map<List<DailyAllowance>>(_employeeBenefitRepo.GetDailyAllowanceDetail(dailySalary.EmployeeId));
                 });
                 return Ok(dailySalaryList);
             }
