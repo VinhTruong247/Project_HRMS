@@ -109,7 +109,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<SkillDto>>(_skillRepo.GetAll().Where(s => RemoveVietnameseSign.RemoveSign(s.SkillName).ToLower().Contains(keyword.ToLower())));
+                var resultList = _mapper.Map<List<ResponseSkillDto>>(_skillRepo.GetAll().Where(s => RemoveVietnameseSign.RemoveSign(s.SkillName).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active skill(s) found");

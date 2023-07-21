@@ -2,8 +2,10 @@
 
 namespace HumanResourceApi.DTO.Job
 {
-    public class JobDto
+    public class ResponseJobDto
     {
+        [Required]
+        public string JobId { get; set; }
         [Required]
         public string JobTitle { get; set; }
         [Required]

@@ -5,8 +5,6 @@ namespace HumanResourceApi.DTO.Experience
     public class ExperienceDto
     {
         [Required]
-        public string ExperienceId { get; set; }
-        [Required]
         public string EmployeeId { get; set; }
         [Required]
         public string NameProject { get; set; }

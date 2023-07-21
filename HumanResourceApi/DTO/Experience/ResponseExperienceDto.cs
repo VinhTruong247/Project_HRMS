@@ -1,22 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HumanResourceApi.DTO.Leave
+namespace HumanResourceApi.DTO.Experience
 {
-    public class LeaveDto
+    public class ResponseExperienceDto
     {
+        [Required]
+        public string ExperienceId { get; set; }
         [Required]
         public string EmployeeId { get; set; }
         [Required]
-        public string LeaveType { get; set; }
+        public string NameProject { get; set; }
+        [Required]
+        public int? TeamSize { get; set; }
         [Required]
         public DateTime? StartDate { get; set; }
         [Required]
         public DateTime? EndDate { get; set; }
         [Required]
-        public string Reason { get; set; }
+        public string TechStack { get; set; }
         [Required]
         public bool Status { get; set; }
-        [Required]
-        public double? LeaveHours { get; set; }
     }
 }

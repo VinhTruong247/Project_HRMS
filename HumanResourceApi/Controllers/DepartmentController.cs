@@ -74,7 +74,7 @@ namespace HumanResourceApi.Controllers
                     return BadRequest("Some input information is null");
                 }
                 int count = _repo.GetAll().Count() + 1;
-                var departmentId = "RP" + count.ToString().PadLeft(6, '0');
+                var departmentId = "DP" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Department>(department);
                 temp.DepartmentId = departmentId;
                 _repo.Add(temp);
@@ -121,7 +121,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<DepartmentDto>>(_repo.GetAll().Where(dp => RemoveVietnameseSign.RemoveSign(dp.DepartmentName).ToLower().Contains(keyword.ToLower())));
+                var resultList = _mapper.Map<List<ResponseDepartmentDto>>(_repo.GetAll().Where(dp => RemoveVietnameseSign.RemoveSign(dp.DepartmentName).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active department(s) found");

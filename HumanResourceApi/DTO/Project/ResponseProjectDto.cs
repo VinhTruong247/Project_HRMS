@@ -2,8 +2,10 @@
 
 namespace HumanResourceApi.DTO.Project
 {
-    public class ProjectDto
+    public class ResponseProjectDto
     {
+        [Required]
+        public string ProjectId { get; set; }
         [Required]
         public string ProjectName { get; set; }
         [Required]

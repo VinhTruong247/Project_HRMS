@@ -2,8 +2,10 @@
 
 namespace HumanResourceApi.DTO.Employee
 {
-    public class EmployeeDto
+    public class ResponseEmployeeDto
     {
+        [Required]
+        public string EmployeeId { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]

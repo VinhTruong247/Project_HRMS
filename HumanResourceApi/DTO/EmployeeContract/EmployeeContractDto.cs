@@ -5,8 +5,6 @@ namespace HumanResourceApi.DTO.EmployeeContract
     public class EmployeeContractDto
     {
         [Required]
-        public string ContractId { get; set; }
-        [Required]
         public string EmployeeId { get; set; }
         [Required]
         public string ContractFile { get; set; }
