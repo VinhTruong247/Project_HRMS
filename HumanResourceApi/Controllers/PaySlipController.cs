@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HumanResourceApi.DTO.DailySalary;
 using HumanResourceApi.DTO.PaySlip;
 using HumanResourceApi.Models;
 using HumanResourceApi.Repositories;
@@ -51,6 +52,12 @@ namespace HumanResourceApi.Controllers
             {
                 var payslipList = _mapper.Map<List<PaySlipDto>>(_paySlipRepo.GetAll());
                 if (payslipList == null) return BadRequest("No PaySlipList found.");
+                payslipList.ForEach(responsePayslip =>
+                {
+                    responsePayslip.DailyAllowanceSum = _dailySalaryRepo.GetAllowance(responsePayslip.EmployeeId, responsePayslip.PaidDate.AddMonths(-1), _benefitRepo.GetDailyAllowance(responsePayslip.EmployeeId)) ;
+                    responsePayslip.MonthlyAllowanceSum = _benefitRepo.GetMonthlyAllowance(responsePayslip.EmployeeId); 
+                    responsePayslip.MonthylyAllowanceList = _mapper.Map<List<MonthlyAllowance>>(_benefitRepo.GetMonthlyAllowanceDetail(responsePayslip.EmployeeId));
+                });
                 return Ok(payslipList);
             }
             catch (Exception ex)
@@ -73,7 +80,9 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");
                 }
-                var tempEmp = _empRepo.GetAnEmployee(get.EmployeeId);
+                get.DailyAllowanceSum = _dailySalaryRepo.GetAllowance(get.EmployeeId, get.PaidDate.AddMonths(-1), _benefitRepo.GetDailyAllowance(get.EmployeeId));
+                get.MonthlyAllowanceSum = _benefitRepo.GetMonthlyAllowance(get.EmployeeId);
+                get.MonthylyAllowanceList = _mapper.Map<List<MonthlyAllowance>>(_benefitRepo.GetMonthlyAllowanceDetail(get.EmployeeId));
                 return Ok(get);
             }
             catch (Exception ex)
@@ -154,6 +163,9 @@ namespace HumanResourceApi.Controllers
 
                 _paySlipRepo.Add(payslip);
                 var mappedPayslip = _mapper.Map<PaySlipDto>(payslip);
+                mappedPayslip.DailyAllowanceSum = _dailySalaryRepo.GetAllowance(mappedPayslip.EmployeeId, mappedPayslip.PaidDate.AddMonths(-1), _benefitRepo.GetDailyAllowance(mappedPayslip.EmployeeId));
+                mappedPayslip.MonthlyAllowanceSum = _benefitRepo.GetMonthlyAllowance(mappedPayslip.EmployeeId);
+                mappedPayslip.MonthylyAllowanceList = _mapper.Map<List<MonthlyAllowance>>(_benefitRepo.GetMonthlyAllowanceDetail(mappedPayslip.EmployeeId));
                 return Ok(mappedPayslip);
 
             }
@@ -192,6 +204,9 @@ namespace HumanResourceApi.Controllers
 
                 _paySlipRepo.Update(valid);
                 var responsePayslip = _mapper.Map<PaySlipDto>(valid);
+                responsePayslip.DailyAllowanceSum = _dailySalaryRepo.GetAllowance(responsePayslip.EmployeeId, responsePayslip.PaidDate.AddMonths(-1), _benefitRepo.GetDailyAllowance(responsePayslip.EmployeeId));
+                responsePayslip.MonthlyAllowanceSum = _benefitRepo.GetMonthlyAllowance(responsePayslip.EmployeeId);
+                responsePayslip.MonthylyAllowanceList = _mapper.Map<List<MonthlyAllowance>>(_benefitRepo.GetMonthlyAllowanceDetail(responsePayslip.EmployeeId));
                 return Ok(responsePayslip);
             }
             catch (Exception ex)

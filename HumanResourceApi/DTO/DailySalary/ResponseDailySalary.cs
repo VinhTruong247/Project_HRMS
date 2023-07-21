@@ -13,5 +13,15 @@
         public decimal? OtSalary { get; set; }
         public decimal? DailyAllowance { get; set; }
         public decimal? DailySalary { get; set; }
+        public ICollection<DailyAllowance> DailyAllowanceList { get; set; }
+        
+    }
+
+    public class DailyAllowance
+    {
+        public string AllowanceId { get; set; }
+        public string AllowanceName { get; set; }
+        public string AllowanceType { get; set; }
+        public decimal Amount { get; set; }
     }
 }

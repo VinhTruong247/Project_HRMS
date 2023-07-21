@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HumanResourceApi.DTO.DailySalary;
+using System.ComponentModel.DataAnnotations;
 
 namespace HumanResourceApi.DTO.PaySlip
 {
@@ -30,6 +31,16 @@ namespace HumanResourceApi.DTO.PaySlip
         public string BankName { get; set; }
         public string Status { get; set; }
         public string ContractId { get; set; }
+        public decimal DailyAllowanceSum { get; set; }
+        public decimal MonthlyAllowanceSum { get; set; }
+        public ICollection<MonthlyAllowance> MonthylyAllowanceList { get; set; }
+    }
 
+    public class MonthlyAllowance 
+    {
+        public string AllowanceId { get; set; }
+        public string AllowanceName { get; set; }
+        public string AllowanceType { get; set; }
+        public decimal Amount { get; set; }
     }
 }
