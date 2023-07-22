@@ -14,4 +14,3 @@ namespace HumanResourceApi.DTO.Skill
         public bool Status { get; set; }
     }
 }
-}
