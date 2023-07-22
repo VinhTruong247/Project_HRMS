@@ -91,10 +91,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                if (_overtimeRepo.GetAll().Any(e => e.EmployeeId == overtime.EmployeeId && e.OvertimeId == overtime.OvertimeId))
-                {
-                    return BadRequest("Overtime ID = " + overtime.OvertimeId + " existed");
-                }
                 if ((overtime.Day - DateTime.Now).TotalDays < 2)
                 {
                     return BadRequest("Overtime request must be 2 days old.");

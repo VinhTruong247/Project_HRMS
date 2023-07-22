@@ -133,7 +133,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<ExperienceDto>>(_experienceRepo.GetAll().Where(exp => RemoveVietnameseSign.RemoveSign(exp.NameProject).ToLower().Contains(keyword.ToLower())));
+                var resultList = _mapper.Map<List<ResponseExperienceDto>>(_experienceRepo.GetAll().Where(exp => RemoveVietnameseSign.RemoveSign(exp.NameProject).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active experience(s) found");

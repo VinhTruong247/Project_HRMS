@@ -126,7 +126,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<JobDto>>(_job.GetAll().Where(j => RemoveVietnameseSign.RemoveSign(j.JobTitle).ToLower().Contains(keyword.ToLower())));
+                var resultList = _mapper.Map<List<ResponseJobDto>>(_job.GetAll().Where(j => RemoveVietnameseSign.RemoveSign(j.JobTitle).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active job(s) found");

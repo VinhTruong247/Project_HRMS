@@ -2,8 +2,10 @@
 
 namespace HumanResourceApi.DTO.Skill
 {
-    public class SkillDto
+    public class ResponseSkillDto
     {
+        [Required]
+        public string SkillId { get; set; }
         [Required]
         public string SkillName { get; set; }
         [Required]
@@ -11,4 +13,5 @@ namespace HumanResourceApi.DTO.Skill
         [Required]
         public bool Status { get; set; }
     }
+}
 }

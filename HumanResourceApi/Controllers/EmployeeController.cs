@@ -146,7 +146,7 @@ namespace HumanResourceApi.Controllers
                     return BadRequest("Invalid Email Format");
                 }
                 int count = _employeeRepo.GetAll().Count() + 1;
-                var employeeId = "RP" + count.ToString().PadLeft(6, '0');
+                var employeeId = "EP" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Employee>(employee);
                 temp.EmployeeId = employeeId;
                 _employeeRepo.Add(temp);
@@ -234,7 +234,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => RemoveVietnameseSign.RemoveSign(e.FirstName).ToLower().Contains(keyword.ToLower()) ||
+                var resultList = _mapper.Map<List<ResponseEmployeeDto>>(_employeeRepo.GetAll().Where(e => RemoveVietnameseSign.RemoveSign(e.FirstName).ToLower().Contains(keyword.ToLower()) ||
                 RemoveVietnameseSign.RemoveSign(e.LastName).ToLower().Contains(keyword.ToLower()))
                 );
                 if (resultList == null)

@@ -17,7 +17,7 @@ namespace HumanResourceApi.Controllers
         public readonly IMapper _mapper;
         public readonly EmployeeContractRepo _employeeContractRepo;
         public Regex contractIdRegex = new Regex(@"^CT\d{6}");
-        public Regex employeeIdRegex = new Regex(@"^CT\d{6}");
+        public Regex employeeIdRegex = new Regex(@"^EP\d{6}");
 
 
         public EmployeeContractController(IMapper mapper, EmployeeContractRepo employeeContractRepo)
@@ -78,7 +78,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                bool validContract = _employeeContractRepo.GetAll().Any(c => c.ContractId == contract.ContractId);
                 int count = _employeeContractRepo.GetAll().Count() + 1;
                 var contractId = "CN" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<EmployeeContract>(contract);

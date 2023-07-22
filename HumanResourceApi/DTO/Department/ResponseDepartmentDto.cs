@@ -2,8 +2,10 @@
 
 namespace HumanResourceApi.DTO.Department
 {
-    public class DepartmentDto
+    public class ResponseDepartmentDto
     {
+        [Required]
+        public string DepartmentId { get; set; }
         [Required]
         public string DepartmentName { get; set; }
         [Required]

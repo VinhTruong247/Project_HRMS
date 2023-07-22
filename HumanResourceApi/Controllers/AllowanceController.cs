@@ -73,15 +73,8 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest();
                 }
-                if (!x.IsMatch(allowance.AllowanceId))
-                {
-                    return BadRequest("Wrong AllowanceId Format.");
-                }
-                bool validAllowance = _allowance.GetAll().Any(a => a.AllowanceId == allowance.AllowanceId);
-                if (validAllowance)
-                {
-                    return BadRequest("Allowance ID = " + allowance.AllowanceId + " existed");
-                }
+                int count = _allowance.GetAll().Count() + 1;
+                var allowanceId = "AL" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Allowance>(allowance);
                 _allowance.Add(temp);
                 return Ok(temp);
@@ -128,7 +121,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<AllowanceDto>>(_allowance.GetAll().Where(a => RemoveVietnameseSign.RemoveSign(a.AllowanceType).ToLower().Contains(keyword.ToLower())));
+                var resultList = _mapper.Map<List<ResponseAllowanceDto>>(_allowance.GetAll().Where(a => RemoveVietnameseSign.RemoveSign(a.AllowanceType).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active allowance(s) found");

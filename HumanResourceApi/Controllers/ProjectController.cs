@@ -76,10 +76,6 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong departmentId Format.");
                 }
-                if (_projectRepo.GetAll().Any(p => p.ProjectId == project.ProjectId))
-                {
-                    return BadRequest("Project ID = " + project.ProjectId + " existed");
-                }
                 int count = _projectRepo.GetAll().Count() + 1;
                 var projectId = "PJ" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Project>(project);
@@ -132,7 +128,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var resultList = _mapper.Map<List<ProjectDto>>(_projectRepo.GetAll().Where(e => RemoveVietnameseSign.RemoveSign(e.ProjectName).ToLower().Contains(keyword.ToLower())));
+                var resultList = _mapper.Map<List<ResponseProjectDto>>(_projectRepo.GetAll().Where(e => RemoveVietnameseSign.RemoveSign(e.ProjectName).ToLower().Contains(keyword.ToLower())));
                 if (resultList == null)
                 {
                     return BadRequest("No active project(s) found");
