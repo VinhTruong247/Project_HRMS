@@ -102,15 +102,6 @@ h5 {
     font-size: 0.8rem;
 }
 
-.news hr {
-    background: linear-gradient(135deg, rgba(255, 92, 51, 1) 0%, rgba(179, 74, 55, 1) 33%, rgba(166, 36, 31, 1) 66%, rgba(48, 18, 16, 1) 100%);
-    border-radius: 2px;
-    height: 4px;
-    max-width: 35%;
-    opacity: 100% !important;
-    border-top: 0 !important;
-}
-
 .profile-photo {
     width: 2.8rem;
     height: 2.8rem;
@@ -310,7 +301,8 @@ aside .sidebar a:hover.active span {
     margin-top: 0.7rem;
 }
 
-.card .btn {
+.card .btn,
+.main-body .btn {
     display: inline-block;
     text-align: center;
     background-color: var(--color-primary);
@@ -320,10 +312,27 @@ aside .sidebar a:hover.active span {
     transition: all 0.3s;
 }
 
-.card .btn:hover {
+.card .btn.btn-edit {
+    display: inline-block;
+    text-align: center;
+    background-color: var(--color-info-light);
+    border: 1px solid #2a2a2a;
+    box-shadow: var(--box-shadow);
+    color: #2a2a2a;
+    transition: all 0.3s;
+}
+
+.card .btn:hover,
+.main-body .btn:hover {
     background-color: #fff;
     border: 1px solid #2a2a2a;
     color: #2a2a2a;
+}
+
+.card .btn.btn-edit:hover {
+    background-color: var(--color-info-dark);
+    border: 1px solid transparent;
+    color: #fff;
 }
 
 .card-body {
@@ -419,7 +428,8 @@ tr:hover td {
 }
 
 .manager .form,
-.formProfile {
+.formProfile,
+.main-body.payslip .formpayslip {
     background-color: white;
     width: 35rem;
     padding: 2rem;
@@ -498,7 +508,8 @@ tr:hover td {
 }
 
 .manager .row.butt button,
-.formProfile .row.butt button {
+.formProfile .row.butt button,
+.main-body.payslip .formpayslip button {
     width: 8rem;
     height: 3.35rem;
     line-height: 51px;
@@ -511,7 +522,8 @@ tr:hover td {
 }
 
 .manager .row.butt button:hover,
-.formProfile .row.butt button:hover {
+.formProfile .row.butt button:hover,
+.main-body.payslip .formpayslip button:hover {
     background-color: #fff;
     border: 1px solid #2a2a2a;
     color: #2a2a2a;
@@ -749,6 +761,14 @@ main {
     color: #2a2a2a;
 }
 
+.news hr {
+    background: linear-gradient(135deg, rgba(255, 92, 51, 1) 0%, rgba(179, 74, 55, 1) 33%, rgba(166, 36, 31, 1) 66%, rgba(48, 18, 16, 1) 100%);
+    border-radius: 2px;
+    height: 4px;
+    max-width: 35%;
+    opacity: 100% !important;
+    border-top: 0 !important;
+}
 
 .dashboardnav {
     display: flex;

@@ -4,19 +4,109 @@ import moment from "moment";
 
 function Profile(props) {
 
-    const data = useData()
+    const data = useData();
+    const token = JSON.parse(localStorage.getItem('jwtToken'));
+    const [selectedPayslip, setPayslip] = useState(null);
+    const [showPayslipForm, setShowPayslipForm] = useState(false);
+
+    useEffect(() => {
+        fetch(`https://localhost:7220/api/PaySlip/get/payslip/${data.employeeId}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token.token}`,
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Api response was not ok.");
+                }
+            })
+            .then((payslips) => {
+                setPayslip(payslips);
+            })
+            .catch((error) => {
+                console.error("There was a problem with the fetch operation:", error);
+            });
+    }, []);
 
     return data && (
-        <div className="main-body">
+        <div className="main-body payslip">
+            <button className="view-payslip-button btn btn-primary mb-3" onClick={() => setShowPayslipForm(true)}>View Payslip</button>
             <div className="row gutters-sm">
-                <div className="col-md-4 mb-3">
-                    <EmployeeCard lastName={data.lastName} firstName={data.firstName} employeeId={data.id} departmentId={data.departmentId} jobId={data.jobId} />
+                <div className="col-md-4">
+                    <EmployeeCard
+                        lastName={data.lastName}
+                        firstName={data.firstName}
+                        employeeId={data.id}
+                        departmentId={data.departmentId}
+                        jobId={data.jobId}
+                    />
                     <EmployeeLinks />
                 </div>
                 <div className="col-md-8">
-                    <EmployeeDetails employeeId={data.employeeId} lastName={data.lastName} firstName={data.firstName} dateOfBirth={data.dateOfBirth} email={data.email} phoneNumber={data.phoneNumber} employeeAddress={data.employeeAddress} />
+                    <EmployeeDetails
+                        employeeId={data.employeeId}
+                        lastName={data.lastName}
+                        firstName={data.firstName}
+                        dateOfBirth={data.dateOfBirth}
+                        email={data.email}
+                        phoneNumber={data.phoneNumber}
+                        employeeAddress={data.employeeAddress}
+                    />
                 </div>
             </div>
+
+            {showPayslipForm && (
+                <div className="form-container">
+                    <form className="formpayslip">
+                        <h3></h3>
+                        <div>
+                            <div className="row">
+                                <div className="col-sm-4">
+                                    <h4>Payslip ID:</h4>
+                                    <p>{selectedPayslip.payslipId}</p>
+                                </div>
+                                <div className="col-sm-8">
+                                    <h4>Employee ID:</h4>
+                                    <p>{selectedPayslip.jobTitle}</p>
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div className="row">
+                                <div className="col-sm-4">
+                                    <h4>Pay Period</h4>
+                                    <p>{selectedPayslip.payPeriod}</p>
+                                </div>
+                                <div className="col-sm-8">
+                                    <h4>Total Salary:</h4>
+                                    <p>{selectedPayslip.totalSalary}</p>
+                                </div>
+                            </div>
+                            <hr />
+
+                            <h4>Note:</h4>
+                            <p>{selectedPayslip.note}</p>
+                            <hr />
+
+                            <h4>Status:</h4>
+                            <p>
+                                {selectedPayslip.status}
+                            </p>
+                            <hr />
+
+                            <div className='row butt' style={{ justifyContent: 'right' }}>
+                                <button onClick={() => setShowPayslipForm(false)}>Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            )}
+
         </div>
     );
 }
@@ -122,7 +212,6 @@ function EmployeeDetails(props) {
     const [updateReport, setUpdateReport] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [validationError, setValidationError] = useState('');
-    const reportIdPattern = /^RP\d{6}$/;
     const handleEdit = (report) => {
         setUpdateReport(report);
         setShowUpdateForm(true);
@@ -458,23 +547,23 @@ function EmployeeDetails(props) {
                     </div>
                 </div>
                 <hr />
-                <div className="row form">
-                    <div className="col-sm-3">
+                <div className="row form" style={{ justifyContent: 'right' }}>
+                    <div className="col-sm-1">
                         <button
                             type="button"
-                            className="btn btn-primary"
+                            className="btn btn-edit"
                             onClick={() => setIsEditing(true)}
                         >
                             Edit
                         </button>
                     </div>
-                    <div className="col-sm-3">
+                    <div className="col-sm-2">
                         <button
                             type="button"
                             className='btn btn-primary'
                             onClick={() => setShowForm(true)}
                         >
-                            Add Report
+                            Create Report
                         </button>
                     </div>
                 </div>
@@ -490,7 +579,7 @@ function EmployeeDetails(props) {
                                 {validationError}
                             </div>
                         )}
-                        
+
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Employee ID:</label>
@@ -508,7 +597,7 @@ function EmployeeDetails(props) {
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Content:</label>
-                                <textarea type="text" name="content" placeholder='Type in what you want...' style={{ height: '15rem' }}/>
+                                <textarea type="text" name="content" placeholder='Type in what you want...' style={{ height: '15rem' }} />
                             </div>
                         </div>
 
