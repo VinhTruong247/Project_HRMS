@@ -38,28 +38,28 @@ const DataProvider = ({ children }) => {
             });
     }, [employee_url, token]);
 
-    useEffect(() => {
-        fetch(employee_url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Api response was not ok.');
-                }
-            })
-            .then(department => {
-                setData(department)
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-    }, [employee_url, token]);
+    // useEffect(() => {
+    //     fetch(employee_url, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': `Bearer ${token}`
+    //         }
+    //     })
+    //         .then(response => {
+    //             if (response.ok) {
+    //                 return response.json();
+    //             } else {
+    //                 throw new Error('Api response was not ok.');
+    //             }
+    //         })
+    //         .then(department => {
+    //             setData(department)
+    //         })
+    //         .catch(error => {
+    //             console.error('There was a problem with the fetch operation:', error);
+    //         });
+    // }, [employee_url, token]);
 
     return (
         <DataContext.Provider value={data}>{children}</DataContext.Provider>

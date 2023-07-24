@@ -4,13 +4,15 @@ import moment from "moment";
 
 function Profile(props) {
 
-    const data = useData();
+    const _dataContext = useData();
     const token = JSON.parse(localStorage.getItem('jwtToken'));
     const [selectedPayslip, setPayslip] = useState(null);
     const [showPayslipForm, setShowPayslipForm] = useState(false);
 
+    console.log(_dataContext)
+
     useEffect(() => {
-        fetch(`https://localhost:7220/api/PaySlip/get/payslip/${data.id}`, {
+        fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.id}`, {
             method: "GET",
             headers: {
                 'Content-Type': "application/json",
@@ -32,29 +34,29 @@ function Profile(props) {
             });
     }, []);
 
-    return data && (
+    return _dataContext && (
         <div className="main-body payslip">
             <button className="view-payslip-button btn btn-primary mb-3" onClick={() => setShowPayslipForm(true)}>View Payslip</button>
             <div className="row gutters-sm">
                 <div className="col-md-4">
                     <EmployeeCard
-                        lastName={data.lastName}
-                        firstName={data.firstName}
-                        employeeId={data.id}
-                        departmentId={data.departmentId}
-                        jobId={data.jobId}
+                        lastName={_dataContext.lastName}
+                        firstName={_dataContext.firstName}
+                        employeeId={_dataContext.id}
+                        departmentId={_dataContext.departmentId}
+                        jobId={_dataContext.jobId}
                     />
                     <EmployeeLinks />
                 </div>
                 <div className="col-md-8">
                     <EmployeeDetails
-                        employeeId={data.employeeId}
-                        lastName={data.lastName}
-                        firstName={data.firstName}
-                        dateOfBirth={data.dateOfBirth}
-                        email={data.email}
-                        phoneNumber={data.phoneNumber}
-                        employeeAddress={data.employeeAddress}
+                        employeeId={_dataContext.employeeId}
+                        lastName={_dataContext.lastName}
+                        firstName={_dataContext.firstName}
+                        dateOfBirth={_dataContext.dateOfBirth}
+                        email={_dataContext.email}
+                        phoneNumber={_dataContext.phoneNumber}
+                        employeeAddress={_dataContext.employeeAddress}
                     />
                 </div>
             </div>
