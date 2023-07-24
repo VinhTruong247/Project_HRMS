@@ -20,7 +20,7 @@ export default function WideCalendar() {
   ]
   return (
 
-    <div className="col-lg-8">
+    <div className="col-lg-12">
 
       <div className="static">
         <div className='calendar'>

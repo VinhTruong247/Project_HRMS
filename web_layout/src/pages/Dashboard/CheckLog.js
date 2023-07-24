@@ -20,7 +20,7 @@ function CheckLog() {
     };
 
     return (
-        <div className="col-lg-4" style={{ maxHeight: '450px' }}>
+        <div className="check col-lg-4">
             <div className="col-lg-12">
                 <div className="checklog">
 
@@ -30,7 +30,11 @@ function CheckLog() {
 
                     <div className='row'>
                         <div>
+<<<<<<< Updated upstream
                             <Chart options={options} series={data.series} type="donut" />
+=======
+                            <Chart options={options} series={dataPie.series} type="donut" style={{ maxHeight: '300px' }} />
+>>>>>>> Stashed changes
                         </div>
                     </div>
 

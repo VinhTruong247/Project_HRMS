@@ -26,9 +26,8 @@ function Dasboard() {
                 <Status />
                 <TotalDepartment />
             </div>
-            <div className="row">
+            <div className="row" style={{ alignItems: 'center' }}>
                 <Overall/>
-                <WorkComplete/>
                 <CheckLog/>
             </div>
             <div className="row">
