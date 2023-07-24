@@ -82,7 +82,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                var employee = _mapper.Map<EmployeeDto>(_userRepo.getEmployee(userId));
+                var employee = _mapper.Map<ResponseEmployeeDto>(_userRepo.getEmployee(userId));
                 if (employee is null)
                 {
                     return NotFound("Employee seems to be null");
@@ -110,7 +110,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return NotFound("Employee seems to be null");
                 }
-                var employeeList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll().Where(e => e.DepartmentId == employee.DepartmentId).ToList());
+                var employeeList = _mapper.Map<List<ResponseEmployeeDto>>(_employeeRepo.GetAll().Where(e => e.DepartmentId == employee.DepartmentId).ToList());
                 if (employeeList == null)
                 {
                     return NotFound("Employee in this department seems to be null");

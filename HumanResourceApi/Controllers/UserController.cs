@@ -104,7 +104,9 @@ namespace HumanResourceApi.Controllers
                 if (_userRepo.GetAll().Any(u => u.EmployeeId == newUser.EmployeeId))
                     return BadRequest("Duplicated EmployeeId");
 
-
+                int count = _userRepo.GetAll().Count() + 1;
+                var userId = "US" + count.ToString().PadLeft(6, '0');
+                newUser.UserId = userId;
                 _userRepo.Add(newUser);
 
 
