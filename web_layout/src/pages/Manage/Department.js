@@ -11,6 +11,7 @@ function Department(props) {
     const [validationError, setValidationError] = useState('');
     const [selectedReport, setSelectedReport] = useState(null);
     
+    const departmentIdPattern = /^DP\d{6}$/;
     const handleEdit = (department) => {
         setUpdateDepartment(department);
         setShowUpdateForm(true);
@@ -63,10 +64,28 @@ function Department(props) {
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
+            departmentId: event.target.elements.departmentId.value,
             departmentName: event.target.elements.departmentName.value,
             description: event.target.elements.description.value,
             status: event.target.elements.status.checked,
         };
+
+        const isDuplicateDepartmentId = data.some(department => department.departmentId === formData.departmentId);
+
+        if (!formData.departmentId) {
+            setValidationError('Department ID is required');
+            return;
+        }
+
+        if (!departmentIdPattern.test(formData.departmentId)) {
+            setValidationError('Department ID must follow DP###### format');
+            return;
+        }
+
+        if (isDuplicateDepartmentId) {
+            setValidationError('Department ID is already taken');
+            return;
+        }
 
         if (!formData.departmentName) {
             setValidationError('Department name is required');
@@ -277,6 +296,12 @@ function Department(props) {
                                 {validationError}
                             </div>
                         )}
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Department ID:</label>
+                                <input type="text" name="departmentId" placeholder='DP######' />
+                            </div>
+                        </div>
 
                         <div className='row'>
                             <div className="col-12 mt-3">
