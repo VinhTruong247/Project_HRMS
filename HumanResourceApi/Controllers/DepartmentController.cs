@@ -30,7 +30,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var departmentList = _mapper.Map<List<DepartmentDto>>(_repo.GetAll());
+                var departmentList = _mapper.Map<List<ResponseDepartmentDto>>(_repo.GetAll());
                 return Ok(departmentList);
             }
             catch (Exception ex)
@@ -49,7 +49,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong DepartmentId Format.");
                 }
-                var department = _mapper.Map<DepartmentDto>(_repo.GetAll().Where(d => d.DepartmentId == departmentId).FirstOrDefault());
+                var department = _mapper.Map<ResponseDepartmentDto>(_repo.GetAll().Where(d => d.DepartmentId == departmentId).FirstOrDefault());
                 if (department == null)
                 {
                     return BadRequest("Department ID = " + departmentId + " doesn't seem to be found");
@@ -78,7 +78,7 @@ namespace HumanResourceApi.Controllers
                 var temp = _mapper.Map<Department>(department);
                 temp.DepartmentId = departmentId;
                 _repo.Add(temp);
-                return Ok(temp);
+                return Ok(_mapper.Map<ResponseDepartmentDto>(temp));
             }
             catch (Exception ex)
             {
@@ -109,7 +109,7 @@ namespace HumanResourceApi.Controllers
                 validDepartment.DepartmentId = departmentId;
 
                 _repo.Update(validDepartment);
-                return Ok(validDepartment);
+                return Ok(_mapper.Map<ResponseDepartmentDto>(validDepartment));
             } catch (Exception ex)
             {
                 return BadRequest("Something went wrong: " + ex.Message);

@@ -34,7 +34,7 @@ namespace HumanResourceApi.Controllers
             {
                 //var jobList = _mapper.Map<List<JobDto>>(_job.GetAll());
 
-                var jobList = _mapper.Map<List<JobDto>>(_job.GetAll());
+                var jobList = _mapper.Map<List<ResponseJobDto>>(_job.GetAll());
 
                 return Ok(jobList);
             }
@@ -54,7 +54,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong jobId Format.");
                 }
-                var job = _mapper.Map<JobDto>(_job.GetAll().Where(j => j.JobId == jobId).FirstOrDefault());
+                var job = _mapper.Map<ResponseJobDto>(_job.GetAll().Where(j => j.JobId == jobId).FirstOrDefault());
                 if (job == null)
                 {
                     return BadRequest("Job ID = " + jobId + " doesn't seem to be found.");
@@ -82,7 +82,7 @@ namespace HumanResourceApi.Controllers
                 var temp = _mapper.Map<Job>(job);
                 temp.JobId = jobId;
                 _job.Add(temp);
-                return Ok(_mapper.Map<JobDto>(temp));
+                return Ok(_mapper.Map<ResponseJobDto>(temp));
             }
             catch (Exception ex)
             {
@@ -113,7 +113,7 @@ namespace HumanResourceApi.Controllers
                 validJob.JobId = jobId;
 
                 _job.Update(validJob);
-                return Ok(_mapper.Map<JobDto>(validJob));
+                return Ok(_mapper.Map<ResponseJobDto>(validJob));
             }
             catch (Exception ex)
             {

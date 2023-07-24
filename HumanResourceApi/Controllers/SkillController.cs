@@ -28,7 +28,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var skillList = _mapper.Map<List<SkillDto>>(_skillRepo.GetAll());
+                var skillList = _mapper.Map<List<ResponseSkillDto>>(_skillRepo.GetAll());
                 return Ok(skillList);
             }
             catch (Exception ex)
@@ -46,7 +46,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong skillId Format.");
                 }
-                var skill = _mapper.Map<SkillDto>(_skillRepo.GetAll().Where(s => s.SkillId == skillId).FirstOrDefault());
+                var skill = _mapper.Map<ResponseSkillDto>(_skillRepo.GetAll().Where(s => s.SkillId == skillId).FirstOrDefault());
                 if (skill == null)
                 {
                     return BadRequest("Skill ID = " + skillId + " doesn't seem to be found.");
@@ -73,7 +73,7 @@ namespace HumanResourceApi.Controllers
                 var temp = _mapper.Map<Skill>(skill);
                 temp.SkillId = skillId;
                 _skillRepo.Add(temp);
-                return Ok(skill);
+                return Ok(_mapper.Map<ResponseSkillDto>(skill));
             }
             catch (Exception ex)
             {
@@ -101,7 +101,7 @@ namespace HumanResourceApi.Controllers
             validSkill.SkillId = skillId;
 
             _skillRepo.Update(validSkill);
-            return Ok(validSkill);
+            return Ok(_mapper.Map<ResponseSkillDto>(validSkill));
         }
 
         [HttpGet("skills/search/{keyword}")]

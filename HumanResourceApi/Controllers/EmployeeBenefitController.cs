@@ -29,7 +29,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var benefitList = _mapper.Map<List<EmployeeBenefitDto>>(_employeeBenefitRepo.GetAll());
+                var benefitList = _mapper.Map<List<ResponseEmployeeBenefitDto>>(_employeeBenefitRepo.GetAll());
                 if (benefitList == null) return BadRequest("No EmployeeBenefitList found.");
                 return Ok(benefitList);
             }
@@ -48,7 +48,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                var get = _mapper.Map<List<EmployeeBenefitDto>>(_employeeBenefitRepo.GetAll().Where(eb => eb.EmployeeId == employeeId));
+                var get = _mapper.Map<List<ResponseEmployeeBenefitDto>>(_employeeBenefitRepo.GetAll().Where(eb => eb.EmployeeId == employeeId));
                 if (get == null)
                 {
                     return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");
@@ -83,7 +83,7 @@ namespace HumanResourceApi.Controllers
                 var temp = _mapper.Map<EmployeeBenefit>(employeeBenefit);
                 temp.EmployeebenefitId = benefitId;
                 _employeeBenefitRepo.Add(temp);
-                return Ok(_mapper.Map<EmployeeBenefitDto>(temp));
+                return Ok(_mapper.Map<ResponseEmployeeBenefitDto>(temp));
             }
             catch (Exception ex)
             {

@@ -30,7 +30,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var allowanceList = _mapper.Map<List<AllowanceDto>>(_allowance.GetAll());
+                var allowanceList = _mapper.Map<List<ResponseAllowanceDto>>(_allowance.GetAll());
 
                 return Ok(allowanceList);
             }
@@ -50,7 +50,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong AllowanceId Format.");
                 }
-                var allowance = _mapper.Map<AllowanceDto>(_allowance.GetAll().Where(a => a.AllowanceId == allowanceId).FirstOrDefault());
+                var allowance = _mapper.Map<ResponseAllowanceDto>(_allowance.GetAll().Where(a => a.AllowanceId == allowanceId).FirstOrDefault());
                 if (allowance == null)
                 {
                     return BadRequest("Allowance ID = " + allowanceId + " doesn't seem to be found");
@@ -76,8 +76,9 @@ namespace HumanResourceApi.Controllers
                 int count = _allowance.GetAll().Count() + 1;
                 var allowanceId = "AL" + count.ToString().PadLeft(6, '0');
                 var temp = _mapper.Map<Allowance>(allowance);
+                temp.AllowanceId = allowanceId;
                 _allowance.Add(temp);
-                return Ok(temp);
+                return Ok(_mapper.Map<ResponseAllowanceDto>(temp));
             }
             catch (Exception ex)
             {
@@ -108,7 +109,7 @@ namespace HumanResourceApi.Controllers
                 validAllowance.AllowanceId = allowanceId;
 
                 _allowance.Update(validAllowance);
-                return Ok(validAllowance);
+                return Ok(_mapper.Map<ResponseAllowanceDto>(validAllowance));
             }
             catch (Exception ex)
             {

@@ -29,7 +29,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var projectList = _mapper.Map<List<ProjectDto>>(_projectRepo.GetAll());
+                var projectList = _mapper.Map<List<ResponseProjectDto>>(_projectRepo.GetAll());
                 if (projectList == null)
                 {
                     return BadRequest("There's no active project");
@@ -50,7 +50,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong projectId Format.");
                 }
-                var project = _mapper.Map<ProjectDto>(_projectRepo.GetAll().Where(p => p.ProjectId == projectId).FirstOrDefault());
+                var project = _mapper.Map<ResponseProjectDto>(_projectRepo.GetAll().Where(p => p.ProjectId == projectId).FirstOrDefault());
                 if (project == null)
                 {
                     return BadRequest("Project ID = " + projectId + " doesn't seem to be found.");
@@ -81,7 +81,7 @@ namespace HumanResourceApi.Controllers
                 var temp = _mapper.Map<Project>(project);
                 temp.ProjectId = projectId;
                 _projectRepo.Add(temp);
-                return Ok(temp);
+                return Ok(_mapper.Map<ResponseProjectDto>(temp));
             }
             catch (Exception ex)
             {
@@ -115,7 +115,7 @@ namespace HumanResourceApi.Controllers
                 valid.ProjectId = projectId;
 
                 _projectRepo.Update(valid);
-                return Ok(valid);
+                return Ok(_mapper.Map<ResponseProjectDto>(valid));
             }
             catch (Exception ex)
             {
