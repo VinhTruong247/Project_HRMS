@@ -30,7 +30,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var leaveList = _mapper.Map<List<LeaveDto>>(_leaveRepo.GetAll());
+                var leaveList = _mapper.Map<List<ResponseLeaveDto>>(_leaveRepo.GetAll());
                 return Ok(leaveList);
             }
             catch (Exception ex)
@@ -49,7 +49,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong leaveId Format.");
                 }
-                var leave = _mapper.Map<LeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == leaveId).FirstOrDefault());
+                var leave = _mapper.Map<ResponseLeaveDto>(_leaveRepo.GetAll().Where(l => l.LeaveId == leaveId).FirstOrDefault());
                 if (leave == null)
                 {
                     return BadRequest("Leave ID = " + leaveId + " doesn't seem to be found.");
@@ -82,7 +82,7 @@ namespace HumanResourceApi.Controllers
                 var temp = _mapper.Map<Leave>(leave);
                 temp.LeaveId = leaveId;
                 _leaveRepo.Add(temp);
-                return Ok(temp);
+                return Ok(_mapper.Map<ResponseLeaveDto>(temp));
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace HumanResourceApi.Controllers
                 validLeave.LeaveId = leaveId;
 
                 _leaveRepo.Update(validLeave);
-                return Ok(validLeave);
+                return Ok(_mapper.Map<ResponseLeaveDto>(validLeave));
             }
             catch (Exception ex)
             {

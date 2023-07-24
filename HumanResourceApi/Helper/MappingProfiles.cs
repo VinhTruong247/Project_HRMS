@@ -105,6 +105,8 @@ namespace HumanResourceApi.Helper
                 .ReverseMap();
             CreateMap<EmployeeContract, UpdateEmployeeContractDto>()
                 .ReverseMap();
+            CreateMap<EmployeeContract, ResponseEmployeeContractDto>()
+                .ReverseMap();
         }
         private void DepartmentMap()
         {
@@ -144,6 +146,8 @@ namespace HumanResourceApi.Helper
                 .ReverseMap();
             CreateMap<Leave, UpdateLeaveDto>()
                 .ReverseMap();
+            CreateMap<Leave, ResponseLeaveDto>()
+                .ReverseMap();
         }
         private void ExperienceMap()
         {
@@ -169,6 +173,8 @@ namespace HumanResourceApi.Helper
             CreateMap<EmployeeBenefit, EmployeeBenefitDto>()
                 .ReverseMap();
             CreateMap<EmployeeBenefit, UpdateEmployeeBenefitDto>()
+                .ReverseMap();
+            CreateMap<EmployeeBenefit, ResponseEmployeeBenefitDto>()
                 .ReverseMap();
         }
 

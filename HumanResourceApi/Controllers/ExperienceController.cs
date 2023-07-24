@@ -31,7 +31,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var experienceList = _mapper.Map<List<ExperienceDto>>(_experienceRepo.GetAll());
+                var experienceList = _mapper.Map<List<ResponseExperienceDto>>(_experienceRepo.GetAll());
 
                 // Return the list of users
                 return Ok(experienceList);
@@ -53,7 +53,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong experienceId Format.");
                 }
-                var experience = _mapper.Map<ExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == experienceId).FirstOrDefault());
+                var experience = _mapper.Map<ResponseExperienceDto>(_experienceRepo.GetAll().Where(e => e.ExperienceId == experienceId).FirstOrDefault());
 
                 if (experience == null)
                 {
@@ -87,7 +87,7 @@ namespace HumanResourceApi.Controllers
                 var temp = _mapper.Map<Experience>(experience);
                 temp.ExperienceId = experienceId;
                 _experienceRepo.Add(temp);
-                return Ok(temp);
+                return Ok(_mapper.Map<ResponseExperienceDto>(temp));
             }
             catch (Exception ex)
             {
@@ -120,7 +120,7 @@ namespace HumanResourceApi.Controllers
                 validExp.ExperienceId = experienceId;
 
                 _experienceRepo.Update(validExp);
-                return Ok(validExp);
+                return Ok(_mapper.Map<ResponseExperienceDto>(validExp));
             }
             catch (Exception ex)
             {

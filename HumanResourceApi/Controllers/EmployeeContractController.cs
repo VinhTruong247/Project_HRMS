@@ -32,7 +32,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var contractsList = _mapper.Map<List<EmployeeContractDto>>(_employeeContractRepo.GetAll());
+                var contractsList = _mapper.Map<List<ResponseEmployeeContractDto>>(_employeeContractRepo.GetAll());
                 return Ok(contractsList);
             }
             catch (Exception ex)
@@ -51,7 +51,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong contractId Format.");
                 }
-                var contract = _mapper.Map<EmployeeContractDto>(_employeeContractRepo.GetAll().Where(c => c.ContractId == contractId));
+                var contract = _mapper.Map<ResponseEmployeeContractDto>(_employeeContractRepo.GetAll().Where(c => c.ContractId == contractId));
                 if (contract == null)
                 {
                     return BadRequest("Contract ID = " + contractId + " doesn't seem to be found.");
@@ -83,7 +83,7 @@ namespace HumanResourceApi.Controllers
                 var temp = _mapper.Map<EmployeeContract>(contract);
                 temp.ContractId = contractId;
                 _employeeContractRepo.Add(temp);
-                return Ok(temp);
+                return Ok(_mapper.Map<ResponseEmployeeContractDto>(temp));
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace HumanResourceApi.Controllers
                 validContract.ContractId = contractId;
 
                 _employeeContractRepo.Update(validContract);
-                return Ok(validContract);
+                return Ok(_mapper.Map<ResponseEmployeeContractDto>(validContract));
             }
             catch (Exception ex)
             {

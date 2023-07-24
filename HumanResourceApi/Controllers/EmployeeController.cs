@@ -37,7 +37,7 @@ namespace HumanResourceApi.Controllers
         {
             try
             {
-                var employeeList = _mapper.Map<List<EmployeeDto>>(_employeeRepo.GetAll());
+                var employeeList = _mapper.Map<List<ResponseEmployeeDto>>(_employeeRepo.GetAll());
                 if (employeeList == null)
                 {
                     return BadRequest("There's no active employee");
@@ -60,7 +60,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                var employee = _mapper.Map<EmployeeDto>(_employeeRepo.GetAll().Where(e => e.EmployeeId == employeeId).FirstOrDefault());
+                var employee = _mapper.Map<ResponseEmployeeDto>(_employeeRepo.GetAll().Where(e => e.EmployeeId == employeeId).FirstOrDefault());
                 if (employee == null)
                 {
                     return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");
@@ -150,7 +150,7 @@ namespace HumanResourceApi.Controllers
                 var temp = _mapper.Map<Employee>(employee);
                 temp.EmployeeId = employeeId;
                 _employeeRepo.Add(temp);
-                return Ok(temp);
+                return Ok(_mapper.Map<ResponseEmployeeDto>(temp));
             }
             catch (Exception ex)
             {
@@ -176,8 +176,7 @@ namespace HumanResourceApi.Controllers
                 _mapper.Map(updateProfile, updateEmployee);
                 _employeeRepo.Update(updateEmployee);
 
-                var mappedProfile = _mapper.Map<UpdateProfileDto>(updateEmployee);
-                return Ok(mappedProfile);
+                return Ok(_mapper.Map<ResponseEmployeeDto>(updateEmployee));
             }
             catch (Exception ex)
             {
@@ -220,8 +219,7 @@ namespace HumanResourceApi.Controllers
                 validEmployee.EmployeeId = employeeId;
 
                 _employeeRepo.Update(validEmployee);
-                var mappedEmployee = _mapper.Map<EmployeeDto>(validEmployee);
-                return Ok(mappedEmployee);
+                return Ok(_mapper.Map<ResponseEmployeeDto>(validEmployee));
             }
             catch (Exception ex)
             {
