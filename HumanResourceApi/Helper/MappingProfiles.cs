@@ -137,6 +137,8 @@ namespace HumanResourceApi.Helper
                 .ReverseMap();
             CreateMap<Job, UpdateJobDto>()
                 .ReverseMap();
+            CreateMap<Job, ResponseJobDto>()
+                .ReverseMap();
         }
         private void LeaveMap()
         {

@@ -10,7 +10,7 @@ function Profile(props) {
     const [showPayslipForm, setShowPayslipForm] = useState(false);
 
     useEffect(() => {
-        fetch(`https://localhost:7220/api/PaySlip/get/payslip/${data.employeeId}`, {
+        fetch(`https://localhost:7220/api/PaySlip/get/payslip/${data.id}`, {
             method: "GET",
             headers: {
                 'Content-Type': "application/json",
@@ -71,7 +71,7 @@ function Profile(props) {
                                 </div>
                                 <div className="col-sm-8">
                                     <h4>Employee ID:</h4>
-                                    <p>{selectedPayslip.jobTitle}</p>
+                                    <p>{selectedPayslip.employeeId}</p>
                                 </div>
                             </div>
                             <hr />
