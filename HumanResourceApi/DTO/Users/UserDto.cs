@@ -2,7 +2,6 @@
 {
     public class UserDto
     {
-        public string UserId { get; set; }
         public string EmployeeId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
