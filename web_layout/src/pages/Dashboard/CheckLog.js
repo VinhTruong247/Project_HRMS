@@ -149,7 +149,7 @@ function CheckLog() {
     };
 
     return (
-        <div className="col-lg-4" style={{ maxHeight: '450px' }}>
+        <div className="col-lg-4">
             <div className="col-lg-12">
                 <div className="checklog">
                     <div className="row">

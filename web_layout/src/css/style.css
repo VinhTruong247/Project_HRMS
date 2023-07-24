@@ -708,6 +708,11 @@ main {
     align-items: center;
 }
 
+.news .activity-calender {
+    display: grid;
+    justify-content: center;
+}
+
 .small-box {
     grid-column: span 1;
     grid-row: span 1;

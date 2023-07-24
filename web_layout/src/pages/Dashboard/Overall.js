@@ -8,9 +8,8 @@ import DepartmentCounter from '../../component/management/Counter/DepartmentCoun
 import JobCounter from '../../component/management/Counter/JobCounter';
 export default function Overall() {
   return (
-    <div className="col-lg-4">
-      <div className="row-lg-8">
-        <div className="col-lg-12">
+    <div className="col-lg-8">
+        <div className="col-12">
           <div className="static">
             <h3>Overall</h3>
             <hr />
@@ -27,6 +26,6 @@ export default function Overall() {
           </div>
 
         </div>
-      </div></div>
+      </div>
   );
 }
