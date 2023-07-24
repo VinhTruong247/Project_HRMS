@@ -12,7 +12,7 @@ function Profile(props) {
     console.log(_dataContext)
 
     useEffect(() => {
-        fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.id}`, {
+        fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}`, {
             method: "GET",
             headers: {
                 'Content-Type': "application/json",
@@ -42,7 +42,7 @@ function Profile(props) {
                     <EmployeeCard
                         lastName={_dataContext.lastName}
                         firstName={_dataContext.firstName}
-                        employeeId={_dataContext.id}
+                        employeeId={_dataContext.employeeId}
                         departmentId={_dataContext.departmentId}
                         jobId={_dataContext.jobId}
                     />

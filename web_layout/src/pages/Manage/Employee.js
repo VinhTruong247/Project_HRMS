@@ -13,7 +13,6 @@ function Employee(props) {
     const [departmentNames, setDepartmentNames] = useState([]);
     const [jobTitles, setJobTitles] = useState([]);
     const [selectedReport, setSelectedReport] = useState(null);
-    const employeeIdPattern = /^EP\d{6}$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneNumberPattern = /^(\+)?\d{10}$/;
     // const atmNumberPattern = /^(\d{4}[- ]?){3}\d{4}$/;
@@ -116,7 +115,6 @@ function Employee(props) {
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
-            employeeId: event.target.elements.employeeId.value,
             firstName: event.target.elements.firstName.value,
             lastName: event.target.elements.lastName.value,
             employeeImage: event.target.elements.employeeImage.value,
@@ -131,23 +129,6 @@ function Employee(props) {
             departmentId: event.target.elements.departmentId.value,
             status: event.target.elements.status.checked,
         };
-
-        const isDuplicateEmployeeId = data.some(employee => employee.employeeId === formData.employeeId);
-
-        if (!formData.employeeId) {
-            setValidationError('Employee ID is required');
-            return;
-        }
-
-        if (!employeeIdPattern.test(formData.employeeId)) {
-            setValidationError('Employee ID must follow EP###### format');
-            return;
-        }
-
-        if (isDuplicateEmployeeId) {
-            setValidationError('Employee ID is already taken');
-            return;
-        }
 
         if (!formData.firstName) {
             setValidationError('First name is required');
@@ -570,11 +551,7 @@ function Employee(props) {
                         </div>
 
                         <div className='row'>
-                            <div className="col-6 mt-3">
-                                <label>Employee ID:</label>
-                                <input type="text" name="employeeId" placeholder='EP######' />
-                            </div>
-                            <div className="col-6 mt-3">
+                            <div className="col-12 mt-3">
                                 <label>Phone Number:</label>
                                 <input type="text" name="phoneNumber" placeholder='1234-567-890' />
                             </div>

@@ -11,7 +11,6 @@ function Jobs(props) {
   const [validationError, setValidationError] = useState('');
   const [selectedReport, setSelectedReport] = useState(null);
 
-  const jobIdPattern = /^JB\d{6}$/;
   const handleEdit = (job) => {
     setUpdateJob(job);
     setShowUpdateForm(true);
@@ -62,29 +61,11 @@ function Jobs(props) {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const formData = {
-      jobId: event.target.elements.jobId.value,
       jobTitle: event.target.elements.jobTitle.value,
       jobDescription: event.target.elements.jobDescription.value,
       baseSalaryPerHour: parseFloat(event.target.elements.baseSalaryPerHour.value.replace(/,/g, '')),
       status: event.target.elements.status.checked,
     };
-
-    const isDuplicateJobId = data.some(job => job.jobId === formData.jobId);
-
-    if (!formData.jobId) {
-      setValidationError('Job ID is required');
-      return;
-    }
-
-    if (!jobIdPattern.test(formData.jobId)) {
-      setValidationError('Job ID must follow JB###### format');
-      return;
-    }
-
-    if (isDuplicateJobId) {
-      setValidationError('Job ID is already taken');
-      return;
-    }
 
     if (!formData.jobTitle) {
       setValidationError('Job title is required');
@@ -338,14 +319,7 @@ function Jobs(props) {
                 {validationError}
               </div>
             )}
-
-            <div className='row'>
-              <div className="col-12 mt-3">
-                <label>Job ID:</label>
-                <input type="text" name="jobId" placeholder='JB######' />
-              </div>
-            </div>
-
+            
             <div className='row'>
               <div className="col-12 mt-3">
                 <label>Job Name:</label>
