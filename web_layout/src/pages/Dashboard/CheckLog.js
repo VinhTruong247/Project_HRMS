@@ -5,7 +5,7 @@ import useData from '../../hooks/useData';
 function CheckLog() {
     const data = useData()
     const [totalHour, setHour] = useState([]);
-    const [isCheckedIn, setIsCheckedIn] = useState(localStorage.getItem('isCheckedIn') === 'true');
+    const [isCheckedIn, setIsCheckedIn] = useState(localStorage.getItem('isCheckedIn') === 'false');
     const [totalHours, setTotalHours] = useState(0);
     const token = JSON.parse(localStorage.getItem('jwtToken'));
 
