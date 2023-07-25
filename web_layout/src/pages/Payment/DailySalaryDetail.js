@@ -1,7 +1,8 @@
 import React from 'react'
 
-export default function DailySalaryDetail() {
+function DailySalaryDetail(props) {
   return (
     <div>DailySalaryDetail</div>
   )
 }
+export default DailySalaryDetail;

@@ -19,8 +19,8 @@ function Department(props) {
 
     const timeoutRef = useRef(null);
 
-    const handleDoubleClick = (report) => {
-        setSelectedReport(report);
+    const handleDoubleClick = (department) => {
+        setSelectedReport(department);
     };
 
     useEffect(() => {

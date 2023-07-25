@@ -6,31 +6,35 @@ function Profile(props) {
 
     const data = useData();
     const token = JSON.parse(localStorage.getItem('jwtToken'));
-    const [selectedPayslip, setPayslip] = useState(null);
+    const [selectedPayslip, setPayslip] = useState([]);
     const [showPayslipForm, setShowPayslipForm] = useState(false);
 
     useEffect(() => {
-        fetch(`https://localhost:7220/api/PaySlip/get/payslip/${data.id}`, {
-            method: "GET",
-            headers: {
-                'Content-Type': "application/json",
-                'Authorization': `Bearer ${token.token}`,
-            },
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Api response was not ok.");
+        const fetchData = async () => {
+            if (_dataContext.employeeId) {
+                try {
+                    const response = await fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token.token}`,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Api response was not ok.");
+                    }
+
+                    const payslips = await response.json();
+                    setPayslip(payslips);
+                } catch (error) {
+                    console.error("There was a problem with the fetch operation:", error);
                 }
-            })
-            .then((payslips) => {
-                setPayslip(payslips);
-            })
-            .catch((error) => {
-                console.error("There was a problem with the fetch operation:", error);
-            });
-    }, []);
+            }
+        };
+
+        fetchData();
+    }, [_dataContext.employeeId]);
 
     return data && (
         <div className="main-body payslip">
@@ -38,11 +42,11 @@ function Profile(props) {
             <div className="row gutters-sm">
                 <div className="col-md-4">
                     <EmployeeCard
-                        lastName={data.lastName}
-                        firstName={data.firstName}
-                        employeeId={data.id}
-                        departmentId={data.departmentId}
-                        jobId={data.jobId}
+                        lastName={_dataContext.lastName}
+                        firstName={_dataContext.firstName}
+                        employeeId={_dataContext.employeeId}
+                        departmentId={_dataContext.departmentId}
+                        jobId={_dataContext.jobId}
                     />
                     <EmployeeLinks />
                 </div>
