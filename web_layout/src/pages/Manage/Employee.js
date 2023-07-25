@@ -26,8 +26,8 @@ function Employee(props) {
 
     const timeoutRef = useRef(null);
 
-    const handleDoubleClick = (report) => {
-        setSelectedReport(report);
+    const handleDoubleClick = (employee) => {
+        setSelectedReport(employee);
     };
 
     useEffect(() => {

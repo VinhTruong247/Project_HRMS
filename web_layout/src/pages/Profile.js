@@ -6,33 +6,37 @@ function Profile(props) {
 
     const _dataContext = useData();
     const token = JSON.parse(localStorage.getItem('jwtToken'));
-    const [selectedPayslip, setPayslip] = useState(null);
+    const [selectedPayslip, setPayslip] = useState([]);
     const [showPayslipForm, setShowPayslipForm] = useState(false);
 
     console.log(_dataContext)
 
     useEffect(() => {
-        fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.id}`, {
-            method: "GET",
-            headers: {
-                'Content-Type': "application/json",
-                'Authorization': `Bearer ${token.token}`,
-            },
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Api response was not ok.");
+        const fetchData = async () => {
+            if (_dataContext.employeeId) {
+                try {
+                    const response = await fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token.token}`,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Api response was not ok.");
+                    }
+
+                    const payslips = await response.json();
+                    setPayslip(payslips);
+                } catch (error) {
+                    console.error("There was a problem with the fetch operation:", error);
                 }
-            })
-            .then((payslips) => {
-                setPayslip(payslips);
-            })
-            .catch((error) => {
-                console.error("There was a problem with the fetch operation:", error);
-            });
-    }, []);
+            }
+        };
+
+        fetchData();
+    }, [_dataContext.employeeId]);
 
     return _dataContext && (
         <div className="main-body payslip">
@@ -42,7 +46,7 @@ function Profile(props) {
                     <EmployeeCard
                         lastName={_dataContext.lastName}
                         firstName={_dataContext.firstName}
-                        employeeId={_dataContext.id}
+                        employeeId={_dataContext.employeeId}
                         departmentId={_dataContext.departmentId}
                         jobId={_dataContext.jobId}
                     />
