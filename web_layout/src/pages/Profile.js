@@ -4,7 +4,7 @@ import moment from "moment";
 
 function Profile(props) {
 
-    const data = useData();
+    const _dataContext = useData();
     const token = JSON.parse(localStorage.getItem('jwtToken'));
     const [selectedPayslip, setPayslip] = useState([]);
     const [showPayslipForm, setShowPayslipForm] = useState(false);
@@ -36,7 +36,7 @@ function Profile(props) {
         fetchData();
     }, [_dataContext.employeeId]);
 
-    return data && (
+    return _dataContext && (
         <div className="main-body payslip">
             <button className="view-payslip-button btn btn-primary mb-3" onClick={() => setShowPayslipForm(true)}>View Payslip</button>
             <div className="row gutters-sm">
@@ -52,13 +52,13 @@ function Profile(props) {
                 </div>
                 <div className="col-md-8">
                     <EmployeeDetails
-                        employeeId={data.employeeId}
-                        lastName={data.lastName}
-                        firstName={data.firstName}
-                        dateOfBirth={data.dateOfBirth}
-                        email={data.email}
-                        phoneNumber={data.phoneNumber}
-                        employeeAddress={data.employeeAddress}
+                        employeeId={_dataContext.employeeId}
+                        lastName={_dataContext.lastName}
+                        firstName={_dataContext.firstName}
+                        dateOfBirth={_dataContext.dateOfBirth}
+                        email={_dataContext.email}
+                        phoneNumber={_dataContext.phoneNumber}
+                        employeeAddress={_dataContext.employeeAddress}
                     />
                 </div>
             </div>
