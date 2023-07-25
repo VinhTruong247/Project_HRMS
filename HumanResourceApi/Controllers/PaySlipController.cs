@@ -66,8 +66,8 @@ namespace HumanResourceApi.Controllers
             }
         }
 
-        [HttpGet("get/payslip/{employeeId}")]
-        public IActionResult GetPaySlipDetailById(string employeeId)
+        [HttpGet("get/payslip/{employeeId}/{date}")]
+        public IActionResult GetPaySlipDetailById(string employeeId, DateTime date)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                var get = _mapper.Map<PaySlipDto>(_paySlipRepo.GetAll().Where(ps => ps.EmployeeId == employeeId && ps.PaidDate.Month == DateTime.Now.AddMonths(1).Month).FirstOrDefault());
+                var get = _mapper.Map<PaySlipDto>(_paySlipRepo.GetAll().Where(ps => ps.EmployeeId == employeeId && ps.PaidDate.Month == date.AddMonths(1).Month).FirstOrDefault());
                 if (get == null)
                 {
                     return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");
@@ -90,6 +90,7 @@ namespace HumanResourceApi.Controllers
                 return BadRequest("Something went wrong: " + ex.Message);
             }
         }
+
 
         [SwaggerOperation(Summary = "muc bao hiem hien gio: 10.5% => 0.105")]
         [HttpPost("generate")]
