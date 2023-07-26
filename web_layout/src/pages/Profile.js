@@ -9,13 +9,19 @@ function Profile(props) {
     const [selectedPayslip, setPayslip] = useState([]);
     const [showPayslipForm, setShowPayslipForm] = useState(false);
 
-    console.log(_dataContext)
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = ('0' + (today.getMonth() + 1)).slice(-2);
+    const day = ('0' + today.getDate()).slice(-2);
+    const todayString = `${year}-${month}-${day}`;
+
+    console.log(_dataContext.employeeId)
 
     useEffect(() => {
         const fetchData = async () => {
             if (_dataContext.employeeId) {
                 try {
-                    const response = await fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}`, {
+                    const response = await fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}/${todayString}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
