@@ -35,7 +35,7 @@ function Report(props) {
 
   //  Get info of Report
   useEffect(() => {
-    fetch('https://localhost:7220/api/Report/get/reports', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Report/get/reports', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ function Report(props) {
 
   // Fetch employee
   useEffect(() => {
-    fetch('https://localhost:7220/api/Employee/employees', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Employee/employees', {
       method: "GET",
       headers: {
         'Content-Type': "application/json",
@@ -89,7 +89,7 @@ function Report(props) {
       status: event.target.elements.status.value,
     };
 
-    fetch(`https://localhost:7220/api/Report/update/report/${updateReport.employeeId}/${updateReport.reportId}/`, {
+    fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Report/update/report/${updateReport.employeeId}/${updateReport.reportId}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

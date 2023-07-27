@@ -13,7 +13,7 @@ const DataProvider = ({ children }) => {
     }
 
     const DepartmentId = decodedToken.DepartmentId
-    const department_url = `https://localhost:7220/api/Department/get/department/${DepartmentId}`;
+    const department_url = `https://gearheadhrmsdb.azurewebsites.net/api/Department/get/department/${DepartmentId}`;
 
     useEffect(() => {
         fetch(department_url, {

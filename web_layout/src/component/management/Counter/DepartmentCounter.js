@@ -6,7 +6,7 @@ function DepartmentCounter() {
   const token = JSON.parse(localStorage.getItem('jwtToken'));
 
   useEffect(() => {
-    fetch('https://localhost:7220/api/Department/departments', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Department/departments', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
