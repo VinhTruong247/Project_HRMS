@@ -23,6 +23,7 @@ import Timeline from './pages/Timeline';
 import Report from './pages/Manage/Report';
 import Allowance from './pages/Manage/Allowance';
 import Payslip from './pages/Payment/Payslip';
+import OverTime from './pages/Manage/OverTime';
 import DailySalaryDetail from './pages/Payment/DailySalaryDetail';
 
 
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
         {path: "jobs", element: <Jobs/>},
         {path: "report", element: <Report/>},
         {path: "allowance", element: <Allowance/>},
+        {path: "overtime", element: <OverTime/>},
                 ]},
     {path: "statistics",element: <Statistics/>,},
     {path: "timeline",element: <Timeline/>},
