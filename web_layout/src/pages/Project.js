@@ -4,7 +4,7 @@ function Project() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    fetch('https://localhost:7220/api/Project/get/projects')
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Project/get/projects')
       .then(response => response.json())
       .then(data => setProjects(data))
       .catch(error => console.log(error));
