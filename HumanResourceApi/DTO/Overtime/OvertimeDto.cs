@@ -9,6 +9,8 @@ namespace HumanResourceApi.DTO.Overtime
         [Required]
         public string EmployeeId { get; set; }
         [Required]
+        public string OvertimeType { get; set; }
+        [Required]
         public DateTime Day { get; set; }
         [Required]
         public TimeSpan? OvertimeHours { get; set; }
