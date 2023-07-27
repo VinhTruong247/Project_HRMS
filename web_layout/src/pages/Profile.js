@@ -12,16 +12,19 @@ function Profile(props) {
     const today = new Date();
     const year = today.getFullYear();
     const month = ('0' + (today.getMonth() + 1)).slice(-2);
-    const todayString = `${year}-${month}`;
-    const [displayMonth, setDisplayMonth] = useState(today.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }));
+    const todayString = `${month}-${year}`;
 
     const [selectedMonth, setSelectedMonth] = useState(todayString);
+    const [displayMonth, setDisplayMonth] = useState(todayString);
+    const [apiMonth, setApiMonth] = useState(todayString);
 
     const handleMonthChange = (event) => {
-        const selectedDate = new Date(event.target.value + '-01'); // Add '-01' to represent the 1st day of the selected month
-        const formattedMonth = selectedDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-        setSelectedMonth(event.target.value);
-        setDisplayMonth(formattedMonth);
+        const selectedDate = event.target.value;
+        const [year, month] = selectedDate.split('-');
+        const formattedMonth = `${month}-01-${year}`;
+        setSelectedMonth(formattedMonth);
+        setDisplayMonth(selectedDate);
+        setApiMonth(formattedMonth);
     };
 
     const handleCancel = () => {
@@ -33,7 +36,7 @@ function Profile(props) {
         const fetchData = async () => {
             if (_dataContext.employeeId) {
                 try {
-                    const response = await fetch(`https://gearheadhrmsdb.azurewebsites.net/api/PaySlip/get/payslip/${_dataContext.employeeId}/${selectedMonth}`, {
+                    const response = await fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}/${apiMonth}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -92,7 +95,7 @@ function Profile(props) {
                                 <h4>Select Month:</h4>
                                 <input
                                     type="month"
-                                    value={selectedMonth}
+                                    value={displayMonth}
                                     onChange={handleMonthChange}
                                 />
                             </div>
@@ -154,13 +157,13 @@ function EmployeeCard(props) {
     useEffect(() => {
         async function fetchData() {
             try {
-                const departmentResponse = await fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Department/departments`, {
+                const departmentResponse = await fetch(`https://localhost:7220/api/Department/departments`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token.token}`
                     }
                 });
-                const jobTitleResponse = await fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Job/jobs`, {
+                const jobTitleResponse = await fetch(`https://localhost:7220/api/Job/jobs`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token.token}`
@@ -305,7 +308,7 @@ function EmployeeDetails(props) {
     const handleSubmit = () => {
         const isValid = validateForm();
         if (isValid) {
-            fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Employee/update/profile/${props.employeeId}`, {
+            fetch(`https://localhost:7220/api/Employee/update/profile/${props.employeeId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -356,7 +359,7 @@ function EmployeeDetails(props) {
             return;
         }
 
-        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Report/create', {
+        fetch('https://localhost:7220/api/Report/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -388,6 +391,7 @@ function EmployeeDetails(props) {
         event.preventDefault();
         const formData = {
             employeeId: event.target.elements.employeeId.value,
+            overtimeType: event.target.elements.overtimeType.value,
             day: event.target.elements.day.value,
             overtimeHours: event.target.elements.overtimeHours.value,
         };
@@ -422,7 +426,7 @@ function EmployeeDetails(props) {
             return;
         }
 
-        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Overtime/create', {
+        fetch('https://localhost:7220/api/Overtime/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -724,7 +728,7 @@ function EmployeeDetails(props) {
             {showOTForm && (
                 <div className="form-container">
                     <form className="formProfile" onSubmit={handleOTFormSubmit}>
-                        <h3>Create Report</h3>
+                        <h3>Request OT</h3>
 
                         {validationError && (
                             <div className="error-message-fadeout">
@@ -736,6 +740,17 @@ function EmployeeDetails(props) {
                             <div className="col-12 mt-3">
                                 <label>Employee ID:</label>
                                 <input type="text" defaultValue={props.employeeId} name="employeeId" readOnly />
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Overtime Type:</label>
+                                <select name="overTimeType" onChange={event => console.log(event.target.value)}>
+                                    <option value="Night Shift">Night Shift</option>
+                                    <option value="Weekend">Weekend</option>
+                                    <option value="Holiday">Holiday</option>
+                                </select>
                             </div>
                         </div>
 
