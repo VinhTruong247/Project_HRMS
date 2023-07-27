@@ -36,7 +36,7 @@ function Profile(props) {
         const fetchData = async () => {
             if (_dataContext.employeeId) {
                 try {
-                    const response = await fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}/${apiMonth}`, {
+                    const response = await fetch(`https://gearheadhrmsdb.azurewebsites.net/api/PaySlip/get/payslip/${_dataContext.employeeId}/${apiMonth}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -103,11 +103,11 @@ function Profile(props) {
 
                         <div>
                             <div className="row">
-                                <div className="col-sm-4">
+                                <div className="col-sm-3">
                                     <h4>Payslip ID:</h4>
                                     <p>{selectedPayslip.payslipId}</p>
                                 </div>
-                                <div className="col-sm-8">
+                                <div className="col-sm-9">
                                     <h4>Employee ID:</h4>
                                     <p>{selectedPayslip.employeeId}</p>
                                 </div>
@@ -115,25 +115,91 @@ function Profile(props) {
                             <hr />
 
                             <div className="row">
-                                <div className="col-sm-4">
-                                    <h4>Pay Period</h4>
+                                <div className="col-sm-3">
+                                    <h4>Pay Period:</h4>
                                     <p>{selectedPayslip.payPeriod}</p>
                                 </div>
-                                <div className="col-sm-8">
-                                    <h4>Total Salary:</h4>
-                                    <p>{selectedPayslip.totalSalary}</p>
+                                <div className="col-sm-9">
+                                    <h4>Pay Date:</h4>
+                                    <p>{selectedPayslip.paidDate}</p>
                                 </div>
                             </div>
                             <hr />
 
-                            <h4>Note:</h4>
-                            <p>{selectedPayslip.note}</p>
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h4>Base Salary per Hour:</h4>
+                                    <p>{selectedPayslip.baseSalaryPerHour.toLocaleString()}</p>
+                                </div>
+                                <div className="col-sm-3">
+                                    <h4>Work Hour Status (OT Hours):</h4>
+                                    <p>{selectedPayslip.actualWorkHours}H/{selectedPayslip.standardWorkHours}H ({selectedPayslip.otHours})</p>
+                                </div>
+                                <div className="col-sm-3">
+                                    <h4>Total Base Salary:</h4>
+                                    <p>{selectedPayslip.baseSalary.toLocaleString()}</p>
+                                </div>
+                                <div className="col-sm-3">
+                                    <h4>OT Salary:</h4>
+                                    <p>{selectedPayslip.otSalary.toLocaleString()}</p>
+                                </div>
+                            </div>
                             <hr />
 
-                            <h4>Status:</h4>
-                            <p>
-                                {selectedPayslip.status}
-                            </p>
+                            <div className="row">
+                                <div className="col-sm-6">
+                                    <h4>Health Insurance Deduction Amount (%):</h4>
+                                    <p>{selectedPayslip.bhytAmount.toLocaleString()} ({selectedPayslip.bhytPercentage * 100}%)</p>
+                                </div>
+                                <div className="col-sm-3">
+                                    <h4>Before Deduction:</h4>
+                                    <p>{selectedPayslip.totalBeforeDeduction.toLocaleString()}</p>
+                                </div>
+                                <div className="col-sm-3">
+                                    <h4>Allowance:</h4>
+                                    <p>{selectedPayslip.allowance.toLocaleString()}</p>
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h4>Personal Exemption:</h4>
+                                    <p>{selectedPayslip.giamTruGiaCanh.toLocaleString()}</p>
+                                </div>
+                                <div className="col-sm-9">
+                                    <h4>Dependent Exemption ({selectedPayslip.dependent} person(s)):</h4>
+                                    <p>{selectedPayslip.giamTruGiaCanhNguoiPhuThuoc.toLocaleString()}</p>
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h4>Tax Income:</h4>
+                                    <p style={{ color: 'red', fontWeight: 'bold' }}>{selectedPayslip.taxIncome}</p>
+                                </div>
+                                <div className="col-sm-9">
+                                    <h4>Tax:</h4>
+                                    <p>{selectedPayslip.tax}</p>
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div className="row">
+                                <div className="col-sm-8">
+                                    <h4>Final Outcome:</h4>
+                                    <p style={{ color: 'green', fontWeight: 'bold' }}>{selectedPayslip.totalSalary.toLocaleString()}</p>
+                                </div>
+                                <div className="col-sm-2">
+                                    <h4>Contract ID:</h4>
+                                    <p>{selectedPayslip.contractId}</p>
+                                </div>
+                                <div className="col-sm-2">
+                                    <h4>Status:</h4>
+                                    <p>{selectedPayslip.status}</p>
+                                </div>
+                            </div>
                             <hr />
 
                             <div className='row butt' style={{ justifyContent: 'right' }}>
@@ -157,7 +223,7 @@ function EmployeeCard(props) {
     useEffect(() => {
         async function fetchData() {
             try {
-                const departmentResponse = await fetch(`https://localhost:7220/api/Department/departments`, {
+                const departmentResponse = await fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Department/departments`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token.token}`
@@ -468,7 +534,7 @@ function EmployeeDetails(props) {
                                 <input
                                     type="text"
                                     name="firstName"
-                                    value={props.firstName}
+                                    defaultValue={props.firstName}
                                     onChange={handleInputChange}
                                 />
                                 {validationErrors.firstName && (
@@ -485,7 +551,7 @@ function EmployeeDetails(props) {
                                 <input
                                     type="text"
                                     name="lastName"
-                                    value={props.lastName}
+                                    defaultValue={props.lastName}
                                     onChange={handleInputChange}
                                 />
                                 {validationErrors.lastName && (
@@ -519,7 +585,7 @@ function EmployeeDetails(props) {
                                 <input
                                     type="email"
                                     name="email"
-                                    value={props.email}
+                                    defaultValue={props.email}
                                     onChange={handleInputChange}
                                 />
                             </div>
@@ -536,7 +602,7 @@ function EmployeeDetails(props) {
                                 <input
                                     type="tel"
                                     name="phoneNumber"
-                                    value={props.phoneNumber}
+                                    defaultValue={props.phoneNumber}
                                     onChange={handleInputChange}
                                 />
                             </div>
@@ -553,7 +619,7 @@ function EmployeeDetails(props) {
                                 <input
                                     type="text"
                                     name="employeeAddress"
-                                    value={props.employeeAddress}
+                                    defaultValue={props.employeeAddress}
                                     onChange={handleInputChange}
                                 />
                             </div>

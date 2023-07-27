@@ -5,21 +5,21 @@ import { MDBDataTableV5 } from 'mdbreact';
 function OverTime(props) {
   const [data, setData] = useState([]);
   const token = JSON.parse(localStorage.getItem('jwtToken'));
-  const [updateReport, setUpdateReport] = useState(null);
+  const [updateOvertime, setUpdateOvertime] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [validationError, setValidationError] = useState('');
   const [employeeNames, setEmployeeName] = useState([]);
-  const [selectedReport, setSelectedReport] = useState(null);
+  const [selectedOvertime, setSelectedOvertime] = useState(null);
 
-  const handleEdit = (report) => {
-    setUpdateReport(report);
+  const handleEdit = (overtime) => {
+    setUpdateOvertime(overtime);
     setShowUpdateForm(true);
   };
 
   const timeoutRef = useRef(null);
 
-  const handleDoubleClick = (report) => {
-    setSelectedReport(report);
+  const handleDoubleClick = (overtime) => {
+    setSelectedOvertime(overtime);
   };
 
   useEffect(() => {
@@ -33,9 +33,9 @@ function OverTime(props) {
     };
   }, [validationError]);
 
-  //  Get info of Report
+  //  Get info of Overtime
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Report/get/reports', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Overtime/get/overtime', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -49,8 +49,8 @@ function OverTime(props) {
           throw new Error('Api response was not ok.');
         }
       })
-      .then(reports => {
-        setData(reports)
+      .then(overtimes => {
+        setData(overtimes)
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -85,11 +85,11 @@ function OverTime(props) {
   const handleUpdate = (event) => {
     event.preventDefault();
     const formData = {
-      reportId: updateReport.reportId,
+      overtimeId: updateOvertime.overtimeId,
       status: event.target.elements.status.value,
     };
 
-    fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Report/update/report/${updateReport.employeeId}/${updateReport.reportId}/`, {
+    fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Overtime/update/overtime/${updateOvertime.employeeId}/${updateOvertime.overtimeId}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -104,22 +104,22 @@ function OverTime(props) {
           throw new Error('Api response was not ok.');
         }
       })
-      .then(updateReport => {
-        const updatedData = data.map(report => {
-          if (report.reportId === updateReport.reportId) {
-            return updateReport;
+      .then(updateOvertime => {
+        const updatedData = data.map(overtime => {
+          if (overtime.overtimeId === updateOvertime.overtimeId) {
+            return updateOvertime;
           } else {
-            return report;
+            return overtime;
           }
         });
         setData(updatedData);
         setShowUpdateForm(false);
-        setUpdateReport(null);
-        console.log('Report information updated successfully');
+        setUpdateOvertime(null);
+        console.log('Overtime information updated successfully');
       })
       .catch(error => {
         console.error('Error submitting form:', error);
-        setValidationError('An error occurred while updating report information');
+        setValidationError('An error occurred while updating overtime information');
       });
   };
 
@@ -130,51 +130,47 @@ function OverTime(props) {
         <div className="card-body">
           <div className="row">
             <div className="col-2">
-              <h3 className="mb-0">Report Details:</h3>
+              <h3 className="mb-0">Overtime Details:</h3>
             </div>
             <div className="col-10 text-secondary">
-              {selectedReport && (
+              {selectedOvertime && (
                 <div>
 
                   <div className="row">
-                    <div className="col-sm-6">
-                      <h4>Report ID:</h4>
-                      <p>{selectedReport.reportId}</p>
+                    <div className="col-sm-4">
+                      <h4>Overtime ID:</h4>
+                      <p>{selectedOvertime.overtimeId}</p>
                     </div>
-                    <div className="col-sm-3">
+                    <div className="col-sm-8">
                       <h4>Employee Name:</h4>
                       <p>
-                        {employeeNames.find(employee => employee.employeeId === selectedReport.employeeId)
-                          ? `${employeeNames.find(employee => employee.employeeId === selectedReport.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === selectedReport.employeeId).lastName}`
+                        {employeeNames.find(employee => employee.employeeId === selectedOvertime.employeeId)
+                          ? `${employeeNames.find(employee => employee.employeeId === selectedOvertime.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === selectedOvertime.employeeId).lastName}`
                           : 'Unknown'}
                       </p>
                     </div>
-                    <div className="col-sm-3">
-                      <h4>Employee ID:</h4>
-                      <p>{selectedReport.employeeId}</p>
-                    </div>
+
                   </div>
                   <hr />
 
                   <div className="row">
-                    <div className="col-sm-6">
-                      <h4>Reason:</h4>
-                      <p>{selectedReport.reason}</p>
+                    <div className="col-sm-4">
+                      <h4>Day:</h4>
+                      <p>{selectedOvertime.day}</p>
                     </div>
-                    <div className="col-sm-6">
-                      <h4>Issue Date:</h4>
-                      <p>{selectedReport.issueDate}</p>
+                    <div className="col-sm-4">
+                      <h4>Overtime Hours</h4>
+                      <p>{selectedOvertime.overtimeHours}</p>
+                    </div>
+                    <div className="col-sm-4">
+                      <h4>Overtime Type</h4>
+                      <p>{selectedOvertime.overtimeType}</p>
                     </div>
                   </div>
                   <hr />
 
-
-                  <h4>Content:</h4>
-                  <p>{selectedReport.content}</p>
-                  <hr />
-
                   <h4>Status:</h4>
-                  <p>{selectedReport.status}</p>
+                  <p>{selectedOvertime.status}</p>
                 </div>
               )}
             </div>
@@ -188,8 +184,8 @@ function OverTime(props) {
           data={{
             columns: [
               {
-                label: 'Report ID',
-                field: 'reportId',
+                label: 'Overtime ID',
+                field: 'overtimeId',
                 width: 150
               },
               {
@@ -198,18 +194,18 @@ function OverTime(props) {
                 width: 150
               },
               {
-                label: 'Reason',
-                field: 'reason',
+                label: 'Overtime Type',
+                field: 'overtimeType',
                 width: 200
               },
               {
-                label: 'Content',
-                field: 'content',
+                label: 'Day:',
+                field: 'day',
                 width: 200
               },
               {
-                label: 'Issue Date',
-                field: 'issueDate',
+                label: 'Overtime Hours',
+                field: 'overtimeHours',
                 width: 150
               },
               {
@@ -225,20 +221,20 @@ function OverTime(props) {
               }
             ],
             rows: data
-            .map(report => ({
-              reportId: report.reportId,
-              employeeName: employeeNames.find(employee => employee.employeeId === report.employeeId)
-                ? `${employeeNames.find(employee => employee.employeeId === report.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === report.employeeId).lastName}`
-                : 'Unknown',
-              reason: report.reason,
-              content: report.content.length > 30 ? `${report.content.slice(0, 30)}...` : report.content,
-              issueDate: report.issueDate,
-              status: report.status,
-              options: (
-                <button onClick={() => handleEdit(report)}>Edit</button>
-              ),
-              clickEvent: () => handleDoubleClick(report)
-            }))
+              .map(overtime => ({
+                overtimeId: overtime.overtimeId,
+                employeeName: employeeNames.find(employee => employee.employeeId === overtime.employeeId)
+                  ? `${employeeNames.find(employee => employee.employeeId === overtime.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === overtime.employeeId).lastName}`
+                  : 'Unknown',
+                overtimeType: overtime.overtimeType,
+                day: overtime.day,
+                overtimeHours: overtime.overtimeHours,
+                status: overtime.status,
+                options: (
+                  <button onClick={() => handleEdit(overtime)}>Edit</button>
+                ),
+                clickEvent: () => handleDoubleClick(overtime)
+              }))
           }}
           hover
           entriesOptions={[5, 10, 20]}
@@ -257,7 +253,7 @@ function OverTime(props) {
       {showUpdateForm && (
         <div className="form-container">
           <form className="form" onSubmit={handleUpdate}>
-            <h3>Edit Report Information (ID: {updateReport.reportId})</h3>
+            <h3>Edit Overtime Information (ID: {updateOvertime.overtimeId})</h3>
 
             {validationError && (
               <div className="error-message-fadeout">
@@ -269,7 +265,7 @@ function OverTime(props) {
               <div className="col-3 mt-3"></div>
               <div className="col-6 mt-3">
                 <label>Status:</label>
-                <select name="status" defaultValue={updateReport.status} onChange={event => console.log(event.target.value)}>
+                <select name="status" defaultValue={updateOvertime.status} onChange={event => console.log(event.target.value)}>
                   <option value="Approved">Approved</option>
                   <option value="Pending">Pending</option>
                   <option value="Declined">Declined</option>
