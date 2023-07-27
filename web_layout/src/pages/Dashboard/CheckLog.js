@@ -32,7 +32,7 @@ function CheckLog() {
     }, []);
 
     useEffect(() => {
-        fetch(`https://localhost:7220/api/Timesheet/get/timesheet/${data.employeeId}`, {
+        fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Timesheet/get/timesheet/${data.employeeId}`, {
             method: "GET",
             headers: {
                 'Content-Type': "application/json",
@@ -104,7 +104,7 @@ function CheckLog() {
     // };
 
     const performCheckIn = () => {
-        return fetch(`https://localhost:7220/api/Attendance/create/${data.employeeId}`, {
+        return fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Attendance/create/${data.employeeId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ function CheckLog() {
     };
 
     const performCheckOut = () => {
-        return fetch(`https://localhost:7220/api/Attendance/update/attendance/${data.employeeId}`, {
+        return fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Attendance/update/attendance/${data.employeeId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

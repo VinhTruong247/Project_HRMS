@@ -36,7 +36,7 @@ function Department(props) {
 
     //  Get info of Department
     useEffect(() => {
-        fetch('https://localhost:7220/api/Department/departments', {
+        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Department/departments', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ function Department(props) {
             return;
         }
 
-        fetch('https://localhost:7220/api/Department/create', {
+        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Department/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ function Department(props) {
             return;
         }
 
-        fetch(`https://localhost:7220/api/Department/update/department/${updateDepartment.departmentId}`, {
+        fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Department/update/department/${updateDepartment.departmentId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

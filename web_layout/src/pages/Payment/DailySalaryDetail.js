@@ -21,7 +21,7 @@ function DailySalaryDetail(props) {
 
   //  Get info of Daily Salaries
   useEffect(() => {
-    fetch('https://localhost:7220/api/DailySalary/dailysalaries', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/DailySalary/dailysalaries', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ function DailySalaryDetail(props) {
   }, []);
 
   useEffect(() => {
-    fetch('https://localhost:7220/api/Employee/employees', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Employee/employees', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ function DailySalaryDetail(props) {
 
   // Fetch department names and job titles
   useEffect(() => {
-    fetch('https://localhost:7220/api/Department/departments', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Department/departments', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ function DailySalaryDetail(props) {
         console.error('There was a problem with the fetch operation:', error);
       });
 
-    fetch('https://localhost:7220/api/Job/jobs', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Job/jobs', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

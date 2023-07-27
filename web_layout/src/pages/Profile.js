@@ -29,7 +29,7 @@ function Profile(props) {
         const fetchData = async () => {
             if (_dataContext.employeeId) {
                 try {
-                    const response = await fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}/${selectedMonth}`, {
+                    const response = await fetch(`https://gearheadhrmsdb.azurewebsites.net/api/PaySlip/get/payslip/${_dataContext.employeeId}/${selectedMonth}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -150,13 +150,13 @@ function EmployeeCard(props) {
     useEffect(() => {
         async function fetchData() {
             try {
-                const departmentResponse = await fetch(`https://localhost:7220/api/Department/departments`, {
+                const departmentResponse = await fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Department/departments`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token.token}`
                     }
                 });
-                const jobTitleResponse = await fetch(`https://localhost:7220/api/Job/jobs`, {
+                const jobTitleResponse = await fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Job/jobs`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token.token}`
@@ -301,7 +301,7 @@ function EmployeeDetails(props) {
     const handleSubmit = () => {
         const isValid = validateForm();
         if (isValid) {
-            fetch(`https://localhost:7220/api/Employee/update/profile/${props.employeeId}`, {
+            fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Employee/update/profile/${props.employeeId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -352,7 +352,7 @@ function EmployeeDetails(props) {
             return;
         }
 
-        fetch('https://localhost:7220/api/Report/create', {
+        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Report/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -418,7 +418,7 @@ function EmployeeDetails(props) {
             return;
         }
 
-        fetch('https://localhost:7220/api/Overtime/create', {
+        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Overtime/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

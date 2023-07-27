@@ -36,7 +36,7 @@ function Jobs(props) {
 
   //  Get info of Job
   useEffect(() => {
-    fetch('https://localhost:7220/api/Job/jobs', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Job/jobs', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ function Jobs(props) {
       return;
     }
 
-    fetch('https://localhost:7220/api/Job/create', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Job/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -177,7 +177,7 @@ function Jobs(props) {
       return;
     }
 
-    fetch(`https://localhost:7220/api/Job/update/job/${updateJob.jobId}`, {
+    fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Job/update/job/${updateJob.jobId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
