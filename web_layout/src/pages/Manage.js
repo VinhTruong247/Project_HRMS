@@ -8,11 +8,12 @@ function Manage() {
     <div className="managepage">
         <div className="navbar-brand">Manage Page</div>
        <nav className='mininav'>
-        <NavLink to="employee">Employee Management</NavLink>
-        <NavLink to="department">Department Management</NavLink>
-        <NavLink to="jobs">Jobs Management</NavLink>
-        <NavLink to="report">Report Management</NavLink>
-        <NavLink to="allowance">Allowances Management</NavLink>
+       <NavLink to="employee">Employee </NavLink>
+        <NavLink to="department">Department </NavLink>
+        <NavLink to="jobs">Jobs </NavLink>
+        <NavLink to="report">Report </NavLink>
+        <NavLink to="overtime">OverTime </NavLink>
+        <NavLink to="allowance">Allowances </NavLink>
        </nav>
        <DataProvider><Outlet /></DataProvider>
     </div>
