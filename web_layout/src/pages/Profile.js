@@ -16,8 +16,6 @@ function Profile(props) {
 
     const [selectedMonth, setSelectedMonth] = useState(todayString);
 
-    console.log(_dataContext.employeeId)
-
     const handleMonthChange = (event) => {
         setSelectedMonth(event.target.value);
     };
@@ -242,13 +240,8 @@ function EmployeeDetails(props) {
     const token = JSON.parse(localStorage.getItem('jwtToken'));
     const [validationErrors, setValidationErrors] = useState({});
     const [showCreateForm, setShowForm] = useState(false);
-    const [updateReport, setUpdateReport] = useState(null);
-    const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [showOTForm, setOTForm] = useState(false);
     const [validationError, setValidationError] = useState('');
-    const handleEdit = (report) => {
-        setUpdateReport(report);
-        setShowUpdateForm(true);
-    };
 
     const timeoutRef = useRef(null);
 
@@ -377,6 +370,72 @@ function EmployeeDetails(props) {
             .then(report => {
                 setData([...data, report]);
                 setShowForm(false);
+                setValidationError('');
+                console.log('Report form created successfully');
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                setValidationError('An error occurred while submitting the form');
+            });
+        console.log(event.target.elements)
+    };
+
+    const handleOTFormSubmit = (event) => {
+        event.preventDefault();
+        const formData = {
+            employeeId: event.target.elements.employeeId.value,
+            day: event.target.elements.day.value,
+            overtimeHours: event.target.elements.overtimeHours.value,
+        };
+
+        const selectedDate = new Date(formData.day);
+        const currentDate = new Date();
+
+        const twoDaysFromNow = new Date();
+        twoDaysFromNow.setDate(currentDate.getDate() + 2);
+
+        if (selectedDate < twoDaysFromNow) {
+            setValidationError('The day must be 2 days ahead from today');
+            return;
+        }
+
+        if (!formData.overtimeHours) {
+            setValidationError('Content needed is required');
+            return;
+        }
+
+        console.log(formData.overtimeHours)
+
+        const timeRegex = /^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/;
+        if (!timeRegex.test(formData.overtimeHours)) {
+            setValidationError('Invalid time format. Please use the format HH:MM:SS');
+            return;
+        }
+
+        const hours = parseInt(formData.overtimeHours.split(':')[0], 10);
+        if (hours > 24) {
+            setValidationError('Invalid hours. Hours must not exceed 24.');
+            return;
+        }
+
+        fetch('https://localhost:7220/api/Overtime/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.token}`
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Api response was not ok.');
+                }
+            })
+            .then(overtime => {
+                setData([...data, overtime]);
+                setOTForm(false);
                 setValidationError('');
                 console.log('Report form created successfully');
             })
@@ -580,8 +639,8 @@ function EmployeeDetails(props) {
                     </div>
                 </div>
                 <hr />
-                <div className="row form" style={{ justifyContent: 'right' }}>
-                    <div className="col-sm-1">
+                <div className="row form">
+                    <div className="col-sm-8" style={{ justifyContent: 'left' }}>
                         <button
                             type="button"
                             className="btn btn-edit"
@@ -590,7 +649,18 @@ function EmployeeDetails(props) {
                             Edit
                         </button>
                     </div>
-                    <div className="col-sm-2">
+
+                    <div className="col-sm-2" style={{ justifyContent: 'right' }}>
+                        <button
+                            type="button"
+                            className='btn btn-primary'
+                            onClick={() => setOTForm(true)}
+                        >
+                            Request OT
+                        </button>
+                    </div>
+
+                    <div className="col-sm-2" style={{ justifyContent: 'right' }}>
                         <button
                             type="button"
                             className='btn btn-primary'
@@ -616,7 +686,7 @@ function EmployeeDetails(props) {
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Employee ID:</label>
-                                <input type="text" defaultValue={props.employeeId} name="employeeId" placeholder='EP######' />
+                                <input type="text" defaultValue={props.employeeId} name="employeeId" readOnly/>
                             </div>
                         </div>
 
@@ -640,6 +710,51 @@ function EmployeeDetails(props) {
                             </div>
                             <div className="col-5 mt-3">
                                 <button onClick={() => setShowForm(false)}>Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            )}
+
+            {showOTForm && (
+                <div className="form-container">
+                    <form className="formProfile" onSubmit={handleOTFormSubmit}>
+                        <h3>Create Report</h3>
+
+                        {validationError && (
+                            <div className="error-message-fadeout">
+                                {validationError}
+                            </div>
+                        )}
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Employee ID:</label>
+                                <input type="text" defaultValue={props.employeeId} name="employeeId" readOnly/>
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Day:</label>
+                                <input type="date" name="day" />
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-12 mt-3">
+                                <label>Overtime Hours Required:</label>
+                                <input type="text" name="overtimeHours" placeholder='HH:MM:SS'/>
+                            </div>
+                        </div>
+
+                        <div className='row butt'>
+                            <div className="col-5 mt-3">
+                                <button type="submit">Submit</button>
+                            </div>
+                            <div className="col-5 mt-3">
+                                <button onClick={() => setOTForm(false)}>Cancel</button>
                             </div>
                         </div>
 
