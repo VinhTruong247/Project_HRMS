@@ -245,11 +245,11 @@ function Payslip(props) {
                                 <div>
 
                                     <div className="row">
-                                        <div className="col-sm-4">
+                                        <div className="col-sm-3">
                                             <h4>Employee ID:</h4>
                                             <p>{selectedReport.employeeId}</p>
                                         </div>
-                                        <div className="col-sm-8">
+                                        <div className="col-sm-9">
                                             <h4>Employee Name:</h4>
                                             <p>
                                                 {employeeNames.find(employee => employee.employeeId === selectedReport.employeeId)
@@ -261,31 +261,47 @@ function Payslip(props) {
                                     <hr />
 
                                     <div className="row">
-                                        <div className="col-sm-4">
+                                        <div className="col-sm-3">
                                             <h4>Pay Period:</h4>
                                             <p>{selectedReport.payPeriod}</p>
                                         </div>
-                                        <div className="col-sm-4">
+                                        <div className="col-sm-9">
                                             <h4>Pay Date:</h4>
                                             <p>{selectedReport.paidDate}</p>
-                                        </div>
-                                        <div className="col-sm-4">
-                                            <h4>Work Hour Status (OT Hours):</h4>
-                                            <p>{selectedReport.actualWorkHours}H/{selectedReport.standardWorkHours}H ({selectedReport.otHours})</p>
                                         </div>
                                     </div>
                                     <hr />
 
                                     <div className="row">
-                                        <div className="col-sm-4">
+                                        <div className="col-sm-3">
                                             <h4>Base Salary per Hour:</h4>
                                             <p>{selectedReport.baseSalaryPerHour.toLocaleString()}</p>
                                         </div>
-                                        <div className="col-sm-4">
+                                        <div className="col-sm-3">
+                                            <h4>Work Hour Status (OT Hours):</h4>
+                                            <p>{selectedReport.actualWorkHours}H/{selectedReport.standardWorkHours}H ({selectedReport.otHours})</p>
+                                        </div>
+                                        <div className="col-sm-3">
                                             <h4>Total Base Salary:</h4>
                                             <p>{selectedReport.baseSalary.toLocaleString()}</p>
                                         </div>
-                                        <div className="col-sm-4">
+                                        <div className="col-sm-3">
+                                            <h4>OT Salary:</h4>
+                                            <p>{selectedReport.otSalary.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
+                                        <div className="col-sm-6">
+                                            <h4>Health Insurance Deduction Amount (%):</h4>
+                                            <p>{selectedReport.bhytAmount.toLocaleString()} ({selectedReport.bhytPercentage * 100}%)</p>
+                                        </div>
+                                        <div className="col-sm-3">
+                                            <h4>Before Deduction:</h4>
+                                            <p>{selectedReport.totalBeforeDeduction.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-3">
                                             <h4>Allowance:</h4>
                                             <p>{selectedReport.allowance.toLocaleString()}</p>
                                         </div>
@@ -293,23 +309,11 @@ function Payslip(props) {
                                     <hr />
 
                                     <div className="row">
-                                        <div className="col-sm-4">
-                                            <h4>Health Insurance Deduction Amount (%):</h4>
-                                            <p>{selectedReport.bhytAmount.toLocaleString()} ({selectedReport.bhytPercentage * 100}%)</p>
-                                        </div>
-                                        <div className="col-sm-8">
-                                            <h4>Before Deduction:</h4>
-                                            <p>{selectedReport.totalBeforeDeduction.toLocaleString()}</p>
-                                        </div>
-                                    </div>
-                                    <hr />
-
-                                    <div className="row">
-                                        <div className="col-sm-4">
+                                        <div className="col-sm-3">
                                             <h4>Personal Exemption:</h4>
                                             <p>{selectedReport.giamTruGiaCanh.toLocaleString()}</p>
                                         </div>
-                                        <div className="col-sm-8">
+                                        <div className="col-sm-9">
                                             <h4>Dependent Exemption ({selectedReport.dependent} person(s)):</h4>
                                             <p>{selectedReport.giamTruGiaCanhNguoiPhuThuoc.toLocaleString()}</p>
                                         </div>
@@ -317,11 +321,11 @@ function Payslip(props) {
                                     <hr />
 
                                     <div className="row">
-                                        <div className="col-sm-4">
+                                        <div className="col-sm-3">
                                             <h4>Tax Income:</h4>
                                             <p style={{color: 'red', fontWeight: 'bold'}}>{selectedReport.taxIncome}</p>
                                         </div>
-                                        <div className="col-sm-8">
+                                        <div className="col-sm-9">
                                             <h4>Tax:</h4>
                                             <p>{selectedReport.tax}</p>
                                         </div>

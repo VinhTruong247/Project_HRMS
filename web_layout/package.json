@@ -26,6 +26,7 @@
     "react-scripts": "5.0.1",
     "react-virtual-gantt": "^0.1.2",
     "recharts": "^2.7.2",
+    "styled-components": "^6.0.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

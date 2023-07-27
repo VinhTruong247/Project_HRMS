@@ -13,11 +13,15 @@ function Profile(props) {
     const year = today.getFullYear();
     const month = ('0' + (today.getMonth() + 1)).slice(-2);
     const todayString = `${year}-${month}`;
+    const [displayMonth, setDisplayMonth] = useState(today.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }));
 
     const [selectedMonth, setSelectedMonth] = useState(todayString);
 
     const handleMonthChange = (event) => {
+        const selectedDate = new Date(event.target.value + '-01'); // Add '-01' to represent the 1st day of the selected month
+        const formattedMonth = selectedDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
         setSelectedMonth(event.target.value);
+        setDisplayMonth(formattedMonth);
     };
 
     const handleCancel = () => {
@@ -686,7 +690,7 @@ function EmployeeDetails(props) {
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Employee ID:</label>
-                                <input type="text" defaultValue={props.employeeId} name="employeeId" readOnly/>
+                                <input type="text" defaultValue={props.employeeId} name="employeeId" readOnly />
                             </div>
                         </div>
 
@@ -731,7 +735,7 @@ function EmployeeDetails(props) {
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Employee ID:</label>
-                                <input type="text" defaultValue={props.employeeId} name="employeeId" readOnly/>
+                                <input type="text" defaultValue={props.employeeId} name="employeeId" readOnly />
                             </div>
                         </div>
 
@@ -745,7 +749,7 @@ function EmployeeDetails(props) {
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Overtime Hours Required:</label>
-                                <input type="text" name="overtimeHours" placeholder='HH:MM:SS'/>
+                                <input type="text" name="overtimeHours" placeholder='HH:MM:SS' />
                             </div>
                         </div>
 

@@ -12,7 +12,7 @@ function Manage() {
         <NavLink to="department">Department </NavLink>
         <NavLink to="jobs">Jobs </NavLink>
         <NavLink to="report">Report </NavLink>
-        <NavLink to="overtime">OverTime </NavLink>
+        <NavLink to="overtime">Overtime </NavLink>
         <NavLink to="allowance">Allowances </NavLink>
        </nav>
        <DataProvider><Outlet /></DataProvider>
