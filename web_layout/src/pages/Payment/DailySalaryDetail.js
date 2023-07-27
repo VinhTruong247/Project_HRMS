@@ -9,6 +9,16 @@ function DailySalaryDetail(props) {
   const [jobTitles, setJobTitles] = useState([]);
   const token = JSON.parse(localStorage.getItem('jwtToken'));
 
+  function formatTimeSpan(timeSpan) {
+    const totalSeconds = Math.floor(timeSpan / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+  
+    const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    return formattedTime;
+  }
+
   //  Get info of Daily Salaries
   useEffect(() => {
     fetch('https://localhost:7220/api/DailySalary/dailysalaries', {
@@ -152,25 +162,32 @@ function DailySalaryDetail(props) {
                         <thead>
                           <tr>
                             <th>Pay Date</th>
+                            <th>Work Hours</th>
                             <th>Salary per Hour</th>
                             <th>OT Hours</th>
+                            <th>OT Salary</th>
                             <th>Daily Salary</th>
+                            <th>Allowance Name</th>
+                            <th>Total Allowance</th>
                             <th>Total Salary</th>
                           </tr>
                         </thead>
                         <tbody>
                           {dailySalaries
-                          .filter((dailySalary) => dailySalary.employeeId === employee.employeeId)
-                          .sort((a, b) => new Date(b.date) - new Date(a.date))
-                          .map((dailySalary) => (
-                            <tr key={dailySalary.dailysalaryId}>
-                              <td>{dailySalary.date}</td>
-                              <td>{dailySalary.salaryPerHour}</td>
-                              <td>{dailySalary.otHours}</td>
-                              <td>{dailySalary.dailySalary}</td>
-                              <td>{dailySalary.totalSalary}</td>
-                            </tr>
-                          ))}
+                            .filter((dailySalary) => dailySalary.employeeId === employee.employeeId)
+                            .map((dailySalary) => (
+                              <tr key={dailySalary.dailysalaryId}>
+                                <td>{dailySalary.date}</td>
+                                <td>{formatTimeSpan(Date.parse(`1970-01-01T${dailySalary.totalHours}Z`))}</td>
+                                <td>{dailySalary.salaryPerHour.toLocaleString()}</td>
+                                <td>{formatTimeSpan(Date.parse(`1970-01-01T${dailySalary.otHours}Z`))}</td>
+                                <td>{dailySalary.otSalary.toLocaleString()}</td>
+                                <td>{dailySalary.totalSalary}</td>
+                                <td>{dailySalary.dailyAllowanceList.map((allowance) => allowance.allowanceName).join(', ')}</td>
+                                <td>{dailySalary.dailyAllowance.toLocaleString()}</td>
+                                <td style={{ color: 'green', fontWeight: 'bold' }}>{dailySalary.dailySalary.toLocaleString()}</td>
+                              </tr>
+                            ))}
                         </tbody>
                       </table>
                     </td>

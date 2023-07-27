@@ -224,7 +224,8 @@ function Report(props) {
                 width: 100
               }
             ],
-            rows: data.map(report => ({
+            rows: data
+            .map(report => ({
               reportId: report.reportId,
               employeeName: employeeNames.find(employee => employee.employeeId === report.employeeId)
                 ? `${employeeNames.find(employee => employee.employeeId === report.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === report.employeeId).lastName}`
