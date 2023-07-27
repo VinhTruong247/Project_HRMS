@@ -3,7 +3,6 @@ import TotalEmployee from './Dashboard/TotalEmployee';
 import Status from './Dashboard/Status';
 import CheckLog from './Dashboard/CheckLog';
 import Overall from './Dashboard/Overall';
-import WideCalendar from './Dashboard/WideCalendar';
 import { BrowserRouter as Router, Route, Link, Outlet, NavLink } from 'react-router-dom';
 import useData from "../hooks/useData";
 import TotalDepartment from './Dashboard/TotalDepartment';
@@ -27,9 +26,6 @@ function Dasboard() {
             <div className="row" style={{ alignItems: 'center' }}>
                 <Overall/>
                 <CheckLog/>
-            </div>
-            <div className="row">
-                <WideCalendar/>
             </div>
         </div>
     </div>

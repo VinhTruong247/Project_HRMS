@@ -1,47 +1,77 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-function Groups() {
-  const [selectedMessage, setSelectedMessage] = useState(null);
+function Groups(props) {
+  const [selectedDepartment, setSelectedDepartment] = useState([]);
+  const [departmentList, setDepartmentList] = useState([]);
+  const token = JSON.parse(localStorage.getItem("jwtToken"));
 
-  const handleSelectMessage = (message) => {
-    setSelectedMessage(message);
-  }
+  useEffect(() => {
+    fetch(`https://gearheadhrmsdb.azurewebsites.net/api/DepartmentMember/get/DepartmentMemberList`, {
+      method: "GET",
+      headers: {
+        'Content-Type': "application/json",
+        'Authorization': `Bearer ${token.token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Api response was not ok.");
+        }
+      })
+      .then((departments) => {
+        setSelectedDepartment(departments);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }, []);
 
-  const messages = [
-    {
-      id: 1,
-      subject: 'Message Subject 1',
-      sender: 'Sender Name 1',
-      date: '09 July 2023',
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod urna ut nunc rutrum, a lobortis odio accumsan. Nam sodales, dolor et sollicitudin consectetur, mi enim lobortis tortor, vel rutrum tortor velit ut eros. Ut maximus nunc vel libero bibendum, non dapibus quam malesuada. Fusce sit amet orci euismod, molestie urna nec, lacinia ante. Aliquam erat volutpat.'
-    },
-    {
-      id: 2,
-      subject: 'Message Subject 2',
-      sender: 'Sender Name 2',
-      date: '08 July 2023',
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod urna ut nunc rutrum, a lobortis odio accumsan. Nam sodales, dolor et sollicitudin consectetur, mi enim lobortis tortor, vel rutrum tortor velit ut eros. Ut maximus nunc vel libero bibendum, non dapibus quam malesuada. Fusce sit amet orci euismod, molestie urna nec, lacinia ante. Aliquam erat volutpat.'
-    }
-  ];
+  useEffect(() => {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Department/departments', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.token}`
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('API response was not ok.');
+        }
+      })
+      .then(departments => {
+        setDepartmentList(departments);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []);
 
   return (
-    <div className="inbox">
+    <div className="main-body">
       <div className="inbox-header">
       </div>
       <div className="inbox-messages">
-        {messages.map(message => (
-          <div 
-            key={message.id} 
-            className={`inbox-message ${selectedMessage === message.id ? 'selected' : ''}`}
-            onClick={() => handleSelectMessage(message.id)}
-          >
+        {selectedDepartment.map(department => (
+          <div key={department.departmentId} className="inbox-message">
             <div className="message-header">
-              <h2>{message.subject}</h2>
-              <p>From: {message.sender}</p>
-              <p>Received: {message.date}</p>
+              <h2>
+                Department: {departmentList.find(department => department.departmentId === selectedDepartment.departmentId)
+                  ? departmentList.find(department => department.departmentId === selectedDepartment.departmentId).departmentName
+                  : ''}
+              </h2>
             </div>
             <div className="message-body">
-              <p>{message.body}</p>
+              <p>Employee: {selectedDepartment.map((employee) => employee.employeeId).join(', ')}</p>
+              <p>
+                {departmentList.find(department => department.departmentId === selectedDepartment.departmentId)
+                  ? departmentList.find(department => department.departmentId === selectedDepartment.departmentId).description
+                  : ''}
+              </p>
             </div>
           </div>
         ))}

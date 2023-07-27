@@ -293,16 +293,29 @@ function Payslip(props) {
                                     <hr />
 
                                     <div className="row">
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-3">
                                             <h4>Health Insurance Deduction Amount (%):</h4>
                                             <p>{selectedReport.bhytAmount.toLocaleString()} ({selectedReport.bhytPercentage * 100}%)</p>
                                         </div>
-                                        <div className="col-sm-3">
+                                        <div className="col-sm-9">
                                             <h4>Before Deduction:</h4>
                                             <p>{selectedReport.totalBeforeDeduction.toLocaleString()}</p>
                                         </div>
+                                    </div>
+                                    <hr />
+
+                                    <div className="row">
                                         <div className="col-sm-3">
-                                            <h4>Allowance:</h4>
+                                            <h4>Daily Allowance</h4>
+                                            <p>{selectedReport.dailyAllowanceSum.toLocaleString()}</p>
+                                        </div>
+                                        <div className="col-sm-3">
+                                            <h4>Monthly Allowance</h4>
+                                            <p>{selectedReport.monthlyAllowanceSum.toLocaleString()}</p>
+                                            <p>({selectedReport.monthylyAllowanceList.map((allowance) => allowance.allowanceName).join(', ')})</p>
+                                        </div>
+                                        <div className="col-sm-6">
+                                            <h4>Total Allowance:</h4>
                                             <p>{selectedReport.allowance.toLocaleString()}</p>
                                         </div>
                                     </div>
@@ -323,7 +336,7 @@ function Payslip(props) {
                                     <div className="row">
                                         <div className="col-sm-3">
                                             <h4>Tax Income:</h4>
-                                            <p style={{color: 'red', fontWeight: 'bold'}}>{selectedReport.taxIncome}</p>
+                                            <p style={{ color: 'red', fontWeight: 'bold' }}>{selectedReport.taxIncome}</p>
                                         </div>
                                         <div className="col-sm-9">
                                             <h4>Tax:</h4>
@@ -335,7 +348,7 @@ function Payslip(props) {
                                     <div className="row">
                                         <div className="col-sm-8">
                                             <h4>Final Outcome:</h4>
-                                            <p style={{color: 'green', fontWeight: 'bold'}}>{selectedReport.totalSalary.toLocaleString()}</p>
+                                            <p style={{ color: 'green', fontWeight: 'bold' }}>{selectedReport.totalSalary.toLocaleString()}</p>
                                         </div>
                                         <div className="col-sm-2">
                                             <h4>Contract ID:</h4>

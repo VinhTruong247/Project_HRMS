@@ -75,7 +75,7 @@ namespace HumanResourceApi.Controllers
                 {
                     return BadRequest("Wrong employeeId Format.");
                 }
-                var get = _mapper.Map<PaySlipDto>(_paySlipRepo.GetAll().Where(ps => ps.EmployeeId == employeeId && ps.PaidDate.Month == date.AddMonths(1).Month).FirstOrDefault());
+                var get = _mapper.Map<PaySlipDto>(_paySlipRepo.GetAll().Where(ps => ps.EmployeeId == employeeId && ps.PaidDate.Month == date.Month).FirstOrDefault());
                 if (get == null)
                 {
                     return BadRequest("Employee ID = " + employeeId + " doesn't seem to be found.");

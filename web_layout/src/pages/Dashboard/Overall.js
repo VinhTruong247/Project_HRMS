@@ -1,6 +1,4 @@
 import React from 'react'
-import moment from 'moment';
-import Year from '../Year';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-calendar/dist/Calendar.css';
 import EmployeeCounter from '../../component/management/Counter/EmployeeCounter';
@@ -22,9 +20,7 @@ export default function Overall() {
             <hr />
             <h5>Jobs</h5>
             <JobCounter />
-
           </div>
-
         </div>
       </div>
   );
