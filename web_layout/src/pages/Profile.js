@@ -8,20 +8,24 @@ function Profile(props) {
     const token = JSON.parse(localStorage.getItem('jwtToken'));
     const [selectedPayslip, setPayslip] = useState([]);
     const [showPayslipForm, setShowPayslipForm] = useState(false);
+    const [selectedMonth, setSelectedMonth] = useState(todayString);
 
     const today = new Date();
     const year = today.getFullYear();
     const month = ('0' + (today.getMonth() + 1)).slice(-2);
-    const day = ('0' + today.getDate()).slice(-2);
-    const todayString = `${year}-${month}-${day}`;
+    const todayString = `${year}-${month}`;
 
     console.log(_dataContext.employeeId)
+
+    const handleMonthChange = (event) => {
+        setSelectedMonth(event.target.value);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
             if (_dataContext.employeeId) {
                 try {
-                    const response = await fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}/${todayString}`, {
+                    const response = await fetch(`https://localhost:7220/api/PaySlip/get/payslip/${_dataContext.employeeId}/${selectedMonth}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -42,7 +46,7 @@ function Profile(props) {
         };
 
         fetchData();
-    }, [_dataContext.employeeId]);
+    }, [_dataContext.employeeId, selectedMonth]);
 
     return _dataContext && (
         <div className="main-body payslip">
@@ -74,7 +78,18 @@ function Profile(props) {
             {showPayslipForm && (
                 <div className="form-container">
                     <form className="formpayslip">
-                        <h3></h3>
+
+                        <div className="row mb-2">
+                            <div className="col-sm-5">
+                                <h4>Select Month:</h4>
+                                <input
+                                    type="month"
+                                    value={selectedMonth}
+                                    onChange={handleMonthChange}
+                                />
+                            </div>
+                        </div>
+
                         <div>
                             <div className="row">
                                 <div className="col-sm-4">

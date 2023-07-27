@@ -480,7 +480,8 @@ tr:hover td {
 .manager .form textarea,
 .manager .form select,
 .formProfile input,
-.formProfile textarea {
+.formProfile textarea,
+.formpayslip input {
     width: 100%;
     height: 2rem;
     padding: 1rem;

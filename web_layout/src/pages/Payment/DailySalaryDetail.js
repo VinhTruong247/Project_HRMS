@@ -55,57 +55,36 @@ function DailySalaryDetail(props) {
   }, []);
 
   return (
-    <div className="manager" style={{ position: "relative" }}>
+    <div className="manager" style={{ position: "relative", marginTop: "5rem" }}>
 
       <div className='row'>
+        <table className='table'>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Employee Name</th>
+              <th>Pay Date</th>
+              <th>Daily Salary</th>
+              <th>Total Salary</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map(dailysalary => (
 
-        <MDBDataTableV5
-          className='custom-table'
-          data={{
-            columns: [
-              {
-                label: 'ID',
-                field: 'dailysalaryId',
-                width: 150,
-              },
-              {
-                label: 'Employee Name',
-                field: 'employeeName',
-                width: 150,
-              },
-              {
-                label: 'Pay Date',
-                field: 'date',
-                width: 150,
-              },
-              {
-                label: 'Daily Salary',
-                field: 'dailySalary',
-                width: 150,
-              },
-              {
-                label: 'Total Salary',
-                field: 'totalSalary',
-                width: 150,
-              },
-            ],
-            rows: data.map((dailysalary) => ({
-              dailysalaryId: dailysalary.dailysalaryId,
-              employeeName: employeeNames.find(employee => employee.employeeId === dailysalary.employeeId)
-                ? `${employeeNames.find(employee => employee.employeeId === dailysalary.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === dailysalary.employeeId).lastName}`
-                : 'Unknown',
-              date: dailysalary.date,
-              dailySalary: dailysalary.dailySalary.toLocaleString(),
-              totalSalary: dailysalary.totalSalary.toLocaleString(),
-            }))
-          }}
-          hover
-          entriesOptions={[5, 10, 20]}
-          entries={10}
-          pagesAmount={5}
-          searchTop
-          searchBottom={false}
-        />
+              <tr key={dailysalary.dailysalaryId}>
+                <td>{dailysalary.dailysalaryId}</td>
+                <td>
+                  {employeeNames.find(employee => employee.employeeId === dailysalary.employeeId)
+                    ? `${employeeNames.find(employee => employee.employeeId === dailysalary.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === dailysalary.employeeId).lastName}`
+                    : 'Unknown'}
+                </td>
+                <td>{dailysalary.date}</td>
+                <td>{dailysalary.dailySalary.toLocaleString()}</td>
+                <td>{dailysalary.totalSalary.toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

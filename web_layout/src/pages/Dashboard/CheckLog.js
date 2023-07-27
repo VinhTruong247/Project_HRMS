@@ -5,7 +5,7 @@ import useData from '../../hooks/useData';
 function CheckLog() {
     const data = useData()
     const [totalHour, setHour] = useState([]);
-    const [isCheckedIn, setIsCheckedIn] = useState(localStorage.getItem('isCheckedIn') === 'false');
+    const [isCheckedIn, setIsCheckedIn] = useState(localStorage.getItem('isCheckedIn') === 'true');
     const [totalHours, setTotalHours] = useState(0);
     const token = JSON.parse(localStorage.getItem('jwtToken'));
 
@@ -54,54 +54,54 @@ function CheckLog() {
             });
     }, []);
 
-    // const handleCheckInOut = () => {
-    //     const now = new Date();
-    //     if (now.getHours() >= 8 && now.getHours() < 17) {
-    //         if (isCheckedIn) {
-    //             performCheckOut()
-    //                 .then(() => {
-    //                     setIsCheckedIn(false);
-    //                     console.log('Checked out successfully');
-    //                 })
-    //                 .catch(error => {
-    //                     console.error('Error checking out:', error);
-    //                 });
-    //         } else {
-    //             performCheckIn()
-    //                 .then(() => {
-    //                     setIsCheckedIn(true);
-    //                     console.log('Checked in successfully');
-    //                 })
-    //                 .catch(error => {
-    //                     console.error('Error checking in:', error);
-    //                 });
-    //         }
-    //     } else {
-    //         console.log('Check-in not allowed between 5pm and 8am.');
-    //     }
-    // };
-
     const handleCheckInOut = () => {
-        if (isCheckedIn) {
-            performCheckOut()
-                .then(() => {
-                    setIsCheckedIn(false);
-                    console.log('Checked out successfully');
-                })
-                .catch(error => {
-                    console.error('Error checking out:', error);
-                });
+        const now = new Date();
+        if (now.getHours() >= 8 && now.getHours() < 17) {
+            if (isCheckedIn) {
+                performCheckOut()
+                    .then(() => {
+                        setIsCheckedIn(false);
+                        console.log('Checked out successfully');
+                    })
+                    .catch(error => {
+                        console.error('Error checking out:', error);
+                    });
+            } else {
+                performCheckIn()
+                    .then(() => {
+                        setIsCheckedIn(true);
+                        console.log('Checked in successfully');
+                    })
+                    .catch(error => {
+                        console.error('Error checking in:', error);
+                    });
+            }
         } else {
-            performCheckIn()
-                .then(() => {
-                    setIsCheckedIn(true);
-                    console.log('Checked in successfully');
-                })
-                .catch(error => {
-                    console.error('Error checking in:', error);
-                });
+            console.log('Check-in not allowed between 5pm and 8am.');
         }
     };
+
+    // const handleCheckInOut = () => {
+    //     if (isCheckedIn) {
+    //         performCheckOut()
+    //             .then(() => {
+    //                 setIsCheckedIn(false);
+    //                 console.log('Checked out successfully');
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error checking out:', error);
+    //             });
+    //     } else {
+    //         performCheckIn()
+    //             .then(() => {
+    //                 setIsCheckedIn(true);
+    //                 console.log('Checked in successfully');
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error checking in:', error);
+    //             });
+    //     }
+    // };
 
     const performCheckIn = () => {
         return fetch(`https://localhost:7220/api/Attendance/create/${data.employeeId}`, {
