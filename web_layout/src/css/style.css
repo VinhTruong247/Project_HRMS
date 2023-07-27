@@ -144,6 +144,33 @@ p {
     margin-right: 5rem;
 }
 
+.inner-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+.inner-table th,
+.inner-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.inner-table th {
+    background-color: #f2f2f2;
+}
+
+.inner-table tr:last-child td {
+    border-bottom: none;
+}
+
+.expanded-row {
+    background-color: #f2f2f2;
+}
+
 @keyframes fadeout {
     0% {
         opacity: 1;

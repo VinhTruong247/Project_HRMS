@@ -1,10 +1,12 @@
 import React from 'react'
 import { useEffect, useState, useRef } from 'react';
-import { MDBDataTableV5 } from 'mdbreact';
 
 function DailySalaryDetail(props) {
-  const [data, setData] = useState([]);
-  const [employeeNames, setEmployeeNames] = useState([]);
+  const [dailySalaries, setDailySalaries] = useState([]);
+  const [employeeData, setEmployeeData] = useState([]);
+  const [expandedRows, setExpandedRows] = useState([]);
+  const [departmentNames, setDepartmentNames] = useState([]);
+  const [jobTitles, setJobTitles] = useState([]);
   const token = JSON.parse(localStorage.getItem('jwtToken'));
 
   //  Get info of Daily Salaries
@@ -24,7 +26,7 @@ function DailySalaryDetail(props) {
         }
       })
       .then(dailysalaries => {
-        setData(dailysalaries)
+        setDailySalaries(dailysalaries)
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -47,7 +49,61 @@ function DailySalaryDetail(props) {
         }
       })
       .then(employees => {
-        setEmployeeNames(employees)
+        setEmployeeData(employees)
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []);
+
+  const handleRowExpand = (employeeId) => {
+    const isRowExpanded = expandedRows.includes(employeeId);
+    if (isRowExpanded) {
+      setExpandedRows(expandedRows.filter(id => id !== employeeId));
+    } else {
+      setExpandedRows([...expandedRows, employeeId]);
+    }
+  };
+
+  // Fetch department names and job titles
+  useEffect(() => {
+    fetch('https://localhost:7220/api/Department/departments', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.token}`
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('API response was not ok.');
+        }
+      })
+      .then(departments => {
+        setDepartmentNames(departments);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+
+    fetch('https://localhost:7220/api/Job/jobs', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.token}`
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('API response was not ok.');
+        }
+      })
+      .then(jobs => {
+        setJobTitles(jobs);
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -56,37 +112,77 @@ function DailySalaryDetail(props) {
 
   return (
     <div className="manager" style={{ position: "relative", marginTop: "5rem" }}>
-
       <div className='row'>
         <table className='table'>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Employee ID</th>
               <th>Employee Name</th>
-              <th>Pay Date</th>
-              <th>Daily Salary</th>
-              <th>Total Salary</th>
+              <th>Email</th>
+              <th>Department</th>
+              <th>Job</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(dailysalary => (
-
-              <tr key={dailysalary.dailysalaryId}>
-                <td>{dailysalary.dailysalaryId}</td>
-                <td>
-                  {employeeNames.find(employee => employee.employeeId === dailysalary.employeeId)
-                    ? `${employeeNames.find(employee => employee.employeeId === dailysalary.employeeId).firstName} ${employeeNames.find(employee => employee.employeeId === dailysalary.employeeId).lastName}`
-                    : 'Unknown'}
-                </td>
-                <td>{dailysalary.date}</td>
-                <td>{dailysalary.dailySalary.toLocaleString()}</td>
-                <td>{dailysalary.totalSalary.toLocaleString()}</td>
-              </tr>
+            {employeeData.map(employee => (
+              <React.Fragment key={employee.employeeId}>
+                <tr onClick={() => handleRowExpand(employee.employeeId)}>
+                  <td>{employee.employeeId}</td>
+                  <td>{employee.firstName} {employee.lastName}</td>
+                  <td>{employee.email}</td>
+                  <td>
+                    {departmentNames.find(
+                      (department) => department.departmentId === employee.departmentId
+                    )
+                      ? departmentNames.find(
+                        (department) => department.departmentId === employee.departmentId
+                      ).departmentName
+                      : ''}
+                  </td>
+                  <td>
+                    {jobTitles.find((job) => job.jobId === employee.jobId)
+                      ? jobTitles.find((job) => job.jobId === employee.jobId).jobTitle
+                      : 'Unknown'}
+                  </td>
+                </tr>
+                {expandedRows.includes(employee.employeeId) && (
+                  <tr>
+                    <td colSpan="5">
+                      <table className='inner-table'>
+                        <thead>
+                          <tr>
+                            <th>Pay Date</th>
+                            <th>Salary per Hour</th>
+                            <th>OT Hours</th>
+                            <th>Daily Salary</th>
+                            <th>Total Salary</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {dailySalaries
+                          .filter((dailySalary) => dailySalary.employeeId === employee.employeeId)
+                          .sort((a, b) => new Date(b.date) - new Date(a.date))
+                          .map((dailySalary) => (
+                            <tr key={dailySalary.dailysalaryId}>
+                              <td>{dailySalary.date}</td>
+                              <td>{dailySalary.salaryPerHour}</td>
+                              <td>{dailySalary.otHours}</td>
+                              <td>{dailySalary.dailySalary}</td>
+                              <td>{dailySalary.totalSalary}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
       </div>
     </div>
-  )
+  );
 }
+
 export default DailySalaryDetail;

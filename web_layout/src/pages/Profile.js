@@ -8,17 +8,23 @@ function Profile(props) {
     const token = JSON.parse(localStorage.getItem('jwtToken'));
     const [selectedPayslip, setPayslip] = useState([]);
     const [showPayslipForm, setShowPayslipForm] = useState(false);
-    const [selectedMonth, setSelectedMonth] = useState(todayString);
 
     const today = new Date();
     const year = today.getFullYear();
     const month = ('0' + (today.getMonth() + 1)).slice(-2);
     const todayString = `${year}-${month}`;
 
+    const [selectedMonth, setSelectedMonth] = useState(todayString);
+
     console.log(_dataContext.employeeId)
 
     const handleMonthChange = (event) => {
         setSelectedMonth(event.target.value);
+    };
+
+    const handleCancel = () => {
+        setSelectedMonth(todayString);
+        setShowPayslipForm(false);
     };
 
     useEffect(() => {
@@ -126,7 +132,7 @@ function Profile(props) {
                             <hr />
 
                             <div className='row butt' style={{ justifyContent: 'right' }}>
-                                <button onClick={() => setShowPayslipForm(false)}>Cancel</button>
+                                <button onClick={handleCancel}>Cancel</button>
                             </div>
                         </div>
 
