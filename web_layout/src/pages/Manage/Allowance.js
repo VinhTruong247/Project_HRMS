@@ -41,7 +41,7 @@ function Allowance(props) {
 
   //  Get info of Allowance
   useEffect(() => {
-    fetch('https://localhost:7220/api/Allowance/allowances', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Allowance/allowances', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ function Allowance(props) {
       return;
     }
 
-    fetch('https://localhost:7220/api/Allowance/create', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Allowance/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ function Allowance(props) {
       return;
     }
 
-    fetch(`https://localhost:7220/api/Allowance/update/allowance/${updateAllowance.allowanceId}`, {
+    fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Allowance/update/allowance/${updateAllowance.allowanceId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
