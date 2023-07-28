@@ -478,8 +478,6 @@ function EmployeeDetails(props) {
             return;
         }
 
-        console.log(formData.overtimeHours)
-
         const timeRegex = /^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/;
         if (!timeRegex.test(formData.overtimeHours)) {
             setValidationError('Invalid time format. Please use the format HH:MM:SS');
@@ -514,6 +512,7 @@ function EmployeeDetails(props) {
                 console.log('Report form created successfully');
             })
             .catch(error => {
+                setValidationError('');
                 console.error('Error submitting form:', error);
                 setValidationError('An error occurred while submitting the form');
             });
@@ -812,7 +811,7 @@ function EmployeeDetails(props) {
                         <div className='row'>
                             <div className="col-12 mt-3">
                                 <label>Overtime Type:</label>
-                                <select name="overTimeType" onChange={event => console.log(event.target.value)}>
+                                <select name="overtimeType" onChange={event => console.log(event.target.value)}>
                                     <option value="Night Shift">Night Shift</option>
                                     <option value="Weekend">Weekend</option>
                                     <option value="Holiday">Holiday</option>
