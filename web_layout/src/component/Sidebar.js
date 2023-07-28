@@ -10,7 +10,7 @@ function Sidebar() {
       <aside>
         <div className="top">
           <div className="logo">
-            <img src={require('../img/logo.svg')} />
+            <img src={require('../img/GearHead logo.png')} />
           </div>
         </div>
 
