@@ -35,7 +35,7 @@ function OverTime(props) {
 
   //  Get info of Overtime
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Overtime/get/overtime', {
+    fetch('https://localhost:7220/api/Overtime/get/overtime', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ function OverTime(props) {
 
   // Fetch employee
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Employee/employees', {
+    fetch('https://localhost:7220/api/Employee/employees', {
       method: "GET",
       headers: {
         'Content-Type': "application/json",
@@ -89,7 +89,7 @@ function OverTime(props) {
       status: event.target.elements.status.value,
     };
 
-    fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Overtime/update/overtime/${updateOvertime.employeeId}/${updateOvertime.overtimeId}/`, {
+    fetch(`https://localhost:7220/api/Overtime/update/overtime/${updateOvertime.employeeId}/${updateOvertime.overtimeId}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

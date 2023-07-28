@@ -6,7 +6,7 @@ function EmployeeCounter() {
   const token = JSON.parse(localStorage.getItem('jwtToken'));
 
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Employee/employees', {
+    fetch('https://localhost:7220/api/Employee/employees', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

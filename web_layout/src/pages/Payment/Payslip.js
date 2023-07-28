@@ -40,7 +40,7 @@ function Payslip(props) {
 
     //  Get fulllist of PAYSLIP
     useEffect(() => {
-        fetch(`https://gearheadhrmsdb.azurewebsites.net/api/PaySlip/get/paysliplist`, {
+        fetch(`https://localhost:7220/api/PaySlip/get/paysliplist`, {
             method: "GET",
             headers: {
                 'Content-Type': "application/json",
@@ -64,7 +64,7 @@ function Payslip(props) {
 
     // Fetch employee
     useEffect(() => {
-        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Employee/employees', {
+        fetch('https://localhost:7220/api/Employee/employees', {
             method: "GET",
             headers: {
                 'Content-Type': "application/json",
@@ -133,7 +133,7 @@ function Payslip(props) {
             return;
         }
 
-        fetch("https://gearheadhrmsdb.azurewebsites.net/api/Payslip/generate", {
+        fetch("https://localhost:7220/api/Payslip/generate", {
             method: "POST",
             headers: {
                 'Content-Type': "application/json",
@@ -188,7 +188,7 @@ function Payslip(props) {
         }
 
         fetch(
-            `https://gearheadhrmsdb.azurewebsites.net/api/Payslip/update/payslip/${updatePayslip.employeeId}/${updatePayslip.payslipId}`,
+            `https://localhost:7220/api/Payslip/update/payslip/${updatePayslip.employeeId}/${updatePayslip.payslipId}`,
             {
                 method: "PUT",
                 headers: {

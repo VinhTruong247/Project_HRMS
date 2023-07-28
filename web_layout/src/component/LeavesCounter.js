@@ -6,7 +6,7 @@ function LeaveCounter() {
   const token = JSON.parse(localStorage.getItem('jwtToken'));
 
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Leave/leaves', {
+    fetch('https://localhost:7220/api/Leave/leaves', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

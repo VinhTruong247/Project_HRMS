@@ -44,7 +44,7 @@ function Attendance(props) {
   }, []);
 
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Employee/employees', {
+    fetch('https://localhost:7220/api/Employee/employees', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ function Attendance(props) {
 
   // Fetch department names and job titles
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Department/departments', {
+    fetch('https://localhost:7220/api/Department/departments', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ function Attendance(props) {
         console.error('There was a problem with the fetch operation:', error);
       });
 
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Job/jobs', {
+    fetch('https://localhost:7220/api/Job/jobs', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

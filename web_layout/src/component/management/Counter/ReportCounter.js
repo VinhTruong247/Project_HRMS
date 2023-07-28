@@ -6,7 +6,7 @@ function ReportCounter() {
     const token = JSON.parse(localStorage.getItem('jwtToken'));
 
     useEffect(() => {
-      fetch('https://gearheadhrmsdb.azurewebsites.net/api/Report/get/reports', {
+      fetch('https://localhost:7220/api/Report/get/reports', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
