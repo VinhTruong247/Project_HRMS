@@ -36,11 +36,6 @@ function Sidebar() {
             <h3>Manage</h3>
           </NavLink>
 
-          <NavLink to="/statistics" className="nav_link">
-            <span className="material-icons-outlined">bar_chart</span>
-            <h3>Statistics</h3>
-          </NavLink>
-
           <NavLink to="/timeline" className="nav_link">
             <span className="material-icons-outlined">insert_invitation</span>
 

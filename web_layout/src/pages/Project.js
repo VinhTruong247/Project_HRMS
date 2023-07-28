@@ -11,14 +11,18 @@ function Project() {
   }, []);
 
   return (
+
     <div className="projects">
       <div className="projects-header">
       </div>
+      
       <div className="projects-list">
         {projects.map(project => (
+          
           <div key={project.id} className="project-card">
-            <h2>{project.name}</h2>
-            <p>{project.description}</p>
+            <h2>{project.projectName}</h2>
+            <p>{project.departmentId}</p>
+            <hr/>
             <div className="project-details">
               <div className="project-detail">
                 <h3>Start Date</h3>

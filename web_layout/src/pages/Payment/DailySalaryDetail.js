@@ -21,7 +21,7 @@ function DailySalaryDetail(props) {
 
   //  Get info of Daily Salaries
   useEffect(() => {
-    fetch('https://localhost:7220/api/DailySalary/dailysalaries', {
+    fetch('https://gearheadhrmsdb.azurewebsites.net/api/DailySalary/dailysalaries', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

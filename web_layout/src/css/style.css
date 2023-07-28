@@ -703,7 +703,7 @@ nav a.active {
     grid-row: span 2;
 }
 
-.big-box {
+.big-box  , .project-card {
     grid-column: span 2;
     background: white;
     border: 1px solid var(--color-dark);
@@ -724,7 +724,7 @@ main {
     margin-top: 2rem;
 }
 
-.news .col-lg-12 {
+.news .col-lg-12  , .project-card  {
     background: white;
     border: 1px solid var(--color-dark);
     height: fit-content;
@@ -734,7 +734,7 @@ main {
     transition: all 300ms ease;
 }
 
-.news .col-lg-8 {
+.news .col-lg-8  , .project-card {
     background: white;
     border: 1px solid var(--color-dark);
     height: max-content;
