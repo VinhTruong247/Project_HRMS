@@ -46,7 +46,6 @@ const router = createBrowserRouter([
         {path: "allowance", element: <Allowance/>},
         {path: "overtime", element: <OverTime/>},
                 ]},
-    {path: "statistics",element: <Statistics/>,},
     {path: "timeline",element: <Timeline/>},
     {path: "groups",element: <Groups/>},
     {path: "payment",element: <Payment/>,children:
