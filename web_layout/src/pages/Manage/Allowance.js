@@ -10,7 +10,6 @@ function Allowance(props) {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [validationError, setValidationError] = useState('');
   const [filteredData, setFilteredData] = useState(null);
-  const allowanceIdPattern = /^AL\d{6}$/;
 
   const handleEdit = (allowance) => {
     setUpdateAllowance(allowance);
@@ -67,7 +66,7 @@ function Allowance(props) {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const formData = {
-      allowanceId: event.target.elements.allowanceId.value,
+      allowanceName: event.target.elements.allowanceName.value,
       allowanceType: event.target.elements.allowanceType.value,
       amount: parseFloat(event.target.elements.amount.value.replace(/,/g, '')),
       status: event.target.elements.status.checked,
@@ -75,18 +74,13 @@ function Allowance(props) {
 
     const isDuplicateAllowanceId = data.some(allowance => allowance.allowanceId === formData.allowanceId);
 
-    if (!formData.allowanceId) {
-      setValidationError('Allowance ID is required');
-      return;
-    }
-
-    if (!allowanceIdPattern.test(formData.allowanceId)) {
-      setValidationError('Allowance ID must follow AL###### format');
-      return;
-    }
-
     if (isDuplicateAllowanceId) {
       setValidationError('Allowance ID is already taken');
+      return;
+    }
+
+    if (!formData.allowanceName) {
+      setValidationError('Allowance name is required');
       return;
     }
 
@@ -145,10 +139,16 @@ function Allowance(props) {
     event.preventDefault();
     const formData = {
       allowanceId: updateAllowance.allowanceId,
+      allowanceName: event.target.elements.allowanceName.value,
       allowanceType: event.target.elements.allowanceType.value,
       amount: parseFloat(event.target.elements.amount.value.replace(/,/g, '')),
       status: event.target.elements.status.value === 'true',
     };
+
+    if (!formData.allowanceName) {
+      setValidationError('Allowance name is required');
+      return;
+    }
 
     if (!formData.allowanceType) {
       setValidationError('Allowance type is required');
@@ -299,6 +299,13 @@ function Allowance(props) {
 
             <div className='row'>
               <div className="col-12 mt-3">
+                <label>Allowance Name:</label>
+                <input type="text" name="allowanceName" placeholder='Allowance Name' />
+              </div>
+            </div>
+
+            <div className='row'>
+              <div className="col-12 mt-3">
                 <label>Allowance Type:</label>
                 <select name="allowanceType" onChange={event => console.log(event.target.value)}>
                   <option value="Daily">Daily</option>
@@ -360,6 +367,13 @@ function Allowance(props) {
                 {validationError}
               </div>
             )}
+
+            <div className='row'>
+              <div className="col-12 mt-3">
+                <label>Allowance Name:</label>
+                <input type="text" name="allowanceName" placeholder='Allowance Name' />
+              </div>
+            </div>
 
             <div className='row'>
               <div className="col-12 mt-3">

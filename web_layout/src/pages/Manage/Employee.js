@@ -9,11 +9,12 @@ function Employee(props) {
     const token = JSON.parse(localStorage.getItem('jwtToken'));
     const [updateEmployee, setUpdateEmployee] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [showUserForm, setShowUserForm] = useState(false);
     const [validationError, setValidationError] = useState('');
     const [departmentNames, setDepartmentNames] = useState([]);
     const [jobTitles, setJobTitles] = useState([]);
+    const [userText, setUser] = useState([]);
     const [selectedReport, setSelectedReport] = useState(null);
-    const employeeIdPattern = /^EP\d{6}$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneNumberPattern = /^(\+)?\d{10}$/;
     // const atmNumberPattern = /^(\d{4}[- ]?){3}\d{4}$/;
@@ -109,6 +110,27 @@ function Employee(props) {
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
+
+        fetch('https://gearheadhrmsdb.azurewebsites.net/api/User/get/users', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.token}`
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('API response was not ok.');
+                }
+            })
+            .then(users => {
+                setUser(users);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
     }, []);
 
 
@@ -116,7 +138,6 @@ function Employee(props) {
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formData = {
-            employeeId: event.target.elements.employeeId.value,
             firstName: event.target.elements.firstName.value,
             lastName: event.target.elements.lastName.value,
             employeeImage: event.target.elements.employeeImage.value,
@@ -132,29 +153,22 @@ function Employee(props) {
             status: event.target.elements.status.checked,
         };
 
-        const isDuplicateEmployeeId = data.some(employee => employee.employeeId === formData.employeeId);
-
-        if (!formData.employeeId) {
-            setValidationError('Employee ID is required');
-            return;
-        }
-
-        if (!employeeIdPattern.test(formData.employeeId)) {
-            setValidationError('Employee ID must follow EP###### format');
-            return;
-        }
-
-        if (isDuplicateEmployeeId) {
-            setValidationError('Employee ID is already taken');
-            return;
-        }
-
         if (!formData.firstName) {
             setValidationError('First name is required');
             return;
         }
 
+        if (formData.firstName.trim() === '') {
+            setValidationError('First name is required');
+            return;
+        }
+
         if (!formData.lastName) {
+            setValidationError('Last name is required');
+            return;
+        }
+
+        if (formData.lastName.trim() === '') {
             setValidationError('Last name is required');
             return;
         }
@@ -204,6 +218,11 @@ function Employee(props) {
             return;
         }
 
+        if (formData.bankAccountName.trim() === '') {
+            setValidationError('Bank Account Name is required');
+            return;
+        }
+
         if (!formData.bankName) {
             setValidationError('Bank name is required');
             return;
@@ -237,7 +256,93 @@ function Employee(props) {
         console.log(event.target.elements)
     };
 
+    const handleUserSubmit = (event) => {
+        event.preventDefault();
+        const formData = {
+            employeeId: event.target.elements.employeeId.value,
+            username: event.target.elements.username.value,
+            password: event.target.elements.password.value,
+            email: event.target.elements.email.value,
+            roleId: event.target.elements.roleId.value,
+            status: event.target.elements.status.checked,
+        };
 
+        const isEmployeeIdAvailable = data.some(employee => employee.employeeId === formData.employeeId);
+        const isEmployeeIdDuplicate = userText.some(employee => employee.employeeId === formData.employeeId);
+
+        const isEmployeeEmailAvailable = data.some(employee => employee.email === formData.email);
+
+        if (!formData.employeeId) {
+            setValidationError('Employee ID is required');
+            return;
+        }
+
+        if (!isEmployeeIdAvailable) {
+            setValidationError('Employee ID is not available in the data');
+            return;
+        }
+
+        if (isEmployeeIdDuplicate) {
+            setValidationError('Employee ID is already have an account');
+            return;
+        }
+
+        if (!formData.username) {
+            setValidationError('First name is required');
+            return;
+        }
+
+        if (formData.username.trim() === '') {
+            setValidationError('Username is required');
+            return;
+        }
+
+        if (!formData.password) {
+            setValidationError('Password is required');
+            return;
+        }
+
+        if (formData.password.length > 30) {
+            setValidationError('Password must not exceed 30 characters');
+            return;
+        }
+
+        if (!formData.email) {
+            setValidationError('Email is required');
+            return;
+        }
+
+        if (!isEmployeeEmailAvailable) {
+            setValidationError('Email is not match with the data');
+        }
+
+        fetch('https://gearheadhrmsdb.azurewebsites.net/api/User/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.token}`
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Api response was not ok.');
+                }
+            })
+            .then(user => {
+                setData([...data, user]);
+                setShowUserForm(false);
+                setValidationError('');
+                console.log('Employee created successfully');
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                setValidationError('An error occurred while submitting the form');
+            });
+        console.log(event.target.elements)
+    };
 
     //  UPDATE NEW EMPLOYEE
     const handleUpdate = (event) => {
@@ -365,8 +470,14 @@ function Employee(props) {
 
     return (
         <div className="manager" style={{ position: "relative" }}>
-            <div className='row addbtn'> <button className='btn_create' onClick={() => setShowForm(true)}>Add Employee</button></div>
-
+            <div className="row">
+                <div className="col-10">
+                    <div className='row addbtn'> <button className='btn_create' onClick={() => setShowUserForm(true)}>Make Account</button></div>
+                </div>
+                <div className="col-2">
+                    <div className='row addbtn'> <button className='btn_create' onClick={() => setShowForm(true)}>Add Employee</button></div>
+                </div>
+            </div>
             <div className="card mb-3">
                 <div className="card-body">
                     <div className="row">
@@ -571,10 +682,6 @@ function Employee(props) {
 
                         <div className='row'>
                             <div className="col-6 mt-3">
-                                <label>Employee ID:</label>
-                                <input type="text" name="employeeId" placeholder='EP######' />
-                            </div>
-                            <div className="col-6 mt-3">
                                 <label>Phone Number:</label>
                                 <input type="text" name="phoneNumber" placeholder='1234-567-890' />
                             </div>
@@ -657,6 +764,72 @@ function Employee(props) {
                             </div>
                             <div className="col-5 mt-3">
                                 <button onClick={() => setShowForm(false)}>Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            )}
+
+            {showUserForm && (
+                <div className="form-container">
+                    <form className="form" onSubmit={handleUserSubmit}>
+                        <h3>Create Employee</h3>
+
+                        {validationError && (
+                            <div className="error-message-fadeout">
+                                {validationError}
+                            </div>
+                        )}
+
+                        <div className='row'>
+                            <div className="col-6 mt-3">
+                                <label>Username:</label>
+                                <input type="text" name="username" placeholder='username' />
+                            </div>
+                            <div className="col-6 mt-3">
+                                <label>Password:</label>
+                                <input type="text" name="password" placeholder='password' />
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col-6 mt-3">
+                                <label>Employee ID:</label>
+                                <input type="text" name="employeeId" placeholder='EP######' />
+                            </div>
+                            <div className="col-6 mt-3">
+                                <label>Role:</label>
+                                <select name="roleId" onChange={event => console.log(event.target.value)}>
+                                    <option value="RL000001">ADMIN</option>
+                                    <option value="RL000002">HR_Manager</option>
+                                    <option value="RL000003">HR_Staff</option>
+                                    <option value="RL000004">Employee</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <label>Email:</label>
+                        <input type="email" name="email" placeholder='example@mail.com' />
+
+                        <div className='row'>
+                            <div className="col-3 mt-1"></div>
+                            <div className="col-6 mt-1">
+                                <label>Status:</label>
+                                <select name="status" defaultValue={true} onChange={event => console.log(event.target.value)}>
+                                    <option value={true}>Active</option>
+                                    <option value={false}>Disable</option>
+                                </select>
+                            </div>
+                            <div className="col-3 mt-1"></div>
+                        </div>
+
+                        <div className='row butt'>
+                            <div className="col-5 mt-3">
+                                <button type="submit">Submit</button>
+                            </div>
+                            <div className="col-5 mt-3">
+                                <button onClick={() => setShowUserForm(false)}>Cancel</button>
                             </div>
                         </div>
 

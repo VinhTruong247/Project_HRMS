@@ -21,7 +21,7 @@ function Attendance(props) {
 
   //  Get info of Daily Salaries
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Timesheet/get/timesheets', {
+    fetch('https://localhost:7220/api/Timesheet/get/timesheets', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
