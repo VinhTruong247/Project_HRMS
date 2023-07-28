@@ -44,7 +44,7 @@ function Employee(props) {
 
     //  Get info of EMPLOYEE
     useEffect(() => {
-        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Employee/employees', {
+        fetch('https://localhost:7220/api/Employee/employees', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ function Employee(props) {
 
     // Fetch department names and job titles
     useEffect(() => {
-        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Department/departments', {
+        fetch('https://localhost:7220/api/Department/departments', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ function Employee(props) {
                 console.error('There was a problem with the fetch operation:', error);
             });
 
-        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Job/jobs', {
+        fetch('https://localhost:7220/api/Job/jobs', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ function Employee(props) {
                 console.error('There was a problem with the fetch operation:', error);
             });
 
-        fetch('https://gearheadhrmsdb.azurewebsites.net/api/User/get/users', {
+        fetch('https://localhost:7220/api/User/get/users', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -228,7 +228,7 @@ function Employee(props) {
             return;
         }
 
-        fetch('https://gearheadhrmsdb.azurewebsites.net/api/Employee/create', {
+        fetch('https://localhost:7220/api/Employee/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -316,7 +316,7 @@ function Employee(props) {
             setValidationError('Email is not match with the data');
         }
 
-        fetch('https://gearheadhrmsdb.azurewebsites.net/api/User/add', {
+        fetch('https://localhost:7220/api/User/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -434,7 +434,7 @@ function Employee(props) {
             return;
         }
 
-        fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Employee/update/user/${updateEmployee.employeeId}`, {
+        fetch(`https://localhost:7220/api/Employee/update/user/${updateEmployee.employeeId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://gearheadhrmsdb.azurewebsites.net/api/Login', {
+      const response = await fetch('https://localhost:7220/api/Login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -6,7 +6,7 @@ function JobCounter() {
   const token = JSON.parse(localStorage.getItem('jwtToken'));
 
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Job/jobs', {
+    fetch('https://localhost:7220/api/Job/jobs', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

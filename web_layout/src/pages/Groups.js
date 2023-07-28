@@ -6,7 +6,7 @@ function Groups(props) {
   const token = JSON.parse(localStorage.getItem("jwtToken"));
 
   useEffect(() => {
-    fetch(`https://gearheadhrmsdb.azurewebsites.net/api/DepartmentMember/get/DepartmentMemberList`, {
+    fetch(`https://localhost:7220/api/DepartmentMember/get/DepartmentMemberList`, {
       method: "GET",
       headers: {
         'Content-Type': "application/json",
@@ -29,7 +29,7 @@ function Groups(props) {
   }, []);
 
   useEffect(() => {
-    fetch('https://gearheadhrmsdb.azurewebsites.net/api/Department/departments', {
+    fetch('https://localhost:7220/api/Department/departments', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

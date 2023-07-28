@@ -13,7 +13,7 @@ const DataProvider = ({ children }) => {
     }
 
     const UserId = decodedToken.UserId
-    const employee_url = `https://gearheadhrmsdb.azurewebsites.net/api/Employee/get/user/${UserId}/employee`;
+    const employee_url = `https://localhost:7220/api/Employee/get/user/${UserId}/employee`;
 
     useEffect(() => {
         fetch(employee_url, {

@@ -32,7 +32,7 @@ function CheckLog() {
     }, []);
 
     useEffect(() => {
-        fetch(`https://gearheadhrmsdb.azurewebsites.net/api/Timesheet/get/timesheet/${data.employeeId}`, {
+        fetch(`https://localhost:7220/api/Timesheet/get/timesheet/${data.employeeId}`, {
             method: "GET",
             headers: {
                 'Content-Type': "application/json",
