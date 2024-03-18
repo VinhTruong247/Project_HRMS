@@ -129,7 +129,7 @@ function Profile(props) {
                             <div className="row">
                                 <div className="col-sm-3">
                                     <h4>Base Salary per Hour:</h4>
-                                    <p>{selectedPayslip.baseSalaryPerHour.toLocaleString()}</p>
+                                    <p>{selectedPayslip.baseSalaryPerHour ? selectedPayslip.baseSalaryPerHour.toLocaleString() : 'N/A'}</p>
                                 </div>
                                 <div className="col-sm-3">
                                     <h4>Work Hour Status (OT Hours):</h4>
@@ -137,11 +137,11 @@ function Profile(props) {
                                 </div>
                                 <div className="col-sm-3">
                                     <h4>Total Base Salary:</h4>
-                                    <p>{selectedPayslip.baseSalary.toLocaleString()}</p>
+                                    <p>{selectedPayslip.baseSalary ? selectedPayslip.baseSalary.toLocaleString() : 'N/A'}</p>
                                 </div>
                                 <div className="col-sm-3">
                                     <h4>OT Salary:</h4>
-                                    <p>{selectedPayslip.otSalary.toLocaleString()}</p>
+                                    <p>{selectedPayslip.otSalary ? selectedPayslip.otSalary.toLocaleString() : 'N/A'}</p>
                                 </div>
                             </div>
                             <hr />
@@ -149,15 +149,15 @@ function Profile(props) {
                             <div className="row">
                                 <div className="col-sm-6">
                                     <h4>Health Insurance Deduction Amount (%):</h4>
-                                    <p>{selectedPayslip.bhytAmount.toLocaleString()} ({selectedPayslip.bhytPercentage * 100}%)</p>
+                                    <p>{selectedPayslip.bhytAmount ? selectedPayslip.bhytAmount.toLocaleString() : 'N/A'} ({selectedPayslip.bhytPercentage * 100}%)</p>
                                 </div>
                                 <div className="col-sm-3">
                                     <h4>Before Deduction:</h4>
-                                    <p>{selectedPayslip.totalBeforeDeduction.toLocaleString()}</p>
+                                    <p>{selectedPayslip.totalBeforeDeduction ? selectedPayslip.totalBeforeDeduction.toLocaleString() : 'N/A'}</p>
                                 </div>
                                 <div className="col-sm-3">
                                     <h4>Allowance:</h4>
-                                    <p>{selectedPayslip.allowance.toLocaleString()}</p>
+                                    <p>{selectedPayslip.allowance ? selectedPayslip.allowance.toLocaleString() : 'N/A'}</p>
                                 </div>
                             </div>
                             <hr />
@@ -165,11 +165,11 @@ function Profile(props) {
                             <div className="row">
                                 <div className="col-sm-3">
                                     <h4>Personal Exemption:</h4>
-                                    <p>{selectedPayslip.giamTruGiaCanh.toLocaleString()}</p>
+                                    <p>{selectedPayslip.giamTruGiaCanh ? selectedPayslip.giamTruGiaCanh.toLocaleString() : 'N/A'}</p>
                                 </div>
                                 <div className="col-sm-9">
                                     <h4>Dependent Exemption ({selectedPayslip.dependent} person(s)):</h4>
-                                    <p>{selectedPayslip.giamTruGiaCanhNguoiPhuThuoc.toLocaleString()}</p>
+                                    <p>{selectedPayslip.giamTruGiaCanhNguoiPhuThuoc ? selectedPayslip.giamTruGiaCanhNguoiPhuThuoc.toLocaleString() : 'N/A'}</p>
                                 </div>
                             </div>
                             <hr />
@@ -177,11 +177,11 @@ function Profile(props) {
                             <div className="row">
                                 <div className="col-sm-3">
                                     <h4>Tax Income:</h4>
-                                    <p style={{ color: 'red', fontWeight: 'bold' }}>{selectedPayslip.taxIncome}</p>
+                                    <p style={{ color: 'red', fontWeight: 'bold' }}>{selectedPayslip.taxIncome ? selectedPayslip.taxIncome.toLocaleString() : 'N/A'}</p>
                                 </div>
                                 <div className="col-sm-9">
                                     <h4>Tax:</h4>
-                                    <p>{selectedPayslip.tax}</p>
+                                    <p>{selectedPayslip.tax ? selectedPayslip.tax.toLocaleString() : 'N/A'}</p>
                                 </div>
                             </div>
                             <hr />
@@ -189,7 +189,7 @@ function Profile(props) {
                             <div className="row">
                                 <div className="col-sm-8">
                                     <h4>Final Outcome:</h4>
-                                    <p style={{ color: 'green', fontWeight: 'bold' }}>{selectedPayslip.totalSalary.toLocaleString()}</p>
+                                    <p style={{ color: 'green', fontWeight: 'bold' }}>{selectedPayslip.totalSalary ? selectedPayslip.totalSalary.toLocaleString() : 'N/A'}</p>
                                 </div>
                                 <div className="col-sm-2">
                                     <h4>Contract ID:</h4>
